@@ -1,0 +1,5 @@
+fecha config=2016/11/01
+Data Source=localhost\SQLSERVER2012
+Initial Catalog=GD2C2018
+User Id=gdEspectaculos2018
+Password=gdEspectaculos2018
