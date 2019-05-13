@@ -62,11 +62,26 @@
     <Compile Include="AbmRecorrido\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="AbmRol\Form1.cs">
+    <Compile Include="AbmRol\AbmRolForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AbmRol\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="AbmRol\AbmRolForm.Designer.cs">
+      <DependentUpon>AbmRolForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AbmRol\CrearRolForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmRol\CrearRolForm.Designer.cs">
+      <DependentUpon>CrearRolForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AbmRol\Funcionalidades.cs" />
+    <Compile Include="AbmRol\NombreRol.cs" />
+    <Compile Include="AbmRol\Rol.cs" />
+    <Compile Include="AbmRol\SeleccionRolForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmRol\SeleccionRolForm.Designer.cs">
+      <DependentUpon>SeleccionRolForm.cs</DependentUpon>
     </Compile>
     <Compile Include="CompraReservaPasaje\Form1.cs">
       <SubType>Form</SubType>
@@ -92,14 +107,51 @@
     <Compile Include="ListadoEstadistico\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Login\LoginForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Login\LoginForm.Designer.cs">
+      <DependentUpon>LoginForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="PagoReserva\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="PagoReserva\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="PantallaPrincipal\PantallaPrincipalForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PantallaPrincipal\PantallaPrincipalForm.Designer.cs">
+      <DependentUpon>PantallaPrincipalForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Rol\Roles.cs" />
+    <Compile Include="Utils\ArchivoConfig.cs" />
+    <Compile Include="Utils\ConexionBD.cs" />
+    <Compile Include="Utils\DEF.cs" />
+    <Compile Include="Utils\DGVUtils.cs" />
+    <Compile Include="Utils\FuncionSQL.cs" />
+    <Compile Include="Utils\MensajeBox.cs" />
+    <Compile Include="Utils\Parametro.cs" />
+    <Compile Include="Utils\Query.cs" />
+    <Compile Include="Utils\StoreProcedures.cs" />
+    <EmbeddedResource Include="AbmRol\AbmRolForm.resx">
+      <DependentUpon>AbmRolForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmRol\CrearRolForm.resx">
+      <DependentUpon>CrearRolForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmRol\SeleccionRolForm.resx">
+      <DependentUpon>SeleccionRolForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Login\LoginForm.resx">
+      <DependentUpon>LoginForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PantallaPrincipal\PantallaPrincipalForm.resx">
+      <DependentUpon>PantallaPrincipalForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -122,6 +174,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
