@@ -17,16 +17,20 @@ namespace FrbaCrucero.Login
 {
     public partial class LoginForm : Form
     {
-        
         public LoginForm()
         {
             InitializeComponent();
         }
 
         private void btnLogin_Click(object sender, EventArgs e)
-        {
-            this.verificarUsuario();
+        {   
+            if (this.hayCamposNulos())
+                MensajeBox.error("Hay campos obligatorios sin completar.");
+            else
+                this.verificarUsuario();
         }
+
+        private bool hayCamposNulos() { return (txtbxUsuario.Text.Equals("") || txtbxPass.Text.Equals("")); }
 
         private void verificarUsuario()
         {
@@ -39,50 +43,33 @@ namespace FrbaCrucero.Login
             parametros.Add(paramPass);
             parametros.Add(paramResultado);
             StoreProcedure spLogin = new StoreProcedure("LOS_BARONES_DE_LA_CERVEZA.USP_Login", parametros);
-            spLogin.ejecutar();           
-            int resultado = (int)paramResultado.obtenerValor();
+            spLogin.ejecutar();
+            ResultadoLogin resultadoLogin = this.factoryMethodLogin(Convert.ToInt32(paramResultado.obtenerValor()));
+            resultadoLogin.procesarResultado(txtbxUsuario.Text);
+ 
+        } // FIN verificarUsuario()
 
-            switch (resultado)
+        /* Aplico el pattern Factory Method para encapsular el condicional (switch)
+         * que determina que instancia de ResultadoLogin instanciar de acuerdo al valor 
+         * resultado del login (resultadoLogin).
+         * https://realpython.com/factory-method-python/#introducing-factory-method 
+         */
+        private ResultadoLogin factoryMethodLogin(int resultadoLogin)
+        {
+            switch (resultadoLogin)
             {
                 case DEF.USUARIO_NO_EXISTE:
-                    MensajeBox.error("No existe el usuario.");
-                    break;
+                    return new UsuarioInexistente(); 
                 case DEF.PASSWORD_INCORRECTO:
-                    MensajeBox.error("Contraseña incorrecta.");
-                    break;
+                    return new PasswordIncorrecto();
                 case DEF.USUARIO_INHABILITADO:
-                    MensajeBox.info("El usuario se encuentra inhabilitado. Contacte al administrador.");
-                    break;
+                    return new UsuarioInhabilitado();
                 case DEF.INGRESO_CORRECTO:
-                    // Si el usuario tiene un único rol lo redirigo a la pantalla de ese rol
-                    if (Roles.cantidad(txtbxUsuario.Text).Equals(DEF.UNICO_ROL))
-                    {
-                        // 1. Verificamos que el rol esté habilitado
-                        if (Roles.rolHabilitado(txtbxUsuario.Text))
-                        {
-                            // El rol está habilitado 
-
-                            // 2. Me traigo las funcionalidades de ese rol
-                            List<string> funcionalidades = Roles.funcionalidadesUnicoRol(txtbxUsuario.Text);
-
-                            // 3. Llamo al método generarPantallaPrincipal con las funcionalidades como parámetros y el nombre de usuario
-                            PantallaPrincipalForm formPantallaPrincipal = new PantallaPrincipalForm(funcionalidades, txtbxUsuario.Text);
-                            formPantallaPrincipal.ShowDialog();
-                        }
-                        else
-                        {
-                            // El rol NO está habilitado 
-                            MensajeBox.error("El rol asociado a su usuario se encuentra deshabilitado. No es posible ingresar en estos momentos.");
-                            return;
-                        }
-                    }
-                    // Si el usuario tiene más de un rol, desplegamos un menú para elija el rol (Funcionalidad a implementar en un futuro)
-                    break;
+                    return new IngresoCorrecto();
                 default:
-                    MensajeBox.error("Error en el logueo.");
-                    break;
+                    return new ErrorLogin();
+            } // Fin switch    
+        } // Fin factoryMethodLogin()
 
-            } // Fin switch     
-        } // FIN verificarUsuario()
-    }
+    } // FIN LoginForm
 }

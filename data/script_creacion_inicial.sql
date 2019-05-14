@@ -52,7 +52,8 @@ de un usuario en el sistema.
 GO
 CREATE TABLE LOS_BARONES_DE_LA_CERVEZA.Usuarios(
 	usuario NVARCHAR(100) NOT NULL PRIMARY KEY,
-	pass NVARCHAR(100) NOT NULL,
+	--pass NVARCHAR(100) NOT NULL,
+	pass BINARY(32) NOT NULL,
 	habilitado BIT NOT NULL DEFAULT 1,
 	cantidad_intentos_fallidos INTEGER NOT NULL DEFAULT 0
 )
@@ -204,8 +205,10 @@ la cátedra para las pruebas del TP:
 	- Rol: Rol_Admin
 	- Funcionalidades: Todas las disponibles
 ******************************************************************/
+DECLARE @hash_pass VARCHAR(100)
+SET @hash_pass = 'w23e';
 INSERT INTO LOS_BARONES_DE_LA_CERVEZA.Usuarios (usuario, pass)
-VALUES ('admin', 'w23e')
+VALUES ('admin', HASHBYTES('SHA2_256',@hash_pass))
 
 INSERT INTO LOS_BARONES_DE_LA_CERVEZA.Roles_por_Usuario (usuario, rol)
 VALUES ('admin', 'Rol_Admin')
@@ -286,22 +289,25 @@ GO
 CREATE PROCEDURE [LOS_BARONES_DE_LA_CERVEZA].[USP_Login]
 (
 	@usuario_ingresado NVARCHAR(100),
-	@pass_ingresada NVARCHAR(100),
+	@pass_ingresada VARCHAR(100),
 	@resultado INT OUT
 )
 AS
 BEGIN 
-	DECLARE @pass_almacenada NVARCHAR(100)
-	SET @pass_almacenada =
+	DECLARE @hash_pass_almacenada BINARY(32)
+	SET @hash_pass_almacenada =
 	(SELECT pass
 	FROM LOS_BARONES_DE_LA_CERVEZA.Usuarios
 	WHERE usuario = @usuario_ingresado)
 
-	IF @pass_almacenada IS NULL
+	DECLARE @hash_pass_ingresada BINARY(32)
+	SET @hash_pass_ingresada = HASHBYTES('SHA2_256',@pass_ingresada)
+
+	IF @hash_pass_almacenada IS NULL
 		BEGIN
 			SET @resultado = 1 -- El usuario no existe 
 		END
-	ELSE IF @pass_almacenada != @pass_ingresada
+	ELSE IF @hash_pass_almacenada != @hash_pass_ingresada
 		BEGIN	
 			SET @resultado = 2 -- El usuario existe pero la contraseña es incorrecta
 			UPDATE LOS_BARONES_DE_LA_CERVEZA.Usuarios
@@ -310,19 +316,51 @@ BEGIN
 		END
 	ELSE -- El usuario existe y la contraseña es correcta 
 		IF(	
+			-- Chequeo que el usuario esté habilitado 
 			(SELECT habilitado 
 			FROM LOS_BARONES_DE_LA_CERVEZA.Usuarios	
 			WHERE usuario = @usuario_ingresado) = 0
 		)
-		BEGIN
-			SET @resultado = 3 	-- El usuario está inhabilitado
-		END
+			BEGIN
+				-- El usuario está inhabilitado
+				SET @resultado = 3 	
+			END
 		ELSE
 			BEGIN
-				SET @resultado = 4 	-- El usuario está habilitado
+				-- El usuario está habilitado
+				SET @resultado = 4 	
 				UPDATE LOS_BARONES_DE_LA_CERVEZA.Usuarios
-				SET cantidad_intentos_fallidos = 0
+				SET cantidad_intentos_fallidos = 0 -- Reseteo la cantidad de intentos fallidos a 0
 				WHERE usuario = @usuario_ingresado
 			END 
 END; -- FIN USP_Login 
+GO
+
+------------------------------------------------------------------------------
+					-- 9. TRIGGERS
+------------------------------------------------------------------------------
+
+/******************************************************************
+TR_reset_intentos_fallidos
+@Desc: Inhabilita al usuario cuando alcanzo los 3 intentos de 
+login incorrectos.
+******************************************************************/
+GO
+CREATE TRIGGER [LOS_BARONES_DE_LA_CERVEZA].[UTR_inhabilitar_intentos_fallidos]
+ON LOS_BARONES_DE_LA_CERVEZA.Usuarios
+FOR UPDATE
+AS
+BEGIN
+	-- Cuando la cantidad de intentos de login incorrectos es 3, inhabilitamos 
+	-- al usuario 
+	UPDATE LOS_BARONES_DE_LA_CERVEZA.Usuarios
+	SET habilitado = 0, cantidad_intentos_fallidos = 0
+	WHERE usuario IN (
+					SELECT usuario
+					FROM inserted -- Apunta a una tabla usuarios virtual 
+					WHERE cantidad_intentos_fallidos = 3
+					)
+	-- Como ya deshabilitamos al usuario, le reseteamos la cantidad de intentos fallidos
+
+END;
 GO

@@ -36,14 +36,16 @@
             this.txtbxPass = new System.Windows.Forms.TextBox();
             this.btnLogin = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.label5 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.txtbxUsuario);
@@ -52,7 +54,7 @@
             this.groupBox1.Controls.Add(this.btnLogin);
             this.groupBox1.Location = new System.Drawing.Point(40, 94);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(305, 195);
+            this.groupBox1.Size = new System.Drawing.Size(305, 209);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             // 
@@ -61,18 +63,18 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(22, 80);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(64, 13);
+            this.label2.Size = new System.Drawing.Size(68, 13);
             this.label2.TabIndex = 3;
-            this.label2.Text = "Contraseña:";
+            this.label2.Text = "Contraseña*:";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(22, 27);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(46, 13);
+            this.label1.Size = new System.Drawing.Size(50, 13);
             this.label1.TabIndex = 1;
-            this.label1.Text = "Usuario:";
+            this.label1.Text = "Usuario*:";
             // 
             // txtbxUsuario
             // 
@@ -118,15 +120,6 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Zona Clientes";
             // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(280, 306);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(65, 13);
-            this.label5.TabIndex = 2;
-            this.label5.Text = "FrbaCrucero";
-            // 
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(89, 19);
@@ -135,6 +128,24 @@
             this.button1.TabIndex = 6;
             this.button1.Text = "Ingresar";
             this.button1.UseVisualStyleBackColor = true;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(280, 317);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(65, 13);
+            this.label5.TabIndex = 2;
+            this.label5.Text = "FrbaCrucero";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(22, 178);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(111, 13);
+            this.label4.TabIndex = 6;
+            this.label4.Text = "* Campos obligatorios.";
             // 
             // LoginForm
             // 
@@ -166,5 +177,6 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Label label4;
     }
 }

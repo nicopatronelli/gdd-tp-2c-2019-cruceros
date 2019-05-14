@@ -107,12 +107,19 @@
     <Compile Include="ListadoEstadistico\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Utils\Excepciones\CamposObligatoriosVaciosException.cs" />
+    <Compile Include="Login\ResultadoLogin\ErrorLogin.cs" />
+    <Compile Include="Login\ResultadoLogin\IngresoCorrecto.cs" />
     <Compile Include="Login\LoginForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Login\LoginForm.Designer.cs">
       <DependentUpon>LoginForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Login\ResultadoLogin\PasswordIncorrecto.cs" />
+    <Compile Include="Login\ResultadoLogin\ResultadoLogin.cs" />
+    <Compile Include="Login\ResultadoLogin\UsuarioInexistente.cs" />
+    <Compile Include="Login\ResultadoLogin\UsuarioInhabilitado.cs" />
     <Compile Include="PagoReserva\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
