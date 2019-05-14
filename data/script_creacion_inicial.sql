@@ -205,13 +205,53 @@ la cátedra para las pruebas del TP:
 	- Rol: Rol_Admin
 	- Funcionalidades: Todas las disponibles
 ******************************************************************/
-DECLARE @hash_pass VARCHAR(100)
-SET @hash_pass = 'w23e';
+--DECLARE @hash_pass VARCHAR(100)
+--SET @hash_pass = 'w23e';
 INSERT INTO LOS_BARONES_DE_LA_CERVEZA.Usuarios (usuario, pass)
-VALUES ('admin', HASHBYTES('SHA2_256',@hash_pass))
+VALUES ('admin', HASHBYTES('SHA2_256', 'w23e'));
 
 INSERT INTO LOS_BARONES_DE_LA_CERVEZA.Roles_por_Usuario (usuario, rol)
-VALUES ('admin', 'Rol_Admin')
+VALUES ('admin', 'Rol_Admin');
+
+/******************************************************************
+Cargamos un set adicional de usuarios administradores 
+@DESC: Requerido por el enunciado del TP.  
+******************************************************************/
+INSERT INTO LOS_BARONES_DE_LA_CERVEZA.Usuarios (usuario, pass)
+VALUES ('nico', HASHBYTES('SHA2_256', 'w23e'));
+
+INSERT INTO LOS_BARONES_DE_LA_CERVEZA.Roles_por_Usuario (usuario, rol)
+VALUES ('nico', 'Rol_Admin');
+
+INSERT INTO LOS_BARONES_DE_LA_CERVEZA.Usuarios (usuario, pass)
+VALUES ('ema', HASHBYTES('SHA2_256', 'w23e'));
+
+INSERT INTO LOS_BARONES_DE_LA_CERVEZA.Roles_por_Usuario (usuario, rol)
+VALUES ('ema', 'Rol_Admin');
+
+INSERT INTO LOS_BARONES_DE_LA_CERVEZA.Usuarios (usuario, pass)
+VALUES ('leo', HASHBYTES('SHA2_256', 'w23e'));
+
+INSERT INTO LOS_BARONES_DE_LA_CERVEZA.Roles_por_Usuario (usuario, rol)
+VALUES ('leo', 'Rol_Admin');
+
+INSERT INTO LOS_BARONES_DE_LA_CERVEZA.Usuarios (usuario, pass)
+VALUES ('martin', HASHBYTES('SHA2_256', 'w23e'));
+
+INSERT INTO LOS_BARONES_DE_LA_CERVEZA.Roles_por_Usuario (usuario, rol)
+VALUES ('martin', 'Rol_Admin');
+
+/******************************************************************
+Usuario de tipo Cliente por defecto  
+@DESC: Insertamos un usuario de tipo Cliente por defecto que será 
+EMPLEADO en el proceso de ingreso de usuarios Clientes en la 
+aplicación C#. Es un registro de control interno, no de información.   
+******************************************************************/
+INSERT INTO LOS_BARONES_DE_LA_CERVEZA.Usuarios (usuario, pass)
+VALUES ('nico', HASHBYTES('SHA2_256', 'w23e'));
+
+INSERT INTO LOS_BARONES_DE_LA_CERVEZA.Roles_por_Usuario (usuario, rol)
+VALUES ('nico', 'Rol_Admin');
 
 /*******************************************************************************
 							FIN - CARGA DE DATOS PREVIOS 

@@ -34,9 +34,9 @@
             this.txtbxUsuario = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.txtbxPass = new System.Windows.Forms.TextBox();
-            this.btnLogin = new System.Windows.Forms.Button();
+            this.btnIngresarAdmins = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btnIngresarClientes = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
@@ -51,7 +51,7 @@
             this.groupBox1.Controls.Add(this.txtbxUsuario);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.txtbxPass);
-            this.groupBox1.Controls.Add(this.btnLogin);
+            this.groupBox1.Controls.Add(this.btnIngresarAdmins);
             this.groupBox1.Location = new System.Drawing.Point(40, 94);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(305, 209);
@@ -100,19 +100,19 @@
             this.txtbxPass.TabIndex = 4;
             this.txtbxPass.UseSystemPasswordChar = true;
             // 
-            // btnLogin
+            // btnIngresarAdmins
             // 
-            this.btnLogin.Location = new System.Drawing.Point(160, 145);
-            this.btnLogin.Name = "btnLogin";
-            this.btnLogin.Size = new System.Drawing.Size(118, 23);
-            this.btnLogin.TabIndex = 5;
-            this.btnLogin.Text = "Ingresar";
-            this.btnLogin.UseVisualStyleBackColor = true;
-            this.btnLogin.Click += new System.EventHandler(this.btnLogin_Click);
+            this.btnIngresarAdmins.Location = new System.Drawing.Point(160, 145);
+            this.btnIngresarAdmins.Name = "btnIngresarAdmins";
+            this.btnIngresarAdmins.Size = new System.Drawing.Size(118, 23);
+            this.btnIngresarAdmins.TabIndex = 5;
+            this.btnIngresarAdmins.Text = "Ingresar";
+            this.btnIngresarAdmins.UseVisualStyleBackColor = true;
+            this.btnIngresarAdmins.Click += new System.EventHandler(this.btnIngresarAdmins_Click);
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.button1);
+            this.groupBox2.Controls.Add(this.btnIngresarClientes);
             this.groupBox2.Location = new System.Drawing.Point(40, 12);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(305, 56);
@@ -120,14 +120,15 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Zona Clientes";
             // 
-            // button1
+            // btnIngresarClientes
             // 
-            this.button1.Location = new System.Drawing.Point(89, 19);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(118, 23);
-            this.button1.TabIndex = 6;
-            this.button1.Text = "Ingresar";
-            this.button1.UseVisualStyleBackColor = true;
+            this.btnIngresarClientes.Location = new System.Drawing.Point(89, 19);
+            this.btnIngresarClientes.Name = "btnIngresarClientes";
+            this.btnIngresarClientes.Size = new System.Drawing.Size(118, 23);
+            this.btnIngresarClientes.TabIndex = 6;
+            this.btnIngresarClientes.Text = "Ingresar";
+            this.btnIngresarClientes.UseVisualStyleBackColor = true;
+            this.btnIngresarClientes.Click += new System.EventHandler(this.btnIngresarClientes_Click);
             // 
             // label5
             // 
@@ -173,10 +174,10 @@
         private System.Windows.Forms.TextBox txtbxUsuario;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox txtbxPass;
-        private System.Windows.Forms.Button btnLogin;
+        private System.Windows.Forms.Button btnIngresarAdmins;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnIngresarClientes;
         private System.Windows.Forms.Label label4;
     }
 }

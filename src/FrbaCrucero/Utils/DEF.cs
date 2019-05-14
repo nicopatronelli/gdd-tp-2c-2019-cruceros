@@ -17,6 +17,9 @@ namespace FrbaCrucero.Utils
         public const int PASSWORD_INCORRECTO = 2;
         public const int USUARIO_INHABILITADO = 3;
         public const int INGRESO_CORRECTO = 4;
+        
+        // Proceso de ingreso (no logueo) de un usuario de tipo Cliente
+        public const string CLIENTE_DEFAULT = "cliente_default";
 
         // Selección de Rol de un usuario 
         public const int NINGUN_ROL = 0;

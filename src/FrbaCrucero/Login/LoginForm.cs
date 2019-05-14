@@ -22,7 +22,7 @@ namespace FrbaCrucero.Login
             InitializeComponent();
         }
 
-        private void btnLogin_Click(object sender, EventArgs e)
+        private void btnIngresarAdmins_Click(object sender, EventArgs e)
         {   
             if (this.hayCamposNulos())
                 MensajeBox.error("Hay campos obligatorios sin completar.");
@@ -70,6 +70,13 @@ namespace FrbaCrucero.Login
                     return new ErrorLogin();
             } // Fin switch    
         } // Fin factoryMethodLogin()
+
+        private void btnIngresarClientes_Click(object sender, EventArgs e)
+        {   
+            // Los clientes ingresan en forma directa (no tienen usuario asignado)
+            ResultadoLogin resultadoLogin = new IngresoCorrecto();
+            resultadoLogin.procesarResultado(DEF.CLIENTE_DEFAULT);
+        }
 
     } // FIN LoginForm
 }
