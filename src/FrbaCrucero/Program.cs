@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using FrbaCrucero.AbmRol;
 using FrbaCrucero.Login;
+using FrbaCrucero.AbmCrucero;
 
 namespace FrbaCrucero
 {
@@ -18,8 +19,8 @@ namespace FrbaCrucero
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            //Application.Run(new AbmRolForm());
-            Application.Run(new LoginForm());
+            Application.Run(new CrucerosForm());
+            //Application.Run(new LoginForm());
         }
     }
 }

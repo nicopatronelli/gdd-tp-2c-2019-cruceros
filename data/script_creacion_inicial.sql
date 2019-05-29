@@ -40,6 +40,26 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_D
     DROP TABLE LOS_BARONES_DE_LA_CERVEZA.Roles
 GO
 
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.Cruceros_Fuera_Servicio'))
+    DROP TABLE LOS_BARONES_DE_LA_CERVEZA.Cruceros_Fuera_Servicio
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.Cabinas'))
+    DROP TABLE LOS_BARONES_DE_LA_CERVEZA.Cabinas
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.Tipos_Cabinas'))
+    DROP TABLE LOS_BARONES_DE_LA_CERVEZA.Tipos_Cabinas
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.Cruceros'))
+    DROP TABLE LOS_BARONES_DE_LA_CERVEZA.Cruceros
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.Marcas_Cruceros'))
+    DROP TABLE LOS_BARONES_DE_LA_CERVEZA.Marcas_Cruceros
+GO
+
 -------------------------------------------------------------------------------------------------
 						-- 4. CREACION DE TABLAS 
 -------------------------------------------------------------------------------------------------
@@ -127,14 +147,101 @@ CREATE TABLE LOS_BARONES_DE_LA_CERVEZA.Clientes(
 )
 GO
 
+
+/******************************************************************
+Tabla Tipos_Cabinas (Tipos de servicio de cada cabina)
+@Desc: Existen cinco tipos de cabinas (o servicios de cabina). Los
+mismos son fijos y no se pueden modificar (ni alterar el porcetaje
+de recargo que se cobra). No hay ABM para esta tabla. 
+******************************************************************/
+GO
+CREATE TABLE LOS_BARONES_DE_LA_CERVEZA.Tipos_Cabinas(
+	id_tipo_cabina INT IDENTITY PRIMARY KEY NOT NULL,
+	tipo_cabina NVARCHAR(255), -- CABINA_TIPO en la tabla maestra
+	porcentaje_recargo DECIMAL(18,2) -- CABINA_TIPO_PORC_RECARGO en la tabla maestra
+)
+GO
+
+/******************************************************************
+Tabla Marcas_Cruceros 
+@Desc: 
+******************************************************************/
+GO
+CREATE TABLE LOS_BARONES_DE_LA_CERVEZA.Marcas_Cruceros(
+	id_marca INT IDENTITY PRIMARY KEY NOT NULL,
+	marca NVARCHAR(255) -- CRU_FABRICANTE en la tabla maestra
+)
+GO
+
+/******************************************************************
+Tabla Cruceros_Fuera_Servicio
+@Desc: 
+******************************************************************/
+GO
+CREATE TABLE LOS_BARONES_DE_LA_CERVEZA.Cruceros_Fuera_Servicio(
+	id_fs INT IDENTITY PRIMARY KEY NOT NULL,
+	id_crucero INT, -- FK al id del crucero que está fuera de servicio
+	fecha_inicio_fuera_servicio DATETIME2(3) NOT NULL,
+	fecha_fin_fuera_servicio DATETIME2(3) NOT NULL
+)
+GO
+
+/******************************************************************
+Tabla Cruceros
+@Desc: Tabla de los cruceros disponibles para realizar viajes. 
+******************************************************************/
+GO
+CREATE TABLE LOS_BARONES_DE_LA_CERVEZA.Cruceros(
+	id_crucero INT IDENTITY PRIMARY KEY NOT NULL,
+	fecha_alta DATETIME2(3) DEFAULT GETDATE(), 
+	modelo NVARCHAR(50), -- CRUCERO_MODELO en la tabla maestra
+	identificador NVARCHAR(50), -- CRUCERO_IDENTIFICADOR en la tabla maestra
+	marca INT, -- FK al id_marca de la marca del crucero en la tabla Marcas_Cruceros 
+	baja_fuera_servicio BIT DEFAULT 0, -- Por defecto, todos los cruceros están funcionando (0) 
+	baja_vida_util BIT DEFAULT 0, -- Por defecto, todos los cruceros están activos (0)
+	fecha_baja_vida_util DATETIME2(3) 
+)
+GO
+
+/******************************************************************
+Tabla Cabinas 
+@Desc: Tabla con las cabinas de todos los cruceros.
+******************************************************************/
+GO
+CREATE TABLE LOS_BARONES_DE_LA_CERVEZA.Cabinas(
+	id_cabina INT IDENTITY PRIMARY KEY NOT NULL,
+	tipo_cabina INT, -- FK al id_tipo_cabina de Tipos_Cabinas 
+	crucero INT, -- FK al id_crucero al cuál pertenece la cabina 
+	numero DECIMAL(18,0), -- CABINA_NRO en la tabla Maestra
+	piso DECIMAL(18,0) -- CABINA_PISO en la tabla Maestra
+)
+GO
+
+------------------------------------------------------------------------------------------------------
+						-- 5. MIGRACION DE DATOS DE LA TABLA MAESTRA 
+------------------------------------------------------------------------------------------------------
+
+/******************************************************************
+Migramos los cinco tipos de cabinas disponibles.
+@DESC: Estos valores no se pueden modificar ni agregar nuevos tipos.
+******************************************************************/
+
+INSERT INTO LOS_BARONES_DE_LA_CERVEZA.Tipos_Cabinas(tipo_cabina, porcentaje_recargo)
+SELECT DISTINCT CABINA_TIPO, CABINA_TIPO_PORC_RECARGO
+FROM gd_esquema.Maestra
+
+/******************************************************************
+Migramos las marcas de cruceros existentes. 
+@DESC: Estos valores no se pueden modificar ni agregar nuevos marcas.
+******************************************************************/
+
+INSERT INTO LOS_BARONES_DE_LA_CERVEZA.Marcas_Cruceros(marca)
+SELECT DISTINCT CRU_FABRICANTE
+FROM gd_esquema.Maestra
+
 ------------------------------------------------------------------------------------------------------
 						-- 6. CARGAMOS DATOS PREVIOS 
 ------------------------------------------------------------------------------------------------------
-
-/*** INICIO - Cargamos las funcionalidades  ***/
-/* Las mismas serán las siguientes y no podrán agregarse nuevas ni eliminarse las existentes, 
-es decir, son FIJAS => La tabla Funcionalidades es ESTATICA. En total hay 12 funcionalidades 
-relevadas. */
 
 /******************************************************************
 Cargamos las funcionalidades. 
@@ -248,10 +355,11 @@ EMPLEADO en el proceso de ingreso de usuarios Clientes en la
 aplicación C#. Es un registro de control interno, no de información.   
 ******************************************************************/
 INSERT INTO LOS_BARONES_DE_LA_CERVEZA.Usuarios (usuario, pass)
-VALUES ('nico', HASHBYTES('SHA2_256', 'w23e'));
+VALUES ('cliente_default', HASHBYTES('SHA2_256', 'cliente_default'));
 
 INSERT INTO LOS_BARONES_DE_LA_CERVEZA.Roles_por_Usuario (usuario, rol)
-VALUES ('nico', 'Rol_Admin');
+VALUES ('cliente_default', 'Rol_Cliente');
+
 
 /*******************************************************************************
 							FIN - CARGA DE DATOS PREVIOS 
@@ -310,7 +418,45 @@ ON UPDATE CASCADE
 GO
 /* FIN - FK's Tabla intermedia Funcionalidades_Por_Roles */
 
+-- id_crucero de Cruceros_Fuera_Servicio lo vinculo con id_crucero de Cruceros
+GO
+ALTER TABLE LOS_BARONES_DE_LA_CERVEZA.Cruceros_Fuera_Servicio  
+ADD CONSTRAINT FK_id_crucero_fuera_servicio -- Nombre de la FK
+FOREIGN KEY (id_crucero)
+REFERENCES LOS_BARONES_DE_LA_CERVEZA.Cruceros(id_crucero)
+ON UPDATE CASCADE
+GO
 
+-- marca de Cruceros lo vinculo con id_marca de Marcas_Cruceros
+GO
+ALTER TABLE LOS_BARONES_DE_LA_CERVEZA.Cruceros
+ADD CONSTRAINT FK_id_marca_crucero -- Nombre de la FK
+FOREIGN KEY (marca)
+REFERENCES LOS_BARONES_DE_LA_CERVEZA.Marcas_Cruceros(id_marca)
+ON UPDATE CASCADE
+GO
+
+-- tipo_cabina de Cabinas lo vinculo con id_tipo_cabina de Tipos_Cabinas
+GO
+ALTER TABLE LOS_BARONES_DE_LA_CERVEZA.Cabinas
+ADD CONSTRAINT FK_id_tipo_cabina -- Nombre de la FK
+FOREIGN KEY (tipo_cabina)
+REFERENCES LOS_BARONES_DE_LA_CERVEZA.Tipos_Cabinas(id_tipo_cabina)
+ON UPDATE CASCADE
+GO
+
+-- tipo_cabina de Cabinas lo vinculo con id_tipo_cabina de Tipos_Cabinas
+GO
+ALTER TABLE LOS_BARONES_DE_LA_CERVEZA.Cabinas
+ADD CONSTRAINT FK_cabina_crucero -- Nombre de la FK
+FOREIGN KEY (crucero)
+REFERENCES LOS_BARONES_DE_LA_CERVEZA.Cruceros(id_crucero)
+ON UPDATE CASCADE
+GO
+
+/*******************************************************************************
+							FIN - CREAMOS LAS FK'S
+********************************************************************************/
 
 ------------------------------------------------------------------------------
 			-- 8. PROCEDIMIENTOS ALMACENADOS (DE APLICACION/NEGOCIO)

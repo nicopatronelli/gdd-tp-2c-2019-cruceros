@@ -47,6 +47,16 @@ namespace FrbaCrucero.Utils
         public const string ROL_CLIENTE = "Rol_Cliente";
         public const string ROL_ADMIN = "Rol_Admin";
 
+        // Tipos de cabinas (Tabla Tipos_Cabinas en la BD)
+        public const string CABINA_ESTANDAR = "Cabina estandar";
+        public const string CABINA_EXTERIOR = "Cabina Exterior";
+        public const string CABINA_BALCON = "Cabina Balcón";
+        public const string CABINA_SUITE = "Suite";
+        public const string CABINA_EJECUTIVO = "Ejecutivo";
+
+        // Validación cabinas
+        public const int NINGUNA_CABINA = 0;
+
         //public const int FILAS_INSERT_CLIENTE = 3;
         //public const int FILAS_INSERT_EMPRESA = 3;
         //public const int FILAS_INSERT_PUBLICACION = 1;
@@ -69,7 +79,6 @@ namespace FrbaCrucero.Utils
         //public const int FILAS_AFECTADAS_DESHABILITAR_USUARIO = 1;
         //public const int INDICE_COLUMNA_HABILITAR_CLIENTE = 7;
         //public const int INDICE_COLUMNA_HABILITAR_EMPRESA = 4;
-
 
     }
 }

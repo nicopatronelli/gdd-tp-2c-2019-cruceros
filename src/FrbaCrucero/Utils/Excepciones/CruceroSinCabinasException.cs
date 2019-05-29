@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace FrbaCrucero.Utils.Excepciones
 {
-    class CamposObligatoriosNulosException : Exception
+    class CruceroSinCabinasException : Exception
     {
-        public CamposObligatoriosNulosException() : base(){}
+        public CruceroSinCabinasException() : base(){}
 
-        public CamposObligatoriosNulosException(String mensaje)
+        public CruceroSinCabinasException(String mensaje)
             : base(mensaje){}
     }
 }

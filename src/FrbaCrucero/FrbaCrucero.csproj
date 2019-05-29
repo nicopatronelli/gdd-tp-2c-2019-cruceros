@@ -44,12 +44,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AbmCrucero\Form1.cs">
+    <Compile Include="AbmCrucero\CrucerosForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AbmCrucero\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="AbmCrucero\CrucerosForm.Designer.cs">
+      <DependentUpon>CrucerosForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="AbmCrucero\Utils\Cruceros.cs" />
     <Compile Include="AbmPuerto\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -139,11 +140,16 @@
     <Compile Include="Utils\ConexionBD.cs" />
     <Compile Include="Utils\DEF.cs" />
     <Compile Include="Utils\DGVUtils.cs" />
+    <Compile Include="Utils\Excepciones\CruceroSinCabinasException.cs" />
     <Compile Include="Utils\FuncionSQL.cs" />
     <Compile Include="Utils\MensajeBox.cs" />
     <Compile Include="Utils\Parametro.cs" />
     <Compile Include="Utils\Query.cs" />
     <Compile Include="Utils\StoreProcedures.cs" />
+    <Compile Include="Utils\Validaciones.cs" />
+    <EmbeddedResource Include="AbmCrucero\CrucerosForm.resx">
+      <DependentUpon>CrucerosForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="AbmRol\AbmRolForm.resx">
       <DependentUpon>AbmRolForm.cs</DependentUpon>
     </EmbeddedResource>
