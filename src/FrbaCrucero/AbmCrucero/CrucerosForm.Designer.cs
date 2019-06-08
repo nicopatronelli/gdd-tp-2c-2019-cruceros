@@ -98,7 +98,7 @@
             this.groupBox2.Controls.Add(this.dgvCabinas);
             this.groupBox2.Location = new System.Drawing.Point(0, 148);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(718, 258);
+            this.groupBox2.Size = new System.Drawing.Size(686, 258);
             this.groupBox2.TabIndex = 7;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Cabinas";
@@ -134,6 +134,7 @@
             this.dgvCabinas.Name = "dgvCabinas";
             this.dgvCabinas.Size = new System.Drawing.Size(543, 167);
             this.dgvCabinas.TabIndex = 20;
+            this.dgvCabinas.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.dgvCabinas_EditingControlShowing);
             // 
             // Numero
             // 
@@ -206,6 +207,7 @@
             this.txtbxIdentificadorA.Location = new System.Drawing.Point(84, 66);
             this.txtbxIdentificadorA.MaxLength = 6;
             this.txtbxIdentificadorA.Name = "txtbxIdentificadorA";
+            this.txtbxIdentificadorA.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.txtbxIdentificadorA.Size = new System.Drawing.Size(52, 20);
             this.txtbxIdentificadorA.TabIndex = 3;
             // 
@@ -220,7 +222,7 @@
             // 
             // btnEnviar
             // 
-            this.btnEnviar.Location = new System.Drawing.Point(637, 439);
+            this.btnEnviar.Location = new System.Drawing.Point(637, 424);
             this.btnEnviar.Name = "btnEnviar";
             this.btnEnviar.Size = new System.Drawing.Size(75, 23);
             this.btnEnviar.TabIndex = 3;
@@ -232,7 +234,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(794, 484);
+            this.ClientSize = new System.Drawing.Size(743, 484);
             this.Controls.Add(this.btnEnviar);
             this.Controls.Add(this.lblModelo);
             this.Controls.Add(this.txtbxModelo);
@@ -265,9 +267,9 @@
         private System.Windows.Forms.Label lblMarca;
         private System.Windows.Forms.Label lblIdentificador;
         private System.Windows.Forms.TextBox txtbxIdentificadorA;
+        private System.Windows.Forms.Button btnEnviar;
         private System.Windows.Forms.DataGridViewTextBoxColumn Numero;
         private System.Windows.Forms.DataGridViewTextBoxColumn Piso;
         private System.Windows.Forms.DataGridViewComboBoxColumn dgvcmbxTipo;
-        private System.Windows.Forms.Button btnEnviar;
     }
 }

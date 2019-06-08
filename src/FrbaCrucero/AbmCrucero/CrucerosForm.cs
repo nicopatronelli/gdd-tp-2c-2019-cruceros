@@ -50,8 +50,6 @@ namespace FrbaCrucero.AbmCrucero
             {
                 MensajeBox.error("Hay campos obligatorios sin completar.");
             }
-
-
             
             // Cantidad de filas del DataGridView (debemos restarla 1 por la última fila en blanco)
             int cantidadCabinas = dgvCabinas.Rows.Count - 1;
@@ -85,5 +83,28 @@ namespace FrbaCrucero.AbmCrucero
 
             // 3. Insertamos el nuevo Crucero en la base de datos
         }
+
+        private void dgvCabinas_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        {
+            e.Control.KeyPress -= new KeyPressEventHandler(Column1_KeyPress);
+            if (dgvCabinas.CurrentCell.ColumnIndex == 0 ||
+                    dgvCabinas.CurrentCell.ColumnIndex == 1) //Desired Column
+            {
+                TextBox tb = e.Control as TextBox;
+                if (tb != null)
+                {
+                    tb.KeyPress += new KeyPressEventHandler(Column1_KeyPress);
+                }
+            }
+        }
+
+        private void Column1_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+        }
+
     }
 }

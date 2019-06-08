@@ -95,6 +95,7 @@
             this.btnAbmCruceros.TabIndex = 22;
             this.btnAbmCruceros.Text = "ABM Cruceros";
             this.btnAbmCruceros.UseVisualStyleBackColor = true;
+            this.btnAbmCruceros.Click += new System.EventHandler(this.btnAbmCruceros_Click);
             // 
             // btnGenerarViaje
             // 

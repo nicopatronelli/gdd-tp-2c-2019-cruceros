@@ -5,16 +5,7 @@ USE [GD1C2019]
 GO
 
 ------------------------------------------------------------------------------------------------------
-						-- 2. CREAMOS EL ESQUEMA SINO EXISTE
-------------------------------------------------------------------------------------------------------
-IF NOT EXISTS (SELECT * FROM sys.schemas WHERE name = 'LOS_BARONES_DE_LA_CERVEZA')
-BEGIN
-    EXEC ('CREATE SCHEMA LOS_BARONES_DE_LA_CERVEZA AUTHORIZATION gdCruceros2019')
-END
-GO
-
-------------------------------------------------------------------------------------------------------
-						-- 3. ELIMINAMOS LAS TABLAS SI EXISTEN (VALIDACIÓN DE TABLAS)
+						-- 2. ELIMINAMOS LAS TABLAS SI EXISTEN (VALIDACIÓN DE TABLAS)
 ------------------------------------------------------------------------------------------------------
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.Funcionalidades_Por_Roles'))
     DROP TABLE LOS_BARONES_DE_LA_CERVEZA.Funcionalidades_Por_Roles
@@ -60,18 +51,43 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_D
     DROP TABLE LOS_BARONES_DE_LA_CERVEZA.Marcas_Cruceros
 GO
 
+
+---------------------------------------------------------------
+-- X. ELIMINAMOS LOS STORED PROCEDURES, FUNCIONES Y TRIGGERS
+---------------------------------------------------------------
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.USP_Login'))
+	DROP PROCEDURE LOS_BARONES_DE_LA_CERVEZA.USP_Login
+GO
+
+
+
+------------------------------------------------------------------------------------------------------
+						-- 3. ELIMINAMOS EL ESQUEMA Y VOLVEMOS A CREARLO
+------------------------------------------------------------------------------------------------------
+IF SCHEMA_ID('LOS_BARONES_DE_LA_CERVEZA') IS NOT NULL DROP SCHEMA [LOS_BARONES_DE_LA_CERVEZA]
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.schemas WHERE name = 'LOS_BARONES_DE_LA_CERVEZA')
+BEGIN
+    EXEC ('CREATE SCHEMA LOS_BARONES_DE_LA_CERVEZA AUTHORIZATION gdCruceros2019')
+END
+GO
+
+
 -------------------------------------------------------------------------------------------------
 						-- 4. CREACION DE TABLAS 
 -------------------------------------------------------------------------------------------------
 
 /******************************************************************
-Tabla Usuarios
+Tabla Usuarios /** OK Leo **/
 @Desc: Contiene los elementos necesarios para la identificación
 de un usuario en el sistema.
 ******************************************************************/
 GO
 CREATE TABLE LOS_BARONES_DE_LA_CERVEZA.Usuarios(
-	usuario NVARCHAR(100) NOT NULL PRIMARY KEY,
+	-- Elijo directamnente al campo usuario como PK para asegurar que no haya usuarios repetidos (UNIQUE)
+	usuario NVARCHAR(100) NOT NULL PRIMARY KEY, 
 	--pass NVARCHAR(100) NOT NULL,
 	pass BINARY(32) NOT NULL,
 	habilitado BIT NOT NULL DEFAULT 1,
@@ -80,7 +96,7 @@ CREATE TABLE LOS_BARONES_DE_LA_CERVEZA.Usuarios(
 GO
 
 /******************************************************************
-Tabla Roles_Por_Usuario
+Tabla Roles_Por_Usuario /** OK Leo **/
 @Desc: Tabla intermedia donde se especifica que roles tiene asignado
 cada usuario. 
 ******************************************************************/
@@ -93,7 +109,7 @@ CREATE TABLE LOS_BARONES_DE_LA_CERVEZA.Roles_por_Usuario (
 GO
 
 /******************************************************************
-Tabla Roles
+Tabla Roles /** OK Leo **/
 @Desc: Tabla de roles. Un rol es un conjunto de funcionalidades
 que se puede emplear en la aplicación.
 ******************************************************************/
@@ -105,7 +121,7 @@ CREATE TABLE LOS_BARONES_DE_LA_CERVEZA.Roles (
 GO
 
 /******************************************************************
-Tabla Funcionalidades_Por_Roles
+Tabla Funcionalidades_Por_Roles /** OK Leo **/
 @Desc: Tabla intermedia que vincula las funcionalidades que posee
 cada rol. 
 ******************************************************************/
@@ -118,7 +134,7 @@ CREATE TABLE LOS_BARONES_DE_LA_CERVEZA.Funcionalidades_Por_Roles(
 GO
 
 /******************************************************************
-Tabla Funcionalidades
+Tabla Funcionalidades /** OK Leo **/
 @Desc: Tabla con los datos de cada funcionalidad existente. 
 ******************************************************************/
 GO
@@ -129,7 +145,7 @@ CREATE TABLE LOS_BARONES_DE_LA_CERVEZA.Funcionalidades(
 GO
 
 /******************************************************************
-Tabla Clientes
+Tabla Clientes /** OK Leo **/ 
 @Desc: Contiene los campos referidos a los clientes del sistema.
 ******************************************************************/
 GO
@@ -143,19 +159,19 @@ CREATE TABLE LOS_BARONES_DE_LA_CERVEZA.Clientes(
 	telefono INT, -- CLI_TELEFONO en la tabla maestra 
 	mail NVARCHAR(255), -- CLI_MAIL en la tabla maestra 
 	fecha_nacimiento DATETIME2(3), -- CLI_FECHA_NAC en la tabla maestra 
-	--tarjeta_credito NVARCHAR(100) -- No está en la tabla maestra (valor por defecto NULL) 
+	tarjeta_credito NVARCHAR(100) -- No está en la tabla maestra (valor por defecto NULL) 
 )
 GO
 
 
 /******************************************************************
-Tabla Tipos_Cabinas (Tipos de servicio de cada cabina)
+Tabla Tipos_Cabinas (Tipos de servicio de cada cabina) /** OK Leo (Tipo_Servicio) **/
 @Desc: Existen cinco tipos de cabinas (o servicios de cabina). Los
 mismos son fijos y no se pueden modificar (ni alterar el porcetaje
 de recargo que se cobra). No hay ABM para esta tabla. 
 ******************************************************************/
 GO
-CREATE TABLE LOS_BARONES_DE_LA_CERVEZA.Tipos_Cabinas(
+CREATE TABLE LOS_BARONES_DE_LA_CERVEZA.Tipos_Cabinas( 
 	id_tipo_cabina INT IDENTITY PRIMARY KEY NOT NULL,
 	tipo_cabina NVARCHAR(255), -- CABINA_TIPO en la tabla maestra
 	porcentaje_recargo DECIMAL(18,2) -- CABINA_TIPO_PORC_RECARGO en la tabla maestra
@@ -163,22 +179,22 @@ CREATE TABLE LOS_BARONES_DE_LA_CERVEZA.Tipos_Cabinas(
 GO
 
 /******************************************************************
-Tabla Marcas_Cruceros 
+Tabla Marcas_Cruceros /** OK Leo **/
 @Desc: 
 ******************************************************************/
 GO
-CREATE TABLE LOS_BARONES_DE_LA_CERVEZA.Marcas_Cruceros(
+CREATE TABLE LOS_BARONES_DE_LA_CERVEZA.Marcas_Cruceros( 
 	id_marca INT IDENTITY PRIMARY KEY NOT NULL,
 	marca NVARCHAR(255) -- CRU_FABRICANTE en la tabla maestra
 )
 GO
 
 /******************************************************************
-Tabla Cruceros_Fuera_Servicio
+Tabla Cruceros_Fuera_Servicio /** OK Leo **/
 @Desc: 
 ******************************************************************/
 GO
-CREATE TABLE LOS_BARONES_DE_LA_CERVEZA.Cruceros_Fuera_Servicio(
+CREATE TABLE LOS_BARONES_DE_LA_CERVEZA.Cruceros_Fuera_Servicio( 
 	id_fs INT IDENTITY PRIMARY KEY NOT NULL,
 	id_crucero INT, -- FK al id del crucero que está fuera de servicio
 	fecha_inicio_fuera_servicio DATETIME2(3) NOT NULL,
@@ -187,11 +203,11 @@ CREATE TABLE LOS_BARONES_DE_LA_CERVEZA.Cruceros_Fuera_Servicio(
 GO
 
 /******************************************************************
-Tabla Cruceros
+Tabla Cruceros /** OK Leo **/
 @Desc: Tabla de los cruceros disponibles para realizar viajes. 
 ******************************************************************/
 GO
-CREATE TABLE LOS_BARONES_DE_LA_CERVEZA.Cruceros(
+CREATE TABLE LOS_BARONES_DE_LA_CERVEZA.Cruceros( 
 	id_crucero INT IDENTITY PRIMARY KEY NOT NULL,
 	fecha_alta DATETIME2(3) DEFAULT GETDATE(), 
 	modelo NVARCHAR(50), -- CRUCERO_MODELO en la tabla maestra
@@ -204,7 +220,7 @@ CREATE TABLE LOS_BARONES_DE_LA_CERVEZA.Cruceros(
 GO
 
 /******************************************************************
-Tabla Cabinas 
+Tabla Cabinas /** OK Leo **/
 @Desc: Tabla con las cabinas de todos los cruceros.
 ******************************************************************/
 GO
@@ -213,7 +229,8 @@ CREATE TABLE LOS_BARONES_DE_LA_CERVEZA.Cabinas(
 	tipo_cabina INT, -- FK al id_tipo_cabina de Tipos_Cabinas 
 	crucero INT, -- FK al id_crucero al cuál pertenece la cabina 
 	numero DECIMAL(18,0), -- CABINA_NRO en la tabla Maestra
-	piso DECIMAL(18,0) -- CABINA_PISO en la tabla Maestra
+	piso DECIMAL(18,0), -- CABINA_PISO en la tabla Maestra
+	estado BIT DEFAULT 0 -- 0: Disponible (No comprada/No Reservada) / 1: No Disponible (Comprada/Reservada) 
 )
 GO
 

@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using FrbaCrucero.AbmRol;
+using FrbaCrucero.AbmCrucero;
 using FrbaCrucero.Utils;
 
 namespace FrbaCrucero.PantallaPrincipal
@@ -69,6 +70,12 @@ namespace FrbaCrucero.PantallaPrincipal
         {
             AbmRolForm formAbmRol = new AbmRolForm();
             formAbmRol.ShowDialog();
+        }
+
+        private void btnAbmCruceros_Click(object sender, EventArgs e)
+        {
+            CrucerosForm formAbmCrucero = new CrucerosForm();
+            formAbmCrucero.ShowDialog();
         }
 
     }
