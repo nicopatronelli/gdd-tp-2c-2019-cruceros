@@ -51,6 +51,12 @@
       <DependentUpon>AbmCruceros.cs</DependentUpon>
     </Compile>
     <Compile Include="AbmCrucero\Cabina.cs" />
+    <Compile Include="AbmCrucero\SeleccionCruceroForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmCrucero\SeleccionCruceroForm.Designer.cs">
+      <DependentUpon>SeleccionCruceroForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="AbmCrucero\CrucerosForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -157,6 +163,9 @@
     <Compile Include="Utils\Validaciones.cs" />
     <EmbeddedResource Include="AbmCrucero\AbmCruceros.resx">
       <DependentUpon>AbmCruceros.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmCrucero\SeleccionCruceroForm.resx">
+      <DependentUpon>SeleccionCruceroForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AbmCrucero\CrucerosForm.resx">
       <DependentUpon>CrucerosForm.cs</DependentUpon>

@@ -1,6 +1,6 @@
 ﻿namespace FrbaCrucero.AbmCrucero
 {
-    partial class CruceroModificacionForm
+    partial class SeleccionCruceroForm
     {
         /// <summary>
         /// Required designer variable.
@@ -87,7 +87,7 @@
             this.Controls.Add(this.groupBox1);
             this.Name = "CruceroModificacionForm";
             this.Text = "CruceroModificacionFormcs";
-            this.Load += new System.EventHandler(this.CruceroModificacionForm_Load);
+            this.Load += new System.EventHandler(this.SeleccionCruceroForm_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvEditarCrucero)).EndInit();

@@ -12,9 +12,9 @@ using FrbaCrucero.Utils;
 
 namespace FrbaCrucero.AbmCrucero
 {
-    public partial class CruceroModificacionForm : Form
+    public partial class SeleccionCruceroForm : Form
     {
-        public CruceroModificacionForm()
+        public SeleccionCruceroForm()
         {
             InitializeComponent();
         }
@@ -24,9 +24,9 @@ namespace FrbaCrucero.AbmCrucero
             this.Close();
         }
 
-        private void CruceroModificacionForm_Load(object sender, EventArgs e)
+        private void SeleccionCruceroForm_Load(object sender, EventArgs e)
         {
-            string miConsulta = "SELECT cru.identificador, cru.modelo, mar.marca, COUNT(cab.crucero) "
+            string miConsulta = "SELECT cru.identificador 'Identificador', cru.modelo 'Modelo', mar.marca 'Marca', COUNT(cab.crucero) 'Cantidad de cabinas' "
                 + "FROM LOS_BARONES_DE_LA_CERVEZA.Cruceros cru "
                     + "JOIN LOS_BARONES_DE_LA_CERVEZA.Marcas_Cruceros mar "
                         + "ON cru.marca = mar.id_marca "
@@ -51,14 +51,14 @@ namespace FrbaCrucero.AbmCrucero
             botonEditar.Text = "Editar";
             botonEditar.UseColumnTextForButtonValue = true;
             dgvEditarCrucero.Columns.Add(botonEditar);
-            dgvEditarCrucero.CellClick += dgvEditarPublic_CellContentClick;
+            dgvEditarCrucero.CellClick += dgvEditarCrucero_CellContentClick;
 
             dgvEditarCrucero.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill; // Para autoajustar el tamaño del dgv
 
         }
 
         // Abrimos la pantalla de edición de la publicación seleccionada con los datos que ya tenga cargados
-        private void dgvEditarPublic_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private void dgvEditarCrucero_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             var senderGrid = (DataGridView)sender;
 

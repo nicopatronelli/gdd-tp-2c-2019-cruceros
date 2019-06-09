@@ -22,5 +22,11 @@ namespace FrbaCrucero.AbmCrucero
             CrucerosForm formAbmCrucero = new CrucerosForm();
             formAbmCrucero.ShowDialog();
         }
+
+        private void btnModificacionCrucero_Click(object sender, EventArgs e)
+        {
+            SeleccionCruceroForm formSeleccionCrucero = new SeleccionCruceroForm();
+            formSeleccionCrucero.ShowDialog();
+        }
     }
 }

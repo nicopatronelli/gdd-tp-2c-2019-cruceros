@@ -51,6 +51,7 @@
             this.btnModificacionCrucero.TabIndex = 1;
             this.btnModificacionCrucero.Text = "Modificación Crucero";
             this.btnModificacionCrucero.UseVisualStyleBackColor = true;
+            this.btnModificacionCrucero.Click += new System.EventHandler(this.btnModificacionCrucero_Click);
             // 
             // button3
             // 
