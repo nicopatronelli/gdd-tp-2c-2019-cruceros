@@ -28,12 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CrucerosForm));
             this.txtbxModelo = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label1 = new System.Windows.Forms.Label();
             this.txtbxIdentificadorB = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.dgvCabinas = new System.Windows.Forms.DataGridView();
             this.Numero = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -45,6 +45,7 @@
             this.txtbxIdentificadorA = new System.Windows.Forms.TextBox();
             this.lblModelo = new System.Windows.Forms.Label();
             this.btnEnviar = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCabinas)).BeginInit();
@@ -90,10 +91,10 @@
             this.txtbxIdentificadorB.Name = "txtbxIdentificadorB";
             this.txtbxIdentificadorB.Size = new System.Drawing.Size(49, 20);
             this.txtbxIdentificadorB.TabIndex = 8;
+            this.txtbxIdentificadorB.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.IdentificadorB_SoloNumeros_KeyPress);
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.label6);
             this.groupBox2.Controls.Add(this.label7);
             this.groupBox2.Controls.Add(this.dgvCabinas);
             this.groupBox2.Location = new System.Drawing.Point(0, 148);
@@ -103,25 +104,14 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Cabinas";
             // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(26, 46);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(420, 13);
-            this.label6.TabIndex = 22;
-            this.label6.Text = "La cantidad de localidades ofrecidas será la suma de todas las ubicaciones dispon" +
-    "ibles.";
-            // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(26, 16);
+            this.label7.Location = new System.Drawing.Point(26, 19);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(523, 13);
+            this.label7.Size = new System.Drawing.Size(490, 39);
             this.label7.TabIndex = 21;
-            this.label7.Text = "Ingrese las ubicaciones de su espectáculo en la siguiente grilla. Cada fila repre" +
-    "senta una ubicación diferente. ";
+            this.label7.Text = resources.GetString("label7.Text");
             // 
             // dgvCabinas
             // 
@@ -210,6 +200,7 @@
             this.txtbxIdentificadorA.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.txtbxIdentificadorA.Size = new System.Drawing.Size(52, 20);
             this.txtbxIdentificadorA.TabIndex = 3;
+            this.txtbxIdentificadorA.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.IdentificadorA_SoloLetras_KeyPress);
             // 
             // lblModelo
             // 
@@ -230,11 +221,21 @@
             this.btnEnviar.UseVisualStyleBackColor = true;
             this.btnEnviar.Click += new System.EventHandler(this.btnEnviar_Click);
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(33, 448);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(201, 13);
+            this.label2.TabIndex = 4;
+            this.label2.Text = "Nota: Todos los campos son obligatorios.";
+            // 
             // CrucerosForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(743, 484);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.btnEnviar);
             this.Controls.Add(this.lblModelo);
             this.Controls.Add(this.txtbxModelo);
@@ -260,7 +261,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtbxIdentificadorB;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.DataGridView dgvCabinas;
         private System.Windows.Forms.ComboBox cmbxMarca;
@@ -271,5 +271,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Numero;
         private System.Windows.Forms.DataGridViewTextBoxColumn Piso;
         private System.Windows.Forms.DataGridViewComboBoxColumn dgvcmbxTipo;
+        private System.Windows.Forms.Label label2;
     }
 }

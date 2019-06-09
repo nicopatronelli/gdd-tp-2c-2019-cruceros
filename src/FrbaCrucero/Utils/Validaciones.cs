@@ -9,13 +9,11 @@ namespace FrbaCrucero.Utils
 {
     static class Validaciones
     {
-        public static bool hayCamposObligatoriosNulos(params string[] campos)
+        public static void hayCamposObligatoriosNulos(params string[] campos)
         {
             //Func<string, bool> lambda = campo => String.IsNullOrEmpty(campo);
             if (campos.Any(campo => String.IsNullOrEmpty(campo)))
-                throw new CamposObligatoriosNulosException();
-            else
-                return false;
+                throw new CamposOblitaroiosVaciosException();
         } // FIN hayCamposObligatoriosNulos()
     }
 }

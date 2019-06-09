@@ -48,6 +48,7 @@ namespace FrbaCrucero.Utils
         public const string ROL_ADMIN = "Rol_Admin";
 
         // Tipos de cabinas (Tabla Tipos_Cabinas en la BD)
+        public const string CABINA_NULA = "";
         public const string CABINA_ESTANDAR = "Cabina estandar";
         public const string CABINA_EXTERIOR = "Cabina Exterior";
         public const string CABINA_BALCON = "Cabina Balcón";
@@ -56,6 +57,10 @@ namespace FrbaCrucero.Utils
 
         // Validación cabinas
         public const int NINGUNA_CABINA = 0;
+
+        // ABM Cruceros 
+        public const int FILAS_INSERT_CRUCERO = 1;
+        public const int FILAS_INSERT_CABINAS = 1;
 
         //public const int FILAS_INSERT_CLIENTE = 3;
         //public const int FILAS_INSERT_EMPRESA = 3;

@@ -6,11 +6,16 @@ using System.Threading.Tasks;
 
 namespace FrbaCrucero.Utils.Excepciones
 {
-    class CamposObligatoriosNulosException : Exception
+    class CamposOblitaroiosVaciosException : Exception
     {
-        public CamposObligatoriosNulosException() : base(){}
+        public CamposOblitaroiosVaciosException() : base(){}
 
-        public CamposObligatoriosNulosException(String mensaje)
+        public CamposOblitaroiosVaciosException(String mensaje)
             : base(mensaje){}
+
+        public void mensajeError()
+        {
+            MensajeBox.error("Hay campos obligatorios sin completar.");
+        }
     }
 }

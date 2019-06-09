@@ -19,7 +19,7 @@ namespace FrbaCrucero
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new CrucerosForm());
+            Application.Run(new AbmCruceros());
             //Application.Run(new LoginForm());
         }
     }

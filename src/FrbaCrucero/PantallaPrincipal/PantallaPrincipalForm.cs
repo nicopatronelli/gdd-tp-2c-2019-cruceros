@@ -74,7 +74,7 @@ namespace FrbaCrucero.PantallaPrincipal
 
         private void btnAbmCruceros_Click(object sender, EventArgs e)
         {
-            CrucerosForm formAbmCrucero = new CrucerosForm();
+            AbmCruceros formAbmCrucero = new AbmCruceros();
             formAbmCrucero.ShowDialog();
         }
 

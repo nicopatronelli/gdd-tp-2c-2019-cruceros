@@ -22,88 +22,107 @@ namespace FrbaCrucero.AbmCrucero
 
         private void CrucerosForm_Load(object sender, EventArgs e)
         {   
-            // Establecemos como valor por defecto "Cabina estandar" para los tipos de Cabina
-            dgvcmbxTipo.DefaultCellStyle.NullValue = DEF.CABINA_ESTANDAR;
-
             // Para que no se pueda editar el comboBox de Marca 
             cmbxMarca.DropDownStyle = ComboBoxStyle.DropDownList;
 
             // Establecemos un valor por defecto para el comboBox de Marca (para evitar nulls)
             cmbxMarca.SelectedIndex = 0;
+
+            // Establecemos como valor por defecto "Cabina estandar" para los tipos de Cabina
+            dgvcmbxTipo.DefaultCellStyle.NullValue = DEF.CABINA_ESTANDAR;
         }
 
         // Alta de nuevo crucero 
         private void btnEnviar_Click(object sender, EventArgs e)
         {
+            // 1. Obtenemos los atributos del crucero 
             string modelo = txtbxModelo.Text;
             string identificadorA = txtbxIdentificadorA.Text;
             string identificadorB = txtbxIdentificadorB.Text;
             string marca = cmbxMarca.SelectedItem.ToString();
             DateTime fechaAlta = ArchivoConfig.obtenerFechaConfig();
 
-            // 1. Validamos que no haya campos obligatorios nulos 
+            // 2. Construimos el objeto crucero 
+            Crucero crucero = new Crucero();
             try
             {
-                Validaciones.hayCamposObligatoriosNulos(modelo, identificadorA, identificadorB).Equals(true);
+                crucero
+                .setModelo(modelo)
+                .setMarca(marca)
+                .setIdentificador(identificadorA, identificadorB)
+                .setFechaAlta(fechaAlta);
             }
-            catch 
+            catch (InsertarCruceroException ex)
             {
-                MensajeBox.error("Hay campos obligatorios sin completar.");
+                ex.mensajeError();
+                return;
             }
-            
+
+            // 3. Validamos que se haya ingresado al menos una cabina 
             // Cantidad de filas del DataGridView (debemos restarla 1 por la última fila en blanco)
             int cantidadCabinas = dgvCabinas.Rows.Count - 1;
-
             try
             {
-                if (cantidadCabinas.Equals(DEF.NINGUNA_CABINA))
-                    throw new CruceroSinCabinasException();
+                Cabina.validarCantidadCabinas(cantidadCabinas);
             }
-            catch
+            catch (CruceroSinCabinasException ex)
             {
-                MensajeBox.error("Debe ingresar al menos una cabina.");
+                ex.mensajeError();
+                return;
             }
 
-            // 2. Guardamos las cabinas ingresadas
-            Dictionary<int, List<String>> cabinas = new Dictionary<int, List<string>>();
+            // 4. Guardamos las cabinas ingresadas en el crucero
             for (int i = 0; i < cantidadCabinas; i++)
-            {   
-                // Debería crear un objeto Cabina y tener una lista de cabinas
-                List<string> cabina = new List<string>();
-
-                // Añadimos el número de cabina 
-                cabina.Add(Convert.ToString(dgvCabinas.Rows[i].Cells[0].Value));
-
-                // Añadimos el piso de la cabina
-                cabina.Add(Convert.ToString(dgvCabinas.Rows[i].Cells[1].Value));
-
-                // Añadimos el tipo de la cabina 
-                cabina.Add(Convert.ToString(dgvCabinas.Rows[i].Cells[2].Value));
+            {
+                Cabina unaCabina = new Cabina();
+                unaCabina.setNumero(Convert.ToInt32(dgvCabinas.Rows[i].Cells[0].Value))
+                    .setPiso(Convert.ToInt32(dgvCabinas.Rows[i].Cells[1].Value))
+                    .setTipo(Cabina.tipoCabinaPorDefecto(Convert.ToString(dgvCabinas.Rows[i].Cells[2].Value)));
+                crucero.agregarCabina(unaCabina);
             }
 
-            // 3. Insertamos el nuevo Crucero en la base de datos
+            // 5. En este punto ya tenemos un crucero correctamente construido y listo para ser insertado (incluyendo sus cabinas)
+            try
+            {
+                crucero.insertar();
+            }
+            catch (InsertarCruceroException ex)
+            {
+                ex.mensajeError();
+                return;
+            }
         }
 
         private void dgvCabinas_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
         {
-            e.Control.KeyPress -= new KeyPressEventHandler(Column1_KeyPress);
+            e.Control.KeyPress -= new KeyPressEventHandler(NumeroYTipo_SoloNumeros_KeyPress);
             if (dgvCabinas.CurrentCell.ColumnIndex == 0 ||
-                    dgvCabinas.CurrentCell.ColumnIndex == 1) //Desired Column
+                    dgvCabinas.CurrentCell.ColumnIndex == 1) 
             {
                 TextBox tb = e.Control as TextBox;
                 if (tb != null)
                 {
-                    tb.KeyPress += new KeyPressEventHandler(Column1_KeyPress);
+                    tb.KeyPress += new KeyPressEventHandler(NumeroYTipo_SoloNumeros_KeyPress);
                 }
             }
         }
 
-        private void Column1_KeyPress(object sender, KeyPressEventArgs e)
+        private void NumeroYTipo_SoloNumeros_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
-            {
+            if (!(Char.IsDigit(e.KeyChar)) && !(Char.IsControl(e.KeyChar)))
                 e.Handled = true;
-            }
+        }
+
+        private void IdentificadorA_SoloLetras_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!(Char.IsLetter(e.KeyChar)) && !(Char.IsControl(e.KeyChar)))
+                e.Handled = true;
+        }
+
+        private void IdentificadorB_SoloNumeros_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!(Char.IsDigit(e.KeyChar)) && !(Char.IsControl(e.KeyChar)))
+                e.Handled = true;
         }
 
     }

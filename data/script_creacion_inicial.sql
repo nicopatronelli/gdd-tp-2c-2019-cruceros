@@ -210,9 +210,9 @@ GO
 CREATE TABLE LOS_BARONES_DE_LA_CERVEZA.Cruceros( 
 	id_crucero INT IDENTITY PRIMARY KEY NOT NULL,
 	fecha_alta DATETIME2(3) DEFAULT GETDATE(), 
-	modelo NVARCHAR(50), -- CRUCERO_MODELO en la tabla maestra
-	identificador NVARCHAR(50), -- CRUCERO_IDENTIFICADOR en la tabla maestra
-	marca INT, -- FK al id_marca de la marca del crucero en la tabla Marcas_Cruceros 
+	modelo NVARCHAR(50) NOT NULL, -- CRUCERO_MODELO en la tabla maestra
+	identificador NVARCHAR(50) UNIQUE NOT NULL, -- CRUCERO_IDENTIFICADOR en la tabla maestra
+	marca INT NOT NULL, -- FK al id_marca de la marca del crucero en la tabla Marcas_Cruceros 
 	baja_fuera_servicio BIT DEFAULT 0, -- Por defecto, todos los cruceros están funcionando (0) 
 	baja_vida_util BIT DEFAULT 0, -- Por defecto, todos los cruceros están activos (0)
 	fecha_baja_vida_util DATETIME2(3) 
@@ -255,6 +255,11 @@ Migramos las marcas de cruceros existentes.
 INSERT INTO LOS_BARONES_DE_LA_CERVEZA.Marcas_Cruceros(marca)
 SELECT DISTINCT CRU_FABRICANTE
 FROM gd_esquema.Maestra
+
+-- Insertamos la marca 'Otra' para permitir el alta de cruceros de marcas 
+-- diferentes a las ya existentes
+INSERT INTO LOS_BARONES_DE_LA_CERVEZA.Marcas_Cruceros(marca)
+VALUES('Otra')
 
 ------------------------------------------------------------------------------------------------------
 						-- 6. CARGAMOS DATOS PREVIOS 
@@ -538,6 +543,123 @@ BEGIN
 			END 
 END; -- FIN USP_Login 
 GO
+
+/******************************************************************
+[LOS_BARONES_DE_LA_CERVEZA].[UF_id_marca_crucero]
+@Desc: Función auxiliar que retorna el id_crucero (PK) asignado a 
+un crucero según el nombre de la marca que le pasemos por parámetro 
+******************************************************************/
+CREATE FUNCTION [LOS_BARONES_DE_LA_CERVEZA].[UF_id_marca_crucero]
+(
+	@nombre_marca NVARCHAR(255)
+)
+RETURNS INT 
+AS 
+BEGIN
+	 DECLARE @id_marca INT = (
+		 SELECT id_marca
+		 FROM LOS_BARONES_DE_LA_CERVEZA.Marcas_Cruceros
+		 WHERE marca = @nombre_marca
+	)
+
+	RETURN @id_marca
+END 
+
+/******************************************************************
+[LOS_BARONES_DE_LA_CERVEZA].[USP_insertar_crucero] 
+@Desc: Inserta un nuevo crucero en la tabla Cruceros
+******************************************************************/
+GO
+CREATE PROCEDURE [LOS_BARONES_DE_LA_CERVEZA].[USP_insertar_crucero]
+(
+	@modelo NVARCHAR(50),
+	@identificador NVARCHAR(50),
+	@marca NVARCHAR(255),
+	@fecha_alta NVARCHAR(255),
+	@id_crucero_asignada INT OUT -- Retornamos el id_crucero asignado por SQL Server (IDENTITY)
+)
+AS
+BEGIN
+	BEGIN TRY
+		BEGIN TRANSACTION 
+		-- id_crucero se autogenera 
+		INSERT INTO LOS_BARONES_DE_LA_CERVEZA.Cruceros 
+		(fecha_alta, modelo, identificador, marca)
+		VALUES (CONVERT(DATETIME2(3), @fecha_alta, 121), @modelo, @identificador, 
+			[LOS_BARONES_DE_LA_CERVEZA].[UF_id_marca_crucero](@marca))
+
+		SET @id_crucero_asignada = @@IDENTITY;
+
+		COMMIT TRANSACTION 
+	END TRY
+	BEGIN CATCH
+		ROLLBACK TRANSACTION
+	END CATCH
+END
+GO
+
+/******************************************************************
+[LOS_BARONES_DE_LA_CERVEZA].[UF_id_tipo_cabina]
+@Desc: Función auxiliar que retorna el id_tipo_cabina (PK) asignado a 
+un tipo de cabina según la descripción de la cabina (tipo_cabina)
+******************************************************************/
+CREATE FUNCTION [LOS_BARONES_DE_LA_CERVEZA].[UF_id_tipo_cabina]
+(
+	@tipo_cabina NVARCHAR(255)
+)
+RETURNS INT 
+AS 
+BEGIN
+	 DECLARE @id_tipo_cabina INT = (
+		 SELECT id_tipo_cabina
+		 FROM LOS_BARONES_DE_LA_CERVEZA.Tipos_Cabinas
+		 WHERE tipo_cabina = @tipo_cabina
+	)
+
+	RETURN @id_tipo_cabina
+END 
+
+/******************************************************************
+[LOS_BARONES_DE_LA_CERVEZA].[USP_insertar_cabina] 
+@Desc: Inserta una cabina asociada a un crucero en la tabla Cabinas
+******************************************************************/
+GO
+CREATE PROCEDURE [LOS_BARONES_DE_LA_CERVEZA].[USP_insertar_cabina]
+(	
+	@numero INT,
+	@piso INT, 
+	@tipo_cabina NVARCHAR(255),
+	@crucero INT -- id_crucero: es la FK al crucero al cual pertenece la cabina 
+)
+AS
+BEGIN
+	BEGIN TRY
+		BEGIN TRANSACTION 
+		-- id_cabina se autogenera 
+		INSERT INTO LOS_BARONES_DE_LA_CERVEZA.Cabinas
+		(numero, piso, tipo_cabina, crucero)
+		VALUES (@numero, @piso, 
+			[LOS_BARONES_DE_LA_CERVEZA].[UF_id_tipo_cabina](@tipo_cabina), 
+			@crucero)
+		COMMIT TRANSACTION 
+	END TRY
+	BEGIN CATCH
+		ROLLBACK TRANSACTION
+	END CATCH
+END
+GO
+
+SELECT * 
+FROM LOS_BARONES_DE_LA_CERVEZA.Cruceros
+
+SELECT cab.id_cabina, tc.tipo_cabina, cru.modelo, mar.marca, cab.numero, cab.piso, cab.estado
+FROM LOS_BARONES_DE_LA_CERVEZA.Cabinas cab
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Tipos_Cabinas tc
+		ON cab.id_cabina = tc.id_tipo_cabina
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Cruceros cru
+		ON cab.crucero = cru.id_crucero
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Marcas_Cruceros mar
+		ON cru.marca = mar.id_marca
 
 ------------------------------------------------------------------------------
 					-- 9. TRIGGERS

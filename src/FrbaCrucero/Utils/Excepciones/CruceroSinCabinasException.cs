@@ -12,5 +12,10 @@ namespace FrbaCrucero.Utils.Excepciones
 
         public CruceroSinCabinasException(String mensaje)
             : base(mensaje){}
+
+        public void mensajeError()
+        {
+            MensajeBox.error("Debe ingresar al menos una cabina.");
+        }
     }
 }
