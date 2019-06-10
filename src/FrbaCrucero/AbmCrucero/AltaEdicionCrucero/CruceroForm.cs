@@ -16,7 +16,11 @@ namespace FrbaCrucero.AbmCrucero
 {
     public partial class CruceroForm : Form
     {
-        string identificadorCrucero;
+        private string modelo;
+        private string identificadorA;
+        private string identificadorB;
+        private string marca;
+        private string identificadorCrucero;
 
         // Constructor para ALTA
         public CruceroForm()
@@ -24,8 +28,10 @@ namespace FrbaCrucero.AbmCrucero
             InitializeComponent();
             btnGuardar.Visible = false;
             popularTipoCabinaCmbx();
+            
             // Establecemos un valor por defecto para el comboBox de Marca (para evitar nulls)
             cmbxMarca.SelectedIndex = 0;
+            
             // Establecemos como valor por defecto "Cabina estandar" para los tipos de Cabina
             dgvcmbxTipo.DefaultCellStyle.NullValue = DEF.CABINA_ESTANDAR;
         } // FIN Constructor para ALTA
@@ -49,14 +55,11 @@ namespace FrbaCrucero.AbmCrucero
             cmbxMarca.DropDownStyle = ComboBoxStyle.DropDownList;
         }
 
-        // Alta de nuevo crucero 
+        /*** ALTA DE NUEVO CRUCERO ***/
         private void btnEnviar_Click(object sender, EventArgs e)
         {
             // 1. Obtenemos los atributos del crucero 
-            string modelo = txtbxModelo.Text;
-            string identificadorA = txtbxIdentificadorA.Text;
-            string identificadorB = txtbxIdentificadorB.Text;
-            string marca = cmbxMarca.SelectedItem.ToString();
+            cargarCampos();
             DateTime fechaAlta = ArchivoConfig.obtenerFechaConfig();
 
             // 2. Construimos el objeto crucero 
@@ -75,9 +78,15 @@ namespace FrbaCrucero.AbmCrucero
                 return;
             }
 
-            // 3. Validamos que se haya ingresado al menos una cabina 
-            // Cantidad de filas del DataGridView (debemos restarla 1 por la última fila en blanco)
-            int cantidadCabinas = dgvCabinas.Rows.Count - 1;
+            // 3. Validamos que el identificador del crucero esté disponible
+            if (Crucero.identificadorDisponible(crucero.getIdentificador()).Equals(false))
+            {
+                MensajeBox.error("El identificador ingresado para el crucero ya se encuentra registrado.");
+                return; 
+            }
+
+            // 4. Validamos que se haya ingresado al menos una cabina 
+            int cantidadCabinas = calcularCantidadCabinas();
             try
             {
                 Cabina.validarCantidadCabinas(cantidadCabinas);
@@ -88,24 +97,17 @@ namespace FrbaCrucero.AbmCrucero
                 return;
             }
 
-            // 4. Guardamos las cabinas ingresadas en el objeto crucero
-            for (int i = 0; i < cantidadCabinas; i++)
-            {
-                Cabina unaCabina = new Cabina();
-                unaCabina.setNumero(Convert.ToInt32(dgvCabinas.Rows[i].Cells[0].Value))
-                    .setPiso(Convert.ToInt32(dgvCabinas.Rows[i].Cells[1].Value))
-                    .setTipo(Cabina.tipoCabinaPorDefecto(Convert.ToString(dgvCabinas.Rows[i].Cells[2].Value)));
-                crucero.agregarCabina(unaCabina);
-            }
+            // 5. Guardamos las cabinas ingresadas en el objeto crucero
+            guardarCabinas(crucero, cantidadCabinas);
 
-            // 5. Validamos que no haya cabinas repetidas (Numero-Piso debería ser único por crucero)
+            // 6. Validamos que no haya cabinas repetidas (Numero-Piso debería ser único por crucero)
             if (crucero.hayCabinasRepetidas())
             {
                 MensajeBox.error("Cabinas repetidas: Hay cabinas con igual número y piso. Revise los datos e intente nuevamente.");
                 return;
             }
 
-            // 6. En este punto ya tenemos un crucero correctamente construido y listo para ser INSERTADO (incluyendo sus cabinas)
+            // 7. En este punto ya tenemos un crucero correctamente construido y listo para ser INSERTADO (incluyendo sus cabinas)
             try
             {
                 crucero.insertar();
@@ -116,18 +118,15 @@ namespace FrbaCrucero.AbmCrucero
                 ex.mensajeError();
                 return;
             }
-        }
+        } // FIN btnEnviar_Click()
 
-        // Modificación de crucero existente
+        /*** MODIFICACIÓN DE CRUCERO EXISTENTE ***/
         private void btnGuardar_Click(object sender, EventArgs e)
         {
             string identificadorCruceroAnterior = identificadorCrucero;
             
-            // 1. Obtenemos los atributos del crucero 
-            string modelo = txtbxModelo.Text;
-            string identificadorA = txtbxIdentificadorA.Text;
-            string identificadorB = txtbxIdentificadorB.Text;
-            string marca = cmbxMarca.SelectedItem.ToString();
+            // 1. Obtenemos los atributos del crucero (ingresados por el usuario) 
+            cargarCampos();
 
             // 2. Construimos el objeto crucero 
             Crucero crucero = new Crucero();
@@ -145,8 +144,7 @@ namespace FrbaCrucero.AbmCrucero
             }
 
             // 3. Validamos que se haya ingresado al menos una cabina 
-            // Cantidad de filas del DataGridView (debemos restarla 1 por la última fila en blanco)
-            int cantidadCabinas = dgvCabinas.Rows.Count - 1;
+            int cantidadCabinas = calcularCantidadCabinas();
             try
             {
                 Cabina.validarCantidadCabinas(cantidadCabinas);
@@ -158,14 +156,7 @@ namespace FrbaCrucero.AbmCrucero
             }
 
             // 4. Guardamos las cabinas ingresadas en el crucero
-            for (int i = 0; i < cantidadCabinas; i++)
-            {
-                Cabina unaCabina = new Cabina();
-                unaCabina.setNumero(Convert.ToInt32(dgvCabinas.Rows[i].Cells[0].Value))
-                    .setPiso(Convert.ToInt32(dgvCabinas.Rows[i].Cells[1].Value))
-                    .setTipo(Cabina.tipoCabinaPorDefecto(Convert.ToString(dgvCabinas.Rows[i].Cells[2].Value)));
-                crucero.agregarCabina(unaCabina);
-            }
+            guardarCabinas(crucero, cantidadCabinas);
 
             // 5. Validamos que no haya cabinas repetidas (Numero-Piso debería ser único por crucero)
             if (crucero.hayCabinasRepetidas())
@@ -184,6 +175,32 @@ namespace FrbaCrucero.AbmCrucero
             {
                 ex.mensajeError();
                 return;
+            }
+        } // FIN btnGuardar_Click()
+
+        private void cargarCampos()
+        {
+            this.modelo = txtbxModelo.Text;
+            this.identificadorA = txtbxIdentificadorA.Text;
+            this.identificadorB = txtbxIdentificadorB.Text;
+            this.marca = cmbxMarca.SelectedItem.ToString();
+        }
+
+        private int calcularCantidadCabinas()
+        {
+            // Cantidad de filas del DataGridView (debemos restarla 1 por la última fila en blanco)
+            return dgvCabinas.Rows.Count - 1;
+        }
+
+        private void guardarCabinas(Crucero crucero, int cantidadCabinas)
+        {
+            for (int i = 0; i < cantidadCabinas; i++)
+            {
+                Cabina unaCabina = new Cabina();
+                unaCabina.setNumero(Convert.ToInt32(dgvCabinas.Rows[i].Cells[0].Value))
+                    .setPiso(Convert.ToInt32(dgvCabinas.Rows[i].Cells[1].Value))
+                    .setTipo(Cabina.tipoCabinaPorDefecto(Convert.ToString(dgvCabinas.Rows[i].Cells[2].Value)));
+                crucero.agregarCabina(unaCabina);
             }
         }
 

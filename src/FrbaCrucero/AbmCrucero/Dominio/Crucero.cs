@@ -54,6 +54,11 @@ namespace FrbaCrucero.AbmCrucero.Utils
             this.cabinas.Add(cabina);
         }
 
+        public string getIdentificador()
+        {
+            return this.identificador;
+        }
+
         public List<Cabina> getCabinas()
         {
             return this.cabinas;
@@ -62,6 +67,32 @@ namespace FrbaCrucero.AbmCrucero.Utils
         public bool hayCabinasRepetidas()
         {
             return this.getCabinas().GroupBy(cab => cab.getPiso(), cab => cab.getNumero()).Any(cab => cab.Count() > 1);
+        }
+
+        public static bool identificadorDisponible(string identificadorCrucero)
+        {
+            List<Parametro> parametros = new List<Parametro>();
+            Parametro paramIdentificadorCrucero = new Parametro("@identificador_crucero", SqlDbType.NVarChar, identificadorCrucero, 50);
+            parametros.Add(paramIdentificadorCrucero);
+            string consulta = "SELECT COUNT(*) FROM LOS_BARONES_DE_LA_CERVEZA.Cruceros WHERE identificador = @identificador_crucero";
+            Query miConsulta = new Query(consulta, parametros);
+            int resultado = Convert.ToInt32(miConsulta.ejecutarEscalar());
+            if (resultado.Equals(0))
+                return true;
+            else
+                return false;
+        }
+
+        public void insertar()
+        {
+            int idCrucero = this.insertarCrucero(); // Insertamos el crucero
+            this.insertarCabinas(idCrucero); // Insertamos sus cabinas
+        }
+
+        public void actualizar(string identificadorCruceroAnterior)
+        {
+            int idCrucero = this.actualizarCrucero(identificadorCruceroAnterior); // Actualizamos el crucero
+            this.actualizarCabinas(idCrucero); // Actualizamos sus cabinas
         }
 
         private int insertarCrucero()
@@ -87,7 +118,7 @@ namespace FrbaCrucero.AbmCrucero.Utils
             StoreProcedure spInsertarCrucero = new StoreProcedure("LOS_BARONES_DE_LA_CERVEZA.USP_insertar_crucero", parametros);
             int cantidadFilasInsertadas = spInsertarCrucero.ejecutarNonQuery();
 
-            // Comprobamos que el crucero se inserte 
+            // Comprobamos que el crucero se inserte correctamente
             if (!cantidadFilasInsertadas.Equals(DEF.FILAS_INSERT_CRUCERO))
                 throw new InsertarCruceroException();
             else
@@ -99,15 +130,9 @@ namespace FrbaCrucero.AbmCrucero.Utils
             cabinas.ForEach(cabina => cabina.insertar(idCrucero));
         }
 
-        public void insertar()
-        {
-            int idCrucero = this.insertarCrucero(); // Insertamos el crucero
-            this.insertarCabinas(idCrucero); // Insertamos sus cabinas
-        }
-
         private int actualizarCrucero(string identificadorCruceroAnterior)
         {
-            // Creamos los parámetros del procedimiento almacenado USP_insertar_crucero
+            // Creamos los parámetros del procedimiento almacenado USP_actualizar_crucero
             List<Parametro> parametros = new List<Parametro>();
             Parametro paramIdentificadorAnterior = new Parametro("@identificador_anterior", SqlDbType.NVarChar, identificadorCruceroAnterior, 50);
             parametros.Add(paramIdentificadorAnterior);
@@ -123,21 +148,15 @@ namespace FrbaCrucero.AbmCrucero.Utils
             paramIdCrucero.esParametroOut();
             parametros.Add(paramIdCrucero);
 
-            // Creamos la llamada al SP "USP_insertar_crucero" de la BD y lo ejecutamos 
+            // Creamos la llamada al SP "USP_actualizar_crucero" de la BD y lo ejecutamos 
             StoreProcedure spActualizarCrucero = new StoreProcedure("LOS_BARONES_DE_LA_CERVEZA.USP_actualizar_crucero", parametros);
             int cantidadFilasActualizadas = spActualizarCrucero.ejecutarNonQuery();
 
-            // Comprobamos que el crucero se inserte 
+            // Comprobamos que el crucero se actualice correctamente
             if (!cantidadFilasActualizadas.Equals(DEF.FILAS_ACTUALIZAR_CRUCERO))
                 throw new ActualizarCruceroException();
             else
                 return Convert.ToInt32(paramIdCrucero.obtenerValor());
-        }
-
-        public void actualizar(string identificadorCruceroAnterior)
-        {
-            int idCrucero = this.actualizarCrucero(identificadorCruceroAnterior); // Actualizamos el crucero
-            this.actualizarCabinas(idCrucero); // Actualizamos sus cabinas
         }
 
         private void actualizarCabinas(int idCrucero)
@@ -156,5 +175,6 @@ namespace FrbaCrucero.AbmCrucero.Utils
             Query miConsulta = new Query(consulta, parametros);
             miConsulta.ejecutarNonQuery();
         }
+
     }
 }
