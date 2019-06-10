@@ -649,8 +649,17 @@ BEGIN
 END
 GO
 
+---- BORRADOR ------
 SELECT * 
 FROM LOS_BARONES_DE_LA_CERVEZA.Cruceros
+
+SELECT cab.numero, cab.piso, tc.tipo_cabina
+FROM LOS_BARONES_DE_LA_CERVEZA.Cabinas cab
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Tipos_Cabinas tc
+		ON cab.tipo_cabina = tc.id_tipo_cabina
+
+SELECT tipo_cabina
+FROM LOS_BARONES_DE_LA_CERVEZA.Tipos_Cabinas
 
 SELECT cab.id_cabina, tc.tipo_cabina, cru.modelo, mar.marca, cab.numero, cab.piso, cab.estado
 FROM LOS_BARONES_DE_LA_CERVEZA.Cabinas cab
@@ -660,6 +669,31 @@ FROM LOS_BARONES_DE_LA_CERVEZA.Cabinas cab
 		ON cab.crucero = cru.id_crucero
 	JOIN LOS_BARONES_DE_LA_CERVEZA.Marcas_Cruceros mar
 		ON cru.marca = mar.id_marca
+
+SELECT cru.identificador, cru.modelo, mar.marca, COUNT(cab.crucero)
+FROM LOS_BARONES_DE_LA_CERVEZA.Cruceros cru
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Marcas_Cruceros mar
+		ON cru.marca = mar.id_marca
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Cabinas cab
+		ON cru.id_crucero = cab.crucero
+GROUP BY cru.identificador, cru.modelo, mar.marca
+
+SELECT cru.identificador, cru.modelo, mar.marca 
+FROM LOS_BARONES_DE_LA_CERVEZA.Cruceros cru
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Marcas_Cruceros mar
+		ON cru.marca = mar.id_marca
+WHERE cru.identificador = 'XXXXXX-12345'
+
+SELECT cab.numero Numero, cab.piso Piso, tc.tipo_cabina 'Tipo Cabina'
+FROM LOS_BARONES_DE_LA_CERVEZA.Cabinas cab
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Tipos_Cabinas tc
+		ON cab.tipo_cabina = tc.id_tipo_cabina
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Cruceros cru
+		ON cab.crucero = cru.id_crucero
+WHERE cru.identificador = 'XXXXXX-12345'
+
+SELECT tipo_cabina
+FROM LOS_BARONES_DE_LA_CERVEZA.Tipos_Cabinas
 
 ------------------------------------------------------------------------------
 					-- 9. TRIGGERS
