@@ -1,6 +1,13 @@
 --------------------------------------------ELIMINO TODO ANTES DE MIGRAR--------------------------------------------------
 
 --------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------ELIMINAR PROCEDURES---------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------
+
+IF OBJECT_ID('[LOS_BARONES_DE_LA_CERVEZA].migrar_recorridos_de_2_tramos') IS NOT NULL DROP PROCEDURE LOS_BARONES_DE_LA_CERVEZA.migrar_recorridos_de_2_tramos; 
+GO
+
+--------------------------------------------------------------------------------------------------------------------------
 --------------------------------------------------ELIMINAR TABLAS---------------------------------------------------------
 --------------------------------------------------------------------------------------------------------------------------
 
@@ -223,7 +230,7 @@ CREATE TABLE [LOS_BARONES_DE_LA_CERVEZA].Recorrido
 	recorrido_estado bit,
 	recorrido_siguiente int,
 	recorrido_anterior int,
-	CONSTRAINT pk_id_publicacion PRIMARY KEY CLUSTERED (id_recorrido) )
+	CONSTRAINT pk_id_Recorrido PRIMARY KEY CLUSTERED (id_recorrido) )
 GO
 
 --Asociamos la FK de Puerto a Recorrido y tambien Recorrido a si mismo en siguiente y anterior
@@ -466,22 +473,8 @@ SELECT DISTINCT MR.PUERTO_DESDE  --Puedo hacerlo solo con puerto_desde porque es
 FROM gd_esquema.Maestra MR WHERE PUERTO_DESDE IS NOT NULL
 GO
 
-/*
---Creamos la tabla de Recorrido
-CREATE TABLE [LOS_BARONES_DE_LA_CERVEZA].Recorrido 
-(	id_recorrido int identity (1,1) NOT NULL,
-	recorrido_codigo int,
-	recorrido_puerto_inicio int,   --Ciudad = Puerto
-	recorrido_puerto_destino int,  --Ciudad = Puerto
-	recorrido_precio_tramo decimal(18,2),
-	recorrido_estado bit,
-	recorrido_siguiente int,
-	recorrido_anterior int,
-	CONSTRAINT pk_id_publicacion PRIMARY KEY CLUSTERED (id_recorrido) )
-GO
-*/
-
 /******************Recorrido******************/
+--inserto todos y despues los enlazo entre si
 
 INSERT INTO [LOS_BARONES_DE_LA_CERVEZA].Recorrido
 (	recorrido_codigo,
@@ -492,14 +485,85 @@ INSERT INTO [LOS_BARONES_DE_LA_CERVEZA].Recorrido
 	recorrido_siguiente,
 	recorrido_anterior )
 SELECT DISTINCT
-	 MR.RECORRIDO_CODIGO,
-	 (select id_puerto from LOS_BARONES_DE_LA_CERVEZA.Puerto where puerto_nombre = MR.PUERTO_DESDE),
-	 (select id_puerto from LOS_BARONES_DE_LA_CERVEZA.Puerto where puerto_nombre = MR.PUERTO_HASTA),
-	 MR.RECORRIDO_PRECIO_BASE,
-	 0,				--Todos los recorridos los tomo caidos porque son del 2018 su fecha estimada de llegada
-	 NULL,			--ACA ESTA MAL PORQUE HAY RECORRIDOS QUE SON DE MAS DE UN VIAJE
-	 NULL			--Es el primer tramo
-FROM gd_esquema.Maestra MR WHERE RECORRIDO_CODIGO IS NOT NULL
+	 Maestra_Filtrada.RECORRIDO_CODIGO,
+	 (select id_puerto from LOS_BARONES_DE_LA_CERVEZA.Puerto where puerto_nombre = Maestra_Filtrada.PUERTO_DESDE),
+	 (select id_puerto from LOS_BARONES_DE_LA_CERVEZA.Puerto where puerto_nombre = Maestra_Filtrada.PUERTO_HASTA),
+	 Maestra_Filtrada.RECORRIDO_PRECIO_BASE,
+	 0,		--a todos les pongo estado 0 para usarlo cuando tengo que tomar registro de que tramos recorri cuando los enlace, al final todos quedan en 1
+	 NULL, --son recorridos de un solo tramo asi que solo no tienen campos siguiente
+	 NULL  --Es el primer tramo entonces no tiene campo anterior
+FROM (select distinct RECORRIDO_CODIGO, PUERTO_DESDE, PUERTO_HASTA, RECORRIDO_PRECIO_BASE
+		  FROM gd_esquema.Maestra MR WHERE RECORRIDO_CODIGO in (select recorridos_de_1_tramos.RECORRIDO_CODIGO 
+																from (select distinct RECORRIDO_CODIGO, PUERTO_DESDE, PUERTO_HASTA
+				   													  from gd_esquema.Maestra
+																	  group by RECORRIDO_CODIGO, PUERTO_DESDE, PUERTO_HASTA) as recorridos_de_1_tramos)) AS Maestra_Filtrada
+GO
+
+create procedure LOS_BARONES_DE_LA_CERVEZA.migrar_recorridos_de_2_tramos
+AS BEGIN
+
+	declare @id int, @codigo int, @puerto1 int, @puerto2 int, @estado bit;
+	declare @InicioDelOtroTramo int
+
+	DECLARE recorridos CURSOR FOR
+	(SELECT id_recorrido, recorrido_codigo, recorrido_puerto_inicio, recorrido_puerto_destino, recorrido_estado
+	 FROM LOS_BARONES_DE_LA_CERVEZA. Recorrido where recorrido_codigo != 43820864 AND recorrido_codigo != 43820908)
+
+	OPEN recorridos;
+	FETCH NEXT FROM recorridos into @id, @codigo, @puerto1, @puerto2, @estado
+	WHILE @@FETCH_STATUS = 0	--mientras que el cursor no se vaya de la tabla
+	BEGIN
+		if(@estado = 0) --si el estado es 0 quiere decir que ya los enlace
+			begin
+				set @InicioDelOtroTramo = (select recorrido_puerto_inicio from LOS_BARONES_DE_LA_CERVEZA.Recorrido
+										   where @codigo = recorrido_codigo and @puerto2 != recorrido_puerto_destino)
+
+				--Me fijo si es el primero comparandolo con el otro recorrido del mismo codigo
+				if(@puerto2 = @InicioDelOtroTramo)
+					begin
+						--es el primer tramo
+
+						--Le enlazo el segundo tramo en el campo recorrido_siguiente
+						UPDATE LOS_BARONES_DE_LA_CERVEZA.Recorrido 
+						set recorrido_siguiente = (select id_recorrido from LOS_BARONES_DE_LA_CERVEZA.Recorrido 
+												   where recorrido_codigo = @codigo and recorrido_puerto_inicio = @InicioDelOtroTramo),
+							recorrido_estado = 1
+						where recorrido_codigo = @codigo and recorrido_puerto_inicio = @puerto1
+
+						--Al segundo tramo lo enlazo en el campo recorrido_anterior
+						UPDATE LOS_BARONES_DE_LA_CERVEZA.Recorrido 
+						set recorrido_anterior = @id, recorrido_estado = 1
+						where recorrido_codigo = @codigo and recorrido_puerto_inicio = @InicioDelOtroTramo
+					end
+				else
+					begin
+						--es el segundo tramo
+
+						--Le enlazo el primer tramo en el campo recorrido_anterior
+						UPDATE LOS_BARONES_DE_LA_CERVEZA.Recorrido 
+						set recorrido_anterior = (select id_recorrido from LOS_BARONES_DE_LA_CERVEZA.Recorrido 
+												   where recorrido_codigo = @codigo and recorrido_puerto_inicio = @InicioDelOtroTramo),
+							recorrido_estado = 1
+						where recorrido_codigo = @codigo and recorrido_puerto_inicio = @puerto1
+
+						--Al primer tramo lo enlazo en el campo recorrido_siguiente
+						UPDATE LOS_BARONES_DE_LA_CERVEZA.Recorrido 
+						set recorrido_siguiente = @id, recorrido_estado = 1
+						where recorrido_codigo = @codigo and recorrido_puerto_inicio = @InicioDelOtroTramo	
+					end
+			end
+		FETCH NEXT FROM recorridos into @id, @codigo, @puerto1, @puerto2, @estado
+	END
+	CLOSE recorridos;
+
+	--Por ultimo actualizo los estados de los 2 recorridos que son de un solo tramo
+	UPDATE LOS_BARONES_DE_LA_CERVEZA.Recorrido 
+	set recorrido_estado = 1
+	where recorrido_codigo = 43820864 OR recorrido_codigo = 43820908
+END
+GO
+
+EXEC [LOS_BARONES_DE_LA_CERVEZA].migrar_recorridos_de_2_tramos
 GO
 
 /******************Tipo_servicio******************/ 
@@ -541,7 +605,7 @@ SELECT DISTINCT
 	MR.FECHA_SALIDA,
 	MR.FECHA_LLEGADA,
 	MR.FECHA_LLEGADA_ESTIMADA,
-	(select id_crucero from LOS_BARONES_DE_LA_CERVEZA.Crucero where crucero_identificador = MR.CRUCERO_IDENTIFICADOR and crucero_modelo = MR.CRUCERO_MODELO),
-	(select id_recorrido from LOS_BARONES_DE_LA_CERVEZA.Recorrido where MR.RECORRIDO_CODIGO = recorrido_codigo)
-FROM gd_esquema.Maestra MR
+	(select distinct id_crucero from LOS_BARONES_DE_LA_CERVEZA.Crucero where crucero_identificador = MR.CRUCERO_IDENTIFICADOR and crucero_modelo = MR.CRUCERO_MODELO),
+	(select distinct id_recorrido from LOS_BARONES_DE_LA_CERVEZA.Recorrido where MR.RECORRIDO_CODIGO = recorrido_codigo AND recorrido_anterior IS NULL)
+FROM gd_esquema.Maestra MR 
 GO
