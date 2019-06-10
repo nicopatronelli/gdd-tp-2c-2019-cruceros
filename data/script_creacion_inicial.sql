@@ -55,12 +55,33 @@ GO
 ---------------------------------------------------------------
 -- X. ELIMINAMOS LOS STORED PROCEDURES, FUNCIONES Y TRIGGERS
 ---------------------------------------------------------------
-
+/****** STORED PROCEDURES ******/
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.USP_Login'))
 	DROP PROCEDURE LOS_BARONES_DE_LA_CERVEZA.USP_Login
 GO
 
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.USP_insertar_crucero'))
+	DROP PROCEDURE LOS_BARONES_DE_LA_CERVEZA.USP_insertar_crucero
+GO
 
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.USP_actualizar_crucero'))
+	DROP PROCEDURE LOS_BARONES_DE_LA_CERVEZA.USP_actualizar_crucero
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.USP_insertar_cabina'))
+	DROP PROCEDURE LOS_BARONES_DE_LA_CERVEZA.USP_insertar_cabina
+GO
+
+/****** FUNCIONES ******/
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.UF_id_marca_crucero'))
+	DROP FUNCTION LOS_BARONES_DE_LA_CERVEZA.UF_id_marca_crucero
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.UF_id_tipo_cabina'))
+	DROP FUNCTION LOS_BARONES_DE_LA_CERVEZA.UF_id_tipo_cabina
+GO
+
+/***** TRIGGERS: Se eliminan automáticamente al eliminar las tablas a las que están asociados *****/
 
 ------------------------------------------------------------------------------------------------------
 						-- 3. ELIMINAMOS EL ESQUEMA Y VOLVEMOS A CREARLO
@@ -481,13 +502,8 @@ GO
 ********************************************************************************/
 
 ------------------------------------------------------------------------------
-			-- 8. PROCEDIMIENTOS ALMACENADOS (DE APLICACION/NEGOCIO)
+			-- 8. PROCEDIMIENTOS ALMACENADOS/FUNCIONES (DE APLICACION/NEGOCIO)
 ------------------------------------------------------------------------------
--- Eliminamos los procedimientos almacenados si existen
-
-IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.USP_Login'))
-	DROP PROCEDURE LOS_BARONES_DE_LA_CERVEZA.USP_Login
-GO
 
 /******************************************************************
 [LOS_BARONES_DE_LA_CERVEZA].[USP_Login] 
@@ -703,6 +719,10 @@ BEGIN
 END
 GO
 
+/*******************************************************************************
+							FIN - PROCEDIMIENTOS ALMACENADOS/FUNCIONES
+********************************************************************************/
+
 ------------------------------------------------------------------------------
 					-- 9. TRIGGERS
 ------------------------------------------------------------------------------
@@ -731,3 +751,7 @@ BEGIN
 
 END;
 GO
+
+/*******************************************************************************
+							FIN - TRIGGERS
+********************************************************************************/
