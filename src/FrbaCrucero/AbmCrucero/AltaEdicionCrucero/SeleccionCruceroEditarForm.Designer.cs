@@ -1,6 +1,6 @@
 ﻿namespace FrbaCrucero.AbmCrucero
 {
-    partial class SeleccionCruceroForm
+    partial class SeleccionCruceroEditarForm
     {
         /// <summary>
         /// Required designer variable.
@@ -79,13 +79,13 @@
             this.dgvEditarCrucero.Size = new System.Drawing.Size(751, 271);
             this.dgvEditarCrucero.TabIndex = 0;
             // 
-            // CruceroModificacionForm
+            // SeleccionCruceroForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(803, 385);
             this.Controls.Add(this.groupBox1);
-            this.Name = "CruceroModificacionForm";
+            this.Name = "SeleccionCruceroForm";
             this.Text = "CruceroModificacionFormcs";
             this.Load += new System.EventHandler(this.SeleccionCruceroForm_Load);
             this.groupBox1.ResumeLayout(false);
@@ -100,6 +100,6 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button btnCerrar;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.DataGridView dgvEditarCrucero;
+        protected System.Windows.Forms.DataGridView dgvEditarCrucero;
     }
 }

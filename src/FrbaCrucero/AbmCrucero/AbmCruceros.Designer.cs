@@ -30,7 +30,8 @@
         {
             this.btnAltaCrucero = new System.Windows.Forms.Button();
             this.btnModificacionCrucero = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
+            this.btnBajaServicioTecnico = new System.Windows.Forms.Button();
+            this.btnBajaDefinitiva = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnAltaCrucero
@@ -53,21 +54,33 @@
             this.btnModificacionCrucero.UseVisualStyleBackColor = true;
             this.btnModificacionCrucero.Click += new System.EventHandler(this.btnModificacionCrucero_Click);
             // 
-            // button3
+            // btnBajaServicioTecnico
             // 
-            this.button3.Location = new System.Drawing.Point(353, 37);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 23);
-            this.button3.TabIndex = 2;
-            this.button3.Text = "button3";
-            this.button3.UseVisualStyleBackColor = true;
+            this.btnBajaServicioTecnico.Location = new System.Drawing.Point(350, 37);
+            this.btnBajaServicioTecnico.Name = "btnBajaServicioTecnico";
+            this.btnBajaServicioTecnico.Size = new System.Drawing.Size(166, 23);
+            this.btnBajaServicioTecnico.TabIndex = 2;
+            this.btnBajaServicioTecnico.Text = "Baja Por Servicio Técnico";
+            this.btnBajaServicioTecnico.UseVisualStyleBackColor = true;
+            this.btnBajaServicioTecnico.Click += new System.EventHandler(this.btnBajaServicioTecnico_Click);
+            // 
+            // btnBajaDefinitiva
+            // 
+            this.btnBajaDefinitiva.Location = new System.Drawing.Point(544, 37);
+            this.btnBajaDefinitiva.Name = "btnBajaDefinitiva";
+            this.btnBajaDefinitiva.Size = new System.Drawing.Size(166, 23);
+            this.btnBajaDefinitiva.TabIndex = 3;
+            this.btnBajaDefinitiva.Text = "Baja Definitiva";
+            this.btnBajaDefinitiva.UseVisualStyleBackColor = true;
+            this.btnBajaDefinitiva.Click += new System.EventHandler(this.btnBajaDefinitiva_Click);
             // 
             // AbmCruceros
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(524, 98);
-            this.Controls.Add(this.button3);
+            this.ClientSize = new System.Drawing.Size(738, 89);
+            this.Controls.Add(this.btnBajaDefinitiva);
+            this.Controls.Add(this.btnBajaServicioTecnico);
             this.Controls.Add(this.btnModificacionCrucero);
             this.Controls.Add(this.btnAltaCrucero);
             this.Name = "AbmCruceros";
@@ -80,6 +93,7 @@
 
         private System.Windows.Forms.Button btnAltaCrucero;
         private System.Windows.Forms.Button btnModificacionCrucero;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button btnBajaServicioTecnico;
+        private System.Windows.Forms.Button btnBajaDefinitiva;
     }
 }

@@ -92,5 +92,6 @@ namespace FrbaCrucero.AbmCrucero
             if (!cantidadFilasInsertadas.Equals(DEF.FILAS_INSERT_CRUCERO))
                 throw new InsertarCruceroException();
         }
+
     }
 }

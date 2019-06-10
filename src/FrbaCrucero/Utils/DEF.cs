@@ -60,6 +60,7 @@ namespace FrbaCrucero.Utils
 
         // ABM Cruceros 
         public const int FILAS_INSERT_CRUCERO = 1;
+        public const int FILAS_ACTUALIZAR_CRUCERO = 1;
         public const int FILAS_INSERT_CABINAS = 1;
 
         //public const int FILAS_INSERT_CLIENTE = 3;
