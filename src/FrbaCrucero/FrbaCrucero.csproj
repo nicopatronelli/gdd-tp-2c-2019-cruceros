@@ -232,6 +232,9 @@
     <EmbeddedResource Include="AbmCrucero\BajaDefintiva\AvisoBajaDefinitivaForm.resx">
       <DependentUpon>AvisoBajaDefinitivaForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="AbmCrucero\BajaDefintiva\SeleccionCruceroBajaDefinitiva.resx">
+      <DependentUpon>SeleccionCruceroBajaDefinitiva.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="AbmCrucero\BajaServicioTecnico\BajaServicioTecnicoCruceroForm.resx">
       <DependentUpon>BajaServicioTecnicoCruceroForm.cs</DependentUpon>
     </EmbeddedResource>

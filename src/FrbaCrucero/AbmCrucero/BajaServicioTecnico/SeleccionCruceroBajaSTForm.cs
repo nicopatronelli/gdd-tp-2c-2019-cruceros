@@ -68,6 +68,7 @@ namespace FrbaCrucero.AbmCrucero
                 // Abrimos la forma para ingresar la fecha de baja y reinicio del crucero por servicio técnico
                 BajaServicioTecnicoCruceroForm formBajaServicioTecnico = new BajaServicioTecnicoCruceroForm(identificadorCrucero);
                 formBajaServicioTecnico.ShowDialog();
+                this.Close();
             }
         }
     }

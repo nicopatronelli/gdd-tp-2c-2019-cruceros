@@ -63,8 +63,25 @@ GROUP BY cru.identificador, cru.modelo, mar.marca
 SELECT * 
 FROM LOS_BARONES_DE_LA_CERVEZA.Cruceros
 
+-- Baja definitiva 
 UPDATE LOS_BARONES_DE_LA_CERVEZA.Cruceros 
 SET 
 baja_vida_util = 0, 
 fecha_baja_vida_util = NULL
 WHERE identificador = 'ABCDEF-98765'
+
+-- Fuera de servicio 
+UPDATE LOS_BARONES_DE_LA_CERVEZA.Cruceros 
+SET
+baja_fuera_servicio = 1
+WHERE identificador = @identificador
+
+INSERT INTO LOS_BARONES_DE_LA_CERVEZA.Cruceros_Fuera_Servicio 
+(id_crucero, fecha_inicio_fuera_servicio, fecha_fin_fuera_servicio)
+SELECT id_crucero, @fecha_desde, @fecha_hasta
+FROM LOS_BARONES_DE_LA_CERVEZA.Cruceros 
+WHERE identificador = @identificador
+	
+
+SELECT *
+FROM LOS_BARONES_DE_LA_CERVEZA.Cruceros_Fuera_Servicio
