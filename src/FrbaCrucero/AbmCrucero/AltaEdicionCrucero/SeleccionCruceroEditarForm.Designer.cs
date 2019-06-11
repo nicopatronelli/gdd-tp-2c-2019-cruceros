@@ -87,7 +87,7 @@
             this.Controls.Add(this.groupBox1);
             this.Name = "SeleccionCruceroForm";
             this.Text = "CruceroModificacionFormcs";
-            this.Load += new System.EventHandler(this.SeleccionCruceroForm_Load);
+            this.Load += new System.EventHandler(this.SeleccionCruceroEditarForm_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvEditarCrucero)).EndInit();

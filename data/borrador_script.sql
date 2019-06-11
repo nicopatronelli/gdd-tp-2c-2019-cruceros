@@ -1,16 +1,8 @@
 ---- BORRADOR ------
 USE GD1C2019
 
-SELECT * 
-FROM LOS_BARONES_DE_LA_CERVEZA.Cruceros
-
-SELECT cab.id_cabina, cab.numero, cab.piso, cab.tipo_cabina, tc.tipo_cabina
-FROM LOS_BARONES_DE_LA_CERVEZA.Cabinas cab
-	JOIN LOS_BARONES_DE_LA_CERVEZA.Tipos_Cabinas tc
-		ON cab.tipo_cabina = tc.id_tipo_cabina
-
--- Detalles Cruceros y sus cabinas
-SELECT cab.id_cabina, cab.tipo_cabina, tc.tipo_cabina, cru.modelo, mar.marca, cab.numero, cab.piso, cab.estado
+-- Listado de cabinas con info de su crucero
+SELECT cru.identificador, cab.id_cabina, cab.tipo_cabina, tc.tipo_cabina, cru.modelo, mar.marca, cab.numero, cab.piso, cab.estado
 FROM LOS_BARONES_DE_LA_CERVEZA.Cabinas cab
 	JOIN LOS_BARONES_DE_LA_CERVEZA.Tipos_Cabinas tc
 		ON cab.tipo_cabina = tc.id_tipo_cabina
@@ -19,49 +11,14 @@ FROM LOS_BARONES_DE_LA_CERVEZA.Cabinas cab
 	JOIN LOS_BARONES_DE_LA_CERVEZA.Marcas_Cruceros mar
 		ON cru.marca = mar.id_marca
 
-SELECT *
-FROM LOS_BARONES_DE_LA_CERVEZA.Cabinas
-
+-- Detalle Cruceros (sin cabinas)
 SELECT cru.identificador, cru.modelo, mar.marca, COUNT(cab.crucero) 'Cantidad cabinas'
 FROM LOS_BARONES_DE_LA_CERVEZA.Cruceros cru
 	JOIN LOS_BARONES_DE_LA_CERVEZA.Marcas_Cruceros mar
 		ON cru.marca = mar.id_marca
 	JOIN LOS_BARONES_DE_LA_CERVEZA.Cabinas cab
 		ON cru.id_crucero = cab.crucero
-GROUP BY cru.identificador, cru.modelo, mar.marca
-
-DECLARE @id INT
-EXEC [LOS_BARONES_DE_LA_CERVEZA].[USP_actualizar_crucero] 'XYZWJ-12345', 'Crucerito', 'XYZWJ-12345', 'Holland America Line', @id OUT
-SELECT @id
-
-DELETE 
-FROM LOS_BARONES_DE_LA_CERVEZA.Cabinas 
-WHERE crucero = 1 AND estado = 0
-
-SELECT cru.identificador 'Identificador', cru.modelo 'Modelo', mar.marca 'Marca', COUNT(cab.crucero) 'Cantidad de cabinas', 
-	cru.fecha_alta 'Fecha alta'
-FROM LOS_BARONES_DE_LA_CERVEZA.Cruceros cru 
-	JOIN LOS_BARONES_DE_LA_CERVEZA.Marcas_Cruceros mar 
-		ON cru.marca = mar.id_marca 
-	JOIN LOS_BARONES_DE_LA_CERVEZA.Cabinas cab
-		ON cru.id_crucero = cab.crucero 
-WHERE cru.baja_vida_util = 0
-	AND cru.baja_fuera_servicio = 0
-GROUP BY cru.identificador, cru.modelo, mar.marca, cru.fecha_alta
-
-
-
-SELECT cru.identificador 'Identificador', cru.modelo 'Modelo', mar.marca 'Marca', COUNT(cab.crucero) 'Cantidad de cabinas' 
-FROM LOS_BARONES_DE_LA_CERVEZA.Cruceros cru 
-	JOIN LOS_BARONES_DE_LA_CERVEZA.Marcas_Cruceros mar 
-		ON cru.marca = mar.id_marca 
-	JOIN LOS_BARONES_DE_LA_CERVEZA.Cabinas cab 
-		ON cru.id_crucero = cab.crucero 
-WHERE cru.fecha_baja_vida_util IS NULL
-GROUP BY cru.identificador, cru.modelo, mar.marca
-
-SELECT * 
-FROM LOS_BARONES_DE_LA_CERVEZA.Cruceros
+GROUP BY cru.identificador, cru.modelo, mar.marca, cru.baja_fuera_servicio, 
 
 -- Baja definitiva 
 UPDATE LOS_BARONES_DE_LA_CERVEZA.Cruceros 
@@ -70,18 +27,40 @@ baja_vida_util = 0,
 fecha_baja_vida_util = NULL
 WHERE identificador = 'ABCDEF-98765'
 
--- Fuera de servicio 
-UPDATE LOS_BARONES_DE_LA_CERVEZA.Cruceros 
-SET
-baja_fuera_servicio = 1
-WHERE identificador = @identificador
+/******************************************************************
+@TEST: BAJA DEFINITIVA
+******************************************************************/
 
-INSERT INTO LOS_BARONES_DE_LA_CERVEZA.Cruceros_Fuera_Servicio 
-(id_crucero, fecha_inicio_fuera_servicio, fecha_fin_fuera_servicio)
-SELECT id_crucero, @fecha_desde, @fecha_hasta
-FROM LOS_BARONES_DE_LA_CERVEZA.Cruceros 
-WHERE identificador = @identificador
-	
+-- Eliminar baja definitiva 
+UPDATE LOS_BARONES_DE_LA_CERVEZA.Cruceros 
+SET 
+	baja_vida_util = 0,
+	fecha_baja_vida_util = NULL
+
+-- Cruceros baja definitiva
+SELECT cru.identificador, cru.modelo, cru.baja_vida_util, cru.fecha_baja_vida_util
+FROM LOS_BARONES_DE_LA_CERVEZA.Cruceros cru
+
+
+/******************************************************************
+@TEST: BAJA FUERA DE SERVICIO
+******************************************************************/
+
+-- Eliminar fuera de servicio 
+UPDATE LOS_BARONES_DE_LA_CERVEZA.Cruceros 
+SET baja_fuera_servicio = 0
+UPDATE LOS_BARONES_DE_LA_CERVEZA.Cruceros_Fuera_Servicio
+SET fecha_inicio_fuera_servicio = NULL, fecha_fin_fuera_servicio = NULL
+
+-- Cruceros Fuera de servicio
+SELECT cru.identificador, cru.baja_fuera_servicio, fs.fecha_inicio_fuera_servicio, 
+	fs.fecha_fin_fuera_servicio
+FROM LOS_BARONES_DE_LA_CERVEZA.Cruceros cru
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Cruceros_Fuera_Servicio fs
+		ON cru.id_crucero = fs.id_crucero
+
+SELECT * 
+FROM LOS_BARONES_DE_LA_CERVEZA.Cruceros
 
 SELECT *
 FROM LOS_BARONES_DE_LA_CERVEZA.Cruceros_Fuera_Servicio

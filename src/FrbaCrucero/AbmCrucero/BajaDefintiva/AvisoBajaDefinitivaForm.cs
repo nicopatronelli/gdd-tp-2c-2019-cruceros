@@ -16,17 +16,16 @@ namespace FrbaCrucero.AbmCrucero
     {
         private string identificadorCruceroBaja;
 
-        public AvisoBajaDefinitivaForm()
-        {
-            InitializeComponent();
-        }
+        //public AvisoBajaDefinitivaForm()
+        //{
+        //    InitializeComponent();
+        //}
         
         // Constructor que vamos a utilizar 
         public AvisoBajaDefinitivaForm(string identificadorCrucero)
         {
             InitializeComponent();
             identificadorCruceroBaja = identificadorCrucero;
-
         }
 
         private void btnCancelar_Click(object sender, EventArgs e)

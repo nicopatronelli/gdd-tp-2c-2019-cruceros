@@ -184,6 +184,7 @@ namespace FrbaCrucero.AbmCrucero
             this.identificadorA = txtbxIdentificadorA.Text;
             this.identificadorB = txtbxIdentificadorB.Text;
             this.marca = cmbxMarca.SelectedItem.ToString();
+            this.identificadorCrucero = txtbxIdentificadorA.Text + '-' + txtbxIdentificadorB.Text;
         }
 
         private int calcularCantidadCabinas()

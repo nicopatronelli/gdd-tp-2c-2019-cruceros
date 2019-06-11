@@ -19,7 +19,16 @@ namespace FrbaCrucero.AbmCrucero
             InitializeComponent();
         }
 
-        protected override void SeleccionCruceroForm_Load(object sender, EventArgs e)
+        protected override void SeleccionCruceroEditarForm_Load(object sender, EventArgs e)
+        {
+            string miConsulta = querySeleccionCruceros();
+            cargarDgvCruceros(miConsulta);
+            agregarBotonEditar("Acción", "Baja definitiva");
+            dgvEditarCrucero.CellClick += dgvBajaDefinitivaCrucero_CellContentClick;
+            autoajustarDgv();
+        }
+
+        override protected string querySeleccionCruceros()
         {
             string miConsulta = "SELECT cru.identificador 'Identificador', cru.modelo 'Modelo', mar.marca 'Marca', cru.fecha_alta 'Fecha alta', COUNT(cab.crucero) 'Cantidad de cabinas' "
                                  + "FROM LOS_BARONES_DE_LA_CERVEZA.Cruceros cru "
@@ -29,27 +38,7 @@ namespace FrbaCrucero.AbmCrucero
                                          + "ON cru.id_crucero = cab.crucero "
                                  + "WHERE cru.fecha_baja_vida_util IS NULL " // No tiene sentido mostrar los cruceros que ya fueron dados de baja en forma definitiva
                                  + "GROUP BY cru.identificador, cru.modelo, mar.marca, cru.fecha_alta";
-
-            ConexionBD conexion = new ConexionBD();
-            SqlDataAdapter dataAdapter = new SqlDataAdapter(miConsulta, conexion.obtenerConexion());
-            SqlCommandBuilder commandBuilder = new SqlCommandBuilder(dataAdapter);
-            DataSet dataSet = new DataSet();
-            dataAdapter.Fill(dataSet);
-            dgvEditarCrucero.ReadOnly = true;
-            dgvEditarCrucero.AllowUserToAddRows = false; // Para evitar que se añadan filas dinámicamente
-            dgvEditarCrucero.DataSource = dataSet.Tables[0];
-            conexion.cerrar();
-
-            // Añadimos un botón Editar al final de cada fila para poder elegir la publicación a editar 
-            DataGridViewButtonColumn botonEditar = new DataGridViewButtonColumn();
-            botonEditar.Name = "btnDgvEditar";
-            botonEditar.HeaderText = "Acción";
-            botonEditar.Text = "Baja definitiva";
-            botonEditar.UseColumnTextForButtonValue = true;
-            dgvEditarCrucero.Columns.Add(botonEditar);
-            dgvEditarCrucero.CellClick += dgvBajaDefinitivaCrucero_CellContentClick;
-
-            dgvEditarCrucero.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill; // Para autoajustar el tamaño del dgv
+            return miConsulta;
         }
 
         // Abrimos la pantalla de edición de la publicación seleccionada con los datos que ya tenga cargados
@@ -61,11 +50,14 @@ namespace FrbaCrucero.AbmCrucero
                 e.RowIndex >= 0)
             {
                 // Obtenemos el identificador del crucero a dar de baja 
-                string identificadorCrucero = Convert.ToString(dgvEditarCrucero.Rows[e.RowIndex].Cells[0].Value);
+                string identificadorCrucero = Convert.ToString(dgvEditarCrucero.Rows[e.RowIndex].Cells["identificador"].Value);
 
                 // Abrimos el cuadro de advertencia para obtener confirmación o no
                 AvisoBajaDefinitivaForm formAvisoBajaDefintiva = new AvisoBajaDefinitivaForm(identificadorCrucero);
                 formAvisoBajaDefintiva.ShowDialog();
+
+                // Recargamos el dgv de cruceros para no mostrar el dado de baja definitiva 
+                this.recargarDgvCruceros();
             }
         }
 

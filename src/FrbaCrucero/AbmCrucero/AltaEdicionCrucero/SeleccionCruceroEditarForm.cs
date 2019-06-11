@@ -25,17 +25,29 @@ namespace FrbaCrucero.AbmCrucero
             this.Close();
         }
 
-        protected virtual void SeleccionCruceroForm_Load(object sender, EventArgs e)
+        protected virtual void SeleccionCruceroEditarForm_Load(object sender, EventArgs e)
         {
-            string miConsulta = "SELECT cru.identificador 'Identificador', cru.modelo 'Modelo', mar.marca 'Marca', COUNT(cab.crucero) 'Cantidad de cabinas' "
-                + "FROM LOS_BARONES_DE_LA_CERVEZA.Cruceros cru "
-                    + "JOIN LOS_BARONES_DE_LA_CERVEZA.Marcas_Cruceros mar "
-                        + "ON cru.marca = mar.id_marca "
-                    + "JOIN LOS_BARONES_DE_LA_CERVEZA.Cabinas cab "
-                        + "ON cru.id_crucero = cab.crucero "
-                + "WHERE cru.fecha_baja_vida_util IS NULL " // No permitimos editar los cruceros dados de baja en forma definitiva
-                + "GROUP BY cru.identificador, cru.modelo, mar.marca";
+            string miConsulta = querySeleccionCruceros();
+            cargarDgvCruceros(miConsulta);
+            agregarBotonEditar("Editar Crucero", "Editar");
+            dgvEditarCrucero.CellClick += dgvEditarCrucero_CellContentClick;
+            autoajustarDgv();
+        }
 
+        virtual protected string querySeleccionCruceros()
+        {
+            return "SELECT cru.identificador 'Identificador', cru.modelo 'Modelo', mar.marca 'Marca', COUNT(cab.crucero) 'Cantidad de cabinas' "
+                                + "FROM LOS_BARONES_DE_LA_CERVEZA.Cruceros cru "
+                                    + "JOIN LOS_BARONES_DE_LA_CERVEZA.Marcas_Cruceros mar "
+                                        + "ON cru.marca = mar.id_marca "
+                                    + "JOIN LOS_BARONES_DE_LA_CERVEZA.Cabinas cab "
+                                        + "ON cru.id_crucero = cab.crucero "
+                                + "WHERE cru.fecha_baja_vida_util IS NULL " // No permitimos editar los cruceros dados de baja en forma definitiva
+                                + "GROUP BY cru.identificador, cru.modelo, mar.marca";
+        }
+
+        protected void cargarDgvCruceros(string miConsulta)
+        {
             ConexionBD conexion = new ConexionBD();
             SqlDataAdapter dataAdapter = new SqlDataAdapter(miConsulta, conexion.obtenerConexion());
             SqlCommandBuilder commandBuilder = new SqlCommandBuilder(dataAdapter);
@@ -45,18 +57,17 @@ namespace FrbaCrucero.AbmCrucero
             dgvEditarCrucero.AllowUserToAddRows = false; // Para evitar que se añadan filas dinámicamente
             dgvEditarCrucero.DataSource = dataSet.Tables[0];
             conexion.cerrar();
+        }
 
+        protected void agregarBotonEditar(string nombreHeader, string nombreBoton)
+        {
             // Añadimos un botón Editar al final de cada fila para poder elegir la publicación a editar 
             DataGridViewButtonColumn botonEditar = new DataGridViewButtonColumn();
             botonEditar.Name = "btnDgvEditar";
-            botonEditar.HeaderText = "Editar Crucero";
-            botonEditar.Text = "Editar";
+            botonEditar.HeaderText = nombreHeader;
+            botonEditar.Text = nombreBoton;
             botonEditar.UseColumnTextForButtonValue = true;
             dgvEditarCrucero.Columns.Add(botonEditar);
-            dgvEditarCrucero.CellClick += dgvEditarCrucero_CellContentClick;
-
-            dgvEditarCrucero.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill; // Para autoajustar el tamaño del dgv
-
         }
 
         // Abrimos la pantalla de edición de la publicación seleccionada con los datos que ya tenga cargados
@@ -71,6 +82,18 @@ namespace FrbaCrucero.AbmCrucero
                 CruceroForm formEditarCrucero = new CruceroForm(identificadorCrucero);
                 formEditarCrucero.ShowDialog();
             }
+        }
+
+        protected void autoajustarDgv()
+        {
+            dgvEditarCrucero.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill; // Para autoajustar el tamaño del dgv
+        }
+
+        // Método para recargar el dgv de cruceros con los registros actualizados luego de una baja (definitiva o temporal)
+        protected void recargarDgvCruceros()
+        {
+            string miConsulta = this.querySeleccionCruceros();
+            cargarDgvCruceros(miConsulta);
         }
     }
 }
