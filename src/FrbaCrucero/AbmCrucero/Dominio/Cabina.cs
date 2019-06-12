@@ -89,7 +89,7 @@ namespace FrbaCrucero.AbmCrucero
             int cantidadFilasInsertadas = spInsertarCabina.ejecutarNonQuery();
             
             // Comprobamos que la cabina se haya insertado correctamente
-            if (!cantidadFilasInsertadas.Equals(DEF.FILAS_INSERT_CRUCERO))
+            if (!cantidadFilasInsertadas.Equals(DEF.FILAS_INSERT_CABINAS))
                 throw new InsertarCruceroException();
         }
     }

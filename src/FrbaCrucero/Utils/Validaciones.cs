@@ -13,7 +13,7 @@ namespace FrbaCrucero.Utils
         {
             //Func<string, bool> lambda = campo => String.IsNullOrEmpty(campo);
             if (campos.Any(campo => String.IsNullOrEmpty(campo)))
-                throw new CamposOblitaroiosVaciosException();
+                throw new CamposObligatoriosVaciosException();
         } // FIN hayCamposObligatoriosNulos()
     }
 }

@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace FrbaCrucero.Utils.Excepciones
 {
-    class CamposOblitaroiosVaciosException : Exception
+    class CamposObligatoriosVaciosException : Exception
     {
-        public CamposOblitaroiosVaciosException() : base(){}
+        public CamposObligatoriosVaciosException() : base(){}
 
-        public CamposOblitaroiosVaciosException(String mensaje)
+        public CamposObligatoriosVaciosException(String mensaje)
             : base(mensaje){}
 
         public void mensajeError()

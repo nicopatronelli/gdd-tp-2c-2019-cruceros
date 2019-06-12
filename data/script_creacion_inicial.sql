@@ -55,12 +55,33 @@ GO
 ---------------------------------------------------------------
 -- X. ELIMINAMOS LOS STORED PROCEDURES, FUNCIONES Y TRIGGERS
 ---------------------------------------------------------------
-
+/****** STORED PROCEDURES ******/
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.USP_Login'))
 	DROP PROCEDURE LOS_BARONES_DE_LA_CERVEZA.USP_Login
 GO
 
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.USP_insertar_crucero'))
+	DROP PROCEDURE LOS_BARONES_DE_LA_CERVEZA.USP_insertar_crucero
+GO
 
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.USP_actualizar_crucero'))
+	DROP PROCEDURE LOS_BARONES_DE_LA_CERVEZA.USP_actualizar_crucero
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.USP_insertar_cabina'))
+	DROP PROCEDURE LOS_BARONES_DE_LA_CERVEZA.USP_insertar_cabina
+GO
+
+/****** FUNCIONES ******/
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.UF_id_marca_crucero'))
+	DROP FUNCTION LOS_BARONES_DE_LA_CERVEZA.UF_id_marca_crucero
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.UF_id_tipo_cabina'))
+	DROP FUNCTION LOS_BARONES_DE_LA_CERVEZA.UF_id_tipo_cabina
+GO
+
+/***** TRIGGERS: Se eliminan automáticamente al eliminar las tablas a las que están asociados *****/
 
 ------------------------------------------------------------------------------------------------------
 						-- 3. ELIMINAMOS EL ESQUEMA Y VOLVEMOS A CREARLO
@@ -481,13 +502,8 @@ GO
 ********************************************************************************/
 
 ------------------------------------------------------------------------------
-			-- 8. PROCEDIMIENTOS ALMACENADOS (DE APLICACION/NEGOCIO)
+			-- 8. PROCEDIMIENTOS ALMACENADOS/FUNCIONES (DE APLICACION/NEGOCIO)
 ------------------------------------------------------------------------------
--- Eliminamos los procedimientos almacenados si existen
-
-IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.USP_Login'))
-	DROP PROCEDURE LOS_BARONES_DE_LA_CERVEZA.USP_Login
-GO
 
 /******************************************************************
 [LOS_BARONES_DE_LA_CERVEZA].[USP_Login] 
@@ -582,14 +598,68 @@ AS
 BEGIN
 	BEGIN TRY
 		BEGIN TRANSACTION 
-		-- id_crucero se autogenera 
-		INSERT INTO LOS_BARONES_DE_LA_CERVEZA.Cruceros 
-		(fecha_alta, modelo, identificador, marca)
-		VALUES (CONVERT(DATETIME2(3), @fecha_alta, 121), @modelo, @identificador, 
-			[LOS_BARONES_DE_LA_CERVEZA].[UF_id_marca_crucero](@marca))
+			-- id_crucero se autogenera 
+			INSERT INTO LOS_BARONES_DE_LA_CERVEZA.Cruceros 
+			(fecha_alta, modelo, identificador, marca)
+			VALUES (CONVERT(DATETIME2(3), @fecha_alta, 121), @modelo, @identificador, 
+				[LOS_BARONES_DE_LA_CERVEZA].[UF_id_marca_crucero](@marca))
 
-		SET @id_crucero_asignada = @@IDENTITY;
+			SET @id_crucero_asignada = @@IDENTITY;
+		COMMIT TRANSACTION 
+	END TRY
+	BEGIN CATCH
+		ROLLBACK TRANSACTION
+	END CATCH
+END
+GO
 
+/******************************************************************
+[LOS_BARONES_DE_LA_CERVEZA].[USP_actualizar_crucero] 
+@Desc: Actualiza un crucero existente en la tabla Cruceros
+******************************************************************/
+GO
+CREATE PROCEDURE [LOS_BARONES_DE_LA_CERVEZA].[USP_actualizar_crucero]
+(
+	@identificador_anterior NVARCHAR(50),
+	@modelo NVARCHAR(50),
+	@identificador NVARCHAR(50),
+	@marca NVARCHAR(255),
+	@id_crucero INT OUT -- Retornamos el id_crucero asignado por SQL Server (IDENTITY)
+)
+AS
+BEGIN
+	BEGIN TRY
+		BEGIN TRANSACTION 
+			-- No se está modificando el identificador del crucero
+			IF @identificador = @identificador_anterior 
+				BEGIN
+					UPDATE LOS_BARONES_DE_LA_CERVEZA.Cruceros
+					SET modelo = @modelo, marca = [LOS_BARONES_DE_LA_CERVEZA].[UF_id_marca_crucero](@marca)
+					WHERE identificador = @identificador_anterior;
+					SET @id_crucero = (
+						SELECT id_crucero
+						FROM LOS_BARONES_DE_LA_CERVEZA.Cruceros
+						WHERE identificador = @identificador_anterior)
+				END
+			ELSE -- Se quiere modificar el identificador del crucero 
+				BEGIN
+					IF NOT EXISTS (
+						SELECT identificador
+						FROM LOS_BARONES_DE_LA_CERVEZA.Cruceros
+						WHERE identificador = @identificador)
+							-- Si el identificador está disponible, insertamos 
+							BEGIN
+								UPDATE LOS_BARONES_DE_LA_CERVEZA.Cruceros
+								SET modelo = @modelo, identificador = @identificador, marca = [LOS_BARONES_DE_LA_CERVEZA].[UF_id_marca_crucero](@marca)
+								WHERE identificador = @identificador_anterior;
+								SET @id_crucero = (
+									SELECT id_crucero
+									FROM LOS_BARONES_DE_LA_CERVEZA.Cruceros
+									WHERE identificador = @identificador)
+							END
+					ELSE 
+						SET @id_crucero = -1 -- Si el identificador está en uso retornamos -1
+				END
 		COMMIT TRANSACTION 
 	END TRY
 	BEGIN CATCH
@@ -649,51 +719,9 @@ BEGIN
 END
 GO
 
----- BORRADOR ------
-SELECT * 
-FROM LOS_BARONES_DE_LA_CERVEZA.Cruceros
-
-SELECT cab.numero, cab.piso, tc.tipo_cabina
-FROM LOS_BARONES_DE_LA_CERVEZA.Cabinas cab
-	JOIN LOS_BARONES_DE_LA_CERVEZA.Tipos_Cabinas tc
-		ON cab.tipo_cabina = tc.id_tipo_cabina
-
-SELECT tipo_cabina
-FROM LOS_BARONES_DE_LA_CERVEZA.Tipos_Cabinas
-
-SELECT cab.id_cabina, tc.tipo_cabina, cru.modelo, mar.marca, cab.numero, cab.piso, cab.estado
-FROM LOS_BARONES_DE_LA_CERVEZA.Cabinas cab
-	JOIN LOS_BARONES_DE_LA_CERVEZA.Tipos_Cabinas tc
-		ON cab.id_cabina = tc.id_tipo_cabina
-	JOIN LOS_BARONES_DE_LA_CERVEZA.Cruceros cru
-		ON cab.crucero = cru.id_crucero
-	JOIN LOS_BARONES_DE_LA_CERVEZA.Marcas_Cruceros mar
-		ON cru.marca = mar.id_marca
-
-SELECT cru.identificador, cru.modelo, mar.marca, COUNT(cab.crucero)
-FROM LOS_BARONES_DE_LA_CERVEZA.Cruceros cru
-	JOIN LOS_BARONES_DE_LA_CERVEZA.Marcas_Cruceros mar
-		ON cru.marca = mar.id_marca
-	JOIN LOS_BARONES_DE_LA_CERVEZA.Cabinas cab
-		ON cru.id_crucero = cab.crucero
-GROUP BY cru.identificador, cru.modelo, mar.marca
-
-SELECT cru.identificador, cru.modelo, mar.marca 
-FROM LOS_BARONES_DE_LA_CERVEZA.Cruceros cru
-	JOIN LOS_BARONES_DE_LA_CERVEZA.Marcas_Cruceros mar
-		ON cru.marca = mar.id_marca
-WHERE cru.identificador = 'XXXXXX-12345'
-
-SELECT cab.numero Numero, cab.piso Piso, tc.tipo_cabina 'Tipo Cabina'
-FROM LOS_BARONES_DE_LA_CERVEZA.Cabinas cab
-	JOIN LOS_BARONES_DE_LA_CERVEZA.Tipos_Cabinas tc
-		ON cab.tipo_cabina = tc.id_tipo_cabina
-	JOIN LOS_BARONES_DE_LA_CERVEZA.Cruceros cru
-		ON cab.crucero = cru.id_crucero
-WHERE cru.identificador = 'XXXXXX-12345'
-
-SELECT tipo_cabina
-FROM LOS_BARONES_DE_LA_CERVEZA.Tipos_Cabinas
+/*******************************************************************************
+							FIN - PROCEDIMIENTOS ALMACENADOS/FUNCIONES
+********************************************************************************/
 
 ------------------------------------------------------------------------------
 					-- 9. TRIGGERS
@@ -723,3 +751,7 @@ BEGIN
 
 END;
 GO
+
+/*******************************************************************************
+							FIN - TRIGGERS
+********************************************************************************/

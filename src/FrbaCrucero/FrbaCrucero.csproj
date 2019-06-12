@@ -31,6 +31,46 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>ManagedMinimumRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>ManagedMinimumRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>ManagedMinimumRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>ManagedMinimumRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -50,20 +90,44 @@
     <Compile Include="AbmCrucero\AbmCruceros.Designer.cs">
       <DependentUpon>AbmCruceros.cs</DependentUpon>
     </Compile>
-    <Compile Include="AbmCrucero\Cabina.cs" />
-    <Compile Include="AbmCrucero\SeleccionCruceroForm.cs">
+    <Compile Include="AbmCrucero\BajaDefintiva\AvisoBajaDefinitivaForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AbmCrucero\SeleccionCruceroForm.Designer.cs">
-      <DependentUpon>SeleccionCruceroForm.cs</DependentUpon>
+    <Compile Include="AbmCrucero\BajaDefintiva\AvisoBajaDefinitivaForm.Designer.cs">
+      <DependentUpon>AvisoBajaDefinitivaForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="AbmCrucero\CrucerosForm.cs">
+    <Compile Include="AbmCrucero\BajaServicioTecnico\BajaServicioTecnicoCruceroForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AbmCrucero\CrucerosForm.Designer.cs">
-      <DependentUpon>CrucerosForm.cs</DependentUpon>
+    <Compile Include="AbmCrucero\BajaServicioTecnico\BajaServicioTecnicoCruceroForm.Designer.cs">
+      <DependentUpon>BajaServicioTecnicoCruceroForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="AbmCrucero\Crucero.cs" />
+    <Compile Include="AbmCrucero\Dominio\Cabina.cs" />
+    <Compile Include="AbmCrucero\BajaDefintiva\SeleccionCruceroBajaDefinitivaForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmCrucero\BajaDefintiva\SeleccionCruceroBajaDefinitivaForm.Designer.cs">
+      <DependentUpon>SeleccionCruceroBajaDefinitivaForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AbmCrucero\BajaServicioTecnico\SeleccionCruceroBajaSTForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmCrucero\BajaServicioTecnico\SeleccionCruceroBajaSTForm.Designer.cs">
+      <DependentUpon>SeleccionCruceroBajaSTForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AbmCrucero\AltaEdicionCrucero\SeleccionCruceroEditarForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmCrucero\AltaEdicionCrucero\SeleccionCruceroEditarForm.Designer.cs">
+      <DependentUpon>SeleccionCruceroEditarForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AbmCrucero\AltaEdicionCrucero\CruceroForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmCrucero\AltaEdicionCrucero\CruceroForm.Designer.cs">
+      <DependentUpon>CruceroForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AbmCrucero\Dominio\Crucero.cs" />
     <Compile Include="AbmPuerto\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -121,6 +185,7 @@
     <Compile Include="ListadoEstadistico\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Utils\Excepciones\ActualizarCruceroException.cs" />
     <Compile Include="Utils\Excepciones\CamposObligatoriosVaciosException.cs" />
     <Compile Include="Login\ResultadoLogin\ErrorLogin.cs" />
     <Compile Include="Login\ResultadoLogin\IngresoCorrecto.cs" />
@@ -164,11 +229,23 @@
     <EmbeddedResource Include="AbmCrucero\AbmCruceros.resx">
       <DependentUpon>AbmCruceros.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="AbmCrucero\SeleccionCruceroForm.resx">
-      <DependentUpon>SeleccionCruceroForm.cs</DependentUpon>
+    <EmbeddedResource Include="AbmCrucero\BajaDefintiva\AvisoBajaDefinitivaForm.resx">
+      <DependentUpon>AvisoBajaDefinitivaForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="AbmCrucero\CrucerosForm.resx">
-      <DependentUpon>CrucerosForm.cs</DependentUpon>
+    <EmbeddedResource Include="AbmCrucero\BajaDefintiva\SeleccionCruceroBajaDefinitivaForm.resx">
+      <DependentUpon>SeleccionCruceroBajaDefinitivaForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmCrucero\BajaServicioTecnico\BajaServicioTecnicoCruceroForm.resx">
+      <DependentUpon>BajaServicioTecnicoCruceroForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmCrucero\BajaServicioTecnico\SeleccionCruceroBajaSTForm.resx">
+      <DependentUpon>SeleccionCruceroBajaSTForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmCrucero\AltaEdicionCrucero\SeleccionCruceroEditarForm.resx">
+      <DependentUpon>SeleccionCruceroEditarForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmCrucero\AltaEdicionCrucero\CruceroForm.resx">
+      <DependentUpon>CruceroForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AbmRol\AbmRolForm.resx">
       <DependentUpon>AbmRolForm.cs</DependentUpon>

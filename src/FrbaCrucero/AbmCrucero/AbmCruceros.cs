@@ -19,14 +19,27 @@ namespace FrbaCrucero.AbmCrucero
 
         private void btnAltaCrucero_Click(object sender, EventArgs e)
         {
-            CrucerosForm formAbmCrucero = new CrucerosForm();
+            CruceroForm formAbmCrucero = new CruceroForm();
             formAbmCrucero.ShowDialog();
         }
 
         private void btnModificacionCrucero_Click(object sender, EventArgs e)
         {
-            SeleccionCruceroForm formSeleccionCrucero = new SeleccionCruceroForm();
+            SeleccionCruceroEditarForm formSeleccionCrucero = new SeleccionCruceroEditarForm();
             formSeleccionCrucero.ShowDialog();
         }
+
+        private void btnBajaServicioTecnico_Click(object sender, EventArgs e)
+        {
+            SeleccionCruceroBajaSTForm formSeleccionCrucero = new SeleccionCruceroBajaSTForm();
+            formSeleccionCrucero.ShowDialog();
+        }
+
+        private void btnBajaDefinitiva_Click(object sender, EventArgs e)
+        {
+            SeleccionCruceroBajaDefinitiva formSeleccionCrucero = new SeleccionCruceroBajaDefinitiva();
+            formSeleccionCrucero.ShowDialog();
+        }
+
     }
 }
