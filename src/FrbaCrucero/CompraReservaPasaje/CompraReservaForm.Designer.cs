@@ -32,7 +32,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.destinosList = new System.Windows.Forms.ListBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.monthCalendar1 = new System.Windows.Forms.MonthCalendar();
+            this.calendario = new System.Windows.Forms.MonthCalendar();
             this.label3 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -79,11 +79,12 @@
             this.label2.TabIndex = 3;
             this.label2.Text = "Puerto destino";
             // 
-            // monthCalendar1
+            // calendario
             // 
-            this.monthCalendar1.Location = new System.Drawing.Point(181, 234);
-            this.monthCalendar1.Name = "monthCalendar1";
-            this.monthCalendar1.TabIndex = 4;
+            this.calendario.Location = new System.Drawing.Point(182, 234);
+            this.calendario.MaxSelectionCount = 1;
+            this.calendario.Name = "calendario";
+            this.calendario.TabIndex = 4;
             // 
             // label3
             // 
@@ -102,6 +103,7 @@
             this.button1.TabIndex = 6;
             this.button1.Text = "Buscar";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.Button1_Click);
             // 
             // groupBox1
             // 
@@ -113,7 +115,7 @@
             this.groupBox1.Controls.Add(this.destinosList);
             this.groupBox1.Controls.Add(this.button1);
             this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.monthCalendar1);
+            this.groupBox1.Controls.Add(this.calendario);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.origenesList);
             this.groupBox1.Controls.Add(this.label1);
@@ -187,7 +189,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ListBox destinosList;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.MonthCalendar monthCalendar1;
+        private System.Windows.Forms.MonthCalendar calendario;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.GroupBox groupBox1;
