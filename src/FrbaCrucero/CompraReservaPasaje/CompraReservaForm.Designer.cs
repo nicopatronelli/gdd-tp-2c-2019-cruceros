@@ -81,7 +81,7 @@
             // 
             // calendario
             // 
-            this.calendario.Location = new System.Drawing.Point(182, 234);
+            this.calendario.Location = new System.Drawing.Point(36, 234);
             this.calendario.MaxSelectionCount = 1;
             this.calendario.Name = "calendario";
             this.calendario.TabIndex = 4;
@@ -89,7 +89,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(269, 212);
+            this.label3.Location = new System.Drawing.Point(117, 212);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(67, 13);
             this.label3.TabIndex = 5;
@@ -97,7 +97,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(261, 408);
+            this.button1.Location = new System.Drawing.Point(120, 408);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 6;
@@ -129,7 +129,7 @@
             // 
             this.resultLabel.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.resultLabel.AutoSize = true;
-            this.resultLabel.Location = new System.Drawing.Point(285, 442);
+            this.resultLabel.Location = new System.Drawing.Point(314, 243);
             this.resultLabel.Name = "resultLabel";
             this.resultLabel.Size = new System.Drawing.Size(37, 13);
             this.resultLabel.TabIndex = 8;

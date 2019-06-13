@@ -74,7 +74,7 @@ namespace FrbaCrucero.CompraReservaPasaje
                                 +"select[recorrido_puerto_destino] from [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Recorrido]"
                                 +"where recorrido_codigo in ("
                                 +"        SELECT[recorrido_codigo] from [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Recorrido]"
-                                +"        WHERE recorrido_puerto_inicio = 27 and recorrido_anterior is null)"
+                                +"        WHERE recorrido_puerto_inicio = 27 and recorrido_anterior is null)"  //este 27 seria una ID hardcodeada del puerto origen, del que actualmente solo tengo el nombre
 		                        +"        ) as hola"
                                 +" on id_puerto = hola.recorrido_puerto_destino";
 
@@ -90,17 +90,31 @@ namespace FrbaCrucero.CompraReservaPasaje
 
         private void Button1_Click(object sender, EventArgs e)
         {
+            string errorMsg = "";
             if(calendario.SelectionStart == calendario.SelectionEnd)
             {
-                resultLabel.Text = "Selecciona una fecha, se ha seleccionado un rango";
-                return;
+                errorMsg += "Selecciona una fecha, se ha seleccionado un rango\n";
             }
             if(calendario.SelectionStart <= DateTime.Today)
             {
-                resultLabel.Text = "Seleccione una fecha posterior a la actual";
+                errorMsg += "Seleccione una fecha posterior a la actual\n";
+            }
+            if (this.origenesList.SelectedItem == null)
+            {
+                errorMsg += "Seleccione un puerto de origen\n";
+            }
+            if (this.destinosList.SelectedItem == null)
+            {
+                errorMsg += "Seleccione un puerto de destino\n";
+            }
+            if (errorMsg != "")
+            {
+                resultLabel.Text = errorMsg;
                 return;
             }
             resultLabel.Text = "Buena fecha";
+            ElegirViajeForm elegirViajeForm = new ElegirViajeForm((string)this.origenesList.SelectedItem, (string)this.destinosList.SelectedItem, calendario.SelectionStart);
+            elegirViajeForm.ShowDialog();
         }
 
         //aca esta la consulta de arriba. EN SQL me devuelve 2 valores, pero aca me da null
