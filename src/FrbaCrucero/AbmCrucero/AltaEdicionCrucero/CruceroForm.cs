@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using FrbaCrucero.Utils;
-using FrbaCrucero.AbmCrucero.Utils;
+using FrbaCrucero.AbmCrucero.Dominio;
 using FrbaCrucero.Utils.Excepciones;
 
 namespace FrbaCrucero.AbmCrucero
@@ -63,14 +63,15 @@ namespace FrbaCrucero.AbmCrucero
             DateTime fechaAlta = ArchivoConfig.obtenerFechaConfig();
 
             // 2. Construimos el objeto crucero 
-            Crucero crucero = new Crucero();
+            Crucero crucero;
             try
             {
-                crucero
-                .setModelo(modelo)
-                .setMarca(marca)
-                .setIdentificador(identificadorA, identificadorB)
-                .setFechaAlta(fechaAlta);
+                crucero = new CruceroBuilder()
+                    .setModelo(modelo)
+                    .setMarca(marca)
+                    .setIdentificador(identificadorA, identificadorB)
+                    .setFechaAlta(fechaAlta)
+                    .buildCrucero();
             }
             catch (CamposObligatoriosVaciosException ex)
             {
@@ -129,13 +130,14 @@ namespace FrbaCrucero.AbmCrucero
             cargarCampos();
 
             // 2. Construimos el objeto crucero 
-            Crucero crucero = new Crucero();
+            Crucero crucero;
             try
             {
-                crucero
-                .setModelo(modelo)
-                .setMarca(marca)
-                .setIdentificador(identificadorA, identificadorB);
+                crucero = new CruceroBuilder()
+                    .setModelo(modelo)
+                    .setMarca(marca)
+                    .setIdentificador(identificadorA, identificadorB)
+                    .buildCrucero();
             }
             catch (CamposObligatoriosVaciosException ex)
             {

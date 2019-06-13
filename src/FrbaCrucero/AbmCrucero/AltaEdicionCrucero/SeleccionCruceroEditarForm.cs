@@ -78,9 +78,14 @@ namespace FrbaCrucero.AbmCrucero
             if (senderGrid.Columns[e.ColumnIndex] is DataGridViewButtonColumn &&
                 e.RowIndex >= 0)
             {
-                string identificadorCrucero = Convert.ToString(dgvEditarCrucero.Rows[e.RowIndex].Cells[0].Value);
+                string identificadorCrucero = Convert.ToString(dgvEditarCrucero.Rows[e.RowIndex].Cells["identificador"].Value);
+
+                // Abrimos el formulario de edición de cruceros
                 CruceroForm formEditarCrucero = new CruceroForm(identificadorCrucero);
                 formEditarCrucero.ShowDialog();
+
+                // Recargamos el dgv de cruceros para no mostrar el daddo de baja por servicio técnico
+                this.recargarDgvCruceros();
             }
         }
 

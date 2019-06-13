@@ -9,7 +9,7 @@ using FrbaCrucero.Utils.Excepciones;
 
 namespace FrbaCrucero.AbmCrucero
 {
-    class Cabina
+    public class Cabina
     {   
         private int numero;
         private int piso;

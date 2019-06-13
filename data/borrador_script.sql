@@ -46,14 +46,12 @@ FROM LOS_BARONES_DE_LA_CERVEZA.Cruceros cru
 @TEST: BAJA FUERA DE SERVICIO
 ******************************************************************/
 
--- Eliminar fuera de servicio 
+-- Eliminar fueras de servicio (vuelven a estar disponibles)
 UPDATE LOS_BARONES_DE_LA_CERVEZA.Cruceros 
 SET baja_fuera_servicio = 0
-UPDATE LOS_BARONES_DE_LA_CERVEZA.Cruceros_Fuera_Servicio
-SET fecha_inicio_fuera_servicio = NULL, fecha_fin_fuera_servicio = NULL
 
 -- Cruceros Fuera de servicio
-SELECT cru.identificador, cru.baja_fuera_servicio, fs.fecha_inicio_fuera_servicio, 
+SELECT cru.identificador, cru.modelo, cru.baja_fuera_servicio, fs.fecha_inicio_fuera_servicio, 
 	fs.fecha_fin_fuera_servicio
 FROM LOS_BARONES_DE_LA_CERVEZA.Cruceros cru
 	JOIN LOS_BARONES_DE_LA_CERVEZA.Cruceros_Fuera_Servicio fs
@@ -61,6 +59,3 @@ FROM LOS_BARONES_DE_LA_CERVEZA.Cruceros cru
 
 SELECT * 
 FROM LOS_BARONES_DE_LA_CERVEZA.Cruceros
-
-SELECT *
-FROM LOS_BARONES_DE_LA_CERVEZA.Cruceros_Fuera_Servicio

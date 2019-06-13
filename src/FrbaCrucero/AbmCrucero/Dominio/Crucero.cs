@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 using System.Data;
 using FrbaCrucero.Utils;
 using FrbaCrucero.Utils.Excepciones;
+using FrbaCrucero.AbmCrucero.Dominio;
 
-namespace FrbaCrucero.AbmCrucero.Utils
+namespace FrbaCrucero.AbmCrucero
 {
-    class Crucero
+    public class Crucero
     {
         private string modelo;
         private string identificador;
@@ -17,36 +18,12 @@ namespace FrbaCrucero.AbmCrucero.Utils
         private DateTime fechaAlta;
         private List<Cabina> cabinas = new List<Cabina>();
 
-        public Crucero() 
+        public Crucero(CruceroBuilder cruceroBuilder)
         {
-        }
-
-        public Crucero setModelo(string modelo)
-        {
-            Validaciones.hayCamposObligatoriosNulos(modelo);
-            this.modelo = modelo;
-            return this;
-        }
-
-        public Crucero setIdentificador(string identificadorA, string identificadorB)
-        {
-            Validaciones.hayCamposObligatoriosNulos(identificadorA);
-            Validaciones.hayCamposObligatoriosNulos(identificadorB);
-            this.identificador = identificadorA + "-" + identificadorB;
-            return this;
-        }
-
-        public Crucero setMarca(string marca)
-        {
-            Validaciones.hayCamposObligatoriosNulos(marca);
-            this.marca = marca;
-            return this;
-        }
-
-        public Crucero setFechaAlta(DateTime fechaAlta)
-        {
-            this.fechaAlta = fechaAlta;
-            return this; 
+            this.modelo = cruceroBuilder.getModelo();
+            this.marca = cruceroBuilder.getMarca();
+            this.identificador = cruceroBuilder.getIdentificador();
+            this.fechaAlta = cruceroBuilder.getFechaAlta();
         }
 
         public void agregarCabina(Cabina cabina)
