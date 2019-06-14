@@ -21,12 +21,20 @@ namespace FrbaCrucero.CompraReservaPasaje
             this.puertoDestino = puertoDestino;
             this.fechaSalida = fechaSalida;
             InitializeComponent();
-            this.label1.Text = this.puertoOrigen;
-            this.label2.Text = this.puertoDestino;
-            this.resultLabel.Text = this.fechaSalida.ToString();
+        }
+
+        private void Eleccion_Crucero(object sender, EventArgs e)
+        {
+            this.cargarCabinas();
+
         }
 
 
+
+        private void cargarCabinas()
+        {
+
+        }
     }
 }
 
