@@ -22,10 +22,10 @@ namespace FrbaCrucero.AbmCrucero
         protected override void SeleccionCruceroEditarForm_Load(object sender, EventArgs e)
         {
             string miConsulta = querySeleccionCruceros();
-            cargarDgvCruceros(miConsulta);
-            agregarBotonEditar("Acción", "Baja definitiva");
-            dgvEditarCrucero.CellClick += dgvBajaDefinitivaCrucero_CellContentClick;
-            autoajustarDgv();
+            base.cargarDgvCruceros(miConsulta);
+            base.agregarBotonEditar("Acción", "Baja definitiva");
+            dgvEditarCrucero.CellClick += base.dgvSeleccionarCrucero_CellContentClick;
+            base.autoajustarDgv();
         }
 
         override protected string querySeleccionCruceros()
@@ -41,25 +41,32 @@ namespace FrbaCrucero.AbmCrucero
             return miConsulta;
         }
 
-        // Abrimos la pantalla de edición de la publicación seleccionada con los datos que ya tenga cargados
-        private void dgvBajaDefinitivaCrucero_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        override protected void cargarFormulario(string identificadorCrucero)
         {
-            var senderGrid = (DataGridView)sender;
-
-            if (senderGrid.Columns[e.ColumnIndex] is DataGridViewButtonColumn &&
-                e.RowIndex >= 0)
-            {
-                // Obtenemos el identificador del crucero a dar de baja 
-                string identificadorCrucero = Convert.ToString(dgvEditarCrucero.Rows[e.RowIndex].Cells["identificador"].Value);
-
-                // Abrimos el cuadro de advertencia para obtener confirmación o no
-                AvisoBajaDefinitivaForm formAvisoBajaDefintiva = new AvisoBajaDefinitivaForm(identificadorCrucero);
-                formAvisoBajaDefintiva.ShowDialog();
-
-                // Recargamos el dgv de cruceros para no mostrar el dado de baja definitiva 
-                this.recargarDgvCruceros();
-            }
+            // Abrimos el cuadro de advertencia para obtener confirmación o no
+            AvisoBajaDefinitivaForm formAvisoBajaDefintiva = new AvisoBajaDefinitivaForm(identificadorCrucero);
+            formAvisoBajaDefintiva.ShowDialog();
         }
+
+        // Abrimos la pantalla de edición de la publicación seleccionada con los datos que ya tenga cargados
+        //private void dgvBajaDefinitivaCrucero_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        //{
+        //    var senderGrid = (DataGridView)sender;
+
+        //    if (senderGrid.Columns[e.ColumnIndex] is DataGridViewButtonColumn &&
+        //        e.RowIndex >= 0)
+        //    {
+        //        // Obtenemos el identificador del crucero a dar de baja 
+        //        string identificadorCrucero = Convert.ToString(dgvEditarCrucero.Rows[e.RowIndex].Cells["identificador"].Value);
+
+        //        // Abrimos el cuadro de advertencia para obtener confirmación o no
+        //        AvisoBajaDefinitivaForm formAvisoBajaDefintiva = new AvisoBajaDefinitivaForm(identificadorCrucero);
+        //        formAvisoBajaDefintiva.ShowDialog();
+
+        //        // Recargamos el dgv de cruceros para no mostrar el dado de baja definitiva 
+        //        this.recargarDgvCruceros();
+        //    }
+        //}
 
     }
 }

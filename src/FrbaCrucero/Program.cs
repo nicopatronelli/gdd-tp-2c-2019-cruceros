@@ -20,8 +20,8 @@ namespace FrbaCrucero
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            //Application.Run(new AbmCruceros());
-            Application.Run(new CompraReservaForm());
+            Application.Run(new AbmCruceros());
+            //Application.Run(new CompraReservaForm());
         }
     }
 }

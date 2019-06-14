@@ -25,12 +25,12 @@ namespace FrbaCrucero.AbmCrucero
             this.Close();
         }
 
-        protected virtual void SeleccionCruceroEditarForm_Load(object sender, EventArgs e)
+        virtual protected void SeleccionCruceroEditarForm_Load(object sender, EventArgs e)
         {
             string miConsulta = querySeleccionCruceros();
             cargarDgvCruceros(miConsulta);
             agregarBotonEditar("Editar Crucero", "Editar");
-            dgvEditarCrucero.CellClick += dgvEditarCrucero_CellContentClick;
+            dgvEditarCrucero.CellClick += dgvSeleccionarCrucero_CellContentClick;
             autoajustarDgv();
         }
 
@@ -71,7 +71,7 @@ namespace FrbaCrucero.AbmCrucero
         }
 
         // Abrimos la pantalla de edición de la publicación seleccionada con los datos que ya tenga cargados
-        private void dgvEditarCrucero_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        protected void dgvSeleccionarCrucero_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             var senderGrid = (DataGridView)sender;
 
@@ -79,14 +79,18 @@ namespace FrbaCrucero.AbmCrucero
                 e.RowIndex >= 0)
             {
                 string identificadorCrucero = Convert.ToString(dgvEditarCrucero.Rows[e.RowIndex].Cells["identificador"].Value);
-
-                // Abrimos el formulario de edición de cruceros
-                CruceroForm formEditarCrucero = new CruceroForm(identificadorCrucero);
-                formEditarCrucero.ShowDialog();
+                cargarFormulario(identificadorCrucero);
 
                 // Recargamos el dgv de cruceros para no mostrar el daddo de baja por servicio técnico
                 this.recargarDgvCruceros();
             }
+        }
+
+       protected virtual void cargarFormulario(string identificadorCrucero)
+        {
+            // Abrimos el formulario de edición de cruceros
+            CruceroForm formEditarCrucero = new CruceroForm(identificadorCrucero);
+            formEditarCrucero.ShowDialog();
         }
 
         protected void autoajustarDgv()

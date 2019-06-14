@@ -22,10 +22,10 @@ namespace FrbaCrucero.AbmCrucero
         protected override void SeleccionCruceroEditarForm_Load(object sender, EventArgs e)
         {
             string miConsulta = querySeleccionCruceros();
-            cargarDgvCruceros(miConsulta);
-            agregarBotonEditar("Acción", "Baja Servicio Técnico");
-            dgvEditarCrucero.CellClick += dgvBajaSTCrucero_CellContentClick;
-            autoajustarDgv();
+            base.cargarDgvCruceros(miConsulta);
+            base.agregarBotonEditar("Acción", "Baja Servicio Técnico");
+            dgvEditarCrucero.CellClick += base.dgvSeleccionarCrucero_CellContentClick; ;
+            base.autoajustarDgv();
         }
 
         override protected string querySeleccionCruceros()
@@ -42,24 +42,32 @@ namespace FrbaCrucero.AbmCrucero
             return miConsulta;
         }
 
-        // Obtenemos el identificador del crucero seleccionado y mostramos el form de baja por servicio técnico 
-        private void dgvBajaSTCrucero_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        protected override void cargarFormulario(string identificadorCrucero)
         {
-            var senderGrid = (DataGridView)sender;
-
-            if (senderGrid.Columns[e.ColumnIndex] is DataGridViewButtonColumn &&
-                e.RowIndex >= 0)
-            {
-                // Obtenemos el identificador del crucero a dar de baja 
-                string identificadorCrucero = Convert.ToString(dgvEditarCrucero.Rows[e.RowIndex].Cells["identificador"].Value);
-
-                // Abrimos la forma para ingresar la fecha de baja y reinicio del crucero por servicio técnico
-                BajaServicioTecnicoCruceroForm formBajaServicioTecnico = new BajaServicioTecnicoCruceroForm(identificadorCrucero);
-                formBajaServicioTecnico.ShowDialog();
-
-                // Recargamos el dgv de cruceros para no mostrar el daddo de baja por servicio técnico
-                this.recargarDgvCruceros();
-            }
+            // Abrimos la forma para ingresar la fecha de baja y reinicio del crucero por servicio técnico
+            BajaServicioTecnicoCruceroForm formBajaServicioTecnico = new BajaServicioTecnicoCruceroForm(identificadorCrucero);
+            formBajaServicioTecnico.ShowDialog();
         }
+
+        // Obtenemos el identificador del crucero seleccionado y mostramos el form de baja por servicio técnico 
+        //private void dgvBajaSTCrucero_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        //{
+        //    var senderGrid = (DataGridView)sender;
+
+        //    if (senderGrid.Columns[e.ColumnIndex] is DataGridViewButtonColumn &&
+        //        e.RowIndex >= 0)
+        //    {
+        //        // Obtenemos el identificador del crucero a dar de baja 
+        //        string identificadorCrucero = Convert.ToString(dgvEditarCrucero.Rows[e.RowIndex].Cells["identificador"].Value);
+
+        //        // Abrimos la forma para ingresar la fecha de baja y reinicio del crucero por servicio técnico
+        //        BajaServicioTecnicoCruceroForm formBajaServicioTecnico = new BajaServicioTecnicoCruceroForm(identificadorCrucero);
+        //        formBajaServicioTecnico.ShowDialog();
+
+        //        // Recargamos el dgv de cruceros para no mostrar el daddo de baja por servicio técnico
+        //        this.recargarDgvCruceros();
+        //    }
+        //}
+
     }
 }
