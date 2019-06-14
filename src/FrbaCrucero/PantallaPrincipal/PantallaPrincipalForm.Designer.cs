@@ -141,6 +141,7 @@
             this.btnComprarReservar.TabIndex = 16;
             this.btnComprarReservar.Text = "Comprar/Reservar Viaje";
             this.btnComprarReservar.UseVisualStyleBackColor = true;
+            this.btnComprarReservar.Click += new System.EventHandler(this.BtnComprarReservar_Click);
             // 
             // PantallaPrincipalForm
             // 

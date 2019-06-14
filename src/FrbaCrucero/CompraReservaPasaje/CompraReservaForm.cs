@@ -93,7 +93,7 @@ namespace FrbaCrucero.CompraReservaPasaje
             string errorMsg = "";
             if(calendario.SelectionStart == calendario.SelectionEnd)
             {
-                errorMsg += "Selecciona una fecha, se ha seleccionado un rango\n";
+                errorMsg += "Selecciona una fecha\n";
             }
             if(calendario.SelectionStart <= DateTime.Today)
             {

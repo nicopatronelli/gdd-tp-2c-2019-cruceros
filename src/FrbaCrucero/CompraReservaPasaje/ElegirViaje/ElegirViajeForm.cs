@@ -35,6 +35,11 @@ namespace FrbaCrucero.CompraReservaPasaje
         {
 
         }
+
+        private void Button1_Click(object sender, EventArgs e)
+        {
+            //Efectuar pago o reserva
+        }
     }
 }
 
