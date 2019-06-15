@@ -719,6 +719,41 @@ BEGIN
 END
 GO
 
+/******************************************************************
+[LOS_BARONES_DE_LA_CERVEZA].[UF_cruceros_disponibles] 
+@Desc: Retorna el listado de identificadores de los cruceros que 
+se encuentran disponibles para realizar un viaje en la fecha de
+inicio dado, es decir, no están ocupados haciendo otro viaje. Además,
+sólo nos quedamos con los cruceros que no estén fuera de servicio y 
+no hayan sido dados de baja de forma definitiva. 
+******************************************************************/
+CREATE FUNCTION [LOS_BARONES_DE_LA_CERVEZA].[UF_cruceros_disponibles] 
+(
+	@fecha_inicio_nuevo_viaje_s NVARCHAR(255)
+)
+RETURNS TABLE 
+AS
+RETURN 
+	SELECT DISTINCT cru.crucero_identificador
+	FROM LOS_BARONES_DE_LA_CERVEZA.Crucero cru
+		JOIN LOS_BARONES_DE_LA_CERVEZA.Viaje via
+			ON cru.id_crucero = via.viaje_id_crucero
+	WHERE CONVERT(DATETIME2(3), @fecha_inicio_nuevo_viaje_s, 121) > 
+			(
+				-- Le fecha de inicio de mi viaje debe ser mayor a la fecha de fin del 
+				-- último viaje asignado del crucero
+				SELECT TOP 1 via2.viaje_fecha_fin 
+				FROM LOS_BARONES_DE_LA_CERVEZA.Crucero cru2
+					JOIN LOS_BARONES_DE_LA_CERVEZA.Viaje via2
+						ON cru2.id_crucero = via2.viaje_id_crucero
+				WHERE cru2.crucero_identificador = cru.crucero_identificador
+				ORDER BY 1 DESC
+			)
+		AND cru.crucero_baja_por_fuera_de_servicio = 0
+		AND crucero_baja_por_vida_util = 0
+-- FIN [LOS_BARONES_DE_LA_CERVEZA].[UF_cruceros_disponibles] 
+
+
 /*******************************************************************************
 							FIN - PROCEDIMIENTOS ALMACENADOS/FUNCIONES
 ********************************************************************************/

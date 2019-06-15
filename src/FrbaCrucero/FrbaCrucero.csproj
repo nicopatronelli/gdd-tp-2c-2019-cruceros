@@ -174,11 +174,11 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="GeneracionViaje\Form1.cs">
+    <Compile Include="GenerarViaje\GenerarViajeForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GeneracionViaje\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="GenerarViaje\GenerarViajeForm.Designer.cs">
+      <DependentUpon>GenerarViajeForm.cs</DependentUpon>
     </Compile>
     <Compile Include="ListadoEstadistico\Form1.cs">
       <SubType>Form</SubType>
@@ -259,6 +259,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="CompraReservaPasaje\CompraReservaForm.resx">
       <DependentUpon>CompraReservaForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GenerarViaje\GenerarViajeForm.resx">
+      <DependentUpon>GenerarViajeForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Login\LoginForm.resx">
       <DependentUpon>LoginForm.cs</DependentUpon>

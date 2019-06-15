@@ -10,7 +10,6 @@ namespace FrbaCrucero.Utils
 {
     class StoreProcedure
     {
-
         SqlCommand comando;
 
         public StoreProcedure(string nombreSP, List<Parametro> listaParam)
@@ -24,8 +23,8 @@ namespace FrbaCrucero.Utils
             {
                 comando.Parameters.Add(param.obtenerSqlParameter());
             }
-
         }
+
 
         /* @Nota: Un SP nunca devuelve un valor. Si todos sus parámetros son de entrada tendrá un efecto de 
         * lado en la base. Si alguno es de salida guardará un valor nuevo en el mismo, pero la salida será
@@ -92,6 +91,52 @@ namespace FrbaCrucero.Utils
                 return DEF.ERROR;
             }
         } // FIN ejecutarNonQuery()
+
+        /**
+         * 
+         * 
+         * 
+         */
+
+        public List<string> ejecutarReaderUnicaColumna()
+        {
+            const int UNICA_COLUMNA = 0;
+            try
+            {
+                // Creamos y abrimos una conexión a la base de datos 
+                ConexionBD conexion = new ConexionBD();
+                conexion.abrir();
+
+                // Asignamos la conexión al SP
+                comando.Connection = conexion.obtenerConexion();
+
+                // Ejecutamos el SP
+                SqlDataReader registrosLeidos = comando.ExecuteReader();
+
+                // Declaramos una lista de objects donde vamos a guardar el contenido de cada fila que retorno 
+                // la consulta. Cada fila es un elemento de la lista. 
+                List<string> registros = new List<string>();
+
+                while (registrosLeidos.Read())
+                {
+                    registros.Add((registrosLeidos.GetString(UNICA_COLUMNA)));
+                }
+
+                // Liberamos los recursos asociados a la consulta
+                comando.Dispose();
+
+                // Cerramos la conexión
+                conexion.cerrar();
+
+                // La consulta se ejecuto correctamente 
+                return registros;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error al ejecutar una consulta desde la aplicación. Info: " + ex.ToString());
+                return null;
+            }
+        } // FIN ejecutarReaderUnicaColumna()
 
     } // FIN clase StoreProcedure
 }

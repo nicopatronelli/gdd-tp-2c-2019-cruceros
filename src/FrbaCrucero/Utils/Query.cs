@@ -12,6 +12,14 @@ namespace FrbaCrucero.Utils
         SqlCommand comando;
         ConexionBD conexion;
 
+        // Query sin parámetros 
+        public Query(string consulta)
+        {
+            // Creamos un comando con la consulta (query) pasada por parámetro en el constructor
+            comando = new SqlCommand(consulta);
+        } // Fin constructor
+        
+        // Query con parámetros 
         public Query(string consulta, List<Parametro> parametros)
         {
             // Creamos un comando con la consulta (query) pasada por parámetro en el constructor
@@ -23,7 +31,6 @@ namespace FrbaCrucero.Utils
                 comando.Parameters.Add(param.obtenerSqlParameter());
             }
         } // Fin constructor
-
 
         public void cerrarConexionReader()
         {
@@ -105,7 +112,6 @@ namespace FrbaCrucero.Utils
                 return null;
             }
         } // FIN ejecutarReaderUnicaColumna()
-
 
         public SqlDataReader ejecutarReaderFila()
         {

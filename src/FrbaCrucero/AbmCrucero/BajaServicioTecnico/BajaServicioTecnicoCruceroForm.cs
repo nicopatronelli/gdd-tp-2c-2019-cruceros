@@ -35,7 +35,7 @@ namespace FrbaCrucero.AbmCrucero
             // Validamos que la fecha de reinicio sea posterior a la actual (el sistema la toma del archivo de configuración)
             if (DateTime.Compare(fechaDesde, fechaHasta) > 0)
             {
-                MensajeBox.error("La fecha de reinicio debe ser posterior a la actual (fecha del archivo de configuración).");
+                MensajeBox.error("La fecha de reinicio debe ser posterior a la actual.");
                 return;
             }
 
