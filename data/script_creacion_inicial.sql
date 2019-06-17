@@ -7,6 +7,47 @@ GO
 ------------------------------------------------------------------------------------------------------
 						-- 2. ELIMINAMOS LAS TABLAS SI EXISTEN (VALIDACIÓN DE TABLAS)
 ------------------------------------------------------------------------------------------------------
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.Item_factura'))
+    DROP TABLE LOS_BARONES_DE_LA_CERVEZA.Item_factura
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.Factura'))
+    DROP TABLE LOS_BARONES_DE_LA_CERVEZA.Factura
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.Reserva'))
+    DROP TABLE LOS_BARONES_DE_LA_CERVEZA.Reserva
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.Compra'))
+    DROP TABLE LOS_BARONES_DE_LA_CERVEZA.Compra
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.Forma_de_pago'))
+    DROP TABLE LOS_BARONES_DE_LA_CERVEZA.Forma_de_pago
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.Viaje'))
+    DROP TABLE LOS_BARONES_DE_LA_CERVEZA.Viaje
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.Tramos_por_Recorrido'))
+    DROP TABLE LOS_BARONES_DE_LA_CERVEZA.Tramos_por_Recorrido
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.Tramo'))
+    DROP TABLE LOS_BARONES_DE_LA_CERVEZA.Tramo
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.Recorrido'))
+    DROP TABLE LOS_BARONES_DE_LA_CERVEZA.Recorrido
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.Puerto'))
+    DROP TABLE LOS_BARONES_DE_LA_CERVEZA.Puerto
+GO
+
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.Funcionalidades_Por_Roles'))
     DROP TABLE LOS_BARONES_DE_LA_CERVEZA.Funcionalidades_Por_Roles
 GO
@@ -51,7 +92,6 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_D
     DROP TABLE LOS_BARONES_DE_LA_CERVEZA.Marcas_Cruceros
 GO
 
-
 ---------------------------------------------------------------
 -- X. ELIMINAMOS LOS STORED PROCEDURES, FUNCIONES Y TRIGGERS
 ---------------------------------------------------------------
@@ -81,6 +121,10 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_D
 	DROP FUNCTION LOS_BARONES_DE_LA_CERVEZA.UF_id_tipo_cabina
 GO
 
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.UF_cruceros_disponibles'))
+	DROP FUNCTION LOS_BARONES_DE_LA_CERVEZA.UF_cruceros_disponibles
+GO
+
 /***** TRIGGERS: Se eliminan automáticamente al eliminar las tablas a las que están asociados *****/
 
 ------------------------------------------------------------------------------------------------------
@@ -95,13 +139,12 @@ BEGIN
 END
 GO
 
-
 -------------------------------------------------------------------------------------------------
 						-- 4. CREACION DE TABLAS 
 -------------------------------------------------------------------------------------------------
 
 /******************************************************************
-Tabla Usuarios /** OK Leo **/
+Tabla Usuarios
 @Desc: Contiene los elementos necesarios para la identificación
 de un usuario en el sistema.
 ******************************************************************/
@@ -109,7 +152,6 @@ GO
 CREATE TABLE LOS_BARONES_DE_LA_CERVEZA.Usuarios(
 	-- Elijo directamnente al campo usuario como PK para asegurar que no haya usuarios repetidos (UNIQUE)
 	usuario NVARCHAR(100) NOT NULL PRIMARY KEY, 
-	--pass NVARCHAR(100) NOT NULL,
 	pass BINARY(32) NOT NULL,
 	habilitado BIT NOT NULL DEFAULT 1,
 	cantidad_intentos_fallidos INTEGER NOT NULL DEFAULT 0
@@ -117,12 +159,12 @@ CREATE TABLE LOS_BARONES_DE_LA_CERVEZA.Usuarios(
 GO
 
 /******************************************************************
-Tabla Roles_Por_Usuario /** OK Leo **/
+Tabla Roles_Por_Usuario 
 @Desc: Tabla intermedia donde se especifica que roles tiene asignado
 cada usuario. 
 ******************************************************************/
 GO
-CREATE TABLE LOS_BARONES_DE_LA_CERVEZA.Roles_por_Usuario (
+CREATE TABLE LOS_BARONES_DE_LA_CERVEZA.Roles_por_Usuario(
 	usuario NVARCHAR(100),
 	rol NVARCHAR(100),
 	PRIMARY KEY(usuario, rol)
@@ -130,7 +172,7 @@ CREATE TABLE LOS_BARONES_DE_LA_CERVEZA.Roles_por_Usuario (
 GO
 
 /******************************************************************
-Tabla Roles /** OK Leo **/
+Tabla Roles 
 @Desc: Tabla de roles. Un rol es un conjunto de funcionalidades
 que se puede emplear en la aplicación.
 ******************************************************************/
@@ -142,7 +184,7 @@ CREATE TABLE LOS_BARONES_DE_LA_CERVEZA.Roles (
 GO
 
 /******************************************************************
-Tabla Funcionalidades_Por_Roles /** OK Leo **/
+Tabla Funcionalidades_Por_Roles
 @Desc: Tabla intermedia que vincula las funcionalidades que posee
 cada rol. 
 ******************************************************************/
@@ -155,7 +197,7 @@ CREATE TABLE LOS_BARONES_DE_LA_CERVEZA.Funcionalidades_Por_Roles(
 GO
 
 /******************************************************************
-Tabla Funcionalidades /** OK Leo **/
+Tabla Funcionalidades
 @Desc: Tabla con los datos de cada funcionalidad existente. 
 ******************************************************************/
 GO
@@ -166,7 +208,7 @@ CREATE TABLE LOS_BARONES_DE_LA_CERVEZA.Funcionalidades(
 GO
 
 /******************************************************************
-Tabla Clientes /** OK Leo **/ 
+Tabla Clientes 
 @Desc: Contiene los campos referidos a los clientes del sistema.
 ******************************************************************/
 GO
@@ -184,9 +226,8 @@ CREATE TABLE LOS_BARONES_DE_LA_CERVEZA.Clientes(
 )
 GO
 
-
 /******************************************************************
-Tabla Tipos_Cabinas (Tipos de servicio de cada cabina) /** OK Leo (Tipo_Servicio) **/
+Tabla Tipos_Cabinas (Tipos de servicio de cada cabina)
 @Desc: Existen cinco tipos de cabinas (o servicios de cabina). Los
 mismos son fijos y no se pueden modificar (ni alterar el porcetaje
 de recargo que se cobra). No hay ABM para esta tabla. 
@@ -200,7 +241,7 @@ CREATE TABLE LOS_BARONES_DE_LA_CERVEZA.Tipos_Cabinas(
 GO
 
 /******************************************************************
-Tabla Marcas_Cruceros /** OK Leo **/
+Tabla Marcas_Cruceros 
 @Desc: 
 ******************************************************************/
 GO
@@ -211,7 +252,7 @@ CREATE TABLE LOS_BARONES_DE_LA_CERVEZA.Marcas_Cruceros(
 GO
 
 /******************************************************************
-Tabla Cruceros_Fuera_Servicio /** OK Leo **/
+Tabla Cruceros_Fuera_Servicio 
 @Desc: 
 ******************************************************************/
 GO
@@ -224,7 +265,7 @@ CREATE TABLE LOS_BARONES_DE_LA_CERVEZA.Cruceros_Fuera_Servicio(
 GO
 
 /******************************************************************
-Tabla Cruceros /** OK Leo **/
+Tabla Cruceros 
 @Desc: Tabla de los cruceros disponibles para realizar viajes. 
 ******************************************************************/
 GO
@@ -241,7 +282,7 @@ CREATE TABLE LOS_BARONES_DE_LA_CERVEZA.Cruceros(
 GO
 
 /******************************************************************
-Tabla Cabinas /** OK Leo **/
+Tabla Cabinas 
 @Desc: Tabla con las cabinas de todos los cruceros.
 ******************************************************************/
 GO
@@ -254,6 +295,138 @@ CREATE TABLE LOS_BARONES_DE_LA_CERVEZA.Cabinas(
 	estado BIT DEFAULT 0 -- 0: Disponible (No comprada/No Reservada) / 1: No Disponible (Comprada/Reservada) 
 )
 GO
+
+/******************************************************************
+Tabla Puertos (Ciudades) -- OK 
+@Desc: Tabla con las cabinas de todos los cruceros.
+******************************************************************/
+CREATE TABLE [LOS_BARONES_DE_LA_CERVEZA].Puerto(
+	id_puerto INT IDENTITY PRIMARY KEY NOT NULL,
+	puerto_nombre NVARCHAR(255)
+)
+GO
+
+/******************************************************************
+Tabla Recorrido -- OK 
+@Desc: Tabla con los recorridos disponibles para crear viajes.
+******************************************************************/
+CREATE TABLE [LOS_BARONES_DE_LA_CERVEZA].Recorrido(	
+	id_recorrido INT IDENTITY PRIMARY KEY NOT NULL,
+	recorrido_codigo NVARCHAR(255),
+	recorrido_estado BIT
+)
+GO
+
+/******************************************************************
+Tabla Tramo
+@Desc: Tabla con los recorridos disponibles para crear viajes.
+Recordar que para el dominio del TP, PUERTO es sinónimo de CIUDAD
+******************************************************************/
+CREATE TABLE [LOS_BARONES_DE_LA_CERVEZA].Tramo(
+	id_tramo INT IDENTITY PRIMARY KEY NOT NULL,
+	tramo_puerto_inicio INT,   
+	tramo_puerto_destino INT,  
+	tramo_precio DECIMAL(18,2)
+)
+GO
+
+/******************************************************************
+Tabla Tramos_por_Recorrido
+@Desc: Tabla con los recorridos disponibles para crear viajes.
+******************************************************************/
+CREATE TABLE [LOS_BARONES_DE_LA_CERVEZA].Tramos_por_Recorrido(	
+	id_tramo_por_recorrido INT IDENTITY PRIMARY KEY NOT NULL,
+	id_recorrido INT,
+	id_tramo INT,
+	tramo_siguiente INT,
+	tramo_anterior INT
+)	
+GO
+
+/******************************************************************
+Tabla Viaje
+@Desc: Tabla con los recorridos disponibles para crear viajes.
+******************************************************************/
+CREATE TABLE [LOS_BARONES_DE_LA_CERVEZA].Viaje(	
+	id_viaje INT IDENTITY PRIMARY KEY NOT NULL,
+	viaje_fecha_inicio DATETIME2(3),
+	viaje_fecha_fin DATETIME2(3),
+	viaje_fecha_fin_estimada DATETIME2(3),
+	viaje_id_crucero INT,
+	viaje_id_recorrido INT,
+	viajes_cabinas_libres INT
+)
+GO
+
+/******************************************************************
+Tabla Forma_de_Pago
+@Desc: Tabla con los recorridos disponibles para crear viajes.
+******************************************************************/
+CREATE TABLE [LOS_BARONES_DE_LA_CERVEZA].Forma_de_pago(	
+	id_forma_de_pago INT IDENTITY PRIMARY KEY NOT NULL,
+	forma_de_pago_nombre NVARCHAR(20)
+)
+GO
+
+/******************************************************************
+Tabla Compras
+@Desc: Tabla donde figuran las compras realizadas por los administradores
+y clientes.
+******************************************************************/
+CREATE TABLE [LOS_BARONES_DE_LA_CERVEZA].Compra(	
+	id_compra int identity (1,1) PRIMARY KEY NOT NULL,
+	compra_fecha datetime2(3),
+	compra_cantidad int,
+	compra_numero_tarjeta nvarchar(50),
+	compra_precio_con_recargo decimal(18,2),
+	compra_id_forma_de_pago int,
+	compra_id_cliente int,
+	compra_id_viaje int,
+	compra_tipo_cabina INT
+)
+GO
+
+/******************************************************************
+Tabla Reserva
+@Desc: Tablas con las reservas de viajes realizadas por los 
+administradores y clientes. 
+******************************************************************/
+CREATE TABLE [LOS_BARONES_DE_LA_CERVEZA].Reserva
+(	id_reserva int identity (1,1) NOT NULL,
+	reserva_fecha datetime2(3),
+	reserva_cantidad_pasajes int,
+	reserva_cliente int,
+	reserva_viaje int,
+	CONSTRAINT pk_id_Reserva PRIMARY KEY CLUSTERED (id_reserva) ) 
+GO
+
+/******************************************************************
+Tabla Factura
+@Desc: 
+******************************************************************/
+CREATE TABLE [LOS_BARONES_DE_LA_CERVEZA].Factura
+(	id_factura INT IDENTITY PRIMARY KEY NOT NULL,
+	factura_fecha datetime2(3),
+	factura_tipo char(1),
+	factura_total numeric(18,0),
+	factura_id_viaje int
+)
+GO
+
+/******************************************************************
+Tabla Item_Factura
+@Desc: 
+******************************************************************/
+CREATE TABLE [LOS_BARONES_DE_LA_CERVEZA].Item_factura
+(	id_item_factura int identity (1,1) NOT NULL,
+	item_factura_cantidad int,
+	item_factura_monto decimal(18,0),
+	item_fecha_compra datetime2(3),
+	item_tipo_servicio_descripcion nvarchar(255),
+	item_factura_id_factura int,
+	CONSTRAINT pk_id_item_factura PRIMARY KEY CLUSTERED (id_item_factura) )
+GO
+
 
 ------------------------------------------------------------------------------------------------------
 						-- 5. MIGRACION DE DATOS DE LA TABLA MAESTRA 
@@ -304,7 +477,6 @@ VALUES ('Comprar/Reservar Viaje', 'Permite acceder al módulo de compras y reserv
 		('ABM Cruceros', 'Funcionalidad que permite crear, eliminar y modificar los cruceros disponibles para los viajes.'),
 		('Listados estadisticos', 'Permite visualizar diferentes listados estadísticos sobre el sistema.')
 GO
-
 
 /******************************************************************
 Cargamos el Rol_Cliente y le asignamos sus funcionalidades. 
@@ -496,6 +668,115 @@ FOREIGN KEY (crucero)
 REFERENCES LOS_BARONES_DE_LA_CERVEZA.Cruceros(id_crucero)
 ON UPDATE CASCADE
 GO
+
+/***** FK LEO *****/
+-- Vinculo tramo_puerto_inicio de Tramo con id_puerto de Puerto
+GO
+ALTER TABLE [LOS_BARONES_DE_LA_CERVEZA].Tramo 
+ADD CONSTRAINT FK_tramo_puerto_inicio
+FOREIGN KEY (tramo_puerto_inicio)
+REFERENCES LOS_BARONES_DE_LA_CERVEZA.Puerto(id_puerto)
+ON UPDATE CASCADE
+GO
+
+-- Vinculo tramo_puerto_destino de Tramo con id_puerto de Puerto
+GO
+ALTER TABLE [LOS_BARONES_DE_LA_CERVEZA].Tramo 
+ADD CONSTRAINT FK_tramo_puerto_destino
+FOREIGN KEY (tramo_puerto_destino)
+REFERENCES LOS_BARONES_DE_LA_CERVEZA.Puerto(id_puerto)
+--ON UPDATE CASCADE
+GO
+
+-- Vinculo id_crucero de Crucero con viaje_id_crucero de Viaje
+GO
+ALTER TABLE [LOS_BARONES_DE_LA_CERVEZA].Viaje
+ADD CONSTRAINT FK_viaje_crucero 
+FOREIGN KEY (viaje_id_crucero)
+REFERENCES LOS_BARONES_DE_LA_CERVEZA.Cruceros(id_crucero)
+ON UPDATE CASCADE
+GO
+
+-- Vinculo id_recorrido de Recorrido con viaje_id_recorrido de Viaje
+GO
+ALTER TABLE [LOS_BARONES_DE_LA_CERVEZA].Viaje
+ADD CONSTRAINT FK_viaje_recorrido
+FOREIGN KEY (viaje_id_recorrido)
+REFERENCES LOS_BARONES_DE_LA_CERVEZA.Recorrido(id_recorrido)
+ON UPDATE CASCADE
+GO
+
+-- Vinculo id_forma_pago de Forma_de_Pago con compra_id_forma_de_pago de Compra
+GO
+ALTER TABLE [LOS_BARONES_DE_LA_CERVEZA].Compra
+ADD CONSTRAINT FK_forma_de_pago_compra
+FOREIGN KEY (compra_id_forma_de_pago)
+REFERENCES LOS_BARONES_DE_LA_CERVEZA.Forma_de_Pago(id_forma_de_pago)
+ON UPDATE CASCADE
+GO
+
+-- Vinculo id_cliente de Cliente con compra_id_cliente de Compra
+GO
+ALTER TABLE [LOS_BARONES_DE_LA_CERVEZA].Compra
+ADD CONSTRAINT FK_cliente_compra
+FOREIGN KEY (compra_id_cliente)
+REFERENCES LOS_BARONES_DE_LA_CERVEZA.Clientes(id_cliente)
+ON UPDATE CASCADE
+GO
+
+-- Vinculo id_viaje de Viaje con compra_id_viaje de Compra
+GO
+ALTER TABLE [LOS_BARONES_DE_LA_CERVEZA].Compra
+ADD CONSTRAINT FK_compra_viaje
+FOREIGN KEY (compra_id_viaje)
+REFERENCES LOS_BARONES_DE_LA_CERVEZA.Viaje(id_viaje)
+ON UPDATE CASCADE
+GO
+
+-- Vinculo id_viaje de Viaje con reserva_viaje de Reserva
+GO
+ALTER TABLE [LOS_BARONES_DE_LA_CERVEZA].Reserva
+ADD CONSTRAINT FK_viaje_reserva
+FOREIGN KEY (reserva_viaje)
+REFERENCES LOS_BARONES_DE_LA_CERVEZA.Viaje(id_viaje)
+ON UPDATE CASCADE
+GO
+
+-- Vinculo id_cliente de Cliente con reserva_cliente de Reserva
+GO
+ALTER TABLE [LOS_BARONES_DE_LA_CERVEZA].Reserva
+ADD CONSTRAINT FK_cliente_reserva
+FOREIGN KEY (reserva_cliente)
+REFERENCES LOS_BARONES_DE_LA_CERVEZA.Clientes(id_cliente)
+ON UPDATE CASCADE
+GO
+
+-- Vinculo id_viaje de Viaje con factura_id_viaje de Factura
+GO
+ALTER TABLE [LOS_BARONES_DE_LA_CERVEZA].Factura
+ADD CONSTRAINT FK_factura_viaje
+FOREIGN KEY (factura_id_viaje)
+REFERENCES LOS_BARONES_DE_LA_CERVEZA.Viaje(id_viaje)
+ON UPDATE CASCADE
+GO
+
+-- Vinculo id_factura de Factura con item_factura_id_factura de Item_Factura
+GO
+ALTER TABLE [LOS_BARONES_DE_LA_CERVEZA].Item_Factura
+ADD CONSTRAINT FK_item_factura_a_factura
+FOREIGN KEY (item_factura_id_factura)
+REFERENCES LOS_BARONES_DE_LA_CERVEZA.Factura(id_factura)
+ON UPDATE CASCADE
+GO
+
+--Asociamos la FK de Puerto a Recorrido y tambien Recorrido a si mismo en siguiente y anterior
+alter table [LOS_BARONES_DE_LA_CERVEZA].Tramos_por_Recorrido add
+constraint fk_id_TramoxRecorridoRecorridoRecorrido foreign key (id_recorrido) references [LOS_BARONES_DE_LA_CERVEZA].Recorrido(id_recorrido),
+constraint fk_id_TramoxRecorridoTramo foreign key (id_tramo) references [LOS_BARONES_DE_LA_CERVEZA].Tramo(id_tramo),
+constraint fk_id_TramoxRecorridoSiguiente foreign key (tramo_siguiente) references [LOS_BARONES_DE_LA_CERVEZA].Tramos_por_Recorrido(id_tramo_por_recorrido),
+constraint fk_id_TramoxRecorridoAnterior foreign key (tramo_anterior) references [LOS_BARONES_DE_LA_CERVEZA].Tramos_por_Recorrido(id_tramo_por_recorrido)
+GO
+
 
 /*******************************************************************************
 							FIN - CREAMOS LAS FK'S
@@ -734,8 +1015,8 @@ CREATE FUNCTION [LOS_BARONES_DE_LA_CERVEZA].[UF_cruceros_disponibles]
 RETURNS TABLE 
 AS
 RETURN 
-	SELECT DISTINCT cru.crucero_identificador
-	FROM LOS_BARONES_DE_LA_CERVEZA.Crucero cru
+	SELECT DISTINCT cru.identificador
+	FROM LOS_BARONES_DE_LA_CERVEZA.Cruceros cru
 		JOIN LOS_BARONES_DE_LA_CERVEZA.Viaje via
 			ON cru.id_crucero = via.viaje_id_crucero
 	WHERE CONVERT(DATETIME2(3), @fecha_inicio_nuevo_viaje_s, 121) > 
@@ -743,14 +1024,14 @@ RETURN
 				-- Le fecha de inicio de mi viaje debe ser mayor a la fecha de fin del 
 				-- último viaje asignado del crucero
 				SELECT TOP 1 via2.viaje_fecha_fin 
-				FROM LOS_BARONES_DE_LA_CERVEZA.Crucero cru2
+				FROM LOS_BARONES_DE_LA_CERVEZA.Cruceros cru2
 					JOIN LOS_BARONES_DE_LA_CERVEZA.Viaje via2
 						ON cru2.id_crucero = via2.viaje_id_crucero
-				WHERE cru2.crucero_identificador = cru.crucero_identificador
+				WHERE cru2.identificador = cru.identificador
 				ORDER BY 1 DESC
 			)
-		AND cru.crucero_baja_por_fuera_de_servicio = 0
-		AND crucero_baja_por_vida_util = 0
+		AND cru.baja_fuera_servicio = 0
+		AND cru.baja_vida_util = 0
 -- FIN [LOS_BARONES_DE_LA_CERVEZA].[UF_cruceros_disponibles] 
 
 

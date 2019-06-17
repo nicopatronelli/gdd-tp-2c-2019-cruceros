@@ -68,7 +68,7 @@ nuevo viaje que se está queriendo crear.
 Nota: Hay 37 cruceros distintos en total de la migración. 
 ******************************************************************/
 
-DECLARE @fecha_inicio_mi_viaje DATETIME2(3) = (CONVERT(DATETIME2(3), '2018-08-03', 121))
+DECLARE @fecha_inicio_mi_viaje DATETIME2(3) = (CONVERT(DATETIME2(3), '2018-08-02', 121))
 SELECT DISTINCT cru.crucero_identificador
 FROM LOS_BARONES_DE_LA_CERVEZA.Crucero cru
 	JOIN LOS_BARONES_DE_LA_CERVEZA.Viaje via
@@ -93,3 +93,25 @@ FROM LOS_BARONES_DE_LA_CERVEZA.Crucero cru
 ORDER BY via.viaje_fecha_fin DESC
 
 
+CREATE FUNCTION [mi_funcion]()
+RETURNS TABLE
+AS
+	RETURN
+		(SELECT DISTINCT cru.crucero_identificador
+		FROM LOS_BARONES_DE_LA_CERVEZA.Crucero cru)
+
+DROP FUNCTION LOS_BARONES_DE_LA_CERVEZA.mi_funcion
+SELECT [LOS_BARONES_DE_LA_CERVEZA].[mi_funcion]()
+
+SELECT * 
+FROM dbo.mi_funcion()
+
+SELECT crucero_identificador
+FROM [LOS_BARONES_DE_LA_CERVEZA].[UF_cruceros_disponibles]('2018-08-02')
+
+SELECT DISTINCT crucero_identificador 
+from LOS_BARONES_DE_LA_CERVEZA.Crucero
+
+DECLARE @variable DECIMAL(18,0) = 1254715
+DECLARE @otra_variable NVARCHAR(255) = @variable
+SELECT @otra_variable
