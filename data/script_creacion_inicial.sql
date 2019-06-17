@@ -28,6 +28,10 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_D
     DROP TABLE LOS_BARONES_DE_LA_CERVEZA.Forma_de_pago
 GO
 
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.Estado_Cabinas_Por_Viaje'))
+    DROP TABLE LOS_BARONES_DE_LA_CERVEZA.Estado_Cabinas_Por_Viaje
+GO
+
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.Viaje'))
     DROP TABLE LOS_BARONES_DE_LA_CERVEZA.Viaje
 GO
@@ -291,8 +295,7 @@ CREATE TABLE LOS_BARONES_DE_LA_CERVEZA.Cabinas(
 	tipo_cabina INT, -- FK al id_tipo_cabina de Tipos_Cabinas 
 	crucero INT, -- FK al id_crucero al cuál pertenece la cabina 
 	numero DECIMAL(18,0), -- CABINA_NRO en la tabla Maestra
-	piso DECIMAL(18,0), -- CABINA_PISO en la tabla Maestra
-	estado BIT DEFAULT 0 -- 0: Disponible (No comprada/No Reservada) / 1: No Disponible (Comprada/Reservada) 
+	piso DECIMAL(18,0) -- CABINA_PISO en la tabla Maestra
 )
 GO
 
@@ -374,7 +377,7 @@ Tabla Compras
 y clientes.
 ******************************************************************/
 CREATE TABLE [LOS_BARONES_DE_LA_CERVEZA].Compra(	
-	id_compra int identity (1,1) PRIMARY KEY NOT NULL,
+	id_compra INT IDENTITY PRIMARY KEY NOT NULL,
 	compra_fecha datetime2(3),
 	compra_cantidad int,
 	compra_numero_tarjeta nvarchar(50),
@@ -391,21 +394,21 @@ Tabla Reserva
 @Desc: Tablas con las reservas de viajes realizadas por los 
 administradores y clientes. 
 ******************************************************************/
-CREATE TABLE [LOS_BARONES_DE_LA_CERVEZA].Reserva
-(	id_reserva int identity (1,1) NOT NULL,
+CREATE TABLE [LOS_BARONES_DE_LA_CERVEZA].Reserva(	
+	id_reserva INT IDENTITY PRIMARY KEY NOT NULL,
 	reserva_fecha datetime2(3),
 	reserva_cantidad_pasajes int,
 	reserva_cliente int,
-	reserva_viaje int,
-	CONSTRAINT pk_id_Reserva PRIMARY KEY CLUSTERED (id_reserva) ) 
+	reserva_viaje int
+)
 GO
 
 /******************************************************************
 Tabla Factura
 @Desc: 
 ******************************************************************/
-CREATE TABLE [LOS_BARONES_DE_LA_CERVEZA].Factura
-(	id_factura INT IDENTITY PRIMARY KEY NOT NULL,
+CREATE TABLE [LOS_BARONES_DE_LA_CERVEZA].Factura(	
+	id_factura INT IDENTITY PRIMARY KEY NOT NULL,
 	factura_fecha datetime2(3),
 	factura_tipo char(1),
 	factura_total numeric(18,0),
@@ -417,16 +420,29 @@ GO
 Tabla Item_Factura
 @Desc: 
 ******************************************************************/
-CREATE TABLE [LOS_BARONES_DE_LA_CERVEZA].Item_factura
-(	id_item_factura int identity (1,1) NOT NULL,
+CREATE TABLE [LOS_BARONES_DE_LA_CERVEZA].Item_factura(	
+	id_item_factura int identity (1,1) NOT NULL,
 	item_factura_cantidad int,
 	item_factura_monto decimal(18,0),
 	item_fecha_compra datetime2(3),
 	item_tipo_servicio_descripcion nvarchar(255),
 	item_factura_id_factura int,
-	CONSTRAINT pk_id_item_factura PRIMARY KEY CLUSTERED (id_item_factura) )
+	CONSTRAINT pk_id_item_factura PRIMARY KEY CLUSTERED (id_item_factura) 
+)
 GO
 
+/******************************************************************
+Tabla Estado_Cabinas_Por_Viaje
+@Desc: Permite marcar el estado de cada cabina para un viaje 
+determinado, como disponible (0) y no disponible (1).
+******************************************************************/
+CREATE TABLE [LOS_BARONES_DE_LA_CERVEZA].Estado_Cabinas_Por_Viaje(
+	id_viaje INT, -- FK a id_viaje de Viajes
+	id_cabina INT, -- FK a id_cabina de Cabinas
+	estado BIT DEFAULT 0, -- 0: Disponible (No comprada/No Reservada) / 1: No Disponible (Comprada/Reservada) 
+	PRIMARY KEY(id_viaje, id_cabina)
+)
+GO
 
 ------------------------------------------------------------------------------------------------------
 						-- 5. MIGRACION DE DATOS DE LA TABLA MAESTRA 
@@ -769,14 +785,57 @@ REFERENCES LOS_BARONES_DE_LA_CERVEZA.Factura(id_factura)
 ON UPDATE CASCADE
 GO
 
---Asociamos la FK de Puerto a Recorrido y tambien Recorrido a si mismo en siguiente y anterior
-alter table [LOS_BARONES_DE_LA_CERVEZA].Tramos_por_Recorrido add
-constraint fk_id_TramoxRecorridoRecorridoRecorrido foreign key (id_recorrido) references [LOS_BARONES_DE_LA_CERVEZA].Recorrido(id_recorrido),
-constraint fk_id_TramoxRecorridoTramo foreign key (id_tramo) references [LOS_BARONES_DE_LA_CERVEZA].Tramo(id_tramo),
-constraint fk_id_TramoxRecorridoSiguiente foreign key (tramo_siguiente) references [LOS_BARONES_DE_LA_CERVEZA].Tramos_por_Recorrido(id_tramo_por_recorrido),
-constraint fk_id_TramoxRecorridoAnterior foreign key (tramo_anterior) references [LOS_BARONES_DE_LA_CERVEZA].Tramos_por_Recorrido(id_tramo_por_recorrido)
+-- id_recorrido de Tramos_por_Recorrido lo vinculo con id_recorrido de Recorrido
+GO
+ALTER TABLE [LOS_BARONES_DE_LA_CERVEZA].Tramos_por_Recorrido
+ADD CONSTRAINT FK_id_TramoxRecorridoRecorridoRecorrido
+FOREIGN KEY (id_recorrido)
+REFERENCES [LOS_BARONES_DE_LA_CERVEZA].Recorrido(id_recorrido)
+ON UPDATE CASCADE
 GO
 
+-- id_tramo de Tramos_por_Recorrido lo vinculo con id_tramo de Tramo
+GO
+ALTER TABLE [LOS_BARONES_DE_LA_CERVEZA].Tramos_por_Recorrido
+ADD CONSTRAINT FK_id_TramoxRecorridoTramo
+FOREIGN KEY (id_tramo)
+REFERENCES [LOS_BARONES_DE_LA_CERVEZA].Tramo(id_tramo)
+ON UPDATE CASCADE
+GO
+
+-- tramo_siguiente de Tramos_por_Recorrido lo vinculo con id_rtramo_por_recorrido de Tramos_por_Recorrido
+GO
+ALTER TABLE [LOS_BARONES_DE_LA_CERVEZA].Tramos_por_Recorrido
+ADD CONSTRAINT FK_id_TramoxRecorridoSiguiente
+FOREIGN KEY (tramo_siguiente)
+REFERENCES [LOS_BARONES_DE_LA_CERVEZA].Tramos_por_Recorrido(id_tramo_por_recorrido)
+GO
+
+-- tramo_anterior de Tramos_por_Recorrido lo vinculo con id_rtramo_por_recorrido de Tramos_por_Recorrido
+GO
+ALTER TABLE [LOS_BARONES_DE_LA_CERVEZA].Tramos_por_Recorrido
+ADD CONSTRAINT FK_id_TramoxRecorridoAnterior
+FOREIGN KEY (tramo_anterior)
+REFERENCES [LOS_BARONES_DE_LA_CERVEZA].Tramos_por_Recorrido(id_tramo_por_recorrido)
+GO
+
+-- id_viaje de Estado_Cabinas_Por_Viaje referencia a id_viaje de Viaje
+GO
+ALTER TABLE LOS_BARONES_DE_LA_CERVEZA.Estado_Cabinas_Por_Viaje 
+ADD CONSTRAINT FK_estado_cabina_por_viaje_con_viaje -- Nombre de la FK
+FOREIGN KEY (id_viaje)
+REFERENCES LOS_BARONES_DE_LA_CERVEZA.Viaje(id_viaje)
+ON UPDATE NO ACTION 
+GO
+
+-- id_cabina de Estado_Cabinas_Por_Viaje referencia a id_cabina de Cabinas
+GO
+ALTER TABLE LOS_BARONES_DE_LA_CERVEZA.Estado_Cabinas_Por_Viaje 
+ADD CONSTRAINT FK_estado_cabina_por_viaje_con_cabina -- Nombre de la FK
+FOREIGN KEY (id_cabina)
+REFERENCES LOS_BARONES_DE_LA_CERVEZA.Cabinas(id_cabina)
+ON UPDATE NO ACTION
+GO
 
 /*******************************************************************************
 							FIN - CREAMOS LAS FK'S
