@@ -104,10 +104,6 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_D
 	DROP PROCEDURE LOS_BARONES_DE_LA_CERVEZA.USP_Login
 GO
 
-IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.USP_enlazar_recorridos'))
-	DROP PROCEDURE LOS_BARONES_DE_LA_CERVEZA.USP_enlazar_recorridos
-GO
-
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.USP_insertar_crucero'))
 	DROP PROCEDURE LOS_BARONES_DE_LA_CERVEZA.USP_insertar_crucero
 GO
@@ -891,95 +887,6 @@ END
 GO
 
 /******************************************************************
-[LOS_BARONES_DE_LA_CERVEZA].[USP_enlazar_recorridos] 
-@Desc: Enlazamos los recorridos de 2 tramos que migramos de la 
-tabla maestra
-******************************************************************/
-
-create procedure LOS_BARONES_DE_LA_CERVEZA.USP_enlazar_recorridos
-AS BEGIN
-
-	declare @idReco int, @idTramo int, @puerto1 int, @puerto2 int;
-	declare @InicioDelOtroTramo int, @codigo decimal(18,0)
-
-	CREATE TABLE #tempRecorrido
-    (tempIdReco INT NOT NULL,tempCodigo decimal(18,0), tempIdTramo INT NOT NULL,  tempPuerto1 int, tempPuerto2 int);
-
-	INSERT INTO #tempRecorrido SELECT DISTINCT id_recorrido, RE.recorrido_codigo, TR.id_tramo, TR.tramo_puerto_inicio, TR.tramo_puerto_destino
-							   FROM LOS_BARONES_DE_LA_CERVEZA.Recorrido RE join gd_esquema.Maestra MA on MA.RECORRIDO_CODIGO = MA.recorrido_codigo
-							   join LOS_BARONES_DE_LA_CERVEZA.Tramo TR on MA.PUERTO_DESDE = TR.tramo_puerto_inicio and MA.PUERTO_HASTA = TR.tramo_puerto_destino
-	where RE.recorrido_codigo != 43820864 AND RE.recorrido_codigo != 43820908
-
-	DECLARE recorridos CURSOR FOR
-	(SELECT DISTINCT tempIdReco, tempIdTramo, tempPuerto1, tempPuerto2 FROM #tempRecorrido)
-
-	OPEN recorridos;
-	FETCH NEXT FROM recorridos into @idReco, @codigo, @idTramo, @puerto1, @puerto2
-	WHILE @@FETCH_STATUS = 0	--mientras que el cursor no se vaya de la tabla
-	BEGIN
-		if(EXISTS(select id_tramo_por_recorrido from Tramos_por_Recorrido where id_tramo = @idTramo and id_recorrido = @idReco))
-			begin
-				set @InicioDelOtroTramo = (select tempPuerto1 from #tempRecorrido
-										   where @idReco = tempIdReco and @puerto2 != tempPuerto2 and @puerto1 != tempPuerto1)
-
-				--Me fijo si es el primero comparandolo con el otro recorrido del mismo codigo
-				if(@puerto2 = @InicioDelOtroTramo)
-					begin
-						--es el primer tramo, lo inserto
-
-						INSERT INTO LOS_BARONES_DE_LA_CERVEZA.Tramos_por_Recorrido(id_recorrido, id_tramo, tramo_siguiente, tramo_anterior)
-						SELECT DISTINCT @idReco, @idTramo, NULL, NULL
-						FROM #tempRecorrido
-
-						--enlazo el primero en el campo anterior del segundo que inserto ahora
-						INSERT INTO LOS_BARONES_DE_LA_CERVEZA.Tramos_por_Recorrido(id_recorrido, id_tramo, tramo_siguiente, tramo_anterior)
-						SELECT DISTINCT @idReco, (select tempIdTramo from #tempRecorrido where tempIdReco =  @idReco and @idTramo != tempIdTramo), NULL,
-												 (select TR.id_tramo_por_recorrido from LOS_BARONES_DE_LA_CERVEZA.Tramos_por_Recorrido TR
-											      where TR.id_recorrido = @idReco and TR.id_tramo = @idTramo and TR.tramo_anterior = NULL and TR.tramo_siguiente = NULL)
-
-						--Le enlazo el segundo tramo en el campo recorrido_siguiente del primero que meti
-						UPDATE LOS_BARONES_DE_LA_CERVEZA.Tramos_por_Recorrido 
-						set tramo_siguiente = (select id_tramo_por_recorrido from LOS_BARONES_DE_LA_CERVEZA.Tramos_por_Recorrido TR 
-											   where TR.id_recorrido = @idReco and @idReco != tramo_anterior)
-					end
-				else
-					begin
-						--es el segundo tramo, lo inserto
-
-						INSERT INTO LOS_BARONES_DE_LA_CERVEZA.Tramos_por_Recorrido(id_recorrido, id_tramo, tramo_siguiente, tramo_anterior)
-						SELECT DISTINCT @idReco, @idTramo, NULL, NULL
-
-
-						--enlazo el segundo en el campo siguiente del primero que inserto ahora
-						INSERT INTO LOS_BARONES_DE_LA_CERVEZA.Tramos_por_Recorrido(id_recorrido, id_tramo, tramo_siguiente, tramo_anterior)
-						SELECT DISTINCT @idReco, (select tempIdTramo from #tempRecorrido where tempIdReco =  @idReco and @idTramo != tempIdTramo), 
-										(select TR.id_tramo_por_recorrido from LOS_BARONES_DE_LA_CERVEZA.Tramos_por_Recorrido TR
-					 					 where TR.id_recorrido = @idReco and TR.id_tramo = @idTramo and TR.tramo_anterior = NULL and TR.tramo_siguiente = NULL), NULL
-
-						--Le enlazo el primer tramo en el campo recorrido_anterior
-						UPDATE LOS_BARONES_DE_LA_CERVEZA.Tramos_por_Recorrido 
-						set tramo_anterior = (select id_tramo_por_recorrido from LOS_BARONES_DE_LA_CERVEZA.Tramos_por_Recorrido TR 
-											   where TR.id_recorrido = @idReco and TR.id_tramo = @idTramo)
-					end
-			end
-		FETCH NEXT FROM recorridos into @idReco, @codigo, @idTramo, @puerto1, @puerto2
-	END
-	CLOSE recorridos;
-
-	--Ahora inserto los 2 recorridos que tienen solamente un tramo
-	INSERT LOS_BARONES_DE_LA_CERVEZA.Tramos_por_Recorrido 
-	SELECT DISTINCT  (select distinct id_recorrido From Recorrido RE where (RE.recorrido_codigo = 43820864)),
-					 (select distinct id_tramo from gd_esquema.Maestra join Tramo on (PUERTO_DESDE = tramo_puerto_inicio and PUERTO_HASTA = tramo_puerto_destino)
-					  where RECORRIDO_CODIGO = 43820864), NULL, NULL
-
-	INSERT LOS_BARONES_DE_LA_CERVEZA.Tramos_por_Recorrido 
-	SELECT DISTINCT  (select distinct id_recorrido From Recorrido RE where (RE.recorrido_codigo = 43820908)),
-					 (select distinct id_tramo from gd_esquema.Maestra join Tramo on (PUERTO_DESDE = tramo_puerto_inicio and PUERTO_HASTA = tramo_puerto_destino)
-					  where RECORRIDO_CODIGO = 43820864), NULL, NULL
-END
-GO
-
-/******************************************************************
 [LOS_BARONES_DE_LA_CERVEZA].[UF_crear_username_Cliente] 
 @Desc: 
 ******************************************************************/
@@ -1166,9 +1073,6 @@ Enlazamos Tramos_por_Recorrido de la tabla maestra.
 los de un tramo a la tabla Tramos_por_Recorrido
 ******************************************************************/
 
---EXEC [LOS_BARONES_DE_LA_CERVEZA].USP_enlazar_recorridos
---GO
-
 /*******************************************************************************
 							FIN - CARGA DE DATOS PREVIOS 
 ********************************************************************************/
@@ -1236,6 +1140,19 @@ SELECT DISTINCT (select id_puerto from LOS_BARONES_DE_LA_CERVEZA.Puerto where PU
 FROM gd_esquema.Maestra
 
 /******************************************************************
+Migramos los Tramos_por_Recorrido de la tabla maestra.
+@DESC: Por inconsistencias en la maestra asumimos que todos los 
+recorridos de esta son solo de un tramo, y en el sistema que construimos
+se puede tener recorridos de mas de un tramo como lo exige el enunciado.
+******************************************************************/
+
+INSERT INTO LOS_BARONES_DE_LA_CERVEZA.Tramos_por_Recorrido(id_recorrido, id_tramo, tramo_anterior, tramo_siguiente)
+SELECT DISTINCT (select id_recorrido from LOS_BARONES_DE_LA_CERVEZA.Recorrido RE where RE.recorrido_codigo = MA.RECORRIDO_CODIGO ),
+				(select id_tramo from LOS_BARONES_DE_LA_CERVEZA.Tramo TR where PUERTO_DESDE = (select puerto_nombre from LOS_BARONES_DE_LA_CERVEZA.Puerto where id_puerto = TR.tramo_puerto_inicio)
+				 and PUERTO_HASTA = (select puerto_nombre from LOS_BARONES_DE_LA_CERVEZA.Puerto where id_puerto = TR.tramo_puerto_destino)), NULL, NULL
+FROM gd_esquema.Maestra MA
+
+/******************************************************************
 Migramos los cruceros de la tabla maestra.
 @DESC: Asumo que todos los de la maestra estan en servicio.
 ******************************************************************/
@@ -1276,7 +1193,7 @@ Migramos las compras de la tabla maestra.
 @DESC: Los codigo de pasaje de la maestra van a ser los id_compra
 de nuestra tabla
 ******************************************************************/
-/*
+
 Set Identity_Insert [LOS_BARONES_DE_LA_CERVEZA].Compra ON	--Usamos esta funcion para que pueda insertar las Compras y poner sus PK segun  el pasaje_codigo de la maestra y que despues al crear nuevas
 														    --compras los numeros continuen desde el que lo deje. Primero lo enciendo para migrar y luego lo apago para que el identity continue desde la ultima
 INSERT INTO [LOS_BARONES_DE_LA_CERVEZA].Compra
@@ -1286,7 +1203,7 @@ INSERT INTO [LOS_BARONES_DE_LA_CERVEZA].Compra
 	compra_numero_tarjeta,		--Es NULL porque son todas compras en efectivo y el dato no esta en la maestra
 	compra_precio_con_recargo,
 	compra_id_forma_de_pago,
-	compra_id_cliente,
+	--compra_id_cliente,
 	compra_id_viaje,
 	compra_tipo_cabina )
 SELECT DISTINCT
@@ -1296,42 +1213,44 @@ SELECT DISTINCT
 	NULL,			--No hay nro tarjeta en la maestra
 	MR.PASAJE_PRECIO,
 	2,				--Como no hay numeros de tarjeta en la maestra asumo que todas las formas de pago fueron efectivo
-	(SELECT id_cliente FROM [LOS_BARONES_DE_LA_CERVEZA].Clientes WHERE MR.CLI_DNI = dni and MR.CLI_NOMBRE = nombre and MR.CLI_APELLIDO = apellido and MR.CLI_DIRECCION = direccion),
-	(SELECT id_viaje FROM [LOS_BARONES_DE_LA_CERVEZA].Viaje VI where VI.viaje_id_crucero = (select id_crucero from LOS_BARONES_DE_LA_CERVEZA.Cruceros where MR.CRUCERO_IDENTIFICADOR = identificador and MR.CRUCERO_MODELO = modelo)
+	--(SELECT id_cliente FROM [LOS_BARONES_DE_LA_CERVEZA].Clientes WHERE MR.CLI_DNI = dni and MR.CLI_NOMBRE = nombre and MR.CLI_APELLIDO = apellido),
+	(SELECT top 1 id_viaje FROM [LOS_BARONES_DE_LA_CERVEZA].Viaje VI where VI.viaje_id_crucero = (select id_crucero from LOS_BARONES_DE_LA_CERVEZA.Cruceros where MR.CRUCERO_IDENTIFICADOR = identificador and MR.CRUCERO_MODELO = modelo)
 	 and VI.viaje_id_recorrido = (select id_recorrido from LOS_BARONES_DE_LA_CERVEZA.Recorrido where MR.RECORRIDO_CODIGO = recorrido_codigo) and VI.viaje_fecha_inicio = MR.FECHA_SALIDA and MR.FECHA_LLEGADA_ESTIMADA = viaje_fecha_fin_estimada),
-	 (select id_tipo_cabina from LOS_BARONES_DE_LA_CERVEZA.Tipos_Cabinas TI where TI.tipo_cabina = MR.CABINA_TIPO)
-FROM gd_esquema.Maestra MR WHERE MR.PASAJE_FECHA_COMPRA IS NOT NULL
-
+	(select id_tipo_cabina from LOS_BARONES_DE_LA_CERVEZA.Tipos_Cabinas TI where TI.tipo_cabina = MR.CABINA_TIPO)
+FROM (select CLI_DNI, CLI_NOMBRE, CLI_APELLIDO, CRUCERO_IDENTIFICADOR, CRUCERO_MODELO, RECORRIDO_CODIGO, FECHA_SALIDA, FECHA_LLEGADA_ESTIMADA, CABINA_TIPO, PASAJE_CODIGO, PASAJE_FECHA_COMPRA, PASAJE_PRECIO 
+	  from gd_esquema.Maestra where PASAJE_CODIGO IS NOT NULL) MR
+--gd_esquema.Maestra MR WHERE MR.PASAJE_CODIGO IS NOT NULL
 Set Identity_Insert [LOS_BARONES_DE_LA_CERVEZA].Compra OFF		--Luego de apagarlo las PKs van a seguir segun el ultimo numero de pasaje_codigo que ingrese
 GO
-*/
+
+--select * from LOS_BARONES_DE_LA_CERVEZA.Clientes
 /******************************************************************
 Migramos las reservas de la tabla maestra.
 @DESC: Los codigo de reserva de la maestra van a ser los id_reserva
 de nuestra tabla
 ******************************************************************/
-/*
+
 Set Identity_Insert [LOS_BARONES_DE_LA_CERVEZA].Reserva ON
 
 INSERT INTO [LOS_BARONES_DE_LA_CERVEZA].Reserva
 (	id_reserva,
 	reserva_fecha,
 	reserva_cantidad_pasajes,
-	reserva_cliente,
+	--reserva_cliente,
 	reserva_viaje )
 SELECT DISTINCT
 	 MR.RESERVA_CODIGO,
 	 MR.RESERVA_FECHA,
 	 1,
-	 (SELECT distinct id_cliente FROM [LOS_BARONES_DE_LA_CERVEZA].Clientes WHERE MR.CLI_DNI = dni and MR.CLI_NOMBRE = nombre and MR.CLI_APELLIDO = apellido and MR.CLI_DIRECCION = direccion),
-	 (SELECT distinct id_viaje FROM [LOS_BARONES_DE_LA_CERVEZA].Viaje VI join LOS_BARONES_DE_LA_CERVEZA.Crucero on VI.viaje_id_crucero = id_crucero 
-							  WHERE MR.FECHA_SALIDA = VI.Viaje.viaje_fecha_inicio AND MR.FECHA_LLEGADA_ESTIMADA = VI.Viaje.viaje_fecha_fin_estimada
-							    AND MR.CRUCERO_IDENTIFICADOR = crucero_identificador AND MR.CRUCERO_MODELO = crucero_modelo)
-FROM gd_esquema.Maestra MR WHERE RESERVA_CODIGO IS NOT NULL
+	 --(SELECT distinct id_cliente FROM [LOS_BARONES_DE_LA_CERVEZA].Clientes WHERE MR.CLI_DNI = dni and MR.CLI_NOMBRE = nombre and MR.CLI_APELLIDO = apellido),
+	 (SELECT top 1 id_viaje FROM [LOS_BARONES_DE_LA_CERVEZA].Viaje VI where VI.viaje_id_crucero = (select id_crucero from LOS_BARONES_DE_LA_CERVEZA.Cruceros where MR.CRUCERO_IDENTIFICADOR = identificador and MR.CRUCERO_MODELO = modelo)
+	 and VI.viaje_id_recorrido = (select id_recorrido from LOS_BARONES_DE_LA_CERVEZA.Recorrido where MR.RECORRIDO_CODIGO = recorrido_codigo) and VI.viaje_fecha_inicio = MR.FECHA_SALIDA and MR.FECHA_LLEGADA_ESTIMADA = viaje_fecha_fin_estimada)
+FROM (select CLI_DNI, CLI_NOMBRE, CLI_APELLIDO, CRUCERO_IDENTIFICADOR, CRUCERO_MODELO, RECORRIDO_CODIGO, FECHA_SALIDA, FECHA_LLEGADA_ESTIMADA, RESERVA_CODIGO, RESERVA_FECHA
+	  from gd_esquema.Maestra where PASAJE_CODIGO IS NULL) MR
 GO
 
 Set Identity_Insert [LOS_BARONES_DE_LA_CERVEZA].Reserva OFF
-*/
+
 
 /******************************************************************
 Migramos las cabinas de todos los cruceros.
@@ -1350,6 +1269,19 @@ SELECT DISTINCT
 	 MR.CABINA_NRO,
 	 MR.CABINA_PISO
 FROM gd_esquema.Maestra MR WHERE CRUCERO_MODELO IS NOT NULL
+GO
+
+/******************************************************************
+Migramos los viajes de la tabla maestra.
+@DESC: Estos valores no se pueden modificar ni agregar nuevos tipos.
+******************************************************************/
+
+INSERT INTO [LOS_BARONES_DE_LA_CERVEZA].Estado_Cabinas_Por_Viaje
+(id_viaje, id_cabina, estado)
+SELECT DISTINCT (SELECT top 1 id_viaje FROM [LOS_BARONES_DE_LA_CERVEZA].Viaje VI where VI.viaje_id_crucero = (select id_crucero from LOS_BARONES_DE_LA_CERVEZA.Cruceros where MR.CRUCERO_IDENTIFICADOR = identificador and MR.CRUCERO_MODELO = modelo)
+	 and VI.viaje_id_recorrido = (select id_recorrido from LOS_BARONES_DE_LA_CERVEZA.Recorrido where MR.RECORRIDO_CODIGO = recorrido_codigo) and VI.viaje_fecha_inicio = MR.FECHA_SALIDA and MR.FECHA_LLEGADA_ESTIMADA = viaje_fecha_fin_estimada),
+				(select id_cabina from LOS_BARONES_DE_LA_CERVEZA.Cabinas where MR.CABINA_NRO = numero and MR.CABINA_PISO = piso and crucero = (select id_crucero from LOS_BARONES_DE_LA_CERVEZA.Cruceros where MR.CRUCERO_IDENTIFICADOR = identificador and MR.CRUCERO_MODELO = modelo)),1
+FROM gd_esquema.Maestra MR
 GO
 
 ------------------------------------------------------------------------------
