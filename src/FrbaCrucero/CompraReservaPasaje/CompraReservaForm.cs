@@ -26,9 +26,8 @@ namespace FrbaCrucero.CompraReservaPasaje
         private void CompraReservaForm_Load(object sender, EventArgs e)
         {
 
-            string consulta = "SELECT[puerto_nombre] from[GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Puerto]"
-                                +" WHERE[id_puerto] in (SELECT[recorrido_puerto_inicio] FROM[GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Recorrido]"
-                                +" WHERE recorrido_anterior is NULL)";
+            string consulta = "SELECT[puerto_nombre] from[GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Puerto]";
+;
 
             Query miConsulta = new Query(consulta,new List<Parametro>());
             this.origenes = miConsulta.ejecutarReaderUnicaColumna();
