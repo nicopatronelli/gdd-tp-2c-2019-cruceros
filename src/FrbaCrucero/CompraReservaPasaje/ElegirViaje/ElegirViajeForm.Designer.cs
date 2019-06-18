@@ -36,31 +36,32 @@
             this.crucerosList = new System.Windows.Forms.ListBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.estandarNumeric = new System.Windows.Forms.NumericUpDown();
-            this.exteriorNumeric = new System.Windows.Forms.NumericUpDown();
-            this.suiteNumeric = new System.Windows.Forms.NumericUpDown();
-            this.balconNumeric = new System.Windows.Forms.NumericUpDown();
-            this.ejecutivoNumeric = new System.Windows.Forms.NumericUpDown();
-            this.estandarMaxLabel = new System.Windows.Forms.Label();
-            this.ejecutivoMaxLabel = new System.Windows.Forms.Label();
-            this.balconMaxLabel = new System.Windows.Forms.Label();
-            this.suitMaxLabel = new System.Windows.Forms.Label();
             this.exteriorMaxLabel = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.suitMaxLabel = new System.Windows.Forms.Label();
+            this.balconMaxLabel = new System.Windows.Forms.Label();
+            this.ejecutivoMaxLabel = new System.Windows.Forms.Label();
+            this.estandarMaxLabel = new System.Windows.Forms.Label();
+            this.ejecutivoNumeric = new System.Windows.Forms.NumericUpDown();
+            this.balconNumeric = new System.Windows.Forms.NumericUpDown();
+            this.suiteNumeric = new System.Windows.Forms.NumericUpDown();
+            this.exteriorNumeric = new System.Windows.Forms.NumericUpDown();
+            this.estandarNumeric = new System.Windows.Forms.NumericUpDown();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.buttonComprar = new System.Windows.Forms.Button();
+            this.buttonReservar = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.estandarNumeric)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.exteriorNumeric)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.suiteNumeric)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.balconNumeric)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ejecutivoNumeric)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.balconNumeric)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.suiteNumeric)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.exteriorNumeric)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.estandarNumeric)).BeginInit();
             this.SuspendLayout();
             // 
             // labelRecorridos
@@ -158,75 +159,87 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Cabinas Disponibles";
             // 
-            // label3
+            // exteriorMaxLabel
             // 
-            this.label3.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(39, 35);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(101, 13);
-            this.label3.TabIndex = 17;
-            this.label3.Text = "Cantidad Disponible";
+            this.exteriorMaxLabel.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.exteriorMaxLabel.AutoSize = true;
+            this.exteriorMaxLabel.Location = new System.Drawing.Point(72, 150);
+            this.exteriorMaxLabel.Name = "exteriorMaxLabel";
+            this.exteriorMaxLabel.Size = new System.Drawing.Size(19, 13);
+            this.exteriorMaxLabel.TabIndex = 31;
+            this.exteriorMaxLabel.Text = "10";
             // 
-            // label4
+            // suitMaxLabel
             // 
-            this.label4.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(173, 35);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(56, 13);
-            this.label4.TabIndex = 17;
-            this.label4.Text = "A Comprar";
+            this.suitMaxLabel.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.suitMaxLabel.AutoSize = true;
+            this.suitMaxLabel.Location = new System.Drawing.Point(72, 204);
+            this.suitMaxLabel.Name = "suitMaxLabel";
+            this.suitMaxLabel.Size = new System.Drawing.Size(19, 13);
+            this.suitMaxLabel.TabIndex = 30;
+            this.suitMaxLabel.Text = "10";
             // 
-            // label5
+            // balconMaxLabel
             // 
-            this.label5.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(101, 65);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(84, 13);
-            this.label5.TabIndex = 18;
-            this.label5.Text = "Cabina estandar";
+            this.balconMaxLabel.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.balconMaxLabel.AutoSize = true;
+            this.balconMaxLabel.Location = new System.Drawing.Point(72, 265);
+            this.balconMaxLabel.Name = "balconMaxLabel";
+            this.balconMaxLabel.Size = new System.Drawing.Size(19, 13);
+            this.balconMaxLabel.TabIndex = 29;
+            this.balconMaxLabel.Text = "10";
             // 
-            // label6
+            // ejecutivoMaxLabel
             // 
-            this.label6.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(101, 123);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(78, 13);
-            this.label6.TabIndex = 19;
-            this.label6.Text = "Cabina Exterior";
+            this.ejecutivoMaxLabel.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.ejecutivoMaxLabel.AutoSize = true;
+            this.ejecutivoMaxLabel.Location = new System.Drawing.Point(72, 319);
+            this.ejecutivoMaxLabel.Name = "ejecutivoMaxLabel";
+            this.ejecutivoMaxLabel.Size = new System.Drawing.Size(19, 13);
+            this.ejecutivoMaxLabel.TabIndex = 28;
+            this.ejecutivoMaxLabel.Text = "10";
             // 
-            // label7
+            // estandarMaxLabel
             // 
-            this.label7.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(124, 179);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(31, 13);
-            this.label7.TabIndex = 20;
-            this.label7.Text = "Suite";
+            this.estandarMaxLabel.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.estandarMaxLabel.AutoSize = true;
+            this.estandarMaxLabel.Location = new System.Drawing.Point(72, 92);
+            this.estandarMaxLabel.Name = "estandarMaxLabel";
+            this.estandarMaxLabel.Size = new System.Drawing.Size(19, 13);
+            this.estandarMaxLabel.TabIndex = 19;
+            this.estandarMaxLabel.Text = "10";
             // 
-            // label8
+            // ejecutivoNumeric
             // 
-            this.label8.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(103, 235);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(76, 13);
-            this.label8.TabIndex = 21;
-            this.label8.Text = "Cabina Balcón";
+            this.ejecutivoNumeric.Location = new System.Drawing.Point(168, 324);
+            this.ejecutivoNumeric.Name = "ejecutivoNumeric";
+            this.ejecutivoNumeric.ReadOnly = true;
+            this.ejecutivoNumeric.Size = new System.Drawing.Size(37, 20);
+            this.ejecutivoNumeric.TabIndex = 27;
             // 
-            // label9
+            // balconNumeric
             // 
-            this.label9.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(113, 292);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(51, 13);
-            this.label9.TabIndex = 22;
-            this.label9.Text = "Ejecutivo";
+            this.balconNumeric.Location = new System.Drawing.Point(168, 272);
+            this.balconNumeric.Name = "balconNumeric";
+            this.balconNumeric.ReadOnly = true;
+            this.balconNumeric.Size = new System.Drawing.Size(37, 20);
+            this.balconNumeric.TabIndex = 26;
+            // 
+            // suiteNumeric
+            // 
+            this.suiteNumeric.Location = new System.Drawing.Point(168, 209);
+            this.suiteNumeric.Name = "suiteNumeric";
+            this.suiteNumeric.ReadOnly = true;
+            this.suiteNumeric.Size = new System.Drawing.Size(37, 20);
+            this.suiteNumeric.TabIndex = 25;
+            // 
+            // exteriorNumeric
+            // 
+            this.exteriorNumeric.Location = new System.Drawing.Point(168, 155);
+            this.exteriorNumeric.Name = "exteriorNumeric";
+            this.exteriorNumeric.ReadOnly = true;
+            this.exteriorNumeric.Size = new System.Drawing.Size(37, 20);
+            this.exteriorNumeric.TabIndex = 24;
             // 
             // estandarNumeric
             // 
@@ -241,105 +254,104 @@
             this.estandarNumeric.Size = new System.Drawing.Size(37, 20);
             this.estandarNumeric.TabIndex = 23;
             // 
-            // exteriorNumeric
+            // label9
             // 
-            this.exteriorNumeric.Location = new System.Drawing.Point(168, 155);
-            this.exteriorNumeric.Name = "exteriorNumeric";
-            this.exteriorNumeric.ReadOnly = true;
-            this.exteriorNumeric.Size = new System.Drawing.Size(37, 20);
-            this.exteriorNumeric.TabIndex = 24;
+            this.label9.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(113, 292);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(51, 13);
+            this.label9.TabIndex = 22;
+            this.label9.Text = "Ejecutivo";
             // 
-            // suiteNumeric
+            // label8
             // 
-            this.suiteNumeric.Location = new System.Drawing.Point(168, 209);
-            this.suiteNumeric.Name = "suiteNumeric";
-            this.suiteNumeric.ReadOnly = true;
-            this.suiteNumeric.Size = new System.Drawing.Size(37, 20);
-            this.suiteNumeric.TabIndex = 25;
+            this.label8.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(103, 235);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(76, 13);
+            this.label8.TabIndex = 21;
+            this.label8.Text = "Cabina Balcón";
             // 
-            // balconNumeric
+            // label7
             // 
-            this.balconNumeric.Location = new System.Drawing.Point(168, 272);
-            this.balconNumeric.Name = "balconNumeric";
-            this.balconNumeric.ReadOnly = true;
-            this.balconNumeric.Size = new System.Drawing.Size(37, 20);
-            this.balconNumeric.TabIndex = 26;
+            this.label7.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(124, 179);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(31, 13);
+            this.label7.TabIndex = 20;
+            this.label7.Text = "Suite";
             // 
-            // ejecutivoNumeric
+            // label6
             // 
-            this.ejecutivoNumeric.Location = new System.Drawing.Point(168, 324);
-            this.ejecutivoNumeric.Name = "ejecutivoNumeric";
-            this.ejecutivoNumeric.ReadOnly = true;
-            this.ejecutivoNumeric.Size = new System.Drawing.Size(37, 20);
-            this.ejecutivoNumeric.TabIndex = 27;
+            this.label6.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(101, 123);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(78, 13);
+            this.label6.TabIndex = 19;
+            this.label6.Text = "Cabina Exterior";
             // 
-            // estandarMaxLabel
+            // label5
             // 
-            this.estandarMaxLabel.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.estandarMaxLabel.AutoSize = true;
-            this.estandarMaxLabel.Location = new System.Drawing.Point(72, 92);
-            this.estandarMaxLabel.Name = "estandarMaxLabel";
-            this.estandarMaxLabel.Size = new System.Drawing.Size(19, 13);
-            this.estandarMaxLabel.TabIndex = 19;
-            this.estandarMaxLabel.Text = "10";
+            this.label5.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(101, 65);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(84, 13);
+            this.label5.TabIndex = 18;
+            this.label5.Text = "Cabina estandar";
             // 
-            // ejecutivoMaxLabel
+            // label4
             // 
-            this.ejecutivoMaxLabel.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.ejecutivoMaxLabel.AutoSize = true;
-            this.ejecutivoMaxLabel.Location = new System.Drawing.Point(72, 319);
-            this.ejecutivoMaxLabel.Name = "ejecutivoMaxLabel";
-            this.ejecutivoMaxLabel.Size = new System.Drawing.Size(19, 13);
-            this.ejecutivoMaxLabel.TabIndex = 28;
-            this.ejecutivoMaxLabel.Text = "10";
+            this.label4.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(173, 35);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(56, 13);
+            this.label4.TabIndex = 17;
+            this.label4.Text = "A Comprar";
             // 
-            // balconMaxLabel
+            // label3
             // 
-            this.balconMaxLabel.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.balconMaxLabel.AutoSize = true;
-            this.balconMaxLabel.Location = new System.Drawing.Point(72, 265);
-            this.balconMaxLabel.Name = "balconMaxLabel";
-            this.balconMaxLabel.Size = new System.Drawing.Size(19, 13);
-            this.balconMaxLabel.TabIndex = 29;
-            this.balconMaxLabel.Text = "10";
+            this.label3.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(39, 35);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(101, 13);
+            this.label3.TabIndex = 17;
+            this.label3.Text = "Cantidad Disponible";
             // 
-            // suitMaxLabel
+            // buttonComprar
             // 
-            this.suitMaxLabel.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.suitMaxLabel.AutoSize = true;
-            this.suitMaxLabel.Location = new System.Drawing.Point(72, 204);
-            this.suitMaxLabel.Name = "suitMaxLabel";
-            this.suitMaxLabel.Size = new System.Drawing.Size(19, 13);
-            this.suitMaxLabel.TabIndex = 30;
-            this.suitMaxLabel.Text = "10";
+            this.buttonComprar.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F);
+            this.buttonComprar.Location = new System.Drawing.Point(372, 396);
+            this.buttonComprar.Name = "buttonComprar";
+            this.buttonComprar.Size = new System.Drawing.Size(140, 42);
+            this.buttonComprar.TabIndex = 17;
+            this.buttonComprar.Text = "Comprar";
+            this.buttonComprar.UseVisualStyleBackColor = true;
+            this.buttonComprar.Click += new System.EventHandler(this.Button1_Click);
             // 
-            // exteriorMaxLabel
+            // buttonReservar
             // 
-            this.exteriorMaxLabel.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.exteriorMaxLabel.AutoSize = true;
-            this.exteriorMaxLabel.Location = new System.Drawing.Point(72, 150);
-            this.exteriorMaxLabel.Name = "exteriorMaxLabel";
-            this.exteriorMaxLabel.Size = new System.Drawing.Size(19, 13);
-            this.exteriorMaxLabel.TabIndex = 31;
-            this.exteriorMaxLabel.Text = "10";
-            // 
-            // button1
-            // 
-            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F);
-            this.button1.Location = new System.Drawing.Point(452, 396);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(125, 42);
-            this.button1.TabIndex = 17;
-            this.button1.Text = "Listo";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.Button1_Click);
+            this.buttonReservar.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F);
+            this.buttonReservar.Location = new System.Drawing.Point(518, 396);
+            this.buttonReservar.Name = "buttonReservar";
+            this.buttonReservar.Size = new System.Drawing.Size(138, 42);
+            this.buttonReservar.TabIndex = 18;
+            this.buttonReservar.Text = "Reservar";
+            this.buttonReservar.UseVisualStyleBackColor = true;
             // 
             // ElegirViajeForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.buttonReservar);
+            this.Controls.Add(this.buttonComprar);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Name = "ElegirViajeForm";
@@ -348,11 +360,11 @@
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.estandarNumeric)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.exteriorNumeric)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.suiteNumeric)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.balconNumeric)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ejecutivoNumeric)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.balconNumeric)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.suiteNumeric)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.exteriorNumeric)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.estandarNumeric)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -384,6 +396,7 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button buttonComprar;
+        private System.Windows.Forms.Button buttonReservar;
     }
 }

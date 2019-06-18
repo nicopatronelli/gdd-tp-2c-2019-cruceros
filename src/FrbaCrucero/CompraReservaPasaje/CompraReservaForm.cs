@@ -27,8 +27,8 @@ namespace FrbaCrucero.CompraReservaPasaje
         {
 
             string consulta = "SELECT[puerto_nombre] from[GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Puerto]"
-                                + "WHERE[id_puerto] in (SELECT[recorrido_puerto_inicio] FROM[GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Recorrido]"
-                                + "WHERE recorrido_anterior is NULL)";
+                                +" WHERE[id_puerto] in (SELECT[recorrido_puerto_inicio] FROM[GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Recorrido]"
+                                +" WHERE recorrido_anterior is NULL)";
 
             Query miConsulta = new Query(consulta,new List<Parametro>());
             this.origenes = miConsulta.ejecutarReaderUnicaColumna();
@@ -70,9 +70,9 @@ namespace FrbaCrucero.CompraReservaPasaje
         private void buscarDestinos(string origen)
         {
             string consulta =   "SELECT[puerto_nombre] FROM[GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Puerto]"
-                                +"inner join("
-                                +"select[recorrido_puerto_destino] from [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Recorrido]"
-                                +"where recorrido_codigo in ("
+                                +" inner join("
+                                +" select[recorrido_puerto_destino] from [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Recorrido]"
+                                +" where recorrido_codigo in ("
                                 +"        SELECT[recorrido_codigo] from [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Recorrido]"
                                 +"        WHERE recorrido_puerto_inicio = 27 and recorrido_anterior is null)"  //este 27 seria una ID hardcodeada del puerto origen, del que actualmente solo tengo el nombre
 		                        +"        ) as hola"
