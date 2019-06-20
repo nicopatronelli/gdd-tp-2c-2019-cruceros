@@ -29,11 +29,13 @@ namespace FrbaCrucero.CompraReservaPasaje
         {
             string consulta = "SELECT cast(id_recorrido as nvarchar(255)) as id_recorrido from[GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[UF_recorridos_segun_origen_y_destino]('" + puertoOrigen + "', '" + puertoDestino + "')";
 
+            this.cargarTipoCabinas();
+
             Query miConsulta = new Query(consulta, new List<Parametro>());
             var recorridos =  miConsulta.ejecutarReaderUnicaColumna();
-            foreach (var o in new List<string>() {"Cabina Estandar","Cabina Exterior","Suite","Cabina Balcón","Ejecutivo" })
+            foreach (var o in recorridos)
             {
-                this.selectorCabinas.Items.Add(o);
+                this.recorridosList.Items.Add(o);
             }
         }
 
@@ -78,6 +80,24 @@ namespace FrbaCrucero.CompraReservaPasaje
                 this.crucerosList.Items.Add(o);
             }
 
+        }
+
+        private void cargarTipoCabinas()
+        {
+            string consulta = "select tipo_cabina from GD1C2019.LOS_BARONES_DE_LA_CERVEZA.Tipos_Cabinas";
+            Query miConsulta = new Query(consulta, new List<Parametro>());
+            var destinos = miConsulta.ejecutarReaderUnicaColumna();
+            foreach (var o in destinos)
+            {
+                this.selectorCabinas.Items.Add(o);
+            }
+
+
+        }
+
+        private void selectorCabinas_SelectedValueChanged(object sender, EventArgs e)
+        {
+            //TODO calcular cuando este disponible cabinas totales - cabinas vendidas
         }
 
 
