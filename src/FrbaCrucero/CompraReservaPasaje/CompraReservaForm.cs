@@ -27,7 +27,7 @@ namespace FrbaCrucero.CompraReservaPasaje
         {
 
             string consulta = "SELECT[puerto_nombre] from[GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Puerto]";
-;
+
 
             Query miConsulta = new Query(consulta,new List<Parametro>());
             this.origenes = miConsulta.ejecutarReaderUnicaColumna();
@@ -68,16 +68,8 @@ namespace FrbaCrucero.CompraReservaPasaje
 
         private void buscarDestinos(string origen)
         {
-            string consulta = ""
-                               + " select puerto_nombre from [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Puerto]"
-                               + " where id_puerto in("
-                               + "         select t.tramo_puerto_destino from [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Tramo] t, [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Tramos_por_Recorrido] txr"
-                               + "         where txr.id_recorrido in ("
-                               + "             select r.[id_recorrido] from  [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Recorrido] r, [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Tramos_por_Recorrido] txr, [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Tramo] t"
-                               + "             where txr.tramo_anterior is NULL and  txr.id_tramo = t.id_tramo AND txr.id_recorrido = r.id_recorrido AND t.tramo_puerto_inicio = 10"
-                               + "             )"
-                               + "         AND txr.id_tramo = t.id_tramo"
-                               + "         )";
+
+            string consulta = "select * from [LOS_BARONES_DE_LA_CERVEZA].[UF_destinos_segun_origen]('" + origen.ToUpper() + "')";
 
             Query miConsulta = new Query(consulta, new List<Parametro>());
             this.destinos = miConsulta.ejecutarReaderUnicaColumna();
@@ -98,7 +90,7 @@ namespace FrbaCrucero.CompraReservaPasaje
             }
             if(calendario.SelectionStart <= DateTime.Today)
             {
-                errorMsg += "Seleccione una fecha posterior a la actual\n";
+               // errorMsg += "Seleccione una fecha posterior a la actual\n";
             }
             if (this.origenesList.SelectedItem == null)
             {
@@ -167,5 +159,32 @@ where id_puerto in(
 			)
 		AND txr.id_tramo = t.id_tramo
 		)
+
+*/
+
+
+
+/*
+saco codigo delegate nico
+
+        private void popularCampos()
+        {
+            string consulta = "SELECT cru.modelo modelo, cru.identificador identificador, mar.marca marca "
+                            + "FROM LOS_BARONES_DE_LA_CERVEZA.Cruceros cru "
+                                + "JOIN LOS_BARONES_DE_LA_CERVEZA.Marcas_Cruceros mar "
+                                    + "ON cru.marca = mar.id_marca "
+                            + "WHERE cru.identificador = @identificador_crucero";
+            List<Parametro> parametros = new List<Parametro>();
+            Parametro paramIdentificadorCrucero = new Parametro("@identificador_crucero", SqlDbType.NChar, identificadorCrucero, 50);
+            parametros.Add(paramIdentificadorCrucero);
+            Query miConsulta = new Query(consulta, parametros);
+            SqlDataReader camposCrucero = miConsulta.ejecutarReaderFila();
+            string[] identificadorPartes = identificadorCrucero.Split('-');
+            txtbxIdentificadorA.Text = identificadorPartes[0];
+            txtbxIdentificadorB.Text = identificadorPartes[1];
+            txtbxModelo.Text = Convert.ToString(camposCrucero["modelo"]);
+            cmbxMarca.SelectedItem = Convert.ToString(camposCrucero["marca"]);
+            miConsulta.cerrarConexionReader();
+        }
 
 */

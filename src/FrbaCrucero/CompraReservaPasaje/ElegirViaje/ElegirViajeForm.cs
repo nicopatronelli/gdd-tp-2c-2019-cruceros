@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FrbaCrucero.Utils;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -15,6 +16,7 @@ namespace FrbaCrucero.CompraReservaPasaje
         string puertoOrigen;
         string puertoDestino;
         DateTime fechaSalida;
+        //List<int> recorridos;
         public ElegirViajeForm(string puertoOrigen, string puertoDestino, DateTime fechaSalida)
         {
             this.puertoOrigen = puertoOrigen;
@@ -23,23 +25,62 @@ namespace FrbaCrucero.CompraReservaPasaje
             InitializeComponent();
         }
 
-        private void Eleccion_Crucero(object sender, EventArgs e)
+        private void ElegirViajeFormLoad(object sender, EventArgs e)
         {
-            this.cargarCabinas();
+            string consulta = "SELECT cast(id_recorrido as nvarchar(255)) as id_recorrido from[GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[UF_recorridos_segun_origen_y_destino]('" + puertoOrigen + "', '" + puertoDestino + "')";
 
+            Query miConsulta = new Query(consulta, new List<Parametro>());
+            var recorridos =  miConsulta.ejecutarReaderUnicaColumna();
+            foreach (var o in new List<string>() {"Cabina Estandar","Cabina Exterior","Suite","Cabina Balcón","Ejecutivo" })
+            {
+                this.selectorCabinas.Items.Add(o);
+            }
         }
 
-
-
-        private void cargarCabinas()
-        {
-
-        }
 
         private void Button1_Click(object sender, EventArgs e)
         {
             //Efectuar pago o reserva
         }
+
+        private void recorridosList_SelectedValueChanged(object sender, EventArgs e)
+        {
+            this.crucerosList.Items.Clear();
+            this.puertosList.Items.Clear();
+            this.actualizarPuertos();
+            this.actualizarCruceros();
+        }
+
+        private void actualizarPuertos()
+        {
+
+            string consulta = "SELECT puerto_nombre from[GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[UF_destinos_segun_recorrido]('" + recorridosList.SelectedItem + "')";
+
+            Query miConsulta = new Query(consulta, new List<Parametro>());
+            var destinos =  miConsulta.ejecutarReaderUnicaColumna();
+            foreach (var o in destinos)
+            {
+                this.puertosList.Items.Add(o);
+            }
+        }
+
+        private void actualizarCruceros()
+        {
+            
+            string consulta = " select cast(id_viaje as nvarchar(255)) from GD1C2019.LOS_BARONES_DE_LA_CERVEZA.Viaje v  "
+                                + " where	CONVERT(VARCHAR(10), v.viaje_fecha_inicio, 103) = '" + this.fechaSalida.ToShortDateString() +"'  ";		//el 103 es para pasarlo al format dd/mm/yyyy
+
+
+            Query miConsulta = new Query(consulta, new List<Parametro>());
+            var destinos = miConsulta.ejecutarReaderUnicaColumna();     
+            foreach (var o in destinos)
+            {
+                this.crucerosList.Items.Add(o);
+            }
+
+        }
+
+
     }
 }
 
