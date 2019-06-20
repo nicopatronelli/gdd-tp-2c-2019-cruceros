@@ -68,14 +68,16 @@ namespace FrbaCrucero.CompraReservaPasaje
 
         private void buscarDestinos(string origen)
         {
-            string consulta =   "SELECT[puerto_nombre] FROM[GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Puerto]"
-                                +" inner join("
-                                +" select[recorrido_puerto_destino] from [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Recorrido]"
-                                +" where recorrido_codigo in ("
-                                +"        SELECT[recorrido_codigo] from [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Recorrido]"
-                                +"        WHERE recorrido_puerto_inicio = 27 and recorrido_anterior is null)"  //este 27 seria una ID hardcodeada del puerto origen, del que actualmente solo tengo el nombre
-		                        +"        ) as hola"
-                                +" on id_puerto = hola.recorrido_puerto_destino";
+            string consulta = ""
+                               + " select puerto_nombre from [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Puerto]"
+                               + " where id_puerto in("
+                               + "         select t.tramo_puerto_destino from [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Tramo] t, [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Tramos_por_Recorrido] txr"
+                               + "         where txr.id_recorrido in ("
+                               + "             select r.[id_recorrido] from  [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Recorrido] r, [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Tramos_por_Recorrido] txr, [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Tramo] t"
+                               + "             where txr.tramo_anterior is NULL and  txr.id_tramo = t.id_tramo AND txr.id_recorrido = r.id_recorrido AND t.tramo_puerto_inicio = 10"
+                               + "             )"
+                               + "         AND txr.id_tramo = t.id_tramo"
+                               + "         )";
 
             Query miConsulta = new Query(consulta, new List<Parametro>());
             this.destinos = miConsulta.ejecutarReaderUnicaColumna();
@@ -130,3 +132,40 @@ on id_puerto = hola.recorrido_puerto_destino
 
     }
 }
+
+
+
+
+/*
+--recorridos en los que el puerto inicial es de id 10
+select r.[id_recorrido] from  [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Recorrido] r, [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Tramos_por_Recorrido] txr, [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Tramo] t
+where txr.tramo_anterior is NULL and  txr.id_tramo = t.id_tramo AND txr.id_recorrido = r.id_recorrido AND t.tramo_puerto_inicio = 10
+--devuelve id 19
+
+
+--dado un recorrido, buscar los posibles destinos. ej Recorrido 19
+select t.tramo_puerto_destino from [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Tramo] t, [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Tramos_por_Recorrido] txr
+where txr.id_recorrido in (19) AND txr.id_tramo = t.id_tramo
+--devuelve puertos 6 y 44
+
+
+---union de las 2 anteriores
+select t.tramo_puerto_destino from [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Tramo] t, [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Tramos_por_Recorrido] txr
+where txr.id_recorrido in (
+	select r.[id_recorrido] from  [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Recorrido] r, [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Tramos_por_Recorrido] txr, [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Tramo] t
+	where txr.tramo_anterior is NULL and  txr.id_tramo = t.id_tramo AND txr.id_recorrido = r.id_recorrido AND t.tramo_puerto_inicio = 10
+	)
+AND txr.id_tramo = t.id_tramo
+
+--agrego que me devuelva el nombre de los puertos
+select puerto_nombre from [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Puerto]
+where id_puerto in(
+		select t.tramo_puerto_destino from [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Tramo] t, [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Tramos_por_Recorrido] txr
+		where txr.id_recorrido = (
+			select r.[id_recorrido] from  [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Recorrido] r, [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Tramos_por_Recorrido] txr, [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Tramo] t
+			where txr.tramo_anterior is NULL and  txr.id_tramo = t.id_tramo AND txr.id_recorrido = r.id_recorrido AND t.tramo_puerto_inicio = 10
+			)
+		AND txr.id_tramo = t.id_tramo
+		)
+
+*/
