@@ -137,6 +137,10 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_D
 	DROP FUNCTION LOS_BARONES_DE_LA_CERVEZA.UF_nombre_puertos
 GO
 
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.UF_id_puerto'))
+	DROP FUNCTION LOS_BARONES_DE_LA_CERVEZA.UF_id_puerto
+GO
+
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.UF_recorridos_segun_origen'))
 	DROP FUNCTION LOS_BARONES_DE_LA_CERVEZA.UF_recorridos_segun_origen
 GO
@@ -149,8 +153,8 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_D
 	DROP FUNCTION LOS_BARONES_DE_LA_CERVEZA.UF_destinos_segun_origen
 GO
 
-IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.UF_destinos_segun_origen_y_destino'))
-	DROP FUNCTION LOS_BARONES_DE_LA_CERVEZA.UF_destinos_segun_origen_y_destino
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.UF_recorridos_segun_origen_y_destino'))
+	DROP FUNCTION LOS_BARONES_DE_LA_CERVEZA.UF_recorridos_segun_origen_y_destino
 GO
 
 
