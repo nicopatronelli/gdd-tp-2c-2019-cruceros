@@ -133,6 +133,27 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_D
 	DROP FUNCTION LOS_BARONES_DE_LA_CERVEZA.UF_cruceros_disponibles
 GO
 
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.UF_nombre_puertos'))
+	DROP FUNCTION LOS_BARONES_DE_LA_CERVEZA.UF_nombre_puertos
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.UF_recorridos_segun_origen'))
+	DROP FUNCTION LOS_BARONES_DE_LA_CERVEZA.UF_recorridos_segun_origen
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.UF_destinos_segun_recorrido'))
+	DROP FUNCTION LOS_BARONES_DE_LA_CERVEZA.UF_destinos_segun_recorrido
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.UF_destinos_segun_origen'))
+	DROP FUNCTION LOS_BARONES_DE_LA_CERVEZA.UF_destinos_segun_origen
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.UF_destinos_segun_origen_y_destino'))
+	DROP FUNCTION LOS_BARONES_DE_LA_CERVEZA.UF_destinos_segun_origen_y_destino
+GO
+
+
 /***** TRIGGERS: Se eliminan automáticamente al eliminar las tablas a las que están asociados *****/
 
 ------------------------------------------------------------------------------------------------------
@@ -932,6 +953,122 @@ RETURN
 		AND cru.baja_vida_util = 0
 -- FIN [LOS_BARONES_DE_LA_CERVEZA].[UF_cruceros_disponibles] 
 GO
+
+/******************************************************************
+[LOS_BARONES_DE_LA_CERVEZA].[UF_id_puerto] 
+@Desc: Retorna el id de un puerto segun su nombre
+******************************************************************/
+CREATE FUNCTION [LOS_BARONES_DE_LA_CERVEZA].[UF_id_puerto]
+(
+	@nombre_puerto  NVARCHAR(255)
+)
+RETURNS INT 
+AS 
+BEGIN
+	 DECLARE @id_puerto INT = (
+		 SELECT id_puerto
+		 FROM LOS_BARONES_DE_LA_CERVEZA.Puerto
+		 WHERE puerto_nombre = UPPER(@nombre_puerto)
+	)
+
+	RETURN @id_puerto
+END 
+go
+
+
+/******************************************************************
+[LOS_BARONES_DE_LA_CERVEZA].[UF_destinos_segun_origen] 
+@Desc: Retorna los posibles puerto destino segun un puerto origen
+******************************************************************/
+
+create FUNCTION [LOS_BARONES_DE_LA_CERVEZA].[UF_destinos_segun_origen]
+(
+	@nombre_puerto_origen  NVARCHAR(255)
+)
+RETURNS @destinos_posibles table (unDestino nvarchar(255))
+AS 
+BEGIN
+	--declare table destinos_posibles
+	declare @recorrido int
+	declare destinos cursor for ( select * from LOS_BARONES_DE_LA_CERVEZA.UF_recorridos_segun_origen(@nombre_puerto_origen)   )
+	open destinos
+	fetch next from destinos into @recorrido
+	while @@FETCH_STATUS = 0
+		begin 
+			insert into @destinos_posibles select * from LOS_BARONES_DE_LA_CERVEZA.UF_destinos_segun_recorrido(@recorrido)
+			where puerto_nombre not in (select * from @destinos_posibles)
+			--select * into #destinos_posibles.unDestino from LOS_BARONES_DE_LA_CERVEZA.UF_destinos_segun_recorrido(@recorrido)
+			fetch next from destinos into @recorrido
+		end
+	return
+END
+go
+
+/******************************************************************
+[LOS_BARONES_DE_LA_CERVEZA].[UF_recorridos_segun_origen] 
+@Desc: Retorna los recorridos que inician desde un mismo puerto
+******************************************************************/
+
+CREATE FUNCTION [LOS_BARONES_DE_LA_CERVEZA].[UF_recorridos_segun_origen] 
+(
+	@puerto_origen NVARCHAR(255)
+)
+RETURNS TABLE 
+AS
+return
+	SELECT txr.id_recorrido
+	FROM LOS_BARONES_DE_LA_CERVEZA.Tramos_por_Recorrido txr
+		JOIN LOS_BARONES_DE_LA_CERVEZA.Tramo t
+			ON txr.id_tramo = t.id_tramo
+	WHERE txr.tramo_anterior is null AND t.tramo_puerto_inicio = (select id_puerto from LOS_BARONES_DE_LA_CERVEZA.Puerto where puerto_nombre = @puerto_origen)
+
+go
+
+--lo que dice el nombre
+
+create FUNCTION [LOS_BARONES_DE_LA_CERVEZA].[UF_recorridos_segun_origen_y_destino] 
+(
+	@puerto_origen NVARCHAR(255),
+	@puerto_destino NVARCHAR(255)
+)
+RETURNS TABLE 
+AS
+return
+	SELECT txr.id_recorrido
+		FROM LOS_BARONES_DE_LA_CERVEZA.Tramos_por_Recorrido txr
+		JOIN LOS_BARONES_DE_LA_CERVEZA.Tramo t
+				ON txr.id_tramo = t.id_tramo
+		JOIN (select deOrigen.id_recorrido from [LOS_BARONES_DE_LA_CERVEZA].[UF_recorridos_segun_origen](@puerto_origen) as deOrigen) as deOrigenn 
+				ON deOrigenn.id_recorrido = txr.id_recorrido
+		WHERE t.tramo_puerto_destino = (select id_puerto from LOS_BARONES_DE_LA_CERVEZA.Puerto where puerto_nombre = @puerto_destino)
+
+go
+
+/******************************************************************
+[LOS_BARONES_DE_LA_CERVEZA].[UF_destinos_segun_recorrido] 
+@Desc: Retorna los posibles destinos de un recorrido
+******************************************************************/
+
+CREATE FUNCTION [LOS_BARONES_DE_LA_CERVEZA].[UF_destinos_segun_recorrido] 
+(
+	@recorrido_id INT
+)
+RETURNS TABLE 
+AS
+return
+	SELECT distinct p.puerto_nombre
+	FROM LOS_BARONES_DE_LA_CERVEZA.Tramos_por_Recorrido txr
+		JOIN LOS_BARONES_DE_LA_CERVEZA.Tramo t
+			ON txr.id_tramo = t.id_tramo
+		JOIN LOS_BARONES_DE_LA_CERVEZA.Puerto p
+			ON p.id_puerto = t.tramo_puerto_destino
+	WHERE txr.id_recorrido = @recorrido_id
+
+go
+
+
+
+
 
 /*******************************************************************************
 							FIN - PROCEDIMIENTOS ALMACENADOS/FUNCIONES
