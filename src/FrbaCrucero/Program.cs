@@ -7,6 +7,7 @@ using FrbaCrucero.AbmRol;
 using FrbaCrucero.Login;
 using FrbaCrucero.AbmCrucero;
 using FrbaCrucero.CompraReservaPasaje;
+using FrbaCrucero.CompraReservaPasaje.Comprar;
 
 namespace FrbaCrucero
 {
@@ -21,7 +22,7 @@ namespace FrbaCrucero
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             //Application.Run(new AbmCruceros());
-            Application.Run(new CompraReservaForm());
+            Application.Run(new ComprarForm("unaCabina",8,33));
         }
     }
 }

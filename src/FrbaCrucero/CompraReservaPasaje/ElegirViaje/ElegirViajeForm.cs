@@ -1,4 +1,5 @@
-﻿using FrbaCrucero.Utils;
+﻿using FrbaCrucero.CompraReservaPasaje.Comprar;
+using FrbaCrucero.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -68,9 +69,10 @@ namespace FrbaCrucero.CompraReservaPasaje
 
         private void actualizarCruceros()
         {
-            
-            string consulta = " select cast(id_viaje as nvarchar(255)) from GD1C2019.LOS_BARONES_DE_LA_CERVEZA.Viaje v  "
-                                + " where	CONVERT(VARCHAR(10), v.viaje_fecha_inicio, 103) = '" + this.fechaSalida.ToShortDateString() +"'  ";		//el 103 es para pasarlo al format dd/mm/yyyy
+
+            string consulta = ""
+                          + "  select cast(id_viaje as nvarchar(255)) as id from GD1C2019.LOS_BARONES_DE_LA_CERVEZA.Viaje v   where v.viaje_id_recorrido = 13 AND CONVERT(VARCHAR(10), v.viaje_fecha_inicio, 103) = '24/05/2018'";
+		//el 103 es para pasarlo al format dd/mm/yyyy
 
 
             Query miConsulta = new Query(consulta, new List<Parametro>());
@@ -98,6 +100,12 @@ namespace FrbaCrucero.CompraReservaPasaje
         private void selectorCabinas_SelectedValueChanged(object sender, EventArgs e)
         {
             //TODO calcular cuando este disponible cabinas totales - cabinas vendidas
+        }
+
+        private void buttonComprar_Click(object sender, EventArgs e)
+        {
+            ComprarForm comprarForm = new ComprarForm(selectorCabinas.SelectedItem.ToString(), (int)cabinasNumeric.Value, int.Parse(crucerosList.SelectedItem.ToString()));
+            comprarForm.ShowDialog();
         }
 
 

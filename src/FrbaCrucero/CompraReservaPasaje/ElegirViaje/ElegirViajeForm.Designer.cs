@@ -36,8 +36,8 @@
             this.crucerosList = new System.Windows.Forms.ListBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.estandarMaxLabel = new System.Windows.Forms.Label();
-            this.estandarNumeric = new System.Windows.Forms.NumericUpDown();
+            this.cabinasDisponiblesLabel = new System.Windows.Forms.Label();
+            this.cabinasNumeric = new System.Windows.Forms.NumericUpDown();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.buttonComprar = new System.Windows.Forms.Button();
@@ -45,7 +45,7 @@
             this.selectorCabinas = new System.Windows.Forms.ComboBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.estandarNumeric)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cabinasNumeric)).BeginInit();
             this.SuspendLayout();
             // 
             // labelRecorridos
@@ -74,9 +74,9 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(144, 42);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(49, 13);
+            this.label2.Size = new System.Drawing.Size(47, 13);
             this.label2.TabIndex = 11;
-            this.label2.Text = "Cruceros";
+            this.label2.Text = "Viaje (id)";
             // 
             // recorridosList
             // 
@@ -120,8 +120,8 @@
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.selectorCabinas);
-            this.groupBox2.Controls.Add(this.estandarMaxLabel);
-            this.groupBox2.Controls.Add(this.estandarNumeric);
+            this.groupBox2.Controls.Add(this.cabinasDisponiblesLabel);
+            this.groupBox2.Controls.Add(this.cabinasNumeric);
             this.groupBox2.Controls.Add(this.label4);
             this.groupBox2.Controls.Add(this.label3);
             this.groupBox2.Location = new System.Drawing.Point(320, 12);
@@ -131,28 +131,28 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Cabinas Disponibles";
             // 
-            // estandarMaxLabel
+            // cabinasDisponiblesLabel
             // 
-            this.estandarMaxLabel.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.estandarMaxLabel.AutoSize = true;
-            this.estandarMaxLabel.Location = new System.Drawing.Point(48, 87);
-            this.estandarMaxLabel.Name = "estandarMaxLabel";
-            this.estandarMaxLabel.Size = new System.Drawing.Size(13, 13);
-            this.estandarMaxLabel.TabIndex = 19;
-            this.estandarMaxLabel.Text = "--";
+            this.cabinasDisponiblesLabel.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.cabinasDisponiblesLabel.AutoSize = true;
+            this.cabinasDisponiblesLabel.Location = new System.Drawing.Point(48, 87);
+            this.cabinasDisponiblesLabel.Name = "cabinasDisponiblesLabel";
+            this.cabinasDisponiblesLabel.Size = new System.Drawing.Size(13, 13);
+            this.cabinasDisponiblesLabel.TabIndex = 19;
+            this.cabinasDisponiblesLabel.Text = "--";
             // 
-            // estandarNumeric
+            // cabinasNumeric
             // 
-            this.estandarNumeric.Location = new System.Drawing.Point(152, 85);
-            this.estandarNumeric.Maximum = new decimal(new int[] {
+            this.cabinasNumeric.Location = new System.Drawing.Point(152, 85);
+            this.cabinasNumeric.Maximum = new decimal(new int[] {
             10,
             0,
             0,
             0});
-            this.estandarNumeric.Name = "estandarNumeric";
-            this.estandarNumeric.ReadOnly = true;
-            this.estandarNumeric.Size = new System.Drawing.Size(37, 20);
-            this.estandarNumeric.TabIndex = 23;
+            this.cabinasNumeric.Name = "cabinasNumeric";
+            this.cabinasNumeric.ReadOnly = true;
+            this.cabinasNumeric.Size = new System.Drawing.Size(37, 20);
+            this.cabinasNumeric.TabIndex = 23;
             // 
             // label4
             // 
@@ -183,7 +183,7 @@
             this.buttonComprar.TabIndex = 17;
             this.buttonComprar.Text = "Comprar";
             this.buttonComprar.UseVisualStyleBackColor = true;
-            this.buttonComprar.Click += new System.EventHandler(this.Button1_Click);
+            this.buttonComprar.Click += new System.EventHandler(this.buttonComprar_Click);
             // 
             // buttonReservar
             // 
@@ -220,7 +220,7 @@
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.estandarNumeric)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cabinasNumeric)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -235,8 +235,8 @@
         private System.Windows.Forms.ListBox crucerosList;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.Label estandarMaxLabel;
-        private System.Windows.Forms.NumericUpDown estandarNumeric;
+        private System.Windows.Forms.Label cabinasDisponiblesLabel;
+        private System.Windows.Forms.NumericUpDown cabinasNumeric;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button buttonComprar;
