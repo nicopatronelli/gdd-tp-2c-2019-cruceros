@@ -46,7 +46,7 @@
             this.groupBox1.Size = new System.Drawing.Size(776, 358);
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Publicaciones en Borrador:";
+            this.groupBox1.Text = "Cruceros";
             // 
             // btnCerrar
             // 
@@ -63,10 +63,10 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(9, 27);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(392, 13);
+            this.label2.Size = new System.Drawing.Size(440, 13);
             this.label2.TabIndex = 3;
-            this.label2.Text = "Seleccione la publicación a editar presionando el botón Editar al final de la mis" +
-    "ma.";
+            this.label2.Text = "Seleccione el crucero a editar presionando el botón Editar al final de su fila co" +
+    "rrespondiente.";
             // 
             // dgvEditarCrucero
             // 
@@ -79,13 +79,13 @@
             this.dgvEditarCrucero.Size = new System.Drawing.Size(751, 271);
             this.dgvEditarCrucero.TabIndex = 0;
             // 
-            // SeleccionCruceroForm
+            // SeleccionCruceroEditarForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(803, 385);
             this.Controls.Add(this.groupBox1);
-            this.Name = "SeleccionCruceroForm";
+            this.Name = "SeleccionCruceroEditarForm";
             this.Text = "CruceroModificacionFormcs";
             this.Load += new System.EventHandler(this.SeleccionCruceroEditarForm_Load);
             this.groupBox1.ResumeLayout(false);

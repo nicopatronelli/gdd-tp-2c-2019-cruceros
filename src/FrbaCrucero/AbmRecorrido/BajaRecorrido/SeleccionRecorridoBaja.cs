@@ -8,11 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace FrbaCrucero.AbmRecorrido
+namespace FrbaCrucero.AbmRecorrido.BajaRecorrido
 {
-    public partial class Form1 : Form
+    public partial class SeleccionRecorridoBaja : Form
     {
-        public Form1()
+        public SeleccionRecorridoBaja()
         {
             InitializeComponent();
         }

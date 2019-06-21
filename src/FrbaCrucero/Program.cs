@@ -8,6 +8,7 @@ using FrbaCrucero.Login;
 using FrbaCrucero.AbmCrucero;
 using FrbaCrucero.CompraReservaPasaje;
 using FrbaCrucero.GeneracionViaje;
+using FrbaCrucero.AbmRecorrido;
 
 namespace FrbaCrucero
 {
@@ -22,7 +23,8 @@ namespace FrbaCrucero
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             //Application.Run(new AbmCruceros());
-            Application.Run(new GenerarViajeForm());
+            //Application.Run(new GenerarViajeForm());
+            Application.Run(new AltaRecorridoForm());
             //Application.Run(new CompraReservaForm());
         }
     }

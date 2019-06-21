@@ -63,6 +63,10 @@ namespace FrbaCrucero.Utils
         public const int FILAS_ACTUALIZAR_CRUCERO = 1;
         public const int FILAS_INSERT_CABINAS = 1;
 
+        // ABM Recorridos
+        public const int FILAS_INSERT_RECORRIDO = 1;
+        public const int FILAS_INSERT_TRAMO_POR_RECORRIDO = 1;
+
         //public const int FILAS_INSERT_CLIENTE = 3;
         //public const int FILAS_INSERT_EMPRESA = 3;
         //public const int FILAS_INSERT_PUBLICACION = 1;

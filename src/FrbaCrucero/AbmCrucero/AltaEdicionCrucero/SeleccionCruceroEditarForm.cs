@@ -81,12 +81,12 @@ namespace FrbaCrucero.AbmCrucero
                 string identificadorCrucero = Convert.ToString(dgvEditarCrucero.Rows[e.RowIndex].Cells["identificador"].Value);
                 cargarFormulario(identificadorCrucero);
 
-                // Recargamos el dgv de cruceros para no mostrar el daddo de baja por servicio técnico
+                // Recargamos el dgv de cruceros para no mostrar el dado de baja por servicio técnico
                 this.recargarDgvCruceros();
             }
         }
 
-       protected virtual void cargarFormulario(string identificadorCrucero)
+        protected virtual void cargarFormulario(string identificadorCrucero)
         {
             // Abrimos el formulario de edición de cruceros
             CruceroForm formEditarCrucero = new CruceroForm(identificadorCrucero);

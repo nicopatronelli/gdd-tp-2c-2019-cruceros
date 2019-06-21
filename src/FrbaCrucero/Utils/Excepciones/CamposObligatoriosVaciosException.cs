@@ -13,7 +13,7 @@ namespace FrbaCrucero.Utils.Excepciones
         public CamposObligatoriosVaciosException(String mensaje)
             : base(mensaje){}
 
-        public void mensajeError()
+        public virtual void mensajeError()
         {
             MensajeBox.error("Hay campos obligatorios sin completar.");
         }

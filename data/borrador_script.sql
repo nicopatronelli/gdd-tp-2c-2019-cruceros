@@ -92,17 +92,6 @@ FROM LOS_BARONES_DE_LA_CERVEZA.Crucero cru
 		ON cru.id_crucero = via.viaje_id_crucero
 ORDER BY via.viaje_fecha_fin DESC
 
-
-CREATE FUNCTION [mi_funcion]()
-RETURNS TABLE
-AS
-	RETURN
-		(SELECT DISTINCT cru.crucero_identificador
-		FROM LOS_BARONES_DE_LA_CERVEZA.Crucero cru)
-
-DROP FUNCTION LOS_BARONES_DE_LA_CERVEZA.mi_funcion
-SELECT [LOS_BARONES_DE_LA_CERVEZA].[mi_funcion]()
-
 SELECT * 
 FROM dbo.mi_funcion()
 
@@ -115,3 +104,155 @@ from LOS_BARONES_DE_LA_CERVEZA.Crucero
 DECLARE @variable DECIMAL(18,0) = 1254715
 DECLARE @otra_variable NVARCHAR(255) = @variable
 SELECT @otra_variable
+
+/******************
+ ABM Recorrido
+******************/
+
+SELECT *
+FROM LOS_BARONES_DE_LA_CERVEZA.Recorrido
+
+-- Tramos de la migración
+SELECT t.id_tramo tramo, puerto_inicio.puerto_nombre puerto_inicio, puerto_fin.puerto_nombre puerto_fin, 
+	t.tramo_precio
+FROM LOS_BARONES_DE_LA_CERVEZA.Tramo t
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Puerto puerto_inicio
+		ON t.tramo_puerto_inicio = puerto_inicio.id_puerto
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Puerto puerto_fin
+		ON t.tramo_puerto_destino = puerto_fin.id_puerto
+WHERE puerto_inicio.puerto_nombre = 'Luanda'
+
+SELECT COUNT(*) FROM LOS_BARONES_DE_LA_CERVEZA.Recorrido WHERE recorrido_codigo = 'RecorridoLoco'
+
+DELETE
+LOS_BARONES_DE_LA_CERVEZA.Tramos_por_Recorrido
+WHERE id_recorrido = 56
+
+DELETE
+LOS_BARONES_DE_LA_CERVEZA.Recorrido
+WHERE id_recorrido = 56
+
+SELECT * 
+FROM LOS_BARONES_DE_LA_CERVEZA.Recorrido
+WHERE id_recorrido = 57
+
+SELECT *
+FROM LOS_BARONES_DE_LA_CERVEZA.Tramos_por_Recorrido
+WHERE id_recorrido = 57
+
+SELECT * 
+FROM LOS_BARONES_DE_LA_CERVEZA.Puerto
+
+EXEC [LOS_BARONES_DE_LA_CERVEZA].[USP_insertar_tramo_por_recorrido] 53, 1
+
+INSERT INTO LOS_BARONES_DE_LA_CERVEZA.Tramos_por_Recorrido
+(id_recorrido, id_tramo, tramo_siguiente, tramo_anterior)
+VALUES (49, 2, 1, NULL)
+
+/******************************************************************
+[LOS_BARONES_DE_LA_CERVEZA].[USP_insertar_recorrido] 
+@Desc: Inserta un nuevo recorrido en la tabla Recorridos
+******************************************************************/
+GO
+CREATE PROCEDURE [LOS_BARONES_DE_LA_CERVEZA].[USP_insertar_recorrido]
+(
+	@identificador NVARCHAR(255),
+	@id_recorrido_asignado INT OUT -- Retornamos el id_crucero asignado por SQL Server (IDENTITY)
+)
+AS
+BEGIN
+	BEGIN TRY
+		BEGIN TRANSACTION 
+			-- id_recorrido se autogenera 
+			INSERT INTO LOS_BARONES_DE_LA_CERVEZA.Recorrido
+			(recorrido_codigo)
+			VALUES (@identificador)
+			SET @id_recorrido_asignado = @@IDENTITY;
+		COMMIT TRANSACTION 
+	END TRY
+	BEGIN CATCH
+		ROLLBACK TRANSACTION
+	END CATCH
+END
+GO
+
+/******************************************************************
+[LOS_BARONES_DE_LA_CERVEZA].[USP_insertar_tramo_por_recorrido] 
+@Desc: Inserta un registro en la tabla Tramos_Por_Recorrido
+******************************************************************/
+GO
+CREATE PROCEDURE [LOS_BARONES_DE_LA_CERVEZA].[USP_insertar_tramo_por_recorrido]
+(
+	@id_recorrido INT, -- PK de la tabla Recorrido
+	@id_tramo INT -- PK Tramo actual (PK de la tabla Tramo)
+)
+AS
+BEGIN
+	BEGIN TRY
+		BEGIN TRANSACTION 
+			-- id_tramo_por_recorrido se autogenera 
+			DECLARE @id_tpr_anterior INT = (SELECT id_tpr_anterior FROM [LOS_BARONES_DE_LA_CERVEZA].Tpr_Auxiliar);
+			INSERT INTO LOS_BARONES_DE_LA_CERVEZA.Tramos_por_Recorrido
+			(id_recorrido, id_tramo, tramo_anterior)
+			VALUES (@id_recorrido, @id_tramo, @id_tpr_anterior)
+			-- Actualizo el id_trp_siguiente del tramo anterior (estaba en NULL) al actual
+			UPDATE LOS_BARONES_DE_LA_CERVEZA.Tramos_por_Recorrido
+			SET tramo_siguiente = @@IDENTITY
+			WHERE id_tramo_por_recorrido = @id_tpr_anterior;
+			-- Actualizo el id_tpr_anterior de la tabla Auxiliar (pasa a ser tpr actual)
+			UPDATE LOS_BARONES_DE_LA_CERVEZA.Tpr_Auxiliar
+			SET id_tpr_anterior = @@IDENTITY;
+		COMMIT TRANSACTION 
+	END TRY
+	BEGIN CATCH
+		ROLLBACK TRANSACTION
+	END CATCH
+END
+GO
+
+/******************************************************************
+Tabla Tpr_Auxiliar
+@Desc: Tabla Auxiliar para insertar Tramos por Recorrido.
+******************************************************************/
+CREATE TABLE [LOS_BARONES_DE_LA_CERVEZA].Tpr_Auxiliar
+(	
+	id INT IDENTITY PRIMARY KEY NOT NULL,
+	id_tpr_anterior INT NULL
+)
+GO
+
+INSERT INTO [LOS_BARONES_DE_LA_CERVEZA].Tpr_Auxiliar
+VALUES (NULL)
+GO
+/******* FIN Tabla Auxiliar ********/
+
+UPDATE [LOS_BARONES_DE_LA_CERVEZA].Tpr_Auxiliar
+SET id_tpr_anterior = NULL
+
+SELECT * 
+FROM LOS_BARONES_DE_LA_CERVEZA.Tpr_Auxiliar
+
+DROP TABLE [LOS_BARONES_DE_LA_CERVEZA].Tpr_Auxiliar
+
+SELECT * 
+FROM LOS_BARONES_DE_LA_CERVEZA.Recorrido
+
+SELECT 
+	r.recorrido_codigo AS identificador, 
+	(
+		SELECT puerto_nombre 
+		FROM LOS_BARONES_DE_LA_CERVEZA.Puerto p
+			JOIN LOS_BARONES_DE_LA_CERVEZA.Tramo t
+				ON p.id_puerto = t.tramo_puerto_inicio
+			JOIN LOS_BARONES_DE_LA_CERVEZA.Tramos_por_Recorrido tpr
+				ON t.id_tramo = tpr.id_tramo
+		WHERE tpr.tramo_anterior IS NULL -- Son puerto origen
+			AND tpr.id_recorrido = r.id_recorrido
+	) AS puerto_inicio
+	--t.tramo_puerto_destino AS puerto_fin
+FROM LOS_BARONES_DE_LA_CERVEZA.Recorrido r 
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Tramos_por_Recorrido tpr
+		ON r.id_recorrido = tpr.id_recorrido
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Tramo t
+		ON tpr.id_tramo = t.id_tramo
+WHERE recorrido_estado = 0 -- Solo considero los recorridos habilitados

@@ -16,9 +16,7 @@ namespace FrbaCrucero.AbmCrucero.Dominio
         private DateTime fechaAlta;
         //private List<Cabina> cabinas = new List<Cabina>();
 
-        public CruceroBuilder()
-        {
-        }
+        public CruceroBuilder(){}
 
         public CruceroBuilder setModelo(string modelo)
         {

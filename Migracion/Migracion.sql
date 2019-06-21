@@ -319,8 +319,8 @@ Tabla Recorrido -- OK
 ******************************************************************/
 CREATE TABLE [LOS_BARONES_DE_LA_CERVEZA].Recorrido(	
 	id_recorrido INT IDENTITY PRIMARY KEY NOT NULL,
-	recorrido_codigo decimal(18,0),
-	recorrido_estado BIT
+	recorrido_codigo NVARCHAR(255),
+	recorrido_estado BIT DEFAULT 0
 )
 GO
 
