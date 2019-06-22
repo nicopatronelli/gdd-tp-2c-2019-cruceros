@@ -1,6 +1,6 @@
 ﻿namespace FrbaCrucero.CompraReservaPasaje.Comprar
 {
-    partial class ComprarForm
+    partial class ComprarTemplateForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,13 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.mailTextBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.dniTextBox = new System.Windows.Forms.TextBox();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.textBox4 = new System.Windows.Forms.TextBox();
-            this.textBox5 = new System.Windows.Forms.TextBox();
-            this.nombreYApellidoTextBox = new System.Windows.Forms.TextBox();
+            this.dayTextBox = new System.Windows.Forms.TextBox();
+            this.telefonoTextBox = new System.Windows.Forms.TextBox();
+            this.direccionTextBox = new System.Windows.Forms.TextBox();
+            this.nombreTextBox = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
@@ -42,19 +42,22 @@
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
-            this.textBox7 = new System.Windows.Forms.TextBox();
-            this.textBox8 = new System.Windows.Forms.TextBox();
+            this.mesTextBox = new System.Windows.Forms.TextBox();
+            this.anioTextBox = new System.Windows.Forms.TextBox();
             this.informacionCompraLabel = new System.Windows.Forms.Label();
             this.puertosLabel = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
+            this.apellidoTextBox = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // textBox1
+            // mailTextBox
             // 
-            this.textBox1.Location = new System.Drawing.Point(47, 251);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 20);
-            this.textBox1.TabIndex = 0;
+            this.mailTextBox.Location = new System.Drawing.Point(47, 279);
+            this.mailTextBox.Name = "mailTextBox";
+            this.mailTextBox.Size = new System.Drawing.Size(163, 20);
+            this.mailTextBox.TabIndex = 0;
             // 
             // label1
             // 
@@ -74,39 +77,39 @@
             this.dniTextBox.TabIndex = 2;
             this.dniTextBox.TextChanged += new System.EventHandler(this.dniTextBox_TextChanged);
             // 
-            // textBox3
+            // dayTextBox
             // 
-            this.textBox3.Location = new System.Drawing.Point(47, 286);
-            this.textBox3.MaxLength = 2;
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(22, 20);
-            this.textBox3.TabIndex = 3;
+            this.dayTextBox.Location = new System.Drawing.Point(47, 314);
+            this.dayTextBox.MaxLength = 2;
+            this.dayTextBox.Name = "dayTextBox";
+            this.dayTextBox.Size = new System.Drawing.Size(22, 20);
+            this.dayTextBox.TabIndex = 3;
             // 
-            // textBox4
+            // telefonoTextBox
             // 
-            this.textBox4.Location = new System.Drawing.Point(47, 213);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(100, 20);
-            this.textBox4.TabIndex = 4;
+            this.telefonoTextBox.Location = new System.Drawing.Point(47, 244);
+            this.telefonoTextBox.Name = "telefonoTextBox";
+            this.telefonoTextBox.Size = new System.Drawing.Size(100, 20);
+            this.telefonoTextBox.TabIndex = 4;
             // 
-            // textBox5
+            // direccionTextBox
             // 
-            this.textBox5.Location = new System.Drawing.Point(47, 176);
-            this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(100, 20);
-            this.textBox5.TabIndex = 5;
+            this.direccionTextBox.Location = new System.Drawing.Point(47, 204);
+            this.direccionTextBox.Name = "direccionTextBox";
+            this.direccionTextBox.Size = new System.Drawing.Size(167, 20);
+            this.direccionTextBox.TabIndex = 5;
             // 
-            // nombreYApellidoTextBox
+            // nombreTextBox
             // 
-            this.nombreYApellidoTextBox.Location = new System.Drawing.Point(47, 136);
-            this.nombreYApellidoTextBox.Name = "nombreYApellidoTextBox";
-            this.nombreYApellidoTextBox.Size = new System.Drawing.Size(100, 20);
-            this.nombreYApellidoTextBox.TabIndex = 6;
+            this.nombreTextBox.Location = new System.Drawing.Point(47, 136);
+            this.nombreTextBox.Name = "nombreTextBox";
+            this.nombreTextBox.Size = new System.Drawing.Size(100, 20);
+            this.nombreTextBox.TabIndex = 6;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(153, 179);
+            this.label2.Location = new System.Drawing.Point(220, 207);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(52, 13);
             this.label2.TabIndex = 7;
@@ -117,14 +120,14 @@
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(153, 136);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(92, 13);
+            this.label3.Size = new System.Drawing.Size(44, 13);
             this.label3.TabIndex = 8;
-            this.label3.Text = "Nombre y Apellido";
+            this.label3.Text = "Nombre";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(153, 216);
+            this.label4.Location = new System.Drawing.Point(153, 244);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(49, 13);
             this.label4.TabIndex = 9;
@@ -133,7 +136,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(153, 258);
+            this.label5.Location = new System.Drawing.Point(216, 286);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(77, 13);
             this.label5.TabIndex = 10;
@@ -142,7 +145,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(185, 289);
+            this.label6.Location = new System.Drawing.Point(185, 317);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(108, 13);
             this.label6.TabIndex = 11;
@@ -152,7 +155,7 @@
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F);
-            this.label7.Location = new System.Drawing.Point(71, 282);
+            this.label7.Location = new System.Drawing.Point(71, 310);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(15, 24);
             this.label7.TabIndex = 12;
@@ -162,27 +165,27 @@
             // 
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F);
-            this.label8.Location = new System.Drawing.Point(114, 282);
+            this.label8.Location = new System.Drawing.Point(114, 310);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(15, 24);
             this.label8.TabIndex = 13;
             this.label8.Text = "/";
             // 
-            // textBox7
+            // mesTextBox
             // 
-            this.textBox7.Location = new System.Drawing.Point(86, 285);
-            this.textBox7.MaxLength = 2;
-            this.textBox7.Name = "textBox7";
-            this.textBox7.Size = new System.Drawing.Size(22, 20);
-            this.textBox7.TabIndex = 14;
+            this.mesTextBox.Location = new System.Drawing.Point(86, 313);
+            this.mesTextBox.MaxLength = 2;
+            this.mesTextBox.Name = "mesTextBox";
+            this.mesTextBox.Size = new System.Drawing.Size(22, 20);
+            this.mesTextBox.TabIndex = 14;
             // 
-            // textBox8
+            // anioTextBox
             // 
-            this.textBox8.Location = new System.Drawing.Point(128, 285);
-            this.textBox8.MaxLength = 4;
-            this.textBox8.Name = "textBox8";
-            this.textBox8.Size = new System.Drawing.Size(51, 20);
-            this.textBox8.TabIndex = 15;
+            this.anioTextBox.Location = new System.Drawing.Point(128, 313);
+            this.anioTextBox.MaxLength = 4;
+            this.anioTextBox.Name = "anioTextBox";
+            this.anioTextBox.Size = new System.Drawing.Size(51, 20);
+            this.anioTextBox.TabIndex = 15;
             // 
             // informacionCompraLabel
             // 
@@ -198,11 +201,10 @@
             // 
             this.puertosLabel.AutoSize = true;
             this.puertosLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.puertosLabel.Location = new System.Drawing.Point(386, 92);
+            this.puertosLabel.Location = new System.Drawing.Point(564, 109);
             this.puertosLabel.Name = "puertosLabel";
-            this.puertosLabel.Size = new System.Drawing.Size(56, 17);
+            this.puertosLabel.Size = new System.Drawing.Size(0, 17);
             this.puertosLabel.TabIndex = 17;
-            this.puertosLabel.Text = "puertos";
             // 
             // label9
             // 
@@ -214,16 +216,44 @@
             this.label9.TabIndex = 18;
             this.label9.Text = "Ingrese sus datos";
             // 
-            // ComprarForm
+            // apellidoTextBox
+            // 
+            this.apellidoTextBox.Location = new System.Drawing.Point(47, 170);
+            this.apellidoTextBox.Name = "apellidoTextBox";
+            this.apellidoTextBox.Size = new System.Drawing.Size(100, 20);
+            this.apellidoTextBox.TabIndex = 19;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(153, 173);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(44, 13);
+            this.label10.TabIndex = 20;
+            this.label10.Text = "Apellido";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(210, 99);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(106, 13);
+            this.label11.TabIndex = 21;
+            this.label11.Text = "9329200 para probar";
+            // 
+            // ComprarTemplateForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.label11);
+            this.Controls.Add(this.label10);
+            this.Controls.Add(this.apellidoTextBox);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.puertosLabel);
             this.Controls.Add(this.informacionCompraLabel);
-            this.Controls.Add(this.textBox8);
-            this.Controls.Add(this.textBox7);
+            this.Controls.Add(this.anioTextBox);
+            this.Controls.Add(this.mesTextBox);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label6);
@@ -231,14 +261,14 @@
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.nombreYApellidoTextBox);
-            this.Controls.Add(this.textBox5);
-            this.Controls.Add(this.textBox4);
-            this.Controls.Add(this.textBox3);
+            this.Controls.Add(this.nombreTextBox);
+            this.Controls.Add(this.direccionTextBox);
+            this.Controls.Add(this.telefonoTextBox);
+            this.Controls.Add(this.dayTextBox);
             this.Controls.Add(this.dniTextBox);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.textBox1);
-            this.Name = "ComprarForm";
+            this.Controls.Add(this.mailTextBox);
+            this.Name = "ComprarTemplateForm";
             this.Text = "ComprarForm";
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -247,13 +277,13 @@
 
         #endregion
 
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox mailTextBox;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox dniTextBox;
-        private System.Windows.Forms.TextBox textBox3;
-        private System.Windows.Forms.TextBox textBox4;
-        private System.Windows.Forms.TextBox textBox5;
-        private System.Windows.Forms.TextBox nombreYApellidoTextBox;
+        private System.Windows.Forms.TextBox dayTextBox;
+        private System.Windows.Forms.TextBox telefonoTextBox;
+        private System.Windows.Forms.TextBox direccionTextBox;
+        private System.Windows.Forms.TextBox nombreTextBox;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
@@ -261,10 +291,13 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.TextBox textBox7;
-        private System.Windows.Forms.TextBox textBox8;
+        private System.Windows.Forms.TextBox mesTextBox;
+        private System.Windows.Forms.TextBox anioTextBox;
         private System.Windows.Forms.Label informacionCompraLabel;
         private System.Windows.Forms.Label puertosLabel;
         private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.TextBox apellidoTextBox;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label label11;
     }
 }

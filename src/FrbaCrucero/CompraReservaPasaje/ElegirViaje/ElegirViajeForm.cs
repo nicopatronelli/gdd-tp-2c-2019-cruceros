@@ -104,7 +104,7 @@ namespace FrbaCrucero.CompraReservaPasaje
 
         private void buttonComprar_Click(object sender, EventArgs e)
         {
-            ComprarForm comprarForm = new ComprarForm(selectorCabinas.SelectedItem.ToString(), (int)cabinasNumeric.Value, int.Parse(crucerosList.SelectedItem.ToString()));
+            ComprarTemplateForm comprarForm = new ComprarTemplateForm(selectorCabinas.SelectedItem.ToString(), (int)cabinasNumeric.Value, int.Parse(crucerosList.SelectedItem.ToString()));
             comprarForm.ShowDialog();
         }
 

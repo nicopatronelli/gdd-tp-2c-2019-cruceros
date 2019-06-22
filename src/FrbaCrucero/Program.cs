@@ -22,7 +22,7 @@ namespace FrbaCrucero
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             //Application.Run(new AbmCruceros());
-            Application.Run(new ComprarForm("unaCabina",8,33));
+            Application.Run(new ComprarTemplateForm("unaCabina",8,33));
         }
     }
 }

@@ -167,12 +167,14 @@
     <Compile Include="CompraReservaPasaje\CompraReservaForm.Designer.cs">
       <DependentUpon>CompraReservaForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="CompraReservaPasaje\Comprar\ComprarForm.cs">
+    <Compile Include="CompraReservaPasaje\Comprar\ComprarTemplateForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="CompraReservaPasaje\Comprar\ComprarForm.Designer.cs">
-      <DependentUpon>ComprarForm.cs</DependentUpon>
+    <Compile Include="CompraReservaPasaje\Comprar\ComprarTemplateForm.Designer.cs">
+      <DependentUpon>ComprarTemplateForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="CompraReservaPasaje\Dominio\Cliente.cs" />
+    <Compile Include="CompraReservaPasaje\Dominio\Viaje.cs" />
     <Compile Include="CompraReservaPasaje\ElegirViaje\ElegirViajeForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -271,8 +273,8 @@
     <EmbeddedResource Include="CompraReservaPasaje\CompraReservaForm.resx">
       <DependentUpon>CompraReservaForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="CompraReservaPasaje\Comprar\ComprarForm.resx">
-      <DependentUpon>ComprarForm.cs</DependentUpon>
+    <EmbeddedResource Include="CompraReservaPasaje\Comprar\ComprarTemplateForm.resx">
+      <DependentUpon>ComprarTemplateForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="CompraReservaPasaje\ElegirViaje\ElegirViajeForm.resx">
       <DependentUpon>ElegirViajeForm.cs</DependentUpon>
