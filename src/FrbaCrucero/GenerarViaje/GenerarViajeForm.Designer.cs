@@ -44,6 +44,7 @@
             this.txtbxPuertoInicio = new System.Windows.Forms.TextBox();
             this.dgvRecorridos = new System.Windows.Forms.DataGridView();
             this.btnCancelar = new System.Windows.Forms.Button();
+            this.txtbxTramosPorRecorrido = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.gpbxRecorridos.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvRecorridos)).BeginInit();
@@ -51,6 +52,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.txtbxTramosPorRecorrido);
             this.groupBox1.Controls.Add(this.btnCancelar);
             this.groupBox1.Controls.Add(this.btnEnviar);
             this.groupBox1.Controls.Add(this.dtpFechaFin);
@@ -203,6 +205,15 @@
             this.btnCancelar.UseVisualStyleBackColor = true;
             this.btnCancelar.Click += new System.EventHandler(this.btnCancelar_Click);
             // 
+            // txtbxTramosPorRecorrido
+            // 
+            this.txtbxTramosPorRecorrido.Location = new System.Drawing.Point(649, 19);
+            this.txtbxTramosPorRecorrido.Multiline = true;
+            this.txtbxTramosPorRecorrido.Name = "txtbxTramosPorRecorrido";
+            this.txtbxTramosPorRecorrido.ReadOnly = true;
+            this.txtbxTramosPorRecorrido.Size = new System.Drawing.Size(130, 106);
+            this.txtbxTramosPorRecorrido.TabIndex = 12;
+            // 
             // GenerarViajeForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -239,5 +250,6 @@
         private System.Windows.Forms.TextBox txtbxPuertoFin;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button btnCancelar;
+        private System.Windows.Forms.TextBox txtbxTramosPorRecorrido;
     }
 }

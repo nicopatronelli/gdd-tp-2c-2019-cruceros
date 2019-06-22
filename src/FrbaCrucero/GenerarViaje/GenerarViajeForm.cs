@@ -27,6 +27,7 @@ namespace FrbaCrucero.GeneracionViaje
         {
             dgvRecorridos.CellClick += dgvRecorridosSoloUnRecorrido_CellContentClick;
             dgvRecorridos.CellClick += capturarIdentificadorRecorridoSeleccionado_CellContentClick;
+            dgvRecorridos.CellClick += mostrarTramosDelRecorridoSeleccionado_CellContentClick;
         }
 
         private void dtpFechaInicio_ValueChanged(object sender, EventArgs e)
@@ -38,7 +39,13 @@ namespace FrbaCrucero.GeneracionViaje
         {   
             DateTime fechaInicioViaje = dtpFechaInicio.Value;
             DateTime fechaFinViaje = dtpFechaFin.Value;
-            string identificadorCrucero = cmbxCrucero.SelectedValue.ToString();
+            string identificadorCrucero;
+            try{ identificadorCrucero = cmbxCrucero.SelectedValue.ToString(); }
+            catch
+            {
+                MensajeBox.info("No ha seleccionado un crucero para el viaje: debe seleccionar uno. Si no le figura ningún crucero, significa que no hay cruceros disponibles para las fechas ingresadas.");
+                return;
+            }
 
             Viaje viaje = new Viaje();
             try
@@ -60,6 +67,9 @@ namespace FrbaCrucero.GeneracionViaje
                 viaje.insertar();
             }
             catch (InsertarNuevoViajeException ex){ ex.mensajeError(); return; }
+
+            // Llegamos acá, el viaje se inserto correctamente
+            MensajeBox.info("El nuevo viaje se ha creado correctamente.");
 
         } // FIN btnEnviar_Click()
 
@@ -185,6 +195,40 @@ namespace FrbaCrucero.GeneracionViaje
         private void capturarIdentificadorRecorridoSeleccionado_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             identificadorRecorrido = Convert.ToString(dgvRecorridos.Rows[e.RowIndex].Cells["Identificador"].Value);
+        }
+
+        // Mostramos los tramos que componen el recorrido seleccionado por el usuario
+        private void mostrarTramosDelRecorridoSeleccionado_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            string consulta = "SELECT "
+                                + "CONCAT(pto_inicio.puerto_nombre, '|', "
+                                + "pto_fin.puerto_nombre) tramos "
+                            + "FROM LOS_BARONES_DE_LA_CERVEZA.Recorrido r "
+                                + "JOIN LOS_BARONES_DE_LA_CERVEZA.Tramos_por_Recorrido tpr "
+                                    + "ON r.id_recorrido = tpr.id_recorrido "
+                                + "JOIN LOS_BARONES_DE_LA_CERVEZA.Tramo t "
+                                    + "ON tpr.id_tramo = t.id_tramo "
+                                + "JOIN LOS_BARONES_DE_LA_CERVEZA.Puerto pto_inicio "
+                                    + "ON t.tramo_puerto_inicio = pto_inicio.id_puerto "
+                                + "JOIN LOS_BARONES_DE_LA_CERVEZA.Puerto pto_fin "
+                                    + "ON t.tramo_puerto_destino = pto_fin.id_puerto "
+                            + "WHERE r.recorrido_codigo = @identificador_recorrido "
+                            + "ORDER BY tpr.id_tramo_por_recorrido";
+            List<Parametro> parametros = new List<Parametro>();
+            Parametro paramIdentificadorRecorrido = new Parametro("@identificador_recorrido", SqlDbType.NVarChar, identificadorRecorrido, 255);
+            parametros.Add(paramIdentificadorRecorrido);
+            Query miConsulta = new Query(consulta, parametros);
+            List<string> tramos = miConsulta.ejecutarReaderUnicaColumna();
+            string[] tramo;
+            string tramoPuertoInicio, tramoPuertoFin;
+            txtbxTramosPorRecorrido.Text = "";
+            for (int i = 0; i < tramos.Count; i++)
+            {
+                tramo = tramos[i].Split('|');
+                tramoPuertoInicio = tramo[0];
+                tramoPuertoFin = tramo[1];
+                txtbxTramosPorRecorrido.Text = txtbxTramosPorRecorrido.Text + tramoPuertoInicio + " - " + tramoPuertoFin + Environment.NewLine;
+            }
         }
 
         private void btnCancelar_Click(object sender, EventArgs e)

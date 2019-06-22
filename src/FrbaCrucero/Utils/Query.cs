@@ -129,8 +129,8 @@ namespace FrbaCrucero.Utils
                 registroLeido.Read();
                 //int cantidadColumnas = registroLeido.FieldCount;
 
-                // Declaramos una lista de string donde vamos a guardar el contenido de cada campo de la 
-                // fila que retorno la consulta.
+                //// Declaramos una lista de string donde vamos a guardar el contenido de cada campo de la 
+                //// fila que retorno la consulta.
                 //List<string> fila = new List<string>();
 
                 //while (registroLeido.Read())
@@ -138,10 +138,10 @@ namespace FrbaCrucero.Utils
                 //    fila.Add((registroLeido.GetString(UNICA_COLUMNA)));
                 //}
 
-                // Liberamos los recursos asociados a la consulta
+                //// Liberamos los recursos asociados a la consulta
                 //comando.Dispose();
 
-                // Cerramos la conexión
+                //// Cerramos la conexión
                 //conexion.cerrar();
 
                 // La consulta se ejecuto correctamente 

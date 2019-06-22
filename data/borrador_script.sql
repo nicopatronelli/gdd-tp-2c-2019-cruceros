@@ -277,10 +277,32 @@ FROM LOS_BARONES_DE_LA_CERVEZA.Recorrido r
 		ON t1.tramo_puerto_inicio = pto_inicio.id_puerto
 	JOIN LOS_BARONES_DE_LA_CERVEZA.Puerto pto_fin
 		ON t2.tramo_puerto_destino = pto_fin.id_puerto
-WHERE tpr1.tramo_anterior IS NULL
-	AND tpr2.tramo_siguiente IS NULL 
-	AND pto_inicio.puerto_nombre LIKE '%%'
-	AND pto_fin.puerto_nombre LIKE '%Abuya%'
+WHERE r.recorrido_codigo = 'RecorridoLoco'
+
+-- Query tramos por Recorrido
+SELECT 	
+	CONCAT(pto_inicio.puerto_nombre, '|', 
+	pto_fin.puerto_nombre) tramos
+FROM LOS_BARONES_DE_LA_CERVEZA.Recorrido r
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Tramos_por_Recorrido tpr
+		ON r.id_recorrido = tpr.id_recorrido
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Tramo t
+		ON tpr.id_tramo = t.id_tramo
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Puerto pto_inicio
+		ON t.tramo_puerto_inicio = pto_inicio.id_puerto
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Puerto pto_fin
+		ON t.tramo_puerto_destino = pto_fin.id_puerto
+WHERE r.recorrido_codigo = 'RecorridoLoco'
+ORDER BY tpr.id_tramo_por_recorrido
+
+
+SELECT * 
+FROM LOS_BARONES_DE_LA_CERVEZA.Tramos_por_Recorrido
+WHERE id_recorrido = 57
+
+SELECT * 
+FROM LOS_BARONES_DE_LA_CERVEZA.Recorrido
+WHERE recorrido_codigo = 'RecorridoLoco'
 
 SELECT 
 	r.recorrido_codigo 'Identificador Recorrido', 
@@ -355,3 +377,60 @@ AND viaje_id_recorrido = (
 				SELECT id_recorrido 
 				FROM LOS_BARONES_DE_LA_CERVEZA.Recorrido 
 				WHERE recorrido_codigo = '43820896')
+				
+SELECT 
+	r.recorrido_codigo 'Recorrido', 
+	pto_inicio.puerto_nombre 'Puerto Inicio', 
+	pto_fin.puerto_nombre 'Puerto Fin' 
+FROM LOS_BARONES_DE_LA_CERVEZA.Recorrido r 
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Tramos_por_Recorrido tpr1 
+		ON r.id_recorrido = tpr1.id_recorrido 
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Tramos_por_Recorrido tpr2 
+		ON r.id_recorrido = tpr2.id_recorrido 
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Tramo t1 
+		ON tpr1.id_tramo = t1.id_tramo 
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Tramo t2 
+		ON tpr2.id_tramo = t2.id_tramo 
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Puerto pto_inicio 
+		ON t1.tramo_puerto_inicio = pto_inicio.id_puerto 
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Puerto pto_fin 
+		ON t2.tramo_puerto_destino = pto_fin.id_puerto 
+	WHERE tpr1.tramo_anterior IS NULL 
+		AND tpr2.tramo_siguiente IS NULL 
+		AND pto_inicio.puerto_nombre LIKE '%%' 
+		AND pto_fin.puerto_nombre LIKE '%%';
+
+SELECT * 
+FROM LOS_BARONES_DE_LA_CERVEZA.Recorrido
+ORDER BY 2
+
+SELECT 
+	r.recorrido_codigo 'Recorrido', 
+	pto_inicio.puerto_nombre 'Puerto Inicio', 
+	pto_fin.puerto_nombre 'Puerto Fin' 
+FROM LOS_BARONES_DE_LA_CERVEZA.Recorrido r 
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Tramos_por_Recorrido tpr1 
+		ON r.id_recorrido = tpr1.id_recorrido 
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Tramos_por_Recorrido tpr2 
+		ON r.id_recorrido = tpr2.id_recorrido 
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Tramo t1 
+		ON tpr1.id_tramo = t1.id_tramo 
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Tramo t2 
+		ON tpr2.id_tramo = t2.id_tramo 
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Puerto pto_inicio 
+		ON t1.tramo_puerto_inicio = pto_inicio.id_puerto 
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Puerto pto_fin 
+		ON t2.tramo_puerto_destino = pto_fin.id_puerto 
+	WHERE tpr1.tramo_anterior IS NULL 
+		AND tpr2.tramo_siguiente IS NULL 
+		AND pto_inicio.puerto_nombre LIKE '%%' 
+		AND pto_fin.puerto_nombre LIKE '%%'
+ORDER BY 1
+
+-- Mostrar Leo
+SELECT * 
+FROM LOS_BARONES_DE_LA_CERVEZA.Recorrido r
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Tramos_por_Recorrido tpr
+		ON r.id_recorrido = tpr.id_recorrido 
+WHERE r.recorrido_codigo= '43820887'
+ORDER BY 2
