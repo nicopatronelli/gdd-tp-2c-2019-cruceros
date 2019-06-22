@@ -226,6 +226,7 @@ VALUES (NULL)
 GO
 /******* FIN Tabla Auxiliar ********/
 
+
 UPDATE [LOS_BARONES_DE_LA_CERVEZA].Tpr_Auxiliar
 SET id_tpr_anterior = NULL
 
@@ -247,12 +248,110 @@ SELECT
 			JOIN LOS_BARONES_DE_LA_CERVEZA.Tramos_por_Recorrido tpr
 				ON t.id_tramo = tpr.id_tramo
 		WHERE tpr.tramo_anterior IS NULL -- Son puerto origen
-			AND tpr.id_recorrido = r.id_recorrido
+			AND tpr.id_recorrido = '1' --r.id_recorrido
 	) AS puerto_inicio
 	--t.tramo_puerto_destino AS puerto_fin
 FROM LOS_BARONES_DE_LA_CERVEZA.Recorrido r 
+WHERE recorrido_estado = 0 -- Solo considero los recorridos habilitados
+
+SELECT * 
+FROM LOS_BARONES_DE_LA_CERVEZA.Recorrido r
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Tramos_por_Recorrido tpr
+		ON r.id_recorrido = tpr.id_recorrido
+WHERE r.id_recorrido = 1
+
+SELECT DISTINCT 
+	r.recorrido_codigo identificador,
+	pto_inicio.puerto_nombre puerto_inicio,
+	pto_fin.puerto_nombre puerto_fin
+FROM LOS_BARONES_DE_LA_CERVEZA.Recorrido r
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Tramos_por_Recorrido tpr1
+		ON r.id_recorrido = tpr1.id_recorrido
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Tramos_por_Recorrido tpr2
+		ON r.id_recorrido = tpr2.id_recorrido
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Tramo t1
+		ON tpr1.id_tramo = t1.id_tramo
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Tramo t2
+		ON tpr2.id_tramo = t2.id_tramo
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Puerto pto_inicio
+		ON t1.tramo_puerto_inicio = pto_inicio.id_puerto
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Puerto pto_fin
+		ON t2.tramo_puerto_destino = pto_fin.id_puerto
+WHERE tpr1.tramo_anterior IS NULL
+	AND tpr2.tramo_siguiente IS NULL 
+	AND pto_inicio.puerto_nombre LIKE '%%'
+	AND pto_fin.puerto_nombre LIKE '%Abuya%'
+
+SELECT 
+	r.recorrido_codigo 'Identificador Recorrido', 
+	tpr.tramo_anterior 'Tpr anterior',
+	tpr.tramo_siguiente 'Tpr siguiente',
+	p1.puerto_nombre 'Puerto Inicio', 
+	p2.puerto_nombre 'Puerto Fin'
+FROM LOS_BARONES_DE_LA_CERVEZA.Recorrido r
 	JOIN LOS_BARONES_DE_LA_CERVEZA.Tramos_por_Recorrido tpr
 		ON r.id_recorrido = tpr.id_recorrido
 	JOIN LOS_BARONES_DE_LA_CERVEZA.Tramo t
 		ON tpr.id_tramo = t.id_tramo
-WHERE recorrido_estado = 0 -- Solo considero los recorridos habilitados
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Puerto p1
+		ON t.tramo_puerto_inicio = p1.id_puerto
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Puerto p2
+		ON t.tramo_puerto_destino = p2.id_puerto
+ORDER BY 1
+
+/******************************************************************
+[LOS_BARONES_DE_LA_CERVEZA].[USP_insertar_viaje] 
+@Desc: Inserta un nuevo viaje en la tabla Viaje y en la tabla 
+Estado_Cabinas_Por_Viaje.
+******************************************************************/
+GO
+CREATE PROCEDURE [LOS_BARONES_DE_LA_CERVEZA].[USP_insertar_viaje]
+(
+	@fecha_inicio NVARCHAR(255), 
+	@fecha_fin NVARCHAR(255),
+	@identificador_crucero NVARCHAR(50),
+	@identificador_recorrido NVARCHAR(255)
+)
+AS
+BEGIN
+	BEGIN TRY
+		BEGIN TRANSACTION 
+			-- Insertamos el registro de nuevo viaje
+			INSERT INTO LOS_BARONES_DE_LA_CERVEZA.Viaje
+			(viaje_fecha_inicio, viaje_fecha_fin, viaje_id_crucero, viaje_id_recorrido)
+			VALUES
+			(
+				CONVERT(DATETIME2(3), @fecha_inicio, 121),
+				CONVERT(DATETIME2(3), @fecha_fin, 121),
+				(SELECT id_crucero FROM LOS_BARONES_DE_LA_CERVEZA.Cruceros WHERE identificador = @identificador_crucero),
+				(SELECT id_recorrido FROM LOS_BARONES_DE_LA_CERVEZA.Recorrido WHERE recorrido_codigo = @identificador_recorrido)
+			);
+
+			DECLARE @id_viaje INT = @@IDENTITY -- Me guardo el id_viaje del viaje recién insertado
+			-- Insertamos en la tabla Estado_Cabinas_Por_Viaje
+			INSERT INTO LOS_BARONES_DE_LA_CERVEZA.Estado_Cabinas_Por_Viaje
+			(id_viaje, id_cabina)
+			SELECT @id_viaje, id_cabina
+			FROM LOS_BARONES_DE_LA_CERVEZA.Cabinas cab
+			WHERE cab.crucero = (
+				SELECT id_crucero 
+				FROM LOS_BARONES_DE_LA_CERVEZA.Cruceros 
+				WHERE identificador = @identificador_crucero);
+		COMMIT TRANSACTION 
+	END TRY
+	BEGIN CATCH
+		ROLLBACK TRANSACTION
+	END CATCH
+END
+GO
+
+SELECT * 
+FROM LOS_BARONES_DE_LA_CERVEZA.Viaje
+WHERE viaje_id_crucero = (
+				SELECT id_crucero 
+				FROM LOS_BARONES_DE_LA_CERVEZA.Cruceros 
+				WHERE identificador = 'XVREPF-74164')
+AND viaje_id_recorrido = (
+				SELECT id_recorrido 
+				FROM LOS_BARONES_DE_LA_CERVEZA.Recorrido 
+				WHERE recorrido_codigo = '43820896')

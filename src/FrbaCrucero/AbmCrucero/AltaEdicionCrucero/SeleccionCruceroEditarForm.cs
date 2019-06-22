@@ -20,7 +20,7 @@ namespace FrbaCrucero.AbmCrucero
             InitializeComponent();
         }
 
-        private void btnCerrar_Click(object sender, EventArgs e)
+        protected void btnCerrar_Click(object sender, EventArgs e)
         {
             this.Close();
         }
@@ -61,7 +61,7 @@ namespace FrbaCrucero.AbmCrucero
 
         protected void agregarBotonEditar(string nombreHeader, string nombreBoton)
         {
-            // Añadimos un botón Editar al final de cada fila para poder elegir la publicación a editar 
+            // Añadimos un botón Editar al final de cada fila para poder elegir el crucero a editar
             DataGridViewButtonColumn botonEditar = new DataGridViewButtonColumn();
             botonEditar.Name = "btnDgvEditar";
             botonEditar.HeaderText = nombreHeader;

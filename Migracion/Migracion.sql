@@ -96,6 +96,10 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_D
     DROP TABLE LOS_BARONES_DE_LA_CERVEZA.Marcas_Cruceros
 GO
 
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.Tpr_Auxiliar'))
+    DROP TABLE LOS_BARONES_DE_LA_CERVEZA.Tpr_Auxiliar
+GO
+
 ---------------------------------------------------------------
 -- X. ELIMINAMOS LOS STORED PROCEDURES, FUNCIONES Y TRIGGERS
 ---------------------------------------------------------------
@@ -114,6 +118,18 @@ GO
 
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.USP_insertar_cabina'))
 	DROP PROCEDURE LOS_BARONES_DE_LA_CERVEZA.USP_insertar_cabina
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.USP_insertar_recorrido'))
+	DROP PROCEDURE LOS_BARONES_DE_LA_CERVEZA.USP_insertar_recorrido
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.USP_insertar_tramo_por_recorrido'))
+	DROP PROCEDURE LOS_BARONES_DE_LA_CERVEZA.USP_insertar_tramo_por_recorrido
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.USP_insertar_viaje'))
+	DROP PROCEDURE LOS_BARONES_DE_LA_CERVEZA.USP_insertar_viaje
 GO
 
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.UF_crear_username_Cliente'))
@@ -446,6 +462,22 @@ CREATE TABLE [LOS_BARONES_DE_LA_CERVEZA].Item_factura(
 	CONSTRAINT pk_id_item_factura PRIMARY KEY CLUSTERED (id_item_factura) 
 )
 GO
+
+/******************************************************************
+Tabla Tpr_Auxiliar 
+@Desc: Tabla Auxiliar para insertar Tramos por Recorrido.
+******************************************************************/
+CREATE TABLE [LOS_BARONES_DE_LA_CERVEZA].Tpr_Auxiliar
+(	
+	id INT IDENTITY PRIMARY KEY NOT NULL,
+	id_tpr_anterior INT NULL
+)
+GO
+
+INSERT INTO [LOS_BARONES_DE_LA_CERVEZA].Tpr_Auxiliar
+VALUES (NULL)
+GO
+/**** FIN Tabla Auxiliar ****/
 
 ------------------------------------------------------------------------------------------------------
 						-- 5. CREAMOS LAS FK'S
@@ -931,6 +963,114 @@ RETURN
 		AND cru.baja_fuera_servicio = 0
 		AND cru.baja_vida_util = 0
 -- FIN [LOS_BARONES_DE_LA_CERVEZA].[UF_cruceros_disponibles] 
+GO
+
+/******************************************************************
+[LOS_BARONES_DE_LA_CERVEZA].[USP_insertar_recorrido] 
+@Desc: Inserta un nuevo recorrido en la tabla Recorridos
+******************************************************************/
+GO
+CREATE PROCEDURE [LOS_BARONES_DE_LA_CERVEZA].[USP_insertar_recorrido]
+(
+	@identificador NVARCHAR(255),
+	@id_recorrido_asignado INT OUT -- Retornamos el id_crucero asignado por SQL Server (IDENTITY)
+)
+AS
+BEGIN
+	BEGIN TRY
+		BEGIN TRANSACTION 
+			-- id_recorrido se autogenera 
+			INSERT INTO LOS_BARONES_DE_LA_CERVEZA.Recorrido
+			(recorrido_codigo)
+			VALUES (@identificador)
+			SET @id_recorrido_asignado = @@IDENTITY;
+		COMMIT TRANSACTION 
+	END TRY
+	BEGIN CATCH
+		ROLLBACK TRANSACTION
+	END CATCH
+END
+GO
+
+
+/******************************************************************
+[LOS_BARONES_DE_LA_CERVEZA].[USP_insertar_tramo_por_recorrido] 
+@Desc: Inserta un registro en la tabla Tramos_Por_Recorrido
+******************************************************************/
+GO
+CREATE PROCEDURE [LOS_BARONES_DE_LA_CERVEZA].[USP_insertar_tramo_por_recorrido]
+(
+	@id_recorrido INT, -- PK de la tabla Recorrido
+	@id_tramo INT -- PK Tramo actual (PK de la tabla Tramo)
+)
+AS
+BEGIN
+	BEGIN TRY
+		BEGIN TRANSACTION 
+			-- id_tramo_por_recorrido se autogenera 
+			DECLARE @id_tpr_anterior INT = (SELECT id_tpr_anterior FROM [LOS_BARONES_DE_LA_CERVEZA].Tpr_Auxiliar);
+			INSERT INTO LOS_BARONES_DE_LA_CERVEZA.Tramos_por_Recorrido
+			(id_recorrido, id_tramo, tramo_anterior)
+			VALUES (@id_recorrido, @id_tramo, @id_tpr_anterior)
+			-- Actualizo el id_trp_siguiente del tramo anterior (estaba en NULL) al actual
+			UPDATE LOS_BARONES_DE_LA_CERVEZA.Tramos_por_Recorrido
+			SET tramo_siguiente = @@IDENTITY
+			WHERE id_tramo_por_recorrido = @id_tpr_anterior;
+			-- Actualizo el id_tpr_anterior de la tabla Auxiliar (pasa a ser tpr actual)
+			UPDATE LOS_BARONES_DE_LA_CERVEZA.Tpr_Auxiliar
+			SET id_tpr_anterior = @@IDENTITY;
+		COMMIT TRANSACTION 
+	END TRY
+	BEGIN CATCH
+		ROLLBACK TRANSACTION
+	END CATCH
+END
+GO
+
+/******************************************************************
+[LOS_BARONES_DE_LA_CERVEZA].[USP_insertar_viaje] 
+@Desc: Inserta un nuevo viaje en la tabla Viaje y en la tabla 
+Estado_Cabinas_Por_Viaje.
+******************************************************************/
+GO
+CREATE PROCEDURE [LOS_BARONES_DE_LA_CERVEZA].[USP_insertar_viaje]
+(
+	@fecha_inicio NVARCHAR(255), 
+	@fecha_fin NVARCHAR(255),
+	@identificador_crucero NVARCHAR(50),
+	@identificador_recorrido NVARCHAR(255)
+)
+AS
+BEGIN
+	BEGIN TRY
+		BEGIN TRANSACTION 
+			-- Insertamos el registro de nuevo viaje
+			INSERT INTO LOS_BARONES_DE_LA_CERVEZA.Viaje
+			(viaje_fecha_inicio, viaje_fecha_fin, viaje_id_crucero, viaje_id_recorrido)
+			VALUES
+			(
+				CONVERT(DATETIME2(3), @fecha_inicio, 121),
+				CONVERT(DATETIME2(3), @fecha_fin, 121),
+				(SELECT id_crucero FROM LOS_BARONES_DE_LA_CERVEZA.Cruceros WHERE identificador = @identificador_crucero),
+				(SELECT id_recorrido FROM LOS_BARONES_DE_LA_CERVEZA.Recorrido WHERE recorrido_codigo = @identificador_recorrido)
+			);
+
+			DECLARE @id_viaje INT = @@IDENTITY -- Me guardo el id_viaje del viaje recién insertado
+			-- Insertamos en la tabla Estado_Cabinas_Por_Viaje
+			INSERT INTO LOS_BARONES_DE_LA_CERVEZA.Estado_Cabinas_Por_Viaje
+			(id_viaje, id_cabina)
+			SELECT @id_viaje, id_cabina
+			FROM LOS_BARONES_DE_LA_CERVEZA.Cabinas cab
+			WHERE cab.crucero = (
+				SELECT id_crucero 
+				FROM LOS_BARONES_DE_LA_CERVEZA.Cruceros 
+				WHERE identificador = @identificador_crucero);
+		COMMIT TRANSACTION 
+	END TRY
+	BEGIN CATCH
+		ROLLBACK TRANSACTION
+	END CATCH
+END
 GO
 
 /*******************************************************************************

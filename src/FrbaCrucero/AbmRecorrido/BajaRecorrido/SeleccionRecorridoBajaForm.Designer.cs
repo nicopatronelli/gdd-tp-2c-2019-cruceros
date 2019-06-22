@@ -1,6 +1,6 @@
 ﻿namespace FrbaCrucero.AbmRecorrido.BajaRecorrido
 {
-    partial class SeleccionRecorridoBaja
+    partial class SeleccionRecorridoBajaForm
     {
         /// <summary>
         /// Required designer variable.
@@ -30,12 +30,12 @@
         {
             this.SuspendLayout();
             // 
-            // BajaRecorridoForm
+            // SeleccionRecorridoBaja
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(745, 280);
-            this.Name = "BajaRecorridoForm";
+            this.ClientSize = new System.Drawing.Size(847, 397);
+            this.Name = "SeleccionRecorridoBaja";
             this.Text = "BajaRecorridoForm";
             this.ResumeLayout(false);
 

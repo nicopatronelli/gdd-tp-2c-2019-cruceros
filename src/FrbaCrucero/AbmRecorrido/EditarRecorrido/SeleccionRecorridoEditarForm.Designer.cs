@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.dgvSeleccionRecorrido = new System.Windows.Forms.DataGridView();
-            this.label1 = new System.Windows.Forms.Label();
             this.btnCerrar = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.dgvSeleccionRecorrido = new System.Windows.Forms.DataGridView();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSeleccionRecorrido)).BeginInit();
             this.SuspendLayout();
@@ -48,13 +48,15 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Recorridos";
             // 
-            // dgvSeleccionRecorrido
+            // btnCerrar
             // 
-            this.dgvSeleccionRecorrido.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvSeleccionRecorrido.Location = new System.Drawing.Point(6, 55);
-            this.dgvSeleccionRecorrido.Name = "dgvSeleccionRecorrido";
-            this.dgvSeleccionRecorrido.Size = new System.Drawing.Size(815, 287);
-            this.dgvSeleccionRecorrido.TabIndex = 0;
+            this.btnCerrar.Location = new System.Drawing.Point(742, 349);
+            this.btnCerrar.Name = "btnCerrar";
+            this.btnCerrar.Size = new System.Drawing.Size(79, 23);
+            this.btnCerrar.TabIndex = 5;
+            this.btnCerrar.Text = "Cerrar";
+            this.btnCerrar.UseVisualStyleBackColor = true;
+            this.btnCerrar.Click += new System.EventHandler(this.btnCerrar_Click);
             // 
             // label1
             // 
@@ -66,15 +68,13 @@
             this.label1.Text = "Seleccione el recorrido a editar presionando el botón Editar al final de su fila " +
     "correspondiente.";
             // 
-            // btnCerrar
+            // dgvSeleccionRecorrido
             // 
-            this.btnCerrar.Location = new System.Drawing.Point(742, 349);
-            this.btnCerrar.Name = "btnCerrar";
-            this.btnCerrar.Size = new System.Drawing.Size(79, 23);
-            this.btnCerrar.TabIndex = 5;
-            this.btnCerrar.Text = "Cerrar";
-            this.btnCerrar.UseVisualStyleBackColor = true;
-            this.btnCerrar.Click += new System.EventHandler(this.btnCerrar_Click);
+            this.dgvSeleccionRecorrido.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvSeleccionRecorrido.Location = new System.Drawing.Point(6, 55);
+            this.dgvSeleccionRecorrido.Name = "dgvSeleccionRecorrido";
+            this.dgvSeleccionRecorrido.Size = new System.Drawing.Size(293, 287);
+            this.dgvSeleccionRecorrido.TabIndex = 0;
             // 
             // SeleccionRecorridoEditarForm
             // 
@@ -84,7 +84,7 @@
             this.Controls.Add(this.groupBox1);
             this.Name = "SeleccionRecorridoEditarForm";
             this.Text = "SeleccionRecorridoForm";
-            this.Load += new System.EventHandler(this.SeleccionRecorridoEditarForm_Load);
+            this.Load += new System.EventHandler(this.SeleccionRecorridoForm_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSeleccionRecorrido)).EndInit();
@@ -95,8 +95,8 @@
         #endregion
 
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.DataGridView dgvSeleccionRecorrido;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnCerrar;
+        protected System.Windows.Forms.DataGridView dgvSeleccionRecorrido;
     }
 }

@@ -129,20 +129,46 @@
     </Compile>
     <Compile Include="AbmCrucero\Dominio\Crucero.cs" />
     <Compile Include="AbmCrucero\Dominio\CruceroBuilder.cs" />
+    <Compile Include="GenerarViaje\Dominio\Excepciones\FechaFinViajeAnteriorAFechaInicioViajeException.cs" />
+    <Compile Include="GenerarViaje\Dominio\Excepciones\FechaInicioAnteriorFechaConfigException.cs" />
     <Compile Include="AbmPuerto\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="AbmPuerto\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="AbmRecorrido\AltaRecorridoForm.cs">
+    <Compile Include="AbmRecorrido\AbmRecorridosForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AbmRecorrido\AltaRecorridoForm.Designer.cs">
+    <Compile Include="AbmRecorrido\AbmRecorridosForm.Designer.cs">
+      <DependentUpon>AbmRecorridosForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AbmRecorrido\AltaRecorrido\AltaRecorridoForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmRecorrido\AltaRecorrido\AltaRecorridoForm.Designer.cs">
       <DependentUpon>AltaRecorridoForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AbmRecorrido\BajaRecorrido\SeleccionRecorridoBajaForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmRecorrido\BajaRecorrido\SeleccionRecorridoBajaForm.Designer.cs">
+      <DependentUpon>SeleccionRecorridoBajaForm.cs</DependentUpon>
     </Compile>
     <Compile Include="AbmRecorrido\Dominio\Recorrido.cs" />
     <Compile Include="AbmRecorrido\Dominio\Tramo.cs" />
+    <Compile Include="AbmRecorrido\EditarRecorrido\EditarRecorridoForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmRecorrido\EditarRecorrido\EditarRecorridoForm.Designer.cs">
+      <DependentUpon>EditarRecorridoForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AbmRecorrido\EditarRecorrido\SeleccionRecorridoEditarForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmRecorrido\EditarRecorrido\SeleccionRecorridoEditarForm.Designer.cs">
+      <DependentUpon>SeleccionRecorridoEditarForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="AbmRol\AbmRolForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -176,6 +202,10 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="GenerarViaje\Dominio\Excepciones\IdentificadorCruceroEnViajeEsNuloOVacioException.cs" />
+    <Compile Include="GenerarViaje\Dominio\Excepciones\InsertarNuevoViajeException.cs" />
+    <Compile Include="GenerarViaje\Dominio\Excepciones\NingunRecorridoSeleccionadoEnNuevoViajeException.cs" />
+    <Compile Include="GenerarViaje\Dominio\Viaje.cs" />
     <Compile Include="GenerarViaje\GenerarViajeForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -252,8 +282,17 @@
     <EmbeddedResource Include="AbmCrucero\AltaEdicionCrucero\CruceroForm.resx">
       <DependentUpon>CruceroForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="AbmRecorrido\AltaRecorridoForm.resx">
+    <EmbeddedResource Include="AbmRecorrido\AbmRecorridosForm.resx">
+      <DependentUpon>AbmRecorridosForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmRecorrido\AltaRecorrido\AltaRecorridoForm.resx">
       <DependentUpon>AltaRecorridoForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmRecorrido\BajaRecorrido\SeleccionRecorridoBajaForm.resx">
+      <DependentUpon>SeleccionRecorridoBajaForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmRecorrido\EditarRecorrido\SeleccionRecorridoEditarForm.resx">
+      <DependentUpon>SeleccionRecorridoEditarForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AbmRol\AbmRolForm.resx">
       <DependentUpon>AbmRolForm.cs</DependentUpon>
@@ -298,7 +337,9 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="AbmCrucero\Dominio\Excepciones\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
