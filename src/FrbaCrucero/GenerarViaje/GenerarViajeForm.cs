@@ -186,5 +186,10 @@ namespace FrbaCrucero.GeneracionViaje
         {
             identificadorRecorrido = Convert.ToString(dgvRecorridos.Rows[e.RowIndex].Cells["Identificador"].Value);
         }
+
+        private void btnCancelar_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 }
