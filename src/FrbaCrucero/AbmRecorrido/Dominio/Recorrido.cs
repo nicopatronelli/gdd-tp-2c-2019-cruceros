@@ -43,6 +43,11 @@ namespace FrbaCrucero.AbmRecorrido.Dominio
             this.tramos.Add(tramo);
         }
 
+        public void eliminarUltimoTramo()
+        {
+            this.tramos.RemoveAt(this.tramos.Count - 1);
+        }
+
         public List<Tramo> getTramos()
         {
             return this.tramos;
