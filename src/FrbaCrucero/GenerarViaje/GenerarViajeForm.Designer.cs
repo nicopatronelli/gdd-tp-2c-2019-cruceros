@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnCancelar = new System.Windows.Forms.Button();
             this.btnEnviar = new System.Windows.Forms.Button();
             this.dtpFechaFin = new System.Windows.Forms.DateTimePicker();
             this.dtpFechaInicio = new System.Windows.Forms.DateTimePicker();
@@ -38,13 +39,13 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.gpbxRecorridos = new System.Windows.Forms.GroupBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.txtbxTramosPorRecorrido = new System.Windows.Forms.TextBox();
             this.txtbxPuertoFin = new System.Windows.Forms.TextBox();
             this.btnBuscarRecorridos = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.txtbxPuertoInicio = new System.Windows.Forms.TextBox();
             this.dgvRecorridos = new System.Windows.Forms.DataGridView();
-            this.btnCancelar = new System.Windows.Forms.Button();
-            this.txtbxTramosPorRecorrido = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.gpbxRecorridos.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvRecorridos)).BeginInit();
@@ -52,7 +53,6 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.txtbxTramosPorRecorrido);
             this.groupBox1.Controls.Add(this.btnCancelar);
             this.groupBox1.Controls.Add(this.btnEnviar);
             this.groupBox1.Controls.Add(this.dtpFechaFin);
@@ -70,9 +70,19 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Generar Viaje";
             // 
+            // btnCancelar
+            // 
+            this.btnCancelar.Location = new System.Drawing.Point(695, 381);
+            this.btnCancelar.Name = "btnCancelar";
+            this.btnCancelar.Size = new System.Drawing.Size(75, 23);
+            this.btnCancelar.TabIndex = 11;
+            this.btnCancelar.Text = "Cancelar";
+            this.btnCancelar.UseVisualStyleBackColor = true;
+            this.btnCancelar.Click += new System.EventHandler(this.btnCancelar_Click);
+            // 
             // btnEnviar
             // 
-            this.btnEnviar.Location = new System.Drawing.Point(623, 381);
+            this.btnEnviar.Location = new System.Drawing.Point(612, 381);
             this.btnEnviar.Name = "btnEnviar";
             this.btnEnviar.Size = new System.Drawing.Size(75, 23);
             this.btnEnviar.TabIndex = 8;
@@ -142,6 +152,8 @@
             // 
             // gpbxRecorridos
             // 
+            this.gpbxRecorridos.Controls.Add(this.label5);
+            this.gpbxRecorridos.Controls.Add(this.txtbxTramosPorRecorrido);
             this.gpbxRecorridos.Controls.Add(this.txtbxPuertoFin);
             this.gpbxRecorridos.Controls.Add(this.btnBuscarRecorridos);
             this.gpbxRecorridos.Controls.Add(this.label4);
@@ -153,6 +165,24 @@
             this.gpbxRecorridos.TabIndex = 10;
             this.gpbxRecorridos.TabStop = false;
             this.gpbxRecorridos.Text = "Recorrido";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(559, 24);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(166, 26);
+            this.label5.TabIndex = 13;
+            this.label5.Text = "Puertos que visita el recorrido \r\nseleccionado (en orden de visita):";
+            // 
+            // txtbxTramosPorRecorrido
+            // 
+            this.txtbxTramosPorRecorrido.Location = new System.Drawing.Point(562, 65);
+            this.txtbxTramosPorRecorrido.Multiline = true;
+            this.txtbxTramosPorRecorrido.Name = "txtbxTramosPorRecorrido";
+            this.txtbxTramosPorRecorrido.ReadOnly = true;
+            this.txtbxTramosPorRecorrido.Size = new System.Drawing.Size(202, 154);
+            this.txtbxTramosPorRecorrido.TabIndex = 12;
             // 
             // txtbxPuertoFin
             // 
@@ -189,30 +219,12 @@
             // 
             // dgvRecorridos
             // 
+            this.dgvRecorridos.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvRecorridos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvRecorridos.Location = new System.Drawing.Point(14, 65);
             this.dgvRecorridos.Name = "dgvRecorridos";
-            this.dgvRecorridos.Size = new System.Drawing.Size(759, 154);
+            this.dgvRecorridos.Size = new System.Drawing.Size(494, 154);
             this.dgvRecorridos.TabIndex = 9;
-            // 
-            // btnCancelar
-            // 
-            this.btnCancelar.Location = new System.Drawing.Point(704, 381);
-            this.btnCancelar.Name = "btnCancelar";
-            this.btnCancelar.Size = new System.Drawing.Size(75, 23);
-            this.btnCancelar.TabIndex = 11;
-            this.btnCancelar.Text = "Cancelar";
-            this.btnCancelar.UseVisualStyleBackColor = true;
-            this.btnCancelar.Click += new System.EventHandler(this.btnCancelar_Click);
-            // 
-            // txtbxTramosPorRecorrido
-            // 
-            this.txtbxTramosPorRecorrido.Location = new System.Drawing.Point(649, 19);
-            this.txtbxTramosPorRecorrido.Multiline = true;
-            this.txtbxTramosPorRecorrido.Name = "txtbxTramosPorRecorrido";
-            this.txtbxTramosPorRecorrido.ReadOnly = true;
-            this.txtbxTramosPorRecorrido.Size = new System.Drawing.Size(130, 106);
-            this.txtbxTramosPorRecorrido.TabIndex = 12;
             // 
             // GenerarViajeForm
             // 
@@ -251,5 +263,6 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button btnCancelar;
         private System.Windows.Forms.TextBox txtbxTramosPorRecorrido;
+        private System.Windows.Forms.Label label5;
     }
 }

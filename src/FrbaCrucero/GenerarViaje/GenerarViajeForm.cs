@@ -17,8 +17,8 @@ namespace FrbaCrucero.GeneracionViaje
 {
     public partial class GenerarViajeForm : Form
     {
-        string identificadorRecorrido; // Identificador del recorrido seleccionado para el viaje
-        ListadoRecorridos listadoRecorridos; 
+        private string identificadorRecorrido; // Identificador del recorrido seleccionado para el viaje
+        private ListadoRecorridos listadoRecorridos;
 
         public GenerarViajeForm()
         {
@@ -45,6 +45,18 @@ namespace FrbaCrucero.GeneracionViaje
                 return;
             }
 
+            int flagNingunCruceroSeleccionado = 0;
+            foreach (DataGridViewRow row in dgvRecorridos.Rows)
+            {
+                if (row.Cells["btnDgvSeleccionarRecorrido"].Value.Equals(true))
+                    flagNingunCruceroSeleccionado++;
+            }
+            if (flagNingunCruceroSeleccionado.Equals(DEF.NINGUN_RECORRIDO_SELECCIONADO))
+            {
+                MensajeBox.info("No ha seleccionado un recorrido para el viaje: debe seleccionar uno. Si no le figura ningún recorrido, significa que no hay recorridos disponibles para los puertos ingresados.");
+                return;
+            }
+            
             Viaje viaje = new Viaje();
             try
             {
@@ -103,6 +115,34 @@ namespace FrbaCrucero.GeneracionViaje
             }
         } // FIN cargarCbmxCruceroDisponibles()
 
+        private void btnBuscarRecorridos_Click(object sender, EventArgs e)
+        {
+            // Limpiamos el listado (datagridview) de recorridos
+            this.listadoRecorridos.limpiarDgv();
+
+            // Recuperamos los puertos ingresados 
+            string puertoInicio = txtbxPuertoInicio.Text;
+            string puertoFin = txtbxPuertoFin.Text;
+
+            this.listadoRecorridos.popularRecorridos(puertoInicio, puertoFin);
+            this.listadoRecorridos.agregarCheckBoxDgv("btnDgvSeleccionarRecorrido", "Seleccionar Recorrido");
+        } // FIN btnBuscarRecorridos_Click
+
+        // Guardamos el identificador del recorrido seleccionado al pulsar Enviar
+        private void capturarIdentificadorRecorridoSeleccionado_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            var senderGrid = (DataGridView)sender;
+            if (senderGrid.Columns[e.ColumnIndex] is DataGridViewCheckBoxColumn &&
+                e.RowIndex >= 0)
+            {
+                identificadorRecorrido = Convert.ToString(dgvRecorridos.Rows[e.RowIndex].Cells["Identificador"].Value);
+                //identificadorRecorridoAnterior = identificadorRecorrido;
+            }
+
+            //if (flag.Equals(false) && ) // No hay ningún recorrido seleccionado
+              //  identificadorRecorrido = DEF.NINGUN_RECORRIDO_SELECCIONADO;
+        }
+
         // Método para permitir el marcado de un sólo checkbox por recorrido a la vez
         public void dgvRecorridosSoloUnRecorrido_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -120,19 +160,6 @@ namespace FrbaCrucero.GeneracionViaje
                 this.listadoRecorridos.getDgvRecorridos().CurrentRow.Cells["btnDgvSeleccionarRecorrido"].Value = true;
             }
         }
-
-        private void btnBuscarRecorridos_Click(object sender, EventArgs e)
-        {
-            // Limpiamos el listado (datagridview) de recorridos
-            this.listadoRecorridos.limpiarDgv();
-
-            // Recuperamos los puertos ingresados 
-            string puertoInicio = txtbxPuertoInicio.Text;
-            string puertoFin = txtbxPuertoFin.Text;
-
-            this.listadoRecorridos.popularRecorridos(puertoInicio, puertoFin);
-            this.listadoRecorridos.agregarCheckBoxDgv("btnDgvSeleccionarRecorrido", "Seleccionar Recorrido");
-        } // FIN btnBuscarRecorridos_Click
 
         // Mostramos los tramos que componen el recorrido seleccionado por el usuario
         private void mostrarTramosDelRecorridoSeleccionado_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -173,15 +200,6 @@ namespace FrbaCrucero.GeneracionViaje
         private void limpiarTxtbxTramosRecorrido()
         {
             txtbxTramosPorRecorrido.Text = "";
-        }
-
-        // Guardamos el identificador del recorrido seleccionado al pulsar Enviar
-        private void capturarIdentificadorRecorridoSeleccionado_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            var senderGrid = (DataGridView)sender;
-            if (senderGrid.Columns[e.ColumnIndex] is DataGridViewCheckBoxColumn &&
-                e.RowIndex >= 0)
-            identificadorRecorrido = Convert.ToString(dgvRecorridos.Rows[e.RowIndex].Cells["Identificador"].Value);
         }
 
         private void btnCancelar_Click(object sender, EventArgs e)

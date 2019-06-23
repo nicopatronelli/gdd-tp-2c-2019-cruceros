@@ -92,6 +92,7 @@ namespace FrbaCrucero.GenerarViaje
             chbxSeleccionarRecorrido.Name = nombreBoton;
             chbxSeleccionarRecorrido.HeaderText = headerBoton;
             this.dgvRecorridos.Columns.Add(chbxSeleccionarRecorrido);
+            this.dgvRecorridos.Columns[nombreBoton].Width = 55;
         }
 
         public void limpiarDgv()
