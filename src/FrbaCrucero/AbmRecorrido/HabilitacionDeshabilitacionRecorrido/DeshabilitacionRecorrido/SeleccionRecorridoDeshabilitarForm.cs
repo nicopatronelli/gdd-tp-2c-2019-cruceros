@@ -16,7 +16,7 @@ namespace FrbaCrucero.AbmRecorrido.HabilitacionDeshabilitacionRecorrido
 {
     public partial class SeleccionRecorridoDeshabilitarForm : Form
     {
-        protected ListadoRecorridos listadoRecorridos;
+        public ListadoRecorridos listadoRecorridos;
         protected string puertoInicio;
         protected string puertoFin;
 

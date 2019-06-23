@@ -16,7 +16,7 @@ namespace FrbaCrucero.AbmRecorrido
 {
     public partial class AltaRecorridoForm : Form
     {
-        private List<Tramo> tramos = new List<Tramo>();
+       // private List<Tramo> tramos = new List<Tramo>();
         private Recorrido recorrido; 
 
         public AltaRecorridoForm()
@@ -52,6 +52,13 @@ namespace FrbaCrucero.AbmRecorrido
             if (Recorrido.identificadorDisponible(recorrido.getIdentificador()).Equals(false))
             {
                 MensajeBox.error("El identificador ingresado para el recorrido ya se encuentra registrado.");
+                return; 
+            }
+
+            // Validamos que se haya seleccionado al menos un tramo para el recorrido nuevo
+            if (recorrido.getTramos().Count == 0)
+            {
+                MensajeBox.error("Debe seleccionar al menos un tramo.");
                 return; 
             }
 

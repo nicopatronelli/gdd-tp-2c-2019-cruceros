@@ -82,7 +82,8 @@ namespace FrbaCrucero.GenerarViaje
                  + "WHERE tpr1.tramo_anterior IS NULL "
                     + "AND tpr2.tramo_siguiente IS NULL "
                     + "AND pto_inicio.puerto_nombre LIKE '%'+@puerto_inicio+'%' "
-                    + "AND pto_fin.puerto_nombre LIKE '%'+@puerto_fin+'%'";
+                    + "AND pto_fin.puerto_nombre LIKE '%'+@puerto_fin+'%' "
+                    + "AND r.recorrido_estado = 0"; // Dentro de los buscados, solo traemos los recorridos habilitados
         } // FIN queryRecorridos()
 
         // Query para traernos los recorridos disponibles

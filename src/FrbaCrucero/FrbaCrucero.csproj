@@ -129,11 +129,11 @@
     </Compile>
     <Compile Include="AbmCrucero\Dominio\Crucero.cs" />
     <Compile Include="AbmCrucero\Dominio\CruceroBuilder.cs" />
-    <Compile Include="AbmRecorrido\HabilitacionDeshabilitacionRecorrido\HabilitacionRecorrido\AvisoHabilitacionRecorridoForm.cs">
+    <Compile Include="AbmRecorrido\EditarRecorrido\SeleccionRecorridoEditarForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AbmRecorrido\HabilitacionDeshabilitacionRecorrido\HabilitacionRecorrido\AvisoHabilitacionRecorridoForm.Designer.cs">
-      <DependentUpon>AvisoHabilitacionRecorridoForm.cs</DependentUpon>
+    <Compile Include="AbmRecorrido\EditarRecorrido\SeleccionRecorridoEditarForm.Designer.cs">
+      <DependentUpon>SeleccionRecorridoEditarForm.cs</DependentUpon>
     </Compile>
     <Compile Include="AbmRecorrido\HabilitacionDeshabilitacionRecorrido\DeshabilitacionRecorrido\ConfirmarDeshabilitacionRecorridoForm.cs">
       <SubType>Form</SubType>
@@ -181,12 +181,6 @@
     </Compile>
     <Compile Include="AbmRecorrido\EditarRecorrido\EditarRecorridoForm.Designer.cs">
       <DependentUpon>EditarRecorridoForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="AbmRecorrido\EditarRecorrido\SeleccionRecorridoEditarForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AbmRecorrido\EditarRecorrido\SeleccionRecorridoEditarForm.Designer.cs">
-      <DependentUpon>SeleccionRecorridoEditarForm.cs</DependentUpon>
     </Compile>
     <Compile Include="AbmRol\AbmRolForm.cs">
       <SubType>Form</SubType>
@@ -307,17 +301,14 @@
     <EmbeddedResource Include="AbmRecorrido\AltaRecorrido\AltaRecorridoForm.resx">
       <DependentUpon>AltaRecorridoForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="AbmRecorrido\HabilitacionDeshabilitacionRecorrido\HabilitacionRecorrido\AvisoHabilitacionRecorridoForm.resx">
-      <DependentUpon>AvisoHabilitacionRecorridoForm.cs</DependentUpon>
+    <EmbeddedResource Include="AbmRecorrido\EditarRecorrido\SeleccionRecorridoEditarForm.resx">
+      <DependentUpon>SeleccionRecorridoEditarForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AbmRecorrido\HabilitacionDeshabilitacionRecorrido\DeshabilitacionRecorrido\ConfirmarDeshabilitacionRecorridoForm.resx">
       <DependentUpon>ConfirmarDeshabilitacionRecorridoForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AbmRecorrido\HabilitacionDeshabilitacionRecorrido\DeshabilitacionRecorrido\SeleccionRecorridoDeshabilitarForm.resx">
       <DependentUpon>SeleccionRecorridoDeshabilitarForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AbmRecorrido\EditarRecorrido\SeleccionRecorridoEditarForm.resx">
-      <DependentUpon>SeleccionRecorridoEditarForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AbmRecorrido\HabilitacionDeshabilitacionRecorrido\HabilitacionRecorrido\SeleccionRecorridoHabilitarForm.resx">
       <DependentUpon>SeleccionRecorridoHabilitarForm.cs</DependentUpon>

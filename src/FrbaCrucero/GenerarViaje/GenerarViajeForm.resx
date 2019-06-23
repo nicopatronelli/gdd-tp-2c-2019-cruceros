@@ -117,4 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="label6.Text" xml:space="preserve">
+    <value>AVISO: Solo se muestran los recorridos habilitados que satisfagan los criterios de búsqueda ingresados. No se muestran los recorridos deshabilitados.
+Recuerde que puede volver a habilitar un recorrido deshabilitado desde el ABM de Recorridos.
+
+</value>
+  </data>
 </root>
