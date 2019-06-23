@@ -14,9 +14,9 @@ using FrbaCrucero.GenerarViaje.Dominio.Excepciones;
 
 namespace FrbaCrucero.GenerarViaje
 {
-    class ListadoRecorridos
+    public class ListadoRecorridos
     {
-        DataGridView dgvRecorridos;
+        private DataGridView dgvRecorridos;
 
         public ListadoRecorridos(DataGridView dgvRecorridos)
         {

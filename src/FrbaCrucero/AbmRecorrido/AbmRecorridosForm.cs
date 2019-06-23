@@ -31,10 +31,16 @@ namespace FrbaCrucero.AbmRecorrido
             formSeleccionRecorridoEditar.ShowDialog();
         }
 
-        private void btnBajaRecorrido_Click(object sender, EventArgs e)
+        private void btnDeshabilitarRecorrido_Click(object sender, EventArgs e)
         {
-            SeleccionRecorridoDeshabilitarForm formSeleccionRecorridoBaja = new SeleccionRecorridoDeshabilitarForm();
-            formSeleccionRecorridoBaja.ShowDialog();
+            SeleccionRecorridoDeshabilitarForm formSeleccionRecorridoDeshabilitar = new SeleccionRecorridoDeshabilitarForm();
+            formSeleccionRecorridoDeshabilitar.ShowDialog();
+        }
+
+        private void btnHabilitarRecorrido_Click(object sender, EventArgs e)
+        {
+            SeleccionRecorridoHabilitarForm formSeleccionRecorridoHabilitar = new SeleccionRecorridoHabilitarForm();
+            formSeleccionRecorridoHabilitar.ShowDialog();
         }
     }
 }

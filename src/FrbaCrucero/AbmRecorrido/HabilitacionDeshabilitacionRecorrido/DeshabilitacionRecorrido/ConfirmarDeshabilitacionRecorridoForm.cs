@@ -42,7 +42,7 @@ namespace FrbaCrucero.AbmRecorrido.HabilitacionDeshabilitacionRecorrido
             Parametro paramIdentificadorRecorrido = new Parametro("@identificador_recorrido", SqlDbType.NVarChar, identificadorRecorrido, 255);
             parametros.Add(paramIdentificadorRecorrido);
             string consulta = "UPDATE LOS_BARONES_DE_LA_CERVEZA.Recorrido "
-                            + "SET recorrido_estado = 1 "
+                            + "SET recorrido_estado = 1 " 
                             + "WHERE recorrido_codigo = @identificador_recorrido";
             Query miConsulta = new Query(consulta, parametros);
             miConsulta.ejecutarNonQuery();

@@ -16,9 +16,9 @@ namespace FrbaCrucero.AbmRecorrido.HabilitacionDeshabilitacionRecorrido
 {
     public partial class SeleccionRecorridoDeshabilitarForm : Form
     {
-        private ListadoRecorridos listadoRecorridos;
-        private string puertoInicio;
-        private string puertoFin;
+        protected ListadoRecorridos listadoRecorridos;
+        protected string puertoInicio;
+        protected string puertoFin;
 
         public SeleccionRecorridoDeshabilitarForm()
         {
@@ -45,7 +45,7 @@ namespace FrbaCrucero.AbmRecorrido.HabilitacionDeshabilitacionRecorrido
             recargarDgvRecorridos(puertoInicio, puertoFin);
         }
 
-        private void recargarDgvRecorridos(string puertoInicio, string puertoFin)
+        virtual protected void recargarDgvRecorridos(string puertoInicio, string puertoFin)
         {
             // Limpiamos el listado (datagridview) de recorridos
             this.listadoRecorridos.limpiarDgv();
@@ -54,7 +54,7 @@ namespace FrbaCrucero.AbmRecorrido.HabilitacionDeshabilitacionRecorrido
         }
 
         // Abrimos el formulario para que el usuario confirme la deshabilitación del recorrido
-        protected void dgvSeleccionarRecorrido_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        virtual protected void dgvSeleccionarRecorrido_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             var senderGrid = (DataGridView)sender;
 

@@ -116,15 +116,15 @@
             this.btnCerrar.UseVisualStyleBackColor = true;
             this.btnCerrar.Click += new System.EventHandler(this.btnCerrar_Click);
             // 
-            // SeleccionRecorridoForm
+            // SeleccionRecorridoDeshabilitarForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(560, 288);
             this.Controls.Add(this.btnCerrar);
             this.Controls.Add(this.groupBox1);
-            this.Name = "SeleccionRecorridoForm";
-            this.Text = "Seleccion Recorrido";
+            this.Name = "SeleccionRecorridoDeshabilitarForm";
+            this.Text = "Deshabilitar Recorrido";
             this.Load += new System.EventHandler(this.SeleccionRecorridoForm_Load_1);
             ((System.ComponentModel.ISupportInitialize)(this.dgvRecorridos)).EndInit();
             this.groupBox1.ResumeLayout(false);
@@ -140,8 +140,8 @@
         private System.Windows.Forms.Button btnBuscarRecorridos;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox txtbxPuertoInicio;
-        private System.Windows.Forms.DataGridView dgvRecorridos;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button btnCerrar;
+        protected System.Windows.Forms.DataGridView dgvRecorridos;
     }
 }

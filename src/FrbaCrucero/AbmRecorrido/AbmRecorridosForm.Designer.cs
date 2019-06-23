@@ -29,8 +29,9 @@
         private void InitializeComponent()
         {
             this.btnNuevoRecorrido = new System.Windows.Forms.Button();
-            this.btnBajaRecorrido = new System.Windows.Forms.Button();
+            this.btnDeshabilitarRecorrido = new System.Windows.Forms.Button();
             this.btnEditarRecorrido = new System.Windows.Forms.Button();
+            this.btnHabilitarRecorrido = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnNuevoRecorrido
@@ -43,15 +44,15 @@
             this.btnNuevoRecorrido.UseVisualStyleBackColor = true;
             this.btnNuevoRecorrido.Click += new System.EventHandler(this.btnNuevoRecorrido_Click);
             // 
-            // btnBajaRecorrido
+            // btnDeshabilitarRecorrido
             // 
-            this.btnBajaRecorrido.Location = new System.Drawing.Point(400, 22);
-            this.btnBajaRecorrido.Name = "btnBajaRecorrido";
-            this.btnBajaRecorrido.Size = new System.Drawing.Size(158, 23);
-            this.btnBajaRecorrido.TabIndex = 1;
-            this.btnBajaRecorrido.Text = "Deshabilitar Recorrido";
-            this.btnBajaRecorrido.UseVisualStyleBackColor = true;
-            this.btnBajaRecorrido.Click += new System.EventHandler(this.btnBajaRecorrido_Click);
+            this.btnDeshabilitarRecorrido.Location = new System.Drawing.Point(400, 22);
+            this.btnDeshabilitarRecorrido.Name = "btnDeshabilitarRecorrido";
+            this.btnDeshabilitarRecorrido.Size = new System.Drawing.Size(158, 23);
+            this.btnDeshabilitarRecorrido.TabIndex = 1;
+            this.btnDeshabilitarRecorrido.Text = "Deshabilitar Recorrido";
+            this.btnDeshabilitarRecorrido.UseVisualStyleBackColor = true;
+            this.btnDeshabilitarRecorrido.Click += new System.EventHandler(this.btnDeshabilitarRecorrido_Click);
             // 
             // btnEditarRecorrido
             // 
@@ -63,13 +64,24 @@
             this.btnEditarRecorrido.UseVisualStyleBackColor = true;
             this.btnEditarRecorrido.Click += new System.EventHandler(this.btnEditarRecorrido_Click);
             // 
+            // btnHabilitarRecorrido
+            // 
+            this.btnHabilitarRecorrido.Location = new System.Drawing.Point(579, 22);
+            this.btnHabilitarRecorrido.Name = "btnHabilitarRecorrido";
+            this.btnHabilitarRecorrido.Size = new System.Drawing.Size(158, 23);
+            this.btnHabilitarRecorrido.TabIndex = 3;
+            this.btnHabilitarRecorrido.Text = "Habilitar Recorrido";
+            this.btnHabilitarRecorrido.UseVisualStyleBackColor = true;
+            this.btnHabilitarRecorrido.Click += new System.EventHandler(this.btnHabilitarRecorrido_Click);
+            // 
             // AbmRecorridosForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(579, 66);
+            this.ClientSize = new System.Drawing.Size(789, 66);
+            this.Controls.Add(this.btnHabilitarRecorrido);
             this.Controls.Add(this.btnEditarRecorrido);
-            this.Controls.Add(this.btnBajaRecorrido);
+            this.Controls.Add(this.btnDeshabilitarRecorrido);
             this.Controls.Add(this.btnNuevoRecorrido);
             this.Name = "AbmRecorridosForm";
             this.Text = "AbmRecorrido";
@@ -80,7 +92,8 @@
         #endregion
 
         private System.Windows.Forms.Button btnNuevoRecorrido;
-        private System.Windows.Forms.Button btnBajaRecorrido;
+        private System.Windows.Forms.Button btnDeshabilitarRecorrido;
         private System.Windows.Forms.Button btnEditarRecorrido;
+        private System.Windows.Forms.Button btnHabilitarRecorrido;
     }
 }
