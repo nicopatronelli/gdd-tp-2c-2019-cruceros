@@ -129,6 +129,7 @@
     </Compile>
     <Compile Include="AbmCrucero\Dominio\Crucero.cs" />
     <Compile Include="AbmCrucero\Dominio\CruceroBuilder.cs" />
+    <Compile Include="GenerarViaje\ListadoRecorridos.cs" />
     <Compile Include="GenerarViaje\Dominio\Excepciones\FechaFinViajeAnteriorAFechaInicioViajeException.cs" />
     <Compile Include="GenerarViaje\Dominio\Excepciones\FechaInicioAnteriorFechaConfigException.cs" />
     <Compile Include="AbmPuerto\Form1.cs">

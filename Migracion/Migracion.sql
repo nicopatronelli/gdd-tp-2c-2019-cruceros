@@ -940,7 +940,8 @@ no hayan sido dados de baja de forma definitiva.
 ******************************************************************/
 CREATE FUNCTION [LOS_BARONES_DE_LA_CERVEZA].[UF_cruceros_disponibles] 
 (
-	@fecha_inicio_nuevo_viaje_s NVARCHAR(255)
+	@fecha_inicio_nuevo_viaje_s NVARCHAR(255),
+	@fecha_fin_nuevo_viaje_s NVARCHAR(255)
 )
 RETURNS TABLE 
 AS
@@ -991,7 +992,6 @@ BEGIN
 	END CATCH
 END
 GO
-
 
 /******************************************************************
 [LOS_BARONES_DE_LA_CERVEZA].[USP_insertar_tramo_por_recorrido] 
