@@ -124,7 +124,7 @@ namespace FrbaCrucero.GeneracionViaje
             string puertoInicio = txtbxPuertoInicio.Text;
             string puertoFin = txtbxPuertoFin.Text;
 
-            this.listadoRecorridos.popularRecorridos(puertoInicio, puertoFin);
+            this.listadoRecorridos.popularRecorridos(puertoInicio, puertoFin, this.listadoRecorridos.queryRecorridosGenerarViaje());
             this.listadoRecorridos.agregarCheckBoxDgv("btnDgvSeleccionarRecorrido", "Seleccionar Recorrido");
         } // FIN btnBuscarRecorridos_Click
 
@@ -136,11 +136,7 @@ namespace FrbaCrucero.GeneracionViaje
                 e.RowIndex >= 0)
             {
                 identificadorRecorrido = Convert.ToString(dgvRecorridos.Rows[e.RowIndex].Cells["Identificador"].Value);
-                //identificadorRecorridoAnterior = identificadorRecorrido;
             }
-
-            //if (flag.Equals(false) && ) // No hay ningún recorrido seleccionado
-              //  identificadorRecorrido = DEF.NINGUN_RECORRIDO_SELECCIONADO;
         }
 
         // Método para permitir el marcado de un sólo checkbox por recorrido a la vez

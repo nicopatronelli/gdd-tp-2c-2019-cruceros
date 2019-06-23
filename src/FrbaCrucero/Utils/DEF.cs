@@ -67,6 +67,8 @@ namespace FrbaCrucero.Utils
         public const int FILAS_INSERT_RECORRIDO = 1;
         public const int FILAS_INSERT_TRAMO_POR_RECORRIDO = 1;
         public const int NINGUN_RECORRIDO_SELECCIONADO = 0;
+        public const int RECORRIDOS_HABILITADOS = 0;
+        public const int RECORRIDOS_DESHABILITADOS = 1;
 
         // Generar Viaje
         public const int TRAMO_PUERTO_INICIO = 0;

@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using FrbaCrucero.AbmRecorrido.EditarRecorrido;
-using FrbaCrucero.AbmRecorrido.BajaRecorrido;
+using FrbaCrucero.AbmRecorrido.HabilitacionDeshabilitacionRecorrido;
 
 namespace FrbaCrucero.AbmRecorrido
 {
@@ -33,7 +33,7 @@ namespace FrbaCrucero.AbmRecorrido
 
         private void btnBajaRecorrido_Click(object sender, EventArgs e)
         {
-            SeleccionRecorridoBajaForm formSeleccionRecorridoBaja = new SeleccionRecorridoBajaForm();
+            SeleccionRecorridoDeshabilitarForm formSeleccionRecorridoBaja = new SeleccionRecorridoDeshabilitarForm();
             formSeleccionRecorridoBaja.ShowDialog();
         }
     }

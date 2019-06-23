@@ -23,10 +23,10 @@ namespace FrbaCrucero
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             //Application.Run(new AbmCruceros());
-            Application.Run(new GenerarViajeForm());
+            //Application.Run(new GenerarViajeForm());
             //Application.Run(new AltaRecorridoForm());
             //Application.Run(new CompraReservaForm());
-            //Application.Run(new AbmRecorridosForm());
+            Application.Run(new AbmRecorridosForm());
         }
     }
 }

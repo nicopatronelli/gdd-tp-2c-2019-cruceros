@@ -28,11 +28,11 @@ namespace FrbaCrucero.GenerarViaje
             return this.dgvRecorridos;
         }
 
-        public void popularRecorridos(string puertoInicio, string puertoFin)
+        public void popularRecorridos(string puertoInicio, string puertoFin, string queryRecorridos)
         {
             // Armamos la query en forma dinámica según el puerto de inicio y fin ingresados 
             ConexionBD conexion = new ConexionBD();
-            SqlDataAdapter dataAdapter = new SqlDataAdapter(this.queryRecorridos(), conexion.obtenerConexion());
+            SqlDataAdapter dataAdapter = new SqlDataAdapter(queryRecorridos, conexion.obtenerConexion());
 
             // Añadimos el parámetro puerto_inicio
             Parametro paramPuertoInicio = new Parametro("@puerto_inicio", SqlDbType.NVarChar, puertoInicio, 255);
@@ -59,8 +59,8 @@ namespace FrbaCrucero.GenerarViaje
             conexion.cerrar();
         } // FIN popularRecorridos()
 
-        // Query para traernos los recorridos disponibles
-        private string queryRecorridos()
+        // Query para traernos los recorridos disponibles para generar nuevos viajes (GenerarViajeForm)
+        public string queryRecorridosGenerarViaje()
         {
             return "SELECT DISTINCT "
                     + "r.recorrido_codigo 'Identificador', "
@@ -85,6 +85,33 @@ namespace FrbaCrucero.GenerarViaje
                     + "AND pto_fin.puerto_nombre LIKE '%'+@puerto_fin+'%'";
         } // FIN queryRecorridos()
 
+        // Query para traernos los recorridos disponibles
+        public string queryRecorridosEstado(int habilitados)
+        {
+            return "SELECT DISTINCT "
+                    + "r.recorrido_codigo 'Identificador', "
+                    + "pto_inicio.puerto_nombre 'Puerto Inicio', "
+                    + "pto_fin.puerto_nombre 'Puerto Fin' "
+                 + "FROM LOS_BARONES_DE_LA_CERVEZA.Recorrido r "
+                    + "JOIN LOS_BARONES_DE_LA_CERVEZA.Tramos_por_Recorrido tpr1 "
+                        + "ON r.id_recorrido = tpr1.id_recorrido "
+                    + "JOIN LOS_BARONES_DE_LA_CERVEZA.Tramos_por_Recorrido tpr2 "
+                        + "ON r.id_recorrido = tpr2.id_recorrido "
+                    + "JOIN LOS_BARONES_DE_LA_CERVEZA.Tramo t1 "
+                        + "ON tpr1.id_tramo = t1.id_tramo "
+                    + "JOIN LOS_BARONES_DE_LA_CERVEZA.Tramo t2 "
+                        + "ON tpr2.id_tramo = t2.id_tramo "
+                    + "JOIN LOS_BARONES_DE_LA_CERVEZA.Puerto pto_inicio "
+                        + "ON t1.tramo_puerto_inicio = pto_inicio.id_puerto "
+                    + "JOIN LOS_BARONES_DE_LA_CERVEZA.Puerto pto_fin "
+                        + "ON t2.tramo_puerto_destino = pto_fin.id_puerto "
+                 + "WHERE tpr1.tramo_anterior IS NULL "
+                    + "AND tpr2.tramo_siguiente IS NULL "
+                    + "AND pto_inicio.puerto_nombre LIKE '%'+@puerto_inicio+'%' "
+                    + "AND pto_fin.puerto_nombre LIKE '%'+@puerto_fin+'%' "
+                    + "AND r.recorrido_estado = " + habilitados;
+        } // FIN queryRecorridosEstado()
+
         // Agregamos un checkbox al final de cada registro recorrido para poder seleccionarlos
         public void agregarCheckBoxDgv(string nombreBoton, string headerBoton)
         {
@@ -93,6 +120,17 @@ namespace FrbaCrucero.GenerarViaje
             chbxSeleccionarRecorrido.HeaderText = headerBoton;
             this.dgvRecorridos.Columns.Add(chbxSeleccionarRecorrido);
             this.dgvRecorridos.Columns[nombreBoton].Width = 55;
+        }
+
+        public void agregarBotonEditar(string nombreHeader, string nombreBoton)
+        {
+            // Añadimos un botón Editar al final de cada fila para poder elegir el recorrido a editar
+            DataGridViewButtonColumn botonEditar = new DataGridViewButtonColumn();
+            botonEditar.Name = "btnDgvEditar";
+            botonEditar.HeaderText = nombreHeader;
+            botonEditar.Text = nombreBoton;
+            botonEditar.UseColumnTextForButtonValue = true;
+            this.dgvRecorridos.Columns.Add(botonEditar);
         }
 
         public void limpiarDgv()

@@ -425,6 +425,7 @@ FROM LOS_BARONES_DE_LA_CERVEZA.Recorrido r
 		AND tpr2.tramo_siguiente IS NULL 
 		AND pto_inicio.puerto_nombre LIKE '%%' 
 		AND pto_fin.puerto_nombre LIKE '%%'
+		AND r.recorrido_estado = 0
 ORDER BY 1
 
 -- Mostrar Leo
@@ -434,3 +435,12 @@ FROM LOS_BARONES_DE_LA_CERVEZA.Recorrido r
 		ON r.id_recorrido = tpr.id_recorrido 
 WHERE r.recorrido_codigo= '43820887'
 ORDER BY 2
+
+SELECT * 
+FROM LOS_BARONES_DE_LA_CERVEZA.Viaje
+
+SELECT recorrido_codigo
+FROM LOS_BARONES_DE_LA_CERVEZA.Recorrido
+WHERE id_recorrido = 25
+
+SELECT identificador FROM LOS_BARONES_DE_LA_CERVEZA.UF_cruceros_disponibles('2019-06-03','2019-08-06')
