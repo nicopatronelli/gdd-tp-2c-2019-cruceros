@@ -19,6 +19,7 @@ namespace FrbaCrucero.AbmRecorrido
     {
         private Recorrido recorrido;
         private TramosDisponibles tramosDisponibles;
+        private TramosSeleccionados tramosSeleccionados;
 
         // Constructor
         public AltaRecorridoForm()
@@ -27,6 +28,7 @@ namespace FrbaCrucero.AbmRecorrido
             recorrido = new Recorrido(); // Inicializamos el objeto recorrido
             recorrido.setPrecio(new PrecioRecorrido(lblPrecioRecorrido));
             tramosDisponibles = new TramosDisponibles(dgvTramosDisponibles);
+            tramosSeleccionados = new TramosSeleccionados(dgvTramosSeleccionados);
             this.tramosDisponibles.popularTramos();
             this.tramosDisponibles.getDgvTramosDisponibles().CellClick += dgvTramosDisponibles_CellContentClick;
         }
@@ -79,28 +81,18 @@ namespace FrbaCrucero.AbmRecorrido
                 e.RowIndex >= 0)
             {
                 try
-                {
-                    int idTramoSeleccionado = Convert.ToInt32(dgvTramosDisponibles.Rows[e.RowIndex].Cells["tramo"].Value);
-                    string puertoInicioTramoSeleccionado = Convert.ToString(dgvTramosDisponibles.Rows[e.RowIndex].Cells["puerto_inicio"].Value);
-                    string puertoFinTramoSeleccionado = Convert.ToString(dgvTramosDisponibles.Rows[e.RowIndex].Cells["puerto_fin"].Value);
-                    double precioTramoSeleccionado = Convert.ToDouble(dgvTramosDisponibles.Rows[e.RowIndex].Cells["precio"].Value);
-                    Tramo tramo = new Tramo(idTramoSeleccionado, puertoInicioTramoSeleccionado, puertoFinTramoSeleccionado, precioTramoSeleccionado);
-                    this.recorrido.addTramo(tramo);
-                    this.popularDgvTramosSeleccionados(idTramoSeleccionado, puertoInicioTramoSeleccionado, puertoFinTramoSeleccionado, precioTramoSeleccionado);
-                    this.recorrido.getPrecio().aumentarLblPrecioRecorrido(precioTramoSeleccionado);
-                    this.tramosDisponibles.popularTramosPosibles(puertoFinTramoSeleccionado);
+                {   
+                    Tramo tramoSeleccionado = this.tramosDisponibles.getTramoSeleccionado(e.RowIndex);
+                    this.recorrido.addTramo(tramoSeleccionado);
+                    this.tramosSeleccionados.popular(tramoSeleccionado.getId(), tramoSeleccionado.getPuertoInicio(), tramoSeleccionado.getPuertoFin(), tramoSeleccionado.getPrecio());
+                    this.recorrido.getPrecio().aumentarLblPrecioRecorrido(tramoSeleccionado.getPrecio());
+                    this.tramosDisponibles.popularTramosPosibles(tramoSeleccionado.getPuertoFin());
                 }
                 catch
                 {
                     return;
                 }
             }
-        }
-
-        // Actualizamos el textbox lateral donde vamos mostrando los tramos seleccionados
-        private void popularDgvTramosSeleccionados(int idTramo, string puertoInicioTramo, string puertoFinTramo, double precioTramo)
-        {
-            dgvTramosRecorrido.Rows.Add(idTramo, puertoInicioTramo, puertoFinTramo, precioTramo);
         }
 
         private void btnCerrar_Click(object sender, EventArgs e)
@@ -110,19 +102,16 @@ namespace FrbaCrucero.AbmRecorrido
 
         private void btnEliminarUltimoTramo_Click(object sender, EventArgs e)
         {
-            // Eliminamos el último tramo agregado (la última fila del dgvTramosRrecorrido)
-            int cantidadTramosAgregados = dgvTramosRecorrido.Rows.Count;
-            if (cantidadTramosAgregados.Equals(0)) { return; }
-            dgvTramosRecorrido.Rows.RemoveAt(cantidadTramosAgregados - 1);
-            this.recorrido.eliminarUltimoTramo(); // Eliminamos el último tramo agregado de la lista de tramos
+            // Eliminamos el último tramo agregado (la última fila del dgvTramosSeleccionados)
+            if (this.tramosSeleccionados.cantidad().Equals(0)) { return; }
+            this.tramosSeleccionados.eliminarUltimoTramo();
+            this.recorrido.eliminarUltimoTramo(); // También debemos eliminar el último tramo agregado de la lista de tramos del recorrido
 
-            // Guardamos los datos del AHORA último tramo agregado
-            if (cantidadTramosAgregados - 1 > 0)
+            if (this.tramosSeleccionados.cantidad() > 0)
             {
-                string puertoFinUltimoTramo = dgvTramosRecorrido.Rows[dgvTramosRecorrido.Rows.Count - 1].Cells[2].Value.ToString();
-                double precioUltimoTramo = Convert.ToDouble(dgvTramosRecorrido.Rows[dgvTramosRecorrido.Rows.Count - 1].Cells[3].Value);
-                this.recorrido.getPrecio().disminuirLblPrecioRecorrido(precioUltimoTramo);
-                this.tramosDisponibles.popularTramosPosibles(puertoFinUltimoTramo);
+                Tramo ultimoTramo = this.tramosSeleccionados.getUltimoTramo();
+                this.recorrido.getPrecio().disminuirLblPrecioRecorrido(ultimoTramo.getPrecio());
+                this.tramosDisponibles.popularTramosPosibles(ultimoTramo.getPuertoFin());
             }
             else
             {
@@ -133,9 +122,9 @@ namespace FrbaCrucero.AbmRecorrido
 
         private void btnEliminarTodo_Click(object sender, EventArgs e)
         {
-            recorrido.reiniciarTramos();
-            lblPrecioRecorrido.Text = Convert.ToString(0);
-            this.dgvTramosRecorrido.Rows.Clear();
+            this.recorrido.reiniciarTramos();
+            this.recorrido.getPrecio().resetearLblPrecioRecorridoACero();
+            this.tramosSeleccionados.limpiar();
             this.tramosDisponibles.popularTramos();
         }
     }

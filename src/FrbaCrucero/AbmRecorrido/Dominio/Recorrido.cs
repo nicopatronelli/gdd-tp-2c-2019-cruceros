@@ -10,7 +10,7 @@ using FrbaCrucero.Utils.Excepciones;
 
 namespace FrbaCrucero.AbmRecorrido.Dominio
 {
-    class Recorrido
+    public class Recorrido
     {
         private string identificador;
         private List<Tramo> tramos;

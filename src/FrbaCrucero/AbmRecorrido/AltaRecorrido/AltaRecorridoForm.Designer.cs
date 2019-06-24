@@ -30,7 +30,7 @@
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.btnEliminarUltimoTramo = new System.Windows.Forms.Button();
-            this.dgvTramosRecorrido = new System.Windows.Forms.DataGridView();
+            this.dgvTramosSeleccionados = new System.Windows.Forms.DataGridView();
             this.id_tramo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.puerto_inicio_tramo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.puerto_fin_tramo = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -52,7 +52,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvTramosRecorrido)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvTramosSeleccionados)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTramosDisponibles)).BeginInit();
             this.SuspendLayout();
             // 
@@ -60,7 +60,7 @@
             // 
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.btnEliminarUltimoTramo);
-            this.groupBox1.Controls.Add(this.dgvTramosRecorrido);
+            this.groupBox1.Controls.Add(this.dgvTramosSeleccionados);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.btnEliminarTodo);
             this.groupBox1.Controls.Add(this.lblPrecioRecorrido);
@@ -85,23 +85,23 @@
             this.btnEliminarUltimoTramo.UseVisualStyleBackColor = true;
             this.btnEliminarUltimoTramo.Click += new System.EventHandler(this.btnEliminarUltimoTramo_Click);
             // 
-            // dgvTramosRecorrido
+            // dgvTramosSeleccionados
             // 
-            this.dgvTramosRecorrido.AllowUserToAddRows = false;
-            this.dgvTramosRecorrido.AllowUserToDeleteRows = false;
-            this.dgvTramosRecorrido.AllowUserToResizeColumns = false;
-            this.dgvTramosRecorrido.AllowUserToResizeRows = false;
-            this.dgvTramosRecorrido.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvTramosRecorrido.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dgvTramosSeleccionados.AllowUserToAddRows = false;
+            this.dgvTramosSeleccionados.AllowUserToDeleteRows = false;
+            this.dgvTramosSeleccionados.AllowUserToResizeColumns = false;
+            this.dgvTramosSeleccionados.AllowUserToResizeRows = false;
+            this.dgvTramosSeleccionados.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvTramosSeleccionados.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.id_tramo,
             this.puerto_inicio_tramo,
             this.puerto_fin_tramo,
             this.precio_tramo});
-            this.dgvTramosRecorrido.Location = new System.Drawing.Point(645, 80);
-            this.dgvTramosRecorrido.Name = "dgvTramosRecorrido";
-            this.dgvTramosRecorrido.ReadOnly = true;
-            this.dgvTramosRecorrido.Size = new System.Drawing.Size(443, 205);
-            this.dgvTramosRecorrido.TabIndex = 12;
+            this.dgvTramosSeleccionados.Location = new System.Drawing.Point(645, 80);
+            this.dgvTramosSeleccionados.Name = "dgvTramosSeleccionados";
+            this.dgvTramosSeleccionados.ReadOnly = true;
+            this.dgvTramosSeleccionados.Size = new System.Drawing.Size(443, 205);
+            this.dgvTramosSeleccionados.TabIndex = 12;
             // 
             // id_tramo
             // 
@@ -289,7 +289,7 @@
             this.Text = "Abm Recorrido";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvTramosRecorrido)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvTramosSeleccionados)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTramosDisponibles)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -315,7 +315,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn precio;
         private System.Windows.Forms.DataGridViewButtonColumn elegir_tramo;
         private System.Windows.Forms.Button btnEliminarUltimoTramo;
-        private System.Windows.Forms.DataGridView dgvTramosRecorrido;
+        private System.Windows.Forms.DataGridView dgvTramosSeleccionados;
         private System.Windows.Forms.DataGridViewTextBoxColumn id_tramo;
         private System.Windows.Forms.DataGridViewTextBoxColumn puerto_inicio_tramo;
         private System.Windows.Forms.DataGridViewTextBoxColumn puerto_fin_tramo;

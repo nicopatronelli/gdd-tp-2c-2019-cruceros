@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using FrbaCrucero.Utils;
+using FrbaCrucero.AbmRecorrido.Dominio;
 
 namespace FrbaCrucero.AbmRecorrido.AltaRecorrido
 {
@@ -66,6 +67,15 @@ namespace FrbaCrucero.AbmRecorrido.AltaRecorrido
             dataAdapter.Fill(dt);
             this.dgvTramosDisponibles.DataSource = dt;
             conexion.cerrar();
+        }
+
+        public Tramo getTramoSeleccionado(int rowIndex)
+        {
+            int idTramoSeleccionado = Convert.ToInt32(this.dgvTramosDisponibles.Rows[rowIndex].Cells["tramo"].Value);
+            string puertoInicioTramoSeleccionado = Convert.ToString(this.dgvTramosDisponibles.Rows[rowIndex].Cells["puerto_inicio"].Value);
+            string puertoFinTramoSeleccionado = Convert.ToString(this.dgvTramosDisponibles.Rows[rowIndex].Cells["puerto_fin"].Value);
+            double precioTramoSeleccionado = Convert.ToDouble(dgvTramosDisponibles.Rows[rowIndex].Cells["precio"].Value);
+            return new Tramo(idTramoSeleccionado, puertoInicioTramoSeleccionado, puertoFinTramoSeleccionado, precioTramoSeleccionado);
         }
     }
 }

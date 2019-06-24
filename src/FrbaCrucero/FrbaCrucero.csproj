@@ -130,6 +130,7 @@
     <Compile Include="AbmCrucero\Dominio\Crucero.cs" />
     <Compile Include="AbmCrucero\Dominio\CruceroBuilder.cs" />
     <Compile Include="AbmRecorrido\AltaRecorrido\TramosDisponibles.cs" />
+    <Compile Include="AbmRecorrido\AltaRecorrido\TramosSeleccionados.cs" />
     <Compile Include="AbmRecorrido\Dominio\PrecioRecorrido.cs" />
     <Compile Include="AbmRecorrido\EditarRecorrido\SeleccionRecorridoEditarForm.cs">
       <SubType>Form</SubType>
