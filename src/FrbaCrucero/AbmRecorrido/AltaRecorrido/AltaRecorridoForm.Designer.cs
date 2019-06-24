@@ -39,7 +39,7 @@
             this.btnEliminarTodo = new System.Windows.Forms.Button();
             this.lblPrecioRecorrido = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.dgvElegirTramos = new System.Windows.Forms.DataGridView();
+            this.dgvTramosDisponibles = new System.Windows.Forms.DataGridView();
             this.tramo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.puerto_inicio = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.puerto_fin = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -53,7 +53,7 @@
             this.label5 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTramosRecorrido)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvElegirTramos)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvTramosDisponibles)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -65,7 +65,7 @@
             this.groupBox1.Controls.Add(this.btnEliminarTodo);
             this.groupBox1.Controls.Add(this.lblPrecioRecorrido);
             this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.dgvElegirTramos);
+            this.groupBox1.Controls.Add(this.dgvTramosDisponibles);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.txtbxCodRecorrido);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
@@ -164,23 +164,23 @@
             this.label2.TabIndex = 3;
             this.label2.Text = "Precio Recorrido:";
             // 
-            // dgvElegirTramos
+            // dgvTramosDisponibles
             // 
-            this.dgvElegirTramos.AllowUserToAddRows = false;
-            this.dgvElegirTramos.AllowUserToDeleteRows = false;
-            this.dgvElegirTramos.AllowUserToResizeColumns = false;
-            this.dgvElegirTramos.AllowUserToResizeRows = false;
-            this.dgvElegirTramos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvElegirTramos.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dgvTramosDisponibles.AllowUserToAddRows = false;
+            this.dgvTramosDisponibles.AllowUserToDeleteRows = false;
+            this.dgvTramosDisponibles.AllowUserToResizeColumns = false;
+            this.dgvTramosDisponibles.AllowUserToResizeRows = false;
+            this.dgvTramosDisponibles.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvTramosDisponibles.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.tramo,
             this.puerto_inicio,
             this.puerto_fin,
             this.precio,
             this.elegir_tramo});
-            this.dgvElegirTramos.Location = new System.Drawing.Point(25, 80);
-            this.dgvElegirTramos.Name = "dgvElegirTramos";
-            this.dgvElegirTramos.Size = new System.Drawing.Size(597, 234);
-            this.dgvElegirTramos.TabIndex = 2;
+            this.dgvTramosDisponibles.Location = new System.Drawing.Point(25, 80);
+            this.dgvTramosDisponibles.Name = "dgvTramosDisponibles";
+            this.dgvTramosDisponibles.Size = new System.Drawing.Size(597, 234);
+            this.dgvTramosDisponibles.TabIndex = 2;
             // 
             // tramo
             // 
@@ -290,7 +290,7 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTramosRecorrido)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvElegirTramos)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvTramosDisponibles)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -299,7 +299,7 @@
         #endregion
 
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.DataGridView dgvElegirTramos;
+        private System.Windows.Forms.DataGridView dgvTramosDisponibles;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtbxCodRecorrido;
         private System.Windows.Forms.Button btnEliminarTodo;

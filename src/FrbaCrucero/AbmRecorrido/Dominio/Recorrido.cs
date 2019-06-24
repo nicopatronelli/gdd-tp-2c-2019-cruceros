@@ -14,6 +14,7 @@ namespace FrbaCrucero.AbmRecorrido.Dominio
     {
         private string identificador;
         private List<Tramo> tramos;
+        private PrecioRecorrido precio;
 
         public Recorrido()
         {
@@ -56,6 +57,16 @@ namespace FrbaCrucero.AbmRecorrido.Dominio
         public void reiniciarTramos()
         {
             this.tramos = new List<Tramo>();
+        }
+
+        public void setPrecio(PrecioRecorrido precio)
+        {
+            this.precio = precio;
+        }
+
+        public PrecioRecorrido getPrecio()
+        {
+            return this.precio;
         }
 
         public static bool identificadorDisponible(string identificadorRecorrido)

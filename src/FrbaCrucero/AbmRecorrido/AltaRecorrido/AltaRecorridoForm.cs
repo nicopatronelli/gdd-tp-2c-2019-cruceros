@@ -11,33 +11,29 @@ using System.Windows.Forms;
 using FrbaCrucero.Utils;
 using FrbaCrucero.AbmRecorrido.Dominio;
 using FrbaCrucero.Utils.Excepciones;
+using FrbaCrucero.AbmRecorrido.AltaRecorrido;
 
 namespace FrbaCrucero.AbmRecorrido
 {
     public partial class AltaRecorridoForm : Form
     {
-       // private List<Tramo> tramos = new List<Tramo>();
-        private Recorrido recorrido; 
+        private Recorrido recorrido;
+        private TramosDisponibles tramosDisponibles;
 
+        // Constructor
         public AltaRecorridoForm()
         {
             InitializeComponent();
-            popularTramosIniciales();
-            dgvElegirTramos.CellClick += dgvElegirTramos_CellContentClick;
             recorrido = new Recorrido(); // Inicializamos el objeto recorrido
-        }
-
-        private void btnEliminarTodo_Click(object sender, EventArgs e)
-        {
-            recorrido.reiniciarTramos();
-            lblPrecioRecorrido.Text = Convert.ToString(0);
-            this.dgvTramosRecorrido.Rows.Clear();
-            this.popularTramosIniciales();
+            recorrido.setPrecio(new PrecioRecorrido(lblPrecioRecorrido));
+            tramosDisponibles = new TramosDisponibles(dgvTramosDisponibles);
+            this.tramosDisponibles.popularTramos();
+            this.tramosDisponibles.getDgvTramosDisponibles().CellClick += dgvTramosDisponibles_CellContentClick;
         }
 
         private void btnEnviar_Click(object sender, EventArgs e)
         {   
-            // Seteamos el identificador al recorrido y validamos que no sea nulo 
+            // Seteamos el identificador al recorrido y validamos que no sea nulo o cadena vacía
             try
             {
                 recorrido.setIdentificador(txtbxCodRecorrido.Text);
@@ -51,11 +47,11 @@ namespace FrbaCrucero.AbmRecorrido
             // Validamos que el código de recorrido éste disponible 
             if (Recorrido.identificadorDisponible(recorrido.getIdentificador()).Equals(false))
             {
-                MensajeBox.error("El identificador ingresado para el recorrido ya se encuentra registrado.");
+                MensajeBox.error("El identificador ingresado para el recorrido ya se encuentra registrado. Por favor, pruebe con uno diferente.");
                 return; 
             }
 
-            // Validamos que se haya seleccionado al menos un tramo para el recorrido nuevo
+            // Validamos que se haya seleccionado al menos un tramo para el nuevo recorrido
             if (recorrido.getTramos().Count == 0)
             {
                 MensajeBox.error("Debe seleccionar al menos un tramo.");
@@ -75,7 +71,7 @@ namespace FrbaCrucero.AbmRecorrido
             }
         } // FIN btnEnviar_Click
 
-        protected void dgvElegirTramos_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        protected void dgvTramosDisponibles_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             var senderGrid = (DataGridView)sender;
 
@@ -84,76 +80,21 @@ namespace FrbaCrucero.AbmRecorrido
             {
                 try
                 {
-                    int idTramoSeleccionado = Convert.ToInt32(dgvElegirTramos.Rows[e.RowIndex].Cells["tramo"].Value);
-                    string puertoInicioTramoSeleccionado = Convert.ToString(dgvElegirTramos.Rows[e.RowIndex].Cells["puerto_inicio"].Value);
-                    string puertoFinTramoSeleccionado = Convert.ToString(dgvElegirTramos.Rows[e.RowIndex].Cells["puerto_fin"].Value);
-                    double precioTramoSeleccionado = Convert.ToDouble(dgvElegirTramos.Rows[e.RowIndex].Cells["precio"].Value);
+                    int idTramoSeleccionado = Convert.ToInt32(dgvTramosDisponibles.Rows[e.RowIndex].Cells["tramo"].Value);
+                    string puertoInicioTramoSeleccionado = Convert.ToString(dgvTramosDisponibles.Rows[e.RowIndex].Cells["puerto_inicio"].Value);
+                    string puertoFinTramoSeleccionado = Convert.ToString(dgvTramosDisponibles.Rows[e.RowIndex].Cells["puerto_fin"].Value);
+                    double precioTramoSeleccionado = Convert.ToDouble(dgvTramosDisponibles.Rows[e.RowIndex].Cells["precio"].Value);
                     Tramo tramo = new Tramo(idTramoSeleccionado, puertoInicioTramoSeleccionado, puertoFinTramoSeleccionado, precioTramoSeleccionado);
                     this.recorrido.addTramo(tramo);
                     this.popularDgvTramosSeleccionados(idTramoSeleccionado, puertoInicioTramoSeleccionado, puertoFinTramoSeleccionado, precioTramoSeleccionado);
-                    this.aumentarLblPrecioRecorrido(precioTramoSeleccionado);
-                    this.popularTramosPosibles(puertoFinTramoSeleccionado);
+                    this.recorrido.getPrecio().aumentarLblPrecioRecorrido(precioTramoSeleccionado);
+                    this.tramosDisponibles.popularTramosPosibles(puertoFinTramoSeleccionado);
                 }
                 catch
                 {
                     return;
                 }
             }
-        }
-
-        // Cargamos el dgvTramos con TODOS los tramos disponibles en la tabla Tramo
-        private void popularTramosIniciales()
-        {
-            ConexionBD conexion = new ConexionBD();
-            conexion.abrir();
-
-            string miConsulta = "SELECT t.id_tramo tramo, puerto_inicio.puerto_nombre puerto_inicio, puerto_fin.puerto_nombre puerto_fin, t.tramo_precio precio  "
-                              + "FROM LOS_BARONES_DE_LA_CERVEZA.Tramo t "
-                                + "JOIN LOS_BARONES_DE_LA_CERVEZA.Puerto puerto_inicio "
-                                    + "ON t.tramo_puerto_inicio = puerto_inicio.id_puerto "
-                                + "JOIN LOS_BARONES_DE_LA_CERVEZA.Puerto puerto_fin "
-                                    + "ON t.tramo_puerto_destino = puerto_fin.id_puerto";
-
-            SqlDataAdapter dataAdapter = new SqlDataAdapter(miConsulta, conexion.obtenerConexion());
-            DataTable dt = new DataTable();
-            dataAdapter.Fill(dt);
-            dgvElegirTramos.DataSource = dt;
-            conexion.cerrar();
-        }
-
-        // Cargamos el dgvTramos sólo con los posibles tramos que según el tramo seleccionado
-        private void popularTramosPosibles(string puertoInicio)
-        {
-            ConexionBD conexion = new ConexionBD();
-            conexion.abrir();
-
-            string miConsulta = "SELECT t.id_tramo tramo, puerto_inicio.puerto_nombre puerto_inicio, puerto_fin.puerto_nombre puerto_fin, t.tramo_precio precio "
-                              + "FROM LOS_BARONES_DE_LA_CERVEZA.Tramo t "
-                                + "JOIN LOS_BARONES_DE_LA_CERVEZA.Puerto puerto_inicio "
-                                    + "ON t.tramo_puerto_inicio = puerto_inicio.id_puerto "
-                                + "JOIN LOS_BARONES_DE_LA_CERVEZA.Puerto puerto_fin "
-                                    + "ON t.tramo_puerto_destino = puerto_fin.id_puerto "
-                              + "WHERE puerto_inicio.puerto_nombre = @puerto_inicio";
-
-            SqlDataAdapter dataAdapter = new SqlDataAdapter(miConsulta, conexion.obtenerConexion());
-            Parametro paramPuertoInicio = new Parametro("@puerto_inicio", SqlDbType.NVarChar, puertoInicio, 255);
-            dataAdapter.SelectCommand.Parameters.Add(paramPuertoInicio.obtenerSqlParameter());
-            SqlCommandBuilder commandBuilder = new SqlCommandBuilder(dataAdapter);
-            DataTable dt = new DataTable();
-            dataAdapter.Fill(dt);
-            dgvElegirTramos.DataSource = dt;
-            conexion.cerrar();
-        }
-
-        // Actualizamos el label donde se muestra el precio acumulado del recorrido
-        private void aumentarLblPrecioRecorrido(double precioTramo)
-        {
-            lblPrecioRecorrido.Text = Convert.ToString(Convert.ToDouble(lblPrecioRecorrido.Text) + precioTramo);
-        }
-
-        private void disminuirLblPrecioRecorrido(double precioTramo)
-        {
-            lblPrecioRecorrido.Text = Convert.ToString(Convert.ToDouble(lblPrecioRecorrido.Text) - precioTramo);
         }
 
         // Actualizamos el textbox lateral donde vamos mostrando los tramos seleccionados
@@ -178,18 +119,24 @@ namespace FrbaCrucero.AbmRecorrido
             // Guardamos los datos del AHORA último tramo agregado
             if (cantidadTramosAgregados - 1 > 0)
             {
-                int idUltimoTramo = Convert.ToInt32(dgvTramosRecorrido.Rows[dgvTramosRecorrido.Rows.Count - 1].Cells[0].Value);
-                string puertoInicioUltimoTramo = dgvTramosRecorrido.Rows[dgvTramosRecorrido.Rows.Count - 1].Cells[1].Value.ToString();
                 string puertoFinUltimoTramo = dgvTramosRecorrido.Rows[dgvTramosRecorrido.Rows.Count - 1].Cells[2].Value.ToString();
                 double precioUltimoTramo = Convert.ToDouble(dgvTramosRecorrido.Rows[dgvTramosRecorrido.Rows.Count - 1].Cells[3].Value);
-                this.disminuirLblPrecioRecorrido(precioUltimoTramo);
-                this.popularTramosPosibles(puertoFinUltimoTramo);
+                this.recorrido.getPrecio().disminuirLblPrecioRecorrido(precioUltimoTramo);
+                this.tramosDisponibles.popularTramosPosibles(puertoFinUltimoTramo);
             }
             else
             {
-                this.popularTramosIniciales();
-                this.lblPrecioRecorrido.Text = "0";
+                this.tramosDisponibles.popularTramos();
+                this.recorrido.getPrecio().resetearLblPrecioRecorridoACero();
             }
+        }
+
+        private void btnEliminarTodo_Click(object sender, EventArgs e)
+        {
+            recorrido.reiniciarTramos();
+            lblPrecioRecorrido.Text = Convert.ToString(0);
+            this.dgvTramosRecorrido.Rows.Clear();
+            this.tramosDisponibles.popularTramos();
         }
     }
 }
