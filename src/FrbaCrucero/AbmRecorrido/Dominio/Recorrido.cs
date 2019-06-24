@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using FrbaCrucero.Utils;
 using FrbaCrucero.Utils.Excepciones;
+using FrbaCrucero.AbmRecorrido.Dominio.Excepciones;
 
 namespace FrbaCrucero.AbmRecorrido.Dominio
 {
@@ -54,14 +55,29 @@ namespace FrbaCrucero.AbmRecorrido.Dominio
             return this.tramos;
         }
 
+        public void setTramos(List<Tramo> tramos)
+        {
+            this.tramos = tramos;
+        }
+
         public void reiniciarTramos()
         {
             this.tramos = new List<Tramo>();
         }
 
-        public void setPrecio(PrecioRecorrido precio)
+        public int cantidadTramos()
         {
-            this.precio = precio;
+            return this.tramos.Count;
+        }
+
+        public bool ningunTramo()
+        {
+            return this.cantidadTramos().Equals(0);
+        }
+
+        public void setPrecio(PrecioRecorrido precioRecorrido)
+        {
+            this.precio = precioRecorrido;
         }
 
         public PrecioRecorrido getPrecio()
@@ -112,9 +128,9 @@ namespace FrbaCrucero.AbmRecorrido.Dominio
 
         public void insertar()
         {
-            int idRecorrido = this.insertarRecorrido();
+            int pkRecorrido = this.insertarRecorrido();
             this.inicializarTablaAuxiliarTpr();
-            this.insertarTramosPorRecorrido(idRecorrido, this);
+            this.insertarTramosPorRecorrido(pkRecorrido, this);
         }
 
         private void inicializarTablaAuxiliarTpr()
@@ -124,5 +140,40 @@ namespace FrbaCrucero.AbmRecorrido.Dominio
             Query miConsulta = new Query(iniciarTablaAuxTpr);
             miConsulta.ejecutarNonQuery();
         }
+
+        public void actualizar(string identificadorRecorridoAnterior)
+        {
+            int pkRecorrido = this.actualizarRecorrido(identificadorRecorridoAnterior);
+            this.inicializarTablaAuxiliarTpr();
+            this.insertarTramosPorRecorrido(pkRecorrido, this);
+        }
+
+        private int actualizarRecorrido(string identificadorRecorridoAnterior)
+        {
+            List<Parametro> parametros = new List<Parametro>();
+
+            Parametro paramIdentificadorRecorridoAnterior = new Parametro("@identificador_recorrido_anterior", SqlDbType.NVarChar, identificadorRecorridoAnterior, 255);
+            parametros.Add(paramIdentificadorRecorridoAnterior);
+
+            // Añadimos el parámetro identificador recorrido editado (el nuevo identificador que ingresó el cliente, que puede ser igual al anterior)
+            Parametro paramIdentificadorRecorridoNuevo = new Parametro("@identificador_recorrido_nuevo", SqlDbType.NVarChar, this.identificador, 255);
+            parametros.Add(paramIdentificadorRecorridoNuevo);
+
+            // Añadimos el parámetro de salida donde obtenemos el id_recorrido (PK) del recorrido a editar
+            Parametro paramPkRecorrido = new Parametro("@id_recorrido_pk", SqlDbType.Int);
+            paramPkRecorrido.esParametroOut();
+            parametros.Add(paramPkRecorrido);
+
+            // Creamos la llamada al SP "USP_actualizar_recorrido" de la BD y lo ejecutamos 
+            StoreProcedure spActualizarRecorrido = new StoreProcedure("LOS_BARONES_DE_LA_CERVEZA.USP_actualizar_recorrido", parametros);
+            int cantidadFilasActualizadas = spActualizarRecorrido.ejecutarNonQuery();
+
+            // Comprobamos que el recorrido se inserte correctamente
+            if (!cantidadFilasActualizadas.Equals(DEF.FILAS_UPDATE_RECORRIDO))
+                throw new InsertarRecorridoException();
+            else
+                return Convert.ToInt32(paramPkRecorrido.obtenerValor());
+        } // FIN insertarRecorrido()
+
     }
 }

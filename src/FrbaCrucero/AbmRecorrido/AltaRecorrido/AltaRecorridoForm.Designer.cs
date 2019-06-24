@@ -28,7 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.gpbxAltaNuevoRecorrido = new System.Windows.Forms.GroupBox();
+            this.label5 = new System.Windows.Forms.Label();
             this.btnEliminarUltimoTramo = new System.Windows.Forms.Button();
             this.dgvTramosSeleccionados = new System.Windows.Forms.DataGridView();
             this.id_tramo = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -50,30 +51,38 @@
             this.btnCerrar = new System.Windows.Forms.Button();
             this.btnEnviar = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.groupBox1.SuspendLayout();
+            this.gpbxAltaNuevoRecorrido.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTramosSeleccionados)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTramosDisponibles)).BeginInit();
             this.SuspendLayout();
             // 
-            // groupBox1
+            // gpbxAltaNuevoRecorrido
             // 
-            this.groupBox1.Controls.Add(this.label5);
-            this.groupBox1.Controls.Add(this.btnEliminarUltimoTramo);
-            this.groupBox1.Controls.Add(this.dgvTramosSeleccionados);
-            this.groupBox1.Controls.Add(this.label3);
-            this.groupBox1.Controls.Add(this.btnEliminarTodo);
-            this.groupBox1.Controls.Add(this.lblPrecioRecorrido);
-            this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.dgvTramosDisponibles);
-            this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Controls.Add(this.txtbxCodRecorrido);
-            this.groupBox1.Location = new System.Drawing.Point(12, 12);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(1110, 330);
-            this.groupBox1.TabIndex = 0;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Alta Nuevo Recorrido";
+            this.gpbxAltaNuevoRecorrido.Controls.Add(this.label5);
+            this.gpbxAltaNuevoRecorrido.Controls.Add(this.btnEliminarUltimoTramo);
+            this.gpbxAltaNuevoRecorrido.Controls.Add(this.dgvTramosSeleccionados);
+            this.gpbxAltaNuevoRecorrido.Controls.Add(this.label3);
+            this.gpbxAltaNuevoRecorrido.Controls.Add(this.btnEliminarTodo);
+            this.gpbxAltaNuevoRecorrido.Controls.Add(this.lblPrecioRecorrido);
+            this.gpbxAltaNuevoRecorrido.Controls.Add(this.label2);
+            this.gpbxAltaNuevoRecorrido.Controls.Add(this.dgvTramosDisponibles);
+            this.gpbxAltaNuevoRecorrido.Controls.Add(this.label1);
+            this.gpbxAltaNuevoRecorrido.Controls.Add(this.txtbxCodRecorrido);
+            this.gpbxAltaNuevoRecorrido.Location = new System.Drawing.Point(12, 12);
+            this.gpbxAltaNuevoRecorrido.Name = "gpbxAltaNuevoRecorrido";
+            this.gpbxAltaNuevoRecorrido.Size = new System.Drawing.Size(1110, 330);
+            this.gpbxAltaNuevoRecorrido.TabIndex = 0;
+            this.gpbxAltaNuevoRecorrido.TabStop = false;
+            this.gpbxAltaNuevoRecorrido.Text = "Alta Nuevo Recorrido";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(22, 64);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(100, 13);
+            this.label5.TabIndex = 14;
+            this.label5.Text = "Tramos disponibles:";
             // 
             // btnEliminarUltimoTramo
             // 
@@ -105,24 +114,28 @@
             // 
             // id_tramo
             // 
+            this.id_tramo.DataPropertyName = "id_tramo";
             this.id_tramo.HeaderText = "Tramo";
             this.id_tramo.Name = "id_tramo";
             this.id_tramo.ReadOnly = true;
             // 
             // puerto_inicio_tramo
             // 
+            this.puerto_inicio_tramo.DataPropertyName = "puerto_inicio_tramo";
             this.puerto_inicio_tramo.HeaderText = "Puerto Inicio";
             this.puerto_inicio_tramo.Name = "puerto_inicio_tramo";
             this.puerto_inicio_tramo.ReadOnly = true;
             // 
             // puerto_fin_tramo
             // 
+            this.puerto_fin_tramo.DataPropertyName = "puerto_fin_tramo";
             this.puerto_fin_tramo.HeaderText = "Puerto Fin";
             this.puerto_fin_tramo.Name = "puerto_fin_tramo";
             this.puerto_fin_tramo.ReadOnly = true;
             // 
             // precio_tramo
             // 
+            this.precio_tramo.DataPropertyName = "precio_tramo";
             this.precio_tramo.HeaderText = "Precio";
             this.precio_tramo.Name = "precio_tramo";
             this.precio_tramo.ReadOnly = true;
@@ -267,28 +280,19 @@
             this.label4.TabIndex = 12;
             this.label4.Text = "* Campos obligatorios (Además, debe incluir por lo menos un tramo)";
             // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(22, 64);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(100, 13);
-            this.label5.TabIndex = 14;
-            this.label5.Text = "Tramos disponibles:";
-            // 
             // AltaRecorridoForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1134, 386);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.gpbxAltaNuevoRecorrido);
             this.Controls.Add(this.btnCerrar);
             this.Controls.Add(this.btnEnviar);
             this.Name = "AltaRecorridoForm";
             this.Text = "Abm Recorrido";
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.gpbxAltaNuevoRecorrido.ResumeLayout(false);
+            this.gpbxAltaNuevoRecorrido.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTramosSeleccionados)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTramosDisponibles)).EndInit();
             this.ResumeLayout(false);
@@ -298,12 +302,9 @@
 
         #endregion
 
-        private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.DataGridView dgvTramosDisponibles;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox txtbxCodRecorrido;
         private System.Windows.Forms.Button btnEliminarTodo;
-        private System.Windows.Forms.Button btnEnviar;
         private System.Windows.Forms.Label lblPrecioRecorrido;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button btnCerrar;
@@ -316,10 +317,13 @@
         private System.Windows.Forms.DataGridViewButtonColumn elegir_tramo;
         private System.Windows.Forms.Button btnEliminarUltimoTramo;
         private System.Windows.Forms.DataGridView dgvTramosSeleccionados;
+        private System.Windows.Forms.Label label5;
         private System.Windows.Forms.DataGridViewTextBoxColumn id_tramo;
         private System.Windows.Forms.DataGridViewTextBoxColumn puerto_inicio_tramo;
         private System.Windows.Forms.DataGridViewTextBoxColumn puerto_fin_tramo;
         private System.Windows.Forms.DataGridViewTextBoxColumn precio_tramo;
-        private System.Windows.Forms.Label label5;
+        protected System.Windows.Forms.GroupBox gpbxAltaNuevoRecorrido;
+        protected System.Windows.Forms.Button btnEnviar;
+        protected System.Windows.Forms.TextBox txtbxCodRecorrido;
     }
 }

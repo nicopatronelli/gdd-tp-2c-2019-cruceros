@@ -267,7 +267,7 @@
     <Compile Include="Utils\ConexionBD.cs" />
     <Compile Include="Utils\DEF.cs" />
     <Compile Include="Utils\DGVUtils.cs" />
-    <Compile Include="Utils\Excepciones\IdentificadorCruceroNullException.cs" />
+    <Compile Include="AbmRecorrido\Dominio\Excepciones\IdentificadorCruceroNullException.cs" />
     <Compile Include="Utils\Excepciones\InsertarCruceroException.cs" />
     <Compile Include="Utils\Excepciones\CruceroSinCabinasException.cs" />
     <Compile Include="Utils\Excepciones\InsertarRecorridoException.cs" />
@@ -303,6 +303,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AbmRecorrido\AltaRecorrido\AltaRecorridoForm.resx">
       <DependentUpon>AltaRecorridoForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmRecorrido\EditarRecorrido\EditarRecorridoForm.resx">
+      <DependentUpon>EditarRecorridoForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AbmRecorrido\EditarRecorrido\SeleccionRecorridoEditarForm.resx">
       <DependentUpon>SeleccionRecorridoEditarForm.cs</DependentUpon>

@@ -126,25 +126,8 @@ namespace FrbaCrucero.Utils
 
                 // Ejecutamos la consulta
                 SqlDataReader registroLeido = comando.ExecuteReader();
-                registroLeido.Read();
-                //int cantidadColumnas = registroLeido.FieldCount;
+                //registroLeido.Read();
 
-                //// Declaramos una lista de string donde vamos a guardar el contenido de cada campo de la 
-                //// fila que retorno la consulta.
-                //List<string> fila = new List<string>();
-
-                //while (registroLeido.Read())
-                //{
-                //    fila.Add((registroLeido.GetString(UNICA_COLUMNA)));
-                //}
-
-                //// Liberamos los recursos asociados a la consulta
-                //comando.Dispose();
-
-                //// Cerramos la conexión
-                //conexion.cerrar();
-
-                // La consulta se ejecuto correctamente 
                 return registroLeido;
             }
             catch (Exception ex)
@@ -153,7 +136,6 @@ namespace FrbaCrucero.Utils
                 return null;
             }
         } // FIN ejecutarReaderFila()
-
 
         public SqlDataReader ejecutarReader()
         {
@@ -194,7 +176,6 @@ namespace FrbaCrucero.Utils
                 return null;
             }
         } // FIN ejecutarReader()
-
 
 
         // Retorna la cantidad de filas afectadas (insertadas, actualizadas o eliminadas) por la consulta 

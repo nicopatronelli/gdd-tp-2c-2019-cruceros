@@ -132,8 +132,8 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_D
 	DROP PROCEDURE LOS_BARONES_DE_LA_CERVEZA.USP_insertar_viaje
 GO
 
-IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.UF_crear_username_Cliente'))
-	DROP FUNCTION LOS_BARONES_DE_LA_CERVEZA.UF_crear_username_Cliente
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.USP_actualizar_recorrido'))
+	DROP PROCEDURE LOS_BARONES_DE_LA_CERVEZA.USP_actualizar_recorrido
 GO
 
 /****** FUNCIONES ******/
@@ -147,6 +147,10 @@ GO
 
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.UF_cruceros_disponibles'))
 	DROP FUNCTION LOS_BARONES_DE_LA_CERVEZA.UF_cruceros_disponibles
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.UF_crear_username_Cliente'))
+	DROP FUNCTION LOS_BARONES_DE_LA_CERVEZA.UF_crear_username_Cliente
 GO
 
 /***** TRIGGERS: Se eliminan automáticamente al eliminar las tablas a las que están asociados *****/
@@ -335,7 +339,7 @@ Tabla Recorrido -- OK
 ******************************************************************/
 CREATE TABLE [LOS_BARONES_DE_LA_CERVEZA].Recorrido(	
 	id_recorrido INT IDENTITY PRIMARY KEY NOT NULL,
-	recorrido_codigo NVARCHAR(255),
+	recorrido_codigo NVARCHAR(255), -- Validamos que sea UNIQUE desde la app (NO marcar como UNIQUE)
 	recorrido_estado BIT DEFAULT 0
 )
 GO
@@ -974,7 +978,7 @@ GO
 CREATE PROCEDURE [LOS_BARONES_DE_LA_CERVEZA].[USP_insertar_recorrido]
 (
 	@identificador NVARCHAR(255),
-	@id_recorrido_asignado INT OUT -- Retornamos el id_crucero asignado por SQL Server (IDENTITY)
+	@id_recorrido_asignado INT OUT -- Retornamos el id_recorrido asignado por SQL Server (IDENTITY)
 )
 AS
 BEGIN
@@ -1065,6 +1069,36 @@ BEGIN
 				SELECT id_crucero 
 				FROM LOS_BARONES_DE_LA_CERVEZA.Cruceros 
 				WHERE identificador = @identificador_crucero);
+		COMMIT TRANSACTION 
+	END TRY
+	BEGIN CATCH
+		ROLLBACK TRANSACTION
+	END CATCH
+END
+GO
+
+/******************************************************************
+[LOS_BARONES_DE_LA_CERVEZA].[USP_actualizar_recorrido] 
+@Desc: Actualiza el identificador de un recorrido existente
+******************************************************************/
+GO
+CREATE PROCEDURE [LOS_BARONES_DE_LA_CERVEZA].[USP_actualizar_recorrido]
+(
+	@identificador_recorrido_anterior NVARCHAR(255),
+	@identificador_recorrido_nuevo NVARCHAR(255),
+	@id_recorrido_pk INT OUT -- Retornamos el id_recorrido (PK) del recorrido
+)
+AS
+BEGIN
+	BEGIN TRY
+		BEGIN TRANSACTION 
+			UPDATE LOS_BARONES_DE_LA_CERVEZA.Recorrido
+			SET recorrido_codigo = @identificador_recorrido_nuevo
+			WHERE recorrido_codigo = @identificador_recorrido_anterior;
+			SET @id_recorrido_pk = (
+									SELECT id_recorrido
+									FROM LOS_BARONES_DE_LA_CERVEZA.Recorrido r
+									WHERE r.recorrido_codigo = @identificador_recorrido_nuevo)
 		COMMIT TRANSACTION 
 	END TRY
 	BEGIN CATCH

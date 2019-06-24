@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using FrbaCrucero.Utils;
 using FrbaCrucero.AbmRecorrido.Dominio;
+using FrbaCrucero.AbmRecorrido.Dominio.Excepciones;
 using FrbaCrucero.Utils.Excepciones;
 using FrbaCrucero.AbmRecorrido.AltaRecorrido;
 
@@ -17,9 +18,9 @@ namespace FrbaCrucero.AbmRecorrido
 {
     public partial class AltaRecorridoForm : Form
     {
-        private Recorrido recorrido;
-        private TramosDisponibles tramosDisponibles;
-        private TramosSeleccionados tramosSeleccionados;
+        protected Recorrido recorrido;
+        protected TramosDisponibles tramosDisponibles;
+        protected TramosSeleccionados tramosSeleccionados;
 
         // Constructor
         public AltaRecorridoForm()
@@ -33,9 +34,9 @@ namespace FrbaCrucero.AbmRecorrido
             this.tramosDisponibles.getDgvTramosDisponibles().CellClick += dgvTramosDisponibles_CellContentClick;
         }
 
-        private void btnEnviar_Click(object sender, EventArgs e)
+        virtual protected void btnEnviar_Click(object sender, EventArgs e)
         {   
-            // Seteamos el identificador al recorrido y validamos que no sea nulo o cadena vacía
+            // Seteamos el identificador al recorrido objeto y validamos que no sea nulo o cadena vacía
             try
             {
                 recorrido.setIdentificador(txtbxCodRecorrido.Text);
@@ -54,7 +55,7 @@ namespace FrbaCrucero.AbmRecorrido
             }
 
             // Validamos que se haya seleccionado al menos un tramo para el nuevo recorrido
-            if (recorrido.getTramos().Count == 0)
+            if (recorrido.ningunTramo())
             {
                 MensajeBox.error("Debe seleccionar al menos un tramo.");
                 return; 
@@ -84,7 +85,7 @@ namespace FrbaCrucero.AbmRecorrido
                 {   
                     Tramo tramoSeleccionado = this.tramosDisponibles.getTramoSeleccionado(e.RowIndex);
                     this.recorrido.addTramo(tramoSeleccionado);
-                    this.tramosSeleccionados.popular(tramoSeleccionado.getId(), tramoSeleccionado.getPuertoInicio(), tramoSeleccionado.getPuertoFin(), tramoSeleccionado.getPrecio());
+                    this.tramosSeleccionados.agregarTramo(tramoSeleccionado);
                     this.recorrido.getPrecio().aumentarLblPrecioRecorrido(tramoSeleccionado.getPrecio());
                     this.tramosDisponibles.popularTramosPosibles(tramoSeleccionado.getPuertoFin());
                 }

@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FrbaCrucero.Utils.Excepciones;
+using FrbaCrucero.Utils;
 
-namespace FrbaCrucero.Utils.Excepciones
+namespace FrbaCrucero.AbmRecorrido.Dominio.Excepciones
 {
     class IdentificadorCruceroNullException : CamposObligatoriosVaciosException
     {

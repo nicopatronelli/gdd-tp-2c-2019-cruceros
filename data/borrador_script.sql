@@ -423,9 +423,9 @@ FROM LOS_BARONES_DE_LA_CERVEZA.Recorrido r
 		ON t2.tramo_puerto_destino = pto_fin.id_puerto 
 	WHERE tpr1.tramo_anterior IS NULL 
 		AND tpr2.tramo_siguiente IS NULL 
-		AND pto_inicio.puerto_nombre LIKE '%%' 
-		AND pto_fin.puerto_nombre LIKE '%%'
-		AND r.recorrido_estado = 0
+		--AND pto_inicio.puerto_nombre LIKE '%%' 
+		--AND pto_fin.puerto_nombre LIKE '%%'
+		AND r.recorrido_codigo = 'RecorridoLoco'
 ORDER BY 1
 
 -- Mostrar Leo
@@ -439,8 +439,64 @@ ORDER BY 2
 SELECT * 
 FROM LOS_BARONES_DE_LA_CERVEZA.Viaje
 
-SELECT recorrido_codigo
+SELECT *
 FROM LOS_BARONES_DE_LA_CERVEZA.Recorrido
 WHERE id_recorrido = 25
 
 SELECT identificador FROM LOS_BARONES_DE_LA_CERVEZA.UF_cruceros_disponibles('2019-06-03','2019-08-06')
+
+UPDATE LOS_BARONES_DE_LA_CERVEZA.Recorrido
+SET recorrido_estado = 1
+WHERE recorrido_codigo = 
+
+SELECT *
+FROM LOS_BARONES_DE_LA_CERVEZA.Recorrido r
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Viaje v
+		ON r.id_recorrido = v.viaje_id_recorrido
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Compra c
+		ON v.id_viaje = c.compra_id_viaje 
+
+SELECT * 
+FROM LOS_BARONES_DE_LA_CERVEZA.Recorrido r
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Tramos_por_Recorrido tpr
+		ON r.id_recorrido = tpr.id_recorrido
+WHERE r.recorrido_codigo = 'RecorridoAcademico'
+
+SELECT 
+	t.id_tramo 'Id tramo', 
+	puerto_inicio.puerto_nombre 'Puerto Inicio', 
+	puerto_fin.puerto_nombre 'Puerto Fin',
+	t.tramo_precio 'Precio'
+FROM LOS_BARONES_DE_LA_CERVEZA.Recorrido r 
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Tramos_por_Recorrido tpr
+		ON r.id_recorrido = tpr.id_recorrido 
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Tramo t
+		ON tpr.id_tramo = t.id_tramo 
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Puerto puerto_inicio
+		ON t.tramo_puerto_inicio = puerto_inicio.id_puerto
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Puerto puerto_fin
+		ON t.tramo_puerto_destino = puerto_fin.id_puerto
+WHERE r.recorrido_codigo = 'RecorridoLoco'
+
+SELECT *
+FROM LOS_BARONES_DE_LA_CERVEZA.Recorrido r 
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Tramos_por_Recorrido tpr
+		ON r.id_recorrido = tpr.id_recorrido 
+WHERE r.recorrido_codigo = 'RecorridoReLoco'
+
+UPDATE LOS_BARONES_DE_LA_CERVEZA.Recorrido
+SET recorrido_codigo = 'RecorridoLoco'
+WHERE recorrido_codigo = 'RecorridoLoco'
+
+SELECT COUNT(*)
+FROM LOS_BARONES_DE_LA_CERVEZA.Recorrido
+WHERE recorrido_codigo = 'RecorridoReLoco'
+	AND id_recorrido != 57
+
+SELECT id_recorrido
+FROM LOS_BARONES_DE_LA_CERVEZA.Recorrido
+WHERE recorrido_codigo = @identificador_recorrido_a_editar
+
+DELETE 
+FROM LOS_BARONES_DE_LA_CERVEZA.Tramos_por_Recorrido
+WHERE id_recorrido = 57
