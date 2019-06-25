@@ -221,7 +221,7 @@ namespace FrbaCrucero.CompraReservaPasaje
             }
             catch(Exception aaaa)
             {
-                errorMessage += "Fecha no valida";
+                errorMessage += "Fecha no valida\n";
             }
 
             errorMessage += this.checkDniRepetido();
@@ -241,7 +241,7 @@ namespace FrbaCrucero.CompraReservaPasaje
             ///caso en que edite a una persona con DNI duplicado y no le haya cambiado el DNI
             if (this.editando && this.clienteEditandose.dni.ToString() == dniTextBox.Text) return "";
 
-            if (dniTextBox.TextLength < 7) return "Dni muy corto";
+            if (dniTextBox.TextLength < 7) return "Dni muy corto\n";
             string id = "0";
             if(this.editando) id= clienteEditandose.id.ToString();
             string consulta = "  select count(id_cliente) from [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Clientes] c where c.dni = " + this.dniTextBox.Text + " and c.id_cliente <> " + id;
@@ -249,7 +249,7 @@ namespace FrbaCrucero.CompraReservaPasaje
             int repetidos = (int)miConsulta.ejecutarEscalar();
             if(repetidos == 0)
             { return ""; }
-            return "Ya hay alguien mas con ese DNI";
+            return "Ya hay alguien mas con ese DNI\n";
         
         }
 

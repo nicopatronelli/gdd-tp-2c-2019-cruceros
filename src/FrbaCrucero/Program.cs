@@ -7,8 +7,6 @@ using FrbaCrucero.AbmRol;
 using FrbaCrucero.Login;
 using FrbaCrucero.AbmCrucero;
 using FrbaCrucero.CompraReservaPasaje;
-using FrbaCrucero.CompraReservaPasaje;
-
 namespace FrbaCrucero
 {
     static class Program
