@@ -120,7 +120,7 @@ namespace FrbaCrucero.GeneracionViaje
             // Limpiamos el listado (datagridview) de recorridos
             this.listadoRecorridos.limpiarDgv();
 
-            // Recuperamos los puertos ingresados 
+            // Recuperamos los puertos ingresados (puede que no se haya ingresado uno o ambos -> se traen todos los recorridos disponibles)
             string puertoInicio = txtbxPuertoInicio.Text;
             string puertoFin = txtbxPuertoFin.Text;
 

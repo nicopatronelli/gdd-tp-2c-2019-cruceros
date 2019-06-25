@@ -591,6 +591,8 @@ FROM LOS_BARONES_DE_LA_CERVEZA.Tramo t
 	JOIN LOS_BARONES_DE_LA_CERVEZA.Puerto puerto_fin
 		ON t.tramo_puerto_destino = puerto_fin.id_puerto
 WHERE puerto_inicio.puerto_nombre = 'SANTO TOMÉ'
+EXCEPT 
+SELECT 'SANTO TOMÉ'
 ORDER BY puerto.puerto_nombre
 
 -- Query para insertar nuevos tramos
@@ -613,3 +615,21 @@ WHERE t.tramo_precio = 1400.25
 SELECT * 
 FROM LOS_BARONES_DE_LA_CERVEZA.Tramo
 WHERE tramo_precio = 700.0
+
+SELECT t.id_tramo tramo, puerto_inicio.puerto_nombre puerto_inicio, puerto_fin.puerto_nombre puerto_fin, t.tramo_precio precio  
+FROM LOS_BARONES_DE_LA_CERVEZA.Tramo t 
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Puerto puerto_inicio 
+		ON t.tramo_puerto_inicio = puerto_inicio.id_puerto 
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Puerto puerto_fin 
+		ON t.tramo_puerto_destino = puerto_fin.id_puerto
+WHERE puerto_inicio.puerto_nombre LIKE '%' + '%'
+	AND puerto_fin.puerto_nombre LIKE '%' + '%';
+
+SELECT t.id_tramo tramo, puerto_inicio.puerto_nombre puerto_inicio, puerto_fin.puerto_nombre puerto_fin, t.tramo_precio precio  
+FROM LOS_BARONES_DE_LA_CERVEZA.Tramo t 
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Puerto puerto_inicio 
+		ON t.tramo_puerto_inicio = puerto_inicio.id_puerto 
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Puerto puerto_fin 
+		ON t.tramo_puerto_destino = puerto_fin.id_puerto 
+WHERE puerto_inicio.puerto_nombre LIKE '%'+''+'%' 
+	AND puerto_fin.puerto_nombre LIKE '%'+''+'%'

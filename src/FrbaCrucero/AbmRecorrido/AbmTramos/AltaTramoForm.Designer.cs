@@ -189,7 +189,6 @@
             this.Controls.Add(this.groupBox1);
             this.Name = "AltaTramoForm";
             this.Text = "Alta Nuevo Tramo";
-            this.Load += new System.EventHandler(this.AltaTramoForm_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);

@@ -77,5 +77,43 @@ namespace FrbaCrucero.AbmRecorrido.AltaRecorrido
             double precioTramoSeleccionado = Convert.ToDouble(dgvTramosDisponibles.Rows[rowIndex].Cells["precio"].Value);
             return new Tramo(idTramoSeleccionado, puertoInicioTramoSeleccionado, puertoFinTramoSeleccionado, precioTramoSeleccionado);
         }
+
+        // Cargamos el dgvTramosDisponibles con TODOS los tramos disponibles en la tabla Tramo
+        public void popularTramosConBusqueda(string puertoInicio, string puertoFin)
+        {   
+            ConexionBD conexion = new ConexionBD();
+            conexion.abrir();
+
+            // Armamos la query en forma dinámica según el puerto de inicio y fin ingresados 
+            string miConsulta = "SELECT t.id_tramo tramo, puerto_inicio.puerto_nombre puerto_inicio, puerto_fin.puerto_nombre puerto_fin, t.tramo_precio precio  "
+                              + "FROM LOS_BARONES_DE_LA_CERVEZA.Tramo t "
+                                + "JOIN LOS_BARONES_DE_LA_CERVEZA.Puerto puerto_inicio "
+                                    + "ON t.tramo_puerto_inicio = puerto_inicio.id_puerto "
+                                + "JOIN LOS_BARONES_DE_LA_CERVEZA.Puerto puerto_fin "
+                                    + "ON t.tramo_puerto_destino = puerto_fin.id_puerto "
+                                + "WHERE puerto_inicio.puerto_nombre LIKE '%'+@puerto_inicio+'%' "
+                                    + "AND puerto_fin.puerto_nombre LIKE '%'+@puerto_fin+'%'";
+
+            SqlDataAdapter dataAdapter = new SqlDataAdapter(miConsulta, conexion.obtenerConexion());
+
+            // Añadimos el parámetro puerto_inicio
+            Parametro paramPuertoInicio = new Parametro("@puerto_inicio", SqlDbType.NVarChar, puertoInicio, 255);
+            if (puertoInicio.Equals("")) // Si no se introdujo el puerto de inicio
+                paramPuertoInicio.esCadenaVaciaYNoNull();
+            dataAdapter.SelectCommand.Parameters.Add(paramPuertoInicio.obtenerSqlParameter());
+
+            // Añadimos el parámetro puerto_fin
+            Parametro paramPuertoFin= new Parametro("@puerto_fin", SqlDbType.NVarChar, puertoFin, 255);
+            if (puertoFin.Equals("")) // Si no se introdujo el puerto de fin
+                paramPuertoFin.esCadenaVaciaYNoNull();
+            dataAdapter.SelectCommand.Parameters.Add(paramPuertoFin.obtenerSqlParameter());
+            
+            SqlCommandBuilder commandBuilder = new SqlCommandBuilder(dataAdapter);
+            DataTable dt = new DataTable();
+            dataAdapter.Fill(dt);
+            this.dgvTramosDisponibles.DataSource = dt;
+            conexion.cerrar();
+        }
+
     }
 }
