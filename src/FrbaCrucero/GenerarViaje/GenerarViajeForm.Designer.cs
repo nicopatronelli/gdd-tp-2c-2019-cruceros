@@ -40,6 +40,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.gpbxRecorridos = new System.Windows.Forms.GroupBox();
+            this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.txtbxTramosPorRecorrido = new System.Windows.Forms.TextBox();
             this.txtbxPuertoFin = new System.Windows.Forms.TextBox();
@@ -47,7 +48,6 @@
             this.label4 = new System.Windows.Forms.Label();
             this.txtbxPuertoInicio = new System.Windows.Forms.TextBox();
             this.dgvRecorridos = new System.Windows.Forms.DataGridView();
-            this.label6 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.gpbxRecorridos.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvRecorridos)).BeginInit();
@@ -110,6 +110,7 @@
             // cmbxCrucero
             // 
             this.cmbxCrucero.DisplayMember = "identificador";
+            this.cmbxCrucero.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbxCrucero.FormattingEnabled = true;
             this.cmbxCrucero.Location = new System.Drawing.Point(105, 102);
             this.cmbxCrucero.Name = "cmbxCrucero";
@@ -168,6 +169,15 @@
             this.gpbxRecorridos.TabIndex = 10;
             this.gpbxRecorridos.TabStop = false;
             this.gpbxRecorridos.Text = "Recorrido";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(11, 235);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(708, 39);
+            this.label6.TabIndex = 14;
+            this.label6.Text = resources.GetString("label6.Text");
             // 
             // label5
             // 
@@ -228,15 +238,6 @@
             this.dgvRecorridos.Name = "dgvRecorridos";
             this.dgvRecorridos.Size = new System.Drawing.Size(494, 154);
             this.dgvRecorridos.TabIndex = 9;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(11, 235);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(708, 39);
-            this.label6.TabIndex = 14;
-            this.label6.Text = resources.GetString("label6.Text");
             // 
             // GenerarViajeForm
             // 

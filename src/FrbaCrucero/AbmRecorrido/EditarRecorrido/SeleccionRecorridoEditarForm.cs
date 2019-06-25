@@ -46,8 +46,8 @@ namespace FrbaCrucero.AbmRecorrido.EditarRecorrido
                 EditarRecorridoForm formEditarRecorrido = new EditarRecorridoForm(identificadorRecorrido);
                 formEditarRecorrido.ShowDialog();
 
-                // Recargamos el dgv con los recorridos deshabilitados, excluyendo el que acabamos de habilitar
-                //this.recargarDgvRecorridos(puertoInicio, puertoFin);
+                // Limpiamos el dgv de recorridos (ya que el usuario pudo haber cambia el identificador y los tramos de algún recorrido)
+                this.listadoRecorridos.limpiarDgv();
             }
         }
     }

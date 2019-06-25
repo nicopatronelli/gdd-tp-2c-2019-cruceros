@@ -85,7 +85,7 @@ namespace FrbaCrucero.AbmRecorrido.Dominio
             return this.precio;
         }
 
-        public static bool identificadorDisponible(string identificadorRecorrido)
+        public static bool identificadorDisponibleRecorridoNuevo(string identificadorRecorrido)
         {
             List<Parametro> parametros = new List<Parametro>();
             Parametro paramIdentificadorRecorrido = new Parametro("@identificador_recorrido", SqlDbType.NVarChar, identificadorRecorrido, 255);
@@ -93,6 +93,26 @@ namespace FrbaCrucero.AbmRecorrido.Dominio
             string consulta = "SELECT COUNT(*) FROM LOS_BARONES_DE_LA_CERVEZA.Recorrido WHERE recorrido_codigo = @identificador_recorrido";
             Query miConsulta = new Query(consulta, parametros);
             int resultado = Convert.ToInt32(miConsulta.ejecutarEscalar());
+            if (resultado.Equals(0))
+                return true;
+            else
+                return false;
+        }
+
+        public static bool identificadorDisponibleEditarRecorrido(string identificadorRecorridoAEditar, string identificadoRecorridoEditado, int pkRecorridoAEditar)
+        {
+            // Chequeamos si el identificador elegido no está en uso para otro recorrido que no tenga la pk del recorrido editado
+            string consultaIdentificadorDisponible = "SELECT COUNT(*) "
+                                                   + "FROM LOS_BARONES_DE_LA_CERVEZA.Recorrido "
+                                                   + "WHERE recorrido_codigo = @identificador_recorrido_editado "
+                                                        + "AND id_recorrido != @pk_recorrido_a_editar";
+            List<Parametro> parametros = new List<Parametro>();
+            Parametro paramIdentificadoRecorridoEditado = new Parametro("@identificador_recorrido_editado", SqlDbType.NVarChar, identificadoRecorridoEditado, 255);
+            Parametro paramPkIdentificadorRecorridoAEditar = new Parametro("@pk_recorrido_a_editar", SqlDbType.Int, pkRecorridoAEditar);
+            parametros.Add(paramIdentificadoRecorridoEditado);
+            parametros.Add(paramPkIdentificadorRecorridoAEditar);
+            Query queryIdentificadorRecorridoDisponible = new Query(consultaIdentificadorDisponible, parametros);
+            int resultado = Convert.ToInt32(queryIdentificadorRecorridoDisponible.ejecutarEscalar());
             if (resultado.Equals(0))
                 return true;
             else
@@ -174,6 +194,28 @@ namespace FrbaCrucero.AbmRecorrido.Dominio
             else
                 return Convert.ToInt32(paramPkRecorrido.obtenerValor());
         } // FIN insertarRecorrido()
+
+        // Retorna la PK (id_recorrido) de un recorrido a editar (dado su identificador)
+        public static int obtenerPkRecorridoAEditar(string identificadorRecorridoAEditar)
+        {
+            List<Parametro> parametros = new List<Parametro>();
+            Parametro paramIdentificadorRecorridoAEditar = new Parametro("@identificador_recorrido_a_editar", SqlDbType.NVarChar, identificadorRecorridoAEditar, 255);
+            parametros.Add(paramIdentificadorRecorridoAEditar);
+            string consultaRecorridopk = "SELECT id_recorrido FROM LOS_BARONES_DE_LA_CERVEZA.Recorrido WHERE recorrido_codigo = @identificador_recorrido_a_editar";
+            Query queryObtenerPk = new Query(consultaRecorridopk, parametros);
+            return Convert.ToInt32(queryObtenerPk.ejecutarEscalar());
+        }
+
+        // Elimina de la BD los tramos del recorrido cuya pk (id_recorrido) recibe por parámetro (se usa en la edición de un recorrido)
+        public static void eliminarTramos(int pkRecorridoAEditar)
+        {
+            List<Parametro> parametros = new List<Parametro>();
+            Parametro paramPkRecorrido = new Parametro("@pk_recorrido", SqlDbType.Int, pkRecorridoAEditar);
+            parametros.Add(paramPkRecorrido);
+            string consulta = "DELETE FROM LOS_BARONES_DE_LA_CERVEZA.Tramos_por_Recorrido WHERE id_recorrido = @pk_recorrido";
+            Query miConsulta = new Query(consulta, parametros);
+            miConsulta.ejecutarNonQuery();
+        }
 
     }
 }

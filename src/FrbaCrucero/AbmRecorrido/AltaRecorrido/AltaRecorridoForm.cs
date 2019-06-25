@@ -48,7 +48,7 @@ namespace FrbaCrucero.AbmRecorrido
             }
 
             // Validamos que el código de recorrido éste disponible 
-            if (Recorrido.identificadorDisponible(recorrido.getIdentificador()).Equals(false))
+            if (Recorrido.identificadorDisponibleRecorridoNuevo(recorrido.getIdentificador()).Equals(false))
             {
                 MensajeBox.error("El identificador ingresado para el recorrido ya se encuentra registrado. Por favor, pruebe con uno diferente.");
                 return; 

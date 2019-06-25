@@ -477,6 +477,7 @@ FROM LOS_BARONES_DE_LA_CERVEZA.Recorrido r
 	JOIN LOS_BARONES_DE_LA_CERVEZA.Puerto puerto_fin
 		ON t.tramo_puerto_destino = puerto_fin.id_puerto
 WHERE r.recorrido_codigo = 'RecorridoLoco'
+--WHERE r.id_recorrido = 67
 
 SELECT *
 FROM LOS_BARONES_DE_LA_CERVEZA.Recorrido r 
@@ -493,10 +494,98 @@ FROM LOS_BARONES_DE_LA_CERVEZA.Recorrido
 WHERE recorrido_codigo = 'RecorridoReLoco'
 	AND id_recorrido != 57
 
-SELECT id_recorrido
+SELECT *
 FROM LOS_BARONES_DE_LA_CERVEZA.Recorrido
 WHERE recorrido_codigo = @identificador_recorrido_a_editar
 
-DELETE 
+SELECT *
 FROM LOS_BARONES_DE_LA_CERVEZA.Tramos_por_Recorrido
-WHERE id_recorrido = 57
+WHERE id_recorrido = 67
+
+/* TOP 5 recorridos con más pasajes comprados (versión sin mostrar puerto inicial y final de cada recorrido) */
+SELECT TOP 5 r.recorrido_codigo identificador_recorrido, 
+	SUM(c.compra_cantidad) cantidad_pasajes_comprados
+FROM LOS_BARONES_DE_LA_CERVEZA.Recorrido r
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Viaje v
+		ON r.id_recorrido = v.viaje_id_recorrido
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Compra c
+		ON v.id_viaje = c.compra_id_viaje
+WHERE c.compra_fecha BETWEEN '2018-01-01' AND '2018-06-30'  
+GROUP BY r.recorrido_codigo
+ORDER BY 2 DESC
+
+/* TOP 5 recorridos con más pasajes comprados (versión completa, pero no hay que solucionar el problema de codigos recorridos repetidos) */
+SELECT TOP 5 r.recorrido_codigo 'Identificador Recorrido', 
+	SUM(c.compra_cantidad) 'Cantidad pasajes(cabinas) comprados',
+	pto_inicio.puerto_nombre 'Puerto Inicial',
+	pto_fin.puerto_nombre 'Puerto Final'
+FROM LOS_BARONES_DE_LA_CERVEZA.Recorrido r
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Viaje v
+		ON r.id_recorrido = v.viaje_id_recorrido
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Compra c
+		ON v.id_viaje = c.compra_id_viaje
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Tramos_por_Recorrido tpr1 
+		ON r.id_recorrido = tpr1.id_recorrido 
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Tramos_por_Recorrido tpr2 
+		ON r.id_recorrido = tpr2.id_recorrido 
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Tramo t1 
+		ON tpr1.id_tramo = t1.id_tramo 
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Tramo t2 
+		ON tpr2.id_tramo = t2.id_tramo 
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Puerto pto_inicio 
+		ON t1.tramo_puerto_inicio = pto_inicio.id_puerto 
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Puerto pto_fin 
+		ON t2.tramo_puerto_destino = pto_fin.id_puerto 
+WHERE tpr1.tramo_anterior IS NULL 
+	AND tpr2.tramo_siguiente IS NULL 
+	AND c.compra_fecha BETWEEN '2018-01-01' AND '2018-06-30'  
+GROUP BY r.recorrido_codigo, pto_inicio.puerto_nombre, pto_fin.puerto_nombre
+ORDER BY 2 DESC
+
+select FECHA_SALIDA, FECHA_LLEGADA, FECHA_LLEGADA_ESTIMADA, PUERTO_DESDE, PUERTO_HASTA
+from  gd_esquema.Maestra
+where CRUCERO_IDENTIFICADOR = 'SRHBMX-41378'
+and   RECORRIDO_CODIGO = 43820907
+and   FECHA_SALIDA = '2018-07-20 07:00:00.000'
+and   FECHA_LLEGADA_ESTIMADA = '2018-07-20 19:00:00.000'
+and   PASAJE_CODIGO is not null
+
+SELECT puerto_nombre
+FROM LOS_BARONES_DE_LA_CERVEZA.Puerto p
+ORDER BY puerto_nombre
+
+SELECT 
+	t.id_tramo 'Id tramo', 
+	puerto_inicio.puerto_nombre 'Puerto Inicio', 
+	puerto_fin.puerto_nombre 'Puerto Fin',
+	t.tramo_precio 'Precio'
+FROM LOS_BARONES_DE_LA_CERVEZA.Recorrido r 
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Tramos_por_Recorrido tpr
+		ON r.id_recorrido = tpr.id_recorrido 
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Tramo t
+		ON tpr.id_tramo = t.id_tramo 
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Puerto puerto_inicio
+		ON t.tramo_puerto_inicio = puerto_inicio.id_puerto
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Puerto puerto_fin
+		ON t.tramo_puerto_destino = puerto_fin.id_puerto
+WHERE puerto_inicio.puerto_nombre = 'LUANDA'
+ORDER BY 1
+
+SELECT *
+FROM LOS_BARONES_DE_LA_CERVEZA.Tramo
+WHERE tramo_puerto_inicio = 43 -- Luanda
+
+-- Hay 45 puertos 
+SELECT id_puerto
+FROM LOS_BARONES_DE_LA_CERVEZA.Puerto
+WHERE puerto_nombre = 'LUANDA'
+
+SELECT DISTINCT puerto_fin.puerto_nombre
+FROM LOS_BARONES_DE_LA_CERVEZA.Tramo t
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Puerto puerto_inicio
+		ON t.tramo_puerto_inicio = puerto_inicio.id_puerto
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Puerto puerto_fin
+		ON t.tramo_puerto_destino = puerto_fin.id_puerto
+WHERE puerto_inicio.puerto_nombre != 'ABUYA'
+	AND puerto_fin.puerto_nombre != 'ABUYA'
+ORDER BY puerto_fin.puerto_nombre

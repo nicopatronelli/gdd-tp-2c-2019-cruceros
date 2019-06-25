@@ -129,6 +129,12 @@
     </Compile>
     <Compile Include="AbmCrucero\Dominio\Crucero.cs" />
     <Compile Include="AbmCrucero\Dominio\CruceroBuilder.cs" />
+    <Compile Include="AbmRecorrido\AbmTramos\AltaTramoForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmRecorrido\AbmTramos\AltaTramoForm.Designer.cs">
+      <DependentUpon>AltaTramoForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="AbmRecorrido\AltaRecorrido\TramosDisponibles.cs" />
     <Compile Include="AbmRecorrido\AltaRecorrido\TramosSeleccionados.cs" />
     <Compile Include="AbmRecorrido\Dominio\PrecioRecorrido.cs" />
@@ -228,11 +234,31 @@
     <Compile Include="GenerarViaje\GenerarViajeForm.Designer.cs">
       <DependentUpon>GenerarViajeForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="ListadoEstadistico\Form1.cs">
+    <Compile Include="ListadoEstadistico\Consultas.cs" />
+    <Compile Include="ListadoEstadistico\ListadoCabinasLibresForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ListadoEstadistico\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="ListadoEstadistico\ListadoCabinasLibresForm.Designer.cs">
+      <DependentUpon>ListadoCabinasLibresForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ListadoEstadistico\ListadoCrucerosFueraServicioForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ListadoEstadistico\ListadoCrucerosFueraServicioForm.Designer.cs">
+      <DependentUpon>ListadoCrucerosFueraServicioForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ListadoEstadistico\ListadoRecorridosPasajesForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ListadoEstadistico\ListadoRecorridosPasajesForm.Designer.cs">
+      <DependentUpon>ListadoRecorridosPasajesForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ListadoEstadistico\ListadoUtil.cs" />
+    <Compile Include="ListadoEstadistico\SeleccionListadoEstadisticoForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ListadoEstadistico\SeleccionListadoEstadisticoForm.Designer.cs">
+      <DependentUpon>SeleccionListadoEstadisticoForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Utils\Excepciones\ActualizarCruceroException.cs" />
     <Compile Include="Utils\Excepciones\CamposObligatoriosVaciosException.cs" />
@@ -301,6 +327,9 @@
     <EmbeddedResource Include="AbmRecorrido\AbmRecorridosForm.resx">
       <DependentUpon>AbmRecorridosForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="AbmRecorrido\AbmTramos\AltaTramoForm.resx">
+      <DependentUpon>AltaTramoForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="AbmRecorrido\AltaRecorrido\AltaRecorridoForm.resx">
       <DependentUpon>AltaRecorridoForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -333,6 +362,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GenerarViaje\GenerarViajeForm.resx">
       <DependentUpon>GenerarViajeForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ListadoEstadistico\ListadoCabinasLibresForm.resx">
+      <DependentUpon>ListadoCabinasLibresForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ListadoEstadistico\ListadoCrucerosFueraServicioForm.resx">
+      <DependentUpon>ListadoCrucerosFueraServicioForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ListadoEstadistico\ListadoRecorridosPasajesForm.resx">
+      <DependentUpon>ListadoRecorridosPasajesForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ListadoEstadistico\SeleccionListadoEstadisticoForm.resx">
+      <DependentUpon>SeleccionListadoEstadisticoForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Login\LoginForm.resx">
       <DependentUpon>LoginForm.cs</DependentUpon>

@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Data;
-
+using System.Data.SqlClient;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using FrbaCrucero.AbmRecorrido.Dominio;
+using FrbaCrucero.Utils;
 
 namespace FrbaCrucero.AbmRecorrido.AltaRecorrido
 {
@@ -77,9 +78,45 @@ namespace FrbaCrucero.AbmRecorrido.AltaRecorrido
             this.dgvTramosSeleccionados.Rows.Clear();
         }
 
-        public void limpiarBis()
+        // Populamos el dgvTramosSeleccionados con los tramos que forman parte del recorrido a editar
+        public void popularTramosSeleccionadosEditar(string identificadorRecorridoAEditar, Recorrido recorrido)
         {
-            this.dgvTramosSeleccionados.DataSource = null;
+            string miConsulta = "SELECT "
+                + "t.id_tramo id_tramo, "
+                + "puerto_inicio.puerto_nombre puerto_inicio_tramo, "
+                + "puerto_fin.puerto_nombre puerto_fin_tramo, "
+                + "t.tramo_precio precio_tramo "
+             + "FROM LOS_BARONES_DE_LA_CERVEZA.Recorrido r "
+                + "JOIN LOS_BARONES_DE_LA_CERVEZA.Tramos_por_Recorrido tpr "
+                        + "ON r.id_recorrido = tpr.id_recorrido "
+                + "JOIN LOS_BARONES_DE_LA_CERVEZA.Tramo t "
+                        + "ON tpr.id_tramo = t.id_tramo "
+                + "JOIN LOS_BARONES_DE_LA_CERVEZA.Puerto puerto_inicio "
+                        + "ON t.tramo_puerto_inicio = puerto_inicio.id_puerto "
+                + "JOIN LOS_BARONES_DE_LA_CERVEZA.Puerto puerto_fin "
+                        + "ON t.tramo_puerto_destino = puerto_fin.id_puerto "
+                + "WHERE r.recorrido_codigo = @identificador_recorrido";
+
+            List<Parametro> parametros = new List<Parametro>();
+            Parametro paramPuertoInicio = new Parametro("@identificador_recorrido", SqlDbType.NVarChar, identificadorRecorridoAEditar, 255);
+            parametros.Add(paramPuertoInicio);
+            Query query = new Query(miConsulta, parametros);
+            SqlDataReader sqlDataReader = query.ejecutarReader();
+            int idTramo;
+            string tramoPuertoInicio, tramoPuertoFin;
+            double precioTramo;
+            Tramo tramoSeleccionado;
+            while (sqlDataReader.Read())
+            {
+                idTramo = Convert.ToInt32(sqlDataReader["id_tramo"]);
+                tramoPuertoInicio = sqlDataReader["puerto_inicio_tramo"].ToString();
+                tramoPuertoFin = sqlDataReader["puerto_fin_tramo"].ToString();
+                precioTramo = Convert.ToDouble(sqlDataReader["precio_tramo"]);
+                tramoSeleccionado = new Tramo(idTramo, tramoPuertoInicio, tramoPuertoFin, precioTramo);
+                recorrido.addTramo(tramoSeleccionado);
+                this.agregarTramo(tramoSeleccionado);
+                recorrido.getPrecio().aumentarLblPrecioRecorrido(tramoSeleccionado.getPrecio());
+            }
         }
     }
 }

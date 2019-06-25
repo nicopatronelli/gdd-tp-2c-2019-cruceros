@@ -35,6 +35,7 @@ namespace FrbaCrucero.AbmCrucero
             this.label1 = new System.Windows.Forms.Label();
             this.txtbxIdentificadorB = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.btnGuardar = new System.Windows.Forms.Button();
             this.btnEnviar = new System.Windows.Forms.Button();
             this.label7 = new System.Windows.Forms.Label();
             this.dgvCabinas = new System.Windows.Forms.DataGridView();
@@ -47,7 +48,6 @@ namespace FrbaCrucero.AbmCrucero
             this.txtbxIdentificadorA = new System.Windows.Forms.TextBox();
             this.lblModelo = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.btnGuardar = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCabinas)).BeginInit();
@@ -109,6 +109,16 @@ namespace FrbaCrucero.AbmCrucero
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Cabinas";
             // 
+            // btnGuardar
+            // 
+            this.btnGuardar.Location = new System.Drawing.Point(584, 262);
+            this.btnGuardar.Name = "btnGuardar";
+            this.btnGuardar.Size = new System.Drawing.Size(75, 23);
+            this.btnGuardar.TabIndex = 22;
+            this.btnGuardar.Text = "Guardar";
+            this.btnGuardar.UseVisualStyleBackColor = true;
+            this.btnGuardar.Click += new System.EventHandler(this.btnGuardar_Click);
+            // 
             // btnEnviar
             // 
             this.btnEnviar.Location = new System.Drawing.Point(584, 261);
@@ -167,6 +177,7 @@ namespace FrbaCrucero.AbmCrucero
             // 
             // cmbxMarca
             // 
+            this.cmbxMarca.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbxMarca.FormattingEnabled = true;
             this.cmbxMarca.Items.AddRange(new object[] {
             "P&O Cruises",
@@ -231,16 +242,6 @@ namespace FrbaCrucero.AbmCrucero
             this.label2.Size = new System.Drawing.Size(201, 13);
             this.label2.TabIndex = 4;
             this.label2.Text = "Nota: Todos los campos son obligatorios.";
-            // 
-            // btnGuardar
-            // 
-            this.btnGuardar.Location = new System.Drawing.Point(584, 262);
-            this.btnGuardar.Name = "btnGuardar";
-            this.btnGuardar.Size = new System.Drawing.Size(75, 23);
-            this.btnGuardar.TabIndex = 22;
-            this.btnGuardar.Text = "Guardar";
-            this.btnGuardar.UseVisualStyleBackColor = true;
-            this.btnGuardar.Click += new System.EventHandler(this.btnGuardar_Click);
             // 
             // CruceroForm
             // 
