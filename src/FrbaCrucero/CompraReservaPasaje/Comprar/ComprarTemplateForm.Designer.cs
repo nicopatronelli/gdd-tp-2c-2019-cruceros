@@ -1,4 +1,4 @@
-﻿namespace FrbaCrucero.CompraReservaPasaje.Comprar
+﻿namespace FrbaCrucero.CompraReservaPasaje
 {
     partial class ComprarTemplateForm
     {
@@ -11,7 +11,7 @@
         /// Clean up any resources being used.
         /// </summary>
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        protected override void Dispose(bool disposing)
+        protected  void Dispose(bool disposing)
         {
             if (disposing && (components != null))
             {
@@ -50,6 +50,13 @@
             this.apellidoTextBox = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.clientesListBox = new System.Windows.Forms.ListBox();
+            this.estoyButton = new System.Windows.Forms.Button();
+            this.noEstoyButton = new System.Windows.Forms.Button();
+            this.listoButton = new System.Windows.Forms.Button();
+            this.comprarRadio = new System.Windows.Forms.RadioButton();
+            this.reservarRadio = new System.Windows.Forms.RadioButton();
             this.SuspendLayout();
             // 
             // mailTextBox
@@ -71,11 +78,12 @@
             // dniTextBox
             // 
             this.dniTextBox.Location = new System.Drawing.Point(47, 97);
-            this.dniTextBox.MaxLength = 8;
+            this.dniTextBox.MaxLength = 10;
             this.dniTextBox.Name = "dniTextBox";
             this.dniTextBox.Size = new System.Drawing.Size(100, 20);
             this.dniTextBox.TabIndex = 2;
             this.dniTextBox.TextChanged += new System.EventHandler(this.dniTextBox_TextChanged);
+            this.dniTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.dayTextBox_KeyPress_1);
             // 
             // dayTextBox
             // 
@@ -84,6 +92,7 @@
             this.dayTextBox.Name = "dayTextBox";
             this.dayTextBox.Size = new System.Drawing.Size(22, 20);
             this.dayTextBox.TabIndex = 3;
+            this.dayTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.dayTextBox_KeyPress_1);
             // 
             // telefonoTextBox
             // 
@@ -91,6 +100,7 @@
             this.telefonoTextBox.Name = "telefonoTextBox";
             this.telefonoTextBox.Size = new System.Drawing.Size(100, 20);
             this.telefonoTextBox.TabIndex = 4;
+            this.telefonoTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.dayTextBox_KeyPress_1);
             // 
             // direccionTextBox
             // 
@@ -101,10 +111,12 @@
             // 
             // nombreTextBox
             // 
+            this.nombreTextBox.CharacterCasing = System.Windows.Forms.CharacterCasing.Lower;
             this.nombreTextBox.Location = new System.Drawing.Point(47, 136);
             this.nombreTextBox.Name = "nombreTextBox";
             this.nombreTextBox.Size = new System.Drawing.Size(100, 20);
             this.nombreTextBox.TabIndex = 6;
+            this.nombreTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.nombreTextBox_KeyPress);
             // 
             // label2
             // 
@@ -178,14 +190,16 @@
             this.mesTextBox.Name = "mesTextBox";
             this.mesTextBox.Size = new System.Drawing.Size(22, 20);
             this.mesTextBox.TabIndex = 14;
+            this.mesTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.dayTextBox_KeyPress_1);
             // 
             // anioTextBox
             // 
             this.anioTextBox.Location = new System.Drawing.Point(128, 313);
             this.anioTextBox.MaxLength = 4;
             this.anioTextBox.Name = "anioTextBox";
-            this.anioTextBox.Size = new System.Drawing.Size(51, 20);
+            this.anioTextBox.Size = new System.Drawing.Size(39, 20);
             this.anioTextBox.TabIndex = 15;
+            this.anioTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.dayTextBox_KeyPress_1);
             // 
             // informacionCompraLabel
             // 
@@ -222,6 +236,7 @@
             this.apellidoTextBox.Name = "apellidoTextBox";
             this.apellidoTextBox.Size = new System.Drawing.Size(100, 20);
             this.apellidoTextBox.TabIndex = 19;
+            this.apellidoTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.nombreTextBox_KeyPress);
             // 
             // label10
             // 
@@ -241,11 +256,94 @@
             this.label11.TabIndex = 21;
             this.label11.Text = "9329200 para probar";
             // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(213, 116);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(110, 13);
+            this.label12.TabIndex = 22;
+            this.label12.Text = "46721206 es repetido";
+            // 
+            // clientesListBox
+            // 
+            this.clientesListBox.FormattingEnabled = true;
+            this.clientesListBox.HorizontalScrollbar = true;
+            this.clientesListBox.Location = new System.Drawing.Point(213, 81);
+            this.clientesListBox.Name = "clientesListBox";
+            this.clientesListBox.Size = new System.Drawing.Size(120, 95);
+            this.clientesListBox.TabIndex = 23;
+            this.clientesListBox.Visible = false;
+            this.clientesListBox.SelectedValueChanged += new System.EventHandler(this.clientesListBox_SelectedValueChanged);
+            // 
+            // estoyButton
+            // 
+            this.estoyButton.Enabled = false;
+            this.estoyButton.Location = new System.Drawing.Point(213, 175);
+            this.estoyButton.Name = "estoyButton";
+            this.estoyButton.Size = new System.Drawing.Size(120, 23);
+            this.estoyButton.TabIndex = 24;
+            this.estoyButton.Text = "Soy esta persona!";
+            this.estoyButton.UseVisualStyleBackColor = true;
+            this.estoyButton.Visible = false;
+            this.estoyButton.Click += new System.EventHandler(this.estoyButton_Click);
+            // 
+            // noEstoyButton
+            // 
+            this.noEstoyButton.Location = new System.Drawing.Point(269, 202);
+            this.noEstoyButton.Name = "noEstoyButton";
+            this.noEstoyButton.Size = new System.Drawing.Size(64, 23);
+            this.noEstoyButton.TabIndex = 25;
+            this.noEstoyButton.Text = "No estoy";
+            this.noEstoyButton.UseVisualStyleBackColor = true;
+            this.noEstoyButton.Visible = false;
+            this.noEstoyButton.Click += new System.EventHandler(this.noEstoyButton_Click);
+            // 
+            // listoButton
+            // 
+            this.listoButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F);
+            this.listoButton.Location = new System.Drawing.Point(47, 351);
+            this.listoButton.Name = "listoButton";
+            this.listoButton.Size = new System.Drawing.Size(218, 87);
+            this.listoButton.TabIndex = 26;
+            this.listoButton.Text = "Registrarme y Aceptar";
+            this.listoButton.UseVisualStyleBackColor = true;
+            this.listoButton.Click += new System.EventHandler(this.listoButton_Click);
+            // 
+            // comprarRadio
+            // 
+            this.comprarRadio.AutoSize = true;
+            this.comprarRadio.Checked = true;
+            this.comprarRadio.Location = new System.Drawing.Point(292, 351);
+            this.comprarRadio.Name = "comprarRadio";
+            this.comprarRadio.Size = new System.Drawing.Size(64, 17);
+            this.comprarRadio.TabIndex = 27;
+            this.comprarRadio.TabStop = true;
+            this.comprarRadio.Text = "Comprar";
+            this.comprarRadio.UseVisualStyleBackColor = true;
+            // 
+            // reservarRadio
+            // 
+            this.reservarRadio.AutoSize = true;
+            this.reservarRadio.Location = new System.Drawing.Point(292, 373);
+            this.reservarRadio.Name = "reservarRadio";
+            this.reservarRadio.Size = new System.Drawing.Size(68, 17);
+            this.reservarRadio.TabIndex = 28;
+            this.reservarRadio.Text = "Reservar";
+            this.reservarRadio.UseVisualStyleBackColor = true;
+            // 
             // ComprarTemplateForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.reservarRadio);
+            this.Controls.Add(this.comprarRadio);
+            this.Controls.Add(this.listoButton);
+            this.Controls.Add(this.noEstoyButton);
+            this.Controls.Add(this.estoyButton);
+            this.Controls.Add(this.clientesListBox);
+            this.Controls.Add(this.label12);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.apellidoTextBox);
@@ -299,5 +397,12 @@
         private System.Windows.Forms.TextBox apellidoTextBox;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.ListBox clientesListBox;
+        private System.Windows.Forms.Button estoyButton;
+        private System.Windows.Forms.Button noEstoyButton;
+        private System.Windows.Forms.Button listoButton;
+        private System.Windows.Forms.RadioButton comprarRadio;
+        private System.Windows.Forms.RadioButton reservarRadio;
     }
 }

@@ -1044,8 +1044,10 @@ return
 				ON txr.id_tramo = t.id_tramo
 		JOIN (select deOrigen.id_recorrido from [LOS_BARONES_DE_LA_CERVEZA].[UF_recorridos_segun_origen](@puerto_origen) as deOrigen) as deOrigenn 
 				ON deOrigenn.id_recorrido = txr.id_recorrido
+		JOIN LOS_BARONES_DE_LA_CERVEZA.Recorrido r
+				on r.id_recorrido = txr.id_recorrido
 		WHERE t.tramo_puerto_destino = (select id_puerto from LOS_BARONES_DE_LA_CERVEZA.Puerto where puerto_nombre = @puerto_destino)
-
+			AND r.recorrido_estado = 0
 go
 
 /******************************************************************
@@ -1070,6 +1072,7 @@ return
 
 go
 
+CREATE TRIGGER
 
 
 
@@ -1228,10 +1231,11 @@ Migramos los clientes de la tabla maestra.
 ******************************************************************/
 
 INSERT INTO [LOS_BARONES_DE_LA_CERVEZA].Clientes(usuario, nombre, apellido, dni, direccion, telefono, mail, fecha_nacimiento, nro_tarjeta)
-SELECT DISTINCT NULL, CLI_NOMBRE, CLI_APELLIDO, CLI_DNI, CLI_DIRECCION, CLI_TELEFONO, CLI_MAIL, CLI_FECHA_NAC, NULL
+SELECT DISTINCT NULL, replace(replace(replace(CLI_NOMBRE,' ','<>'),'><',''),'<>',' '), replace(replace(replace(CLI_APELLIDO,' ','<>'),'><',''),'<>',' '), CLI_DNI, CLI_DIRECCION, CLI_TELEFONO, CLI_MAIL, CLI_FECHA_NAC, NULL
 FROM gd_esquema.Maestra MA WHERE CLI_DNI IS NOT NULL
 GO
-
+--replace(replace(replace(CLI_NOMBRE,' ','<>'),'><',''),'<>',' ')
+--replace(replace(replace(CLI_APELLIDO,' ','<>'),'><',''),'<>',' ')
 /******************************************************************
 Migramos las marcas de cruceros existentes. 
 @DESC: Estos valores no se pueden modificar ni agregar nuevos marcas.

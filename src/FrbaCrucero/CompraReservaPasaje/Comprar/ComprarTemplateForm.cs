@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace FrbaCrucero.CompraReservaPasaje.Comprar
+namespace FrbaCrucero.CompraReservaPasaje
 {
     public partial class ComprarTemplateForm : Form
     {
@@ -18,6 +18,8 @@ namespace FrbaCrucero.CompraReservaPasaje.Comprar
         public int cantidadCabinas;
         public int viaje_id;
         public Viaje viaje;
+        public bool editando = false;
+        public Cliente clienteEditandose;
 
         public ComprarTemplateForm(string tipoCabina,int cantidadCabinas,int viaje_id)
         {
@@ -29,6 +31,153 @@ namespace FrbaCrucero.CompraReservaPasaje.Comprar
             this.viaje = new Viaje(viaje_id);
             this.cargarDestinos();
         }
+
+
+        private void dniTextBox_TextChanged(object sender, EventArgs e)
+        {
+            this.reset();
+
+            if (dniTextBox.Text.Length > 6)
+            {
+                int cantidadClientes = this.cantidadClientesSegunDni();
+                if (cantidadClientes == 1)
+                {
+                    this.estoyButton.Visible = true;
+                    this.estoyButton.Enabled = true;
+                    this.noEstoyButton.Visible = true;
+                    var consulta = "  select id_cliente,nombre, apellido, direccion, cast(telefono as nvarchar(255)) as telefono, mail, fecha_nacimiento from [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Clientes] "
+                                   + "     where dni = " + dniTextBox.Text;
+                    Query miConsulta = new Query(consulta, new List<Parametro>());
+                    SqlDataReader datosPersonales = miConsulta.ejecutarReaderFila();
+
+
+                    Cliente cliente = new Cliente((int)datosPersonales["id_cliente"], Int32.Parse(dniTextBox.Text), datosPersonales["nombre"].ToString(), datosPersonales["apellido"].ToString(), datosPersonales["direccion"].ToString(), datosPersonales["telefono"].ToString(), datosPersonales["mail"].ToString(), (DateTime)datosPersonales["fecha_nacimiento"]);
+                    this.clienteEditandose = cliente;   
+                    this.mostrarCliente(cliente);
+                    miConsulta.cerrarConexionReader();
+
+                    return;
+                }
+                if (cantidadClientes > 1)
+                {
+                    this.estoyButton.Visible = true;
+                    this.noEstoyButton.Visible = true;
+                    this.clientesListBox.Visible = true;
+                    this.cargarVariasPersonas(cantidadClientes);
+                    this.estoyButton.Enabled = false;
+                }
+
+            }
+        }
+
+        private void desactivarEdicionDatos()
+        {
+            this.nombreTextBox.Enabled = false;
+            this.apellidoTextBox.Enabled = false;
+        }
+
+        private void mostrarCliente(Cliente cliente)
+        {
+            this.nombreTextBox.Text = cliente.nombre;
+            this.apellidoTextBox.Text = cliente.apellido;
+            this.direccionTextBox.Text = cliente.direccion;
+            this.telefonoTextBox.Text = cliente.telefono.ToString();
+            this.mailTextBox.Text = cliente.mail;
+            this.dayTextBox.Text = cliente.fechaDeNacimiento.Day.ToString();
+            this.mesTextBox.Text = cliente.fechaDeNacimiento.Month.ToString();
+            this.anioTextBox.Text = cliente.fechaDeNacimiento.Year.ToString();
+        }
+
+
+        private void cargarVariasPersonas(int cantidadClientes)
+        {
+            this.clientesListBox.Items.Clear();
+            Cliente nuevoCliente;
+            var consulta = "  select id_cliente,nombre, apellido, direccion, cast(telefono as nvarchar(255)) as telefono, mail, fecha_nacimiento from [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Clientes] "
+               + "     where dni = " + dniTextBox.Text;
+            Query miConsulta = new Query(consulta, new List<Parametro>());
+            SqlDataReader datosPersonales = miConsulta.ejecutarReaderFila();
+            for(int count = 0; count < cantidadClientes; count++)
+            {
+                nuevoCliente = new Cliente((int)datosPersonales["id_cliente"], Int32.Parse(dniTextBox.Text), datosPersonales["nombre"].ToString(), datosPersonales["apellido"].ToString(), datosPersonales["direccion"].ToString(), datosPersonales["telefono"].ToString(), datosPersonales["mail"].ToString(), (DateTime)datosPersonales["fecha_nacimiento"]);
+                this.clientesListBox.Items.Add(nuevoCliente);
+                datosPersonales.Read();
+            }
+        }
+
+
+
+
+        private int cantidadClientesSegunDni()
+        {
+            string consulta = "select count (nombre) as cantidad from [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Clientes] where dni = " + dniTextBox.Text;
+            Query miConsulta = new Query(consulta, new List<Parametro>());
+            int result= (int)miConsulta.ejecutarEscalar();
+            miConsulta.cerrarConexionReader();
+            return result;
+        }
+
+
+        private void cargarDestinos()
+        {
+            string consulta = "SELECT puerto_nombre from[GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[UF_destinos_segun_recorrido](" + this.viaje.id_recorrido +  ")";
+
+            Query miConsulta = new Query(consulta, new List<Parametro>());
+            var destinos = miConsulta.ejecutarReaderUnicaColumna();
+            foreach (var o in destinos)
+            {
+                this.puertosLabel.Text += (o+"\n");
+            }
+            miConsulta.cerrarConexionReader();
+        }
+
+
+        private void dayTextBox_KeyPress_1(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar);
+        }
+
+        private void nombreTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar);
+        }
+
+        private void clientesListBox_SelectedValueChanged(object sender, EventArgs e)
+        {
+            this.estoyButton.Enabled = true;
+        }
+
+        private void estoyButton_Click(object sender, EventArgs e)
+        {
+            this.setEditando(true);
+            this.dniTextBox.TextChanged -= new System.EventHandler(this.dniTextBox_TextChanged);
+            if (clientesListBox.Visible)
+            {
+                this.mostrarCliente((Cliente)this.clientesListBox.SelectedItem);
+                this.clienteEditandose = (Cliente)this.clientesListBox.SelectedItem;
+                dniTextBox.Text = clienteEditandose.dni.ToString();
+            }
+
+
+//------------------------------------------------------------------------------------------------------------------------------------------------------------//
+        }
+
+
+
+
+        /************************************
+         **********RESET*********************
+         * ***********************************/
+        private void reset()
+        {
+            this.estoyButton.Visible = false;
+            this.noEstoyButton.Visible = false;
+            this.nombreTextBox.Enabled = true;
+            this.apellidoTextBox.Enabled = true;
+            this.clientesListBox.Visible = false;
+            this.vaciarDatosPersonales();
+        }
+
         private void vaciarDatosPersonales()
         {
             this.nombreTextBox.Text = "";
@@ -41,43 +190,106 @@ namespace FrbaCrucero.CompraReservaPasaje.Comprar
             this.anioTextBox.Text = "";
         }
 
-        private void dniTextBox_TextChanged(object sender, EventArgs e)
-        {
-            this.vaciarDatosPersonales();
-            if (dniTextBox.Text.Length > 6)
-            {
+        /************************************
+         **********RESET*********************
+         * ***********************************/
 
-                var consulta = "  select nombre, apellido, direccion, cast(telefono as nvarchar(255)) as telefono, mail, cast(fecha_nacimiento as nvarchar(255)) as fecha_nacimiento from [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Clientes] "
-                               + "     where dni =" + dniTextBox.Text;
-                Query miConsulta = new Query(consulta, new List<Parametro>());
-                SqlDataReader datosPersonales = miConsulta.ejecutarReaderFila();
-                try
-                {
-                    this.nombreTextBox.Text = Convert.ToString(datosPersonales["nombre"]);
-                    this.apellidoTextBox.Text = Convert.ToString(datosPersonales["apellido"]);
-                    this.direccionTextBox.Text = Convert.ToString(datosPersonales["direccion"]);
-                    this.telefonoTextBox.Text = Convert.ToString(datosPersonales["telefono"]);
-                    this.mailTextBox.Text = Convert.ToString(datosPersonales["mail"]);
-                    DateTime fechaNacimiento = DateTime.Parse(Convert.ToString(datosPersonales["fecha_nacimiento"]));
-                    this.dayTextBox.Text = fechaNacimiento.Day.ToString();
-                    this.mesTextBox.Text = fechaNacimiento.Month.ToString();
-                    this.anioTextBox.Text = fechaNacimiento.Year.ToString();
-                }
-                catch(Exception errorMesssage){}
-            }
+        private void noEstoyButton_Click(object sender, EventArgs e)
+        {
+            setEditando(false);
+            this.dniTextBox.TextChanged += new System.EventHandler(this.dniTextBox_TextChanged);
+            this.reset();
         }
 
-        private void cargarDestinos()
+        private void listoButton_Click(object sender, EventArgs e)
         {
-            string consulta = "SELECT puerto_nombre from[GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[UF_destinos_segun_recorrido](" + this.viaje.id_recorrido +  ")";
+            Validaciones.hayCamposObligatoriosNulos();
+            string errorMessage = "";
+            if (this.dniTextBox.Text.Length < 7) errorMessage += "Longitud minima de DNI es 7 digitos\n";
+            if (this.nombreTextBox.Text == "") errorMessage += "Ingrese un nombre\n";
+            if (this.apellidoTextBox.Text == "") errorMessage += "Ingrese un apellido\n";
+            if (this.direccionTextBox.Text == "") errorMessage += "Ingrese una direccion\n";
+            if (this.telefonoTextBox.Text == "") errorMessage += "Ingrese un telefono\n";
+            if (this.dayTextBox.Text == "") errorMessage += "Ingrese un dia\n";
+            if (this.mesTextBox.Text == "") errorMessage += "Ingrese un mes\n";
+            if (this.anioTextBox.Text.Length != 4) errorMessage += "Ingrese un anio\n";
+            DateTime fechaIngresada;
+            try
+            {
+                fechaIngresada = DateTime.Parse(string.Concat(dayTextBox.Text,"/",mesTextBox.Text,"/",anioTextBox.Text));
+                if ((ArchivoConfig.obtenerFechaConfig().Year - fechaIngresada.Year) < 18) errorMessage += "Necesita ser Mayor de 18 para registrarse y hacer un Pago\n";
+            }
+            catch(Exception aaaa)
+            {
+                errorMessage += "Fecha no valida";
+            }
 
+            errorMessage += this.checkDniRepetido();
+          
+
+            if (errorMessage != "")
+            {
+                MessageBox.Show(errorMessage);
+                return;
+            }
+            this.finalizar();
+
+        }
+
+        public string checkDniRepetido()
+        {
+            ///caso en que edite a una persona con DNI duplicado y no le haya cambiado el DNI
+            if (this.editando && this.clienteEditandose.dni.ToString() == dniTextBox.Text) return "";
+
+            if (dniTextBox.TextLength < 7) return "Dni muy corto";
+            string id = "0";
+            if(this.editando) id= clienteEditandose.id.ToString();
+            string consulta = "  select count(id_cliente) from [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Clientes] c where c.dni = " + this.dniTextBox.Text + " and c.id_cliente <> " + id;
             Query miConsulta = new Query(consulta, new List<Parametro>());
-            var destinos = miConsulta.ejecutarReaderUnicaColumna();
-            foreach (var o in destinos)
+            int repetidos = (int)miConsulta.ejecutarEscalar();
+            if(repetidos == 0)
+            { return ""; }
+            return "Ya hay alguien mas con ese DNI";
+        
+        }
+
+        public void setEditando(bool input)
+        {
+            this.editando = input;
+            if (input)
             {
-                this.puertosLabel.Text += (o+"\n");
+                listoButton.Text = "Cambiar Datos y Aceptar";
+            }
+            else
+            {
+                listoButton.Text = "Registrarme y Aceptar";
             }
         }
+
+        public void finalizar()
+        {
+            if (editando)
+            {
+                this.clienteEditandose.dni = Int32.Parse(dniTextBox.Text);
+                clienteEditandose.nombre = nombreTextBox.Text;
+                clienteEditandose.apellido = apellidoTextBox.Text;
+                clienteEditandose.direccion = direccionTextBox.Text;
+                clienteEditandose.mail = mailTextBox.Text;
+                clienteEditandose.telefono = telefonoTextBox.Text;
+                clienteEditandose.saveOrUpdate();
+            }
+            else
+            {
+                Cliente nuevoCliente = new Cliente(0, Int32.Parse(dniTextBox.Text), nombreTextBox.Text, apellidoTextBox.Text, direccionTextBox.Text, telefonoTextBox.Text, mailTextBox.Text,   DateTime.Parse(string.Concat(dayTextBox.Text,"/",mesTextBox.Text,"/",anioTextBox.Text))  );
+                nuevoCliente.saveOrUpdate();
+            }
+            Form form;
+            if(comprarRadio.Checked) form= new PagoForm();
+            else form = new CompraReservaForm();
+
+            form.ShowDialog();
+        }
+
 
 
     }

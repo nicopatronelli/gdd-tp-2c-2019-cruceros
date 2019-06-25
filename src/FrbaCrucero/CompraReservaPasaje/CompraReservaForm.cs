@@ -88,9 +88,9 @@ namespace FrbaCrucero.CompraReservaPasaje
             {
                 errorMsg += "Selecciona una fecha\n";
             }
-            if(calendario.SelectionStart <= DateTime.Today)
+            if(calendario.SelectionStart <= ArchivoConfig.obtenerFechaConfig())
             {
-               // errorMsg += "Seleccione una fecha posterior a la actual\n";
+                errorMsg += "Seleccione una fecha posterior a la actual\n";
             }
             if (this.origenesList.SelectedItem == null)
             {

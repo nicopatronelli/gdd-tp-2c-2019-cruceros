@@ -1,4 +1,4 @@
-﻿using FrbaCrucero.CompraReservaPasaje.Comprar;
+﻿using FrbaCrucero.CompraReservaPasaje;
 using FrbaCrucero.Utils;
 using System;
 using System.Collections.Generic;

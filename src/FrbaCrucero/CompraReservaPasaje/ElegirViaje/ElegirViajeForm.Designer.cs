@@ -36,13 +36,12 @@
             this.crucerosList = new System.Windows.Forms.ListBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.selectorCabinas = new System.Windows.Forms.ComboBox();
             this.cabinasDisponiblesLabel = new System.Windows.Forms.Label();
             this.cabinasNumeric = new System.Windows.Forms.NumericUpDown();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.buttonComprar = new System.Windows.Forms.Button();
-            this.buttonReservar = new System.Windows.Forms.Button();
-            this.selectorCabinas = new System.Windows.Forms.ComboBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cabinasNumeric)).BeginInit();
@@ -131,6 +130,15 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Cabinas Disponibles";
             // 
+            // selectorCabinas
+            // 
+            this.selectorCabinas.FormattingEnabled = true;
+            this.selectorCabinas.Location = new System.Drawing.Point(221, 84);
+            this.selectorCabinas.Name = "selectorCabinas";
+            this.selectorCabinas.Size = new System.Drawing.Size(121, 21);
+            this.selectorCabinas.TabIndex = 19;
+            this.selectorCabinas.SelectedValueChanged += new System.EventHandler(this.selectorCabinas_SelectedValueChanged);
+            // 
             // cabinasDisponiblesLabel
             // 
             this.cabinasDisponiblesLabel.Anchor = System.Windows.Forms.AnchorStyles.None;
@@ -177,39 +185,19 @@
             // buttonComprar
             // 
             this.buttonComprar.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F);
-            this.buttonComprar.Location = new System.Drawing.Point(320, 396);
+            this.buttonComprar.Location = new System.Drawing.Point(414, 361);
             this.buttonComprar.Name = "buttonComprar";
-            this.buttonComprar.Size = new System.Drawing.Size(140, 42);
+            this.buttonComprar.Size = new System.Drawing.Size(140, 77);
             this.buttonComprar.TabIndex = 17;
-            this.buttonComprar.Text = "Comprar";
+            this.buttonComprar.Text = "Ingresar Datos Personales";
             this.buttonComprar.UseVisualStyleBackColor = true;
             this.buttonComprar.Click += new System.EventHandler(this.buttonComprar_Click);
-            // 
-            // buttonReservar
-            // 
-            this.buttonReservar.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F);
-            this.buttonReservar.Location = new System.Drawing.Point(466, 396);
-            this.buttonReservar.Name = "buttonReservar";
-            this.buttonReservar.Size = new System.Drawing.Size(138, 42);
-            this.buttonReservar.TabIndex = 18;
-            this.buttonReservar.Text = "Reservar";
-            this.buttonReservar.UseVisualStyleBackColor = true;
-            // 
-            // selectorCabinas
-            // 
-            this.selectorCabinas.FormattingEnabled = true;
-            this.selectorCabinas.Location = new System.Drawing.Point(221, 84);
-            this.selectorCabinas.Name = "selectorCabinas";
-            this.selectorCabinas.Size = new System.Drawing.Size(121, 21);
-            this.selectorCabinas.TabIndex = 19;
-            this.selectorCabinas.SelectedValueChanged += new System.EventHandler(this.selectorCabinas_SelectedValueChanged);
             // 
             // ElegirViajeForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.buttonReservar);
             this.Controls.Add(this.buttonComprar);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
@@ -240,7 +228,6 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button buttonComprar;
-        private System.Windows.Forms.Button buttonReservar;
         private System.Windows.Forms.ComboBox selectorCabinas;
     }
 }
