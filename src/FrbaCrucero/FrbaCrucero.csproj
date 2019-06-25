@@ -135,6 +135,9 @@
     <Compile Include="AbmRecorrido\AbmTramos\AltaTramoForm.Designer.cs">
       <DependentUpon>AltaTramoForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="AbmRecorrido\AbmTramos\FixCmbxPuertosInicio\OrdenCmbxPuertosInicio.cs" />
+    <Compile Include="AbmRecorrido\AbmTramos\FixCmbxPuertosInicio\OrdenPreInsert.cs" />
+    <Compile Include="AbmRecorrido\AbmTramos\FixCmbxPuertosInicio\OrdenPostInsert.cs" />
     <Compile Include="AbmRecorrido\AltaRecorrido\TramosDisponibles.cs" />
     <Compile Include="AbmRecorrido\AltaRecorrido\TramosSeleccionados.cs" />
     <Compile Include="AbmRecorrido\Dominio\PrecioRecorrido.cs" />

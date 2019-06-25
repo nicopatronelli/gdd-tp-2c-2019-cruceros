@@ -117,4 +117,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="label5.Text" xml:space="preserve">
+    <value>IMPORTANTE: Solo se permite el alta de tramos no disponibles aún. Por lo tanto, cuando
+seleccione el puerto de origen se cargaran, de forma automática, sólo los posibles puertos 
+destino que puede elegir. Por ejemplo, si el tramo A-B ya existe y usted selecciona como 
+puerto de inicio el puerto A, el puerto B no se cargará como posible puerto de destino.
+</value>
+  </data>
 </root>

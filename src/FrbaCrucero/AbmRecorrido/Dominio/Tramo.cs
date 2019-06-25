@@ -8,6 +8,7 @@ using System.Data.SqlClient;
 using FrbaCrucero.Utils;
 using FrbaCrucero.Utils.Excepciones;
 
+
 namespace FrbaCrucero.AbmRecorrido.Dominio
 {
     public class Tramo
@@ -17,6 +18,7 @@ namespace FrbaCrucero.AbmRecorrido.Dominio
         private string puertoFin;
         private double precio;
 
+        // Constructor para Tramo_por_Recorrido
         public Tramo(int id, string puertoInicio, string puertoFin, double precio)
         {
             this.id = id;
@@ -24,6 +26,15 @@ namespace FrbaCrucero.AbmRecorrido.Dominio
             this.puertoFin = puertoFin;
             this.precio = precio;
         }
+
+        // Constructor para alta de un nuevo tramo (ABM Tramos)
+        public Tramo(string puertoInicio, string puertoFin, double precio)
+        {
+            this.puertoInicio = puertoInicio;
+            this.puertoFin = puertoFin;
+            this.precio = precio;
+        }
+
 
         public int getId()
         {
@@ -64,6 +75,29 @@ namespace FrbaCrucero.AbmRecorrido.Dominio
             // Comprobamos que la cabina se haya insertado correctamente
             //if (!cantidadFilasInsertadas.Equals(DEF.FILAS_INSERT_TRAMO_POR_RECORRIDO)) 
             //    throw new InsertarRecorridoException();
+        }
+
+        // Insertar nuevo tramo
+        public void insertar()
+        {
+            List<Parametro> parametros = new List<Parametro>();
+            Parametro paramPuertoInicio = new Parametro("@puerto_inicio", SqlDbType.NVarChar, this.puertoInicio, 255);
+            parametros.Add(paramPuertoInicio);
+            Parametro paramPuertoFin = new Parametro("@puerto_fin", SqlDbType.NVarChar, this.puertoFin, 255);
+            parametros.Add(paramPuertoFin);
+            Parametro paramPrecio = new Parametro("@precio", SqlDbType.Decimal, this.precio);
+            paramPrecio.obtenerSqlParameter().Precision = 18;
+            paramPrecio.obtenerSqlParameter().Scale = 2;
+            parametros.Add(paramPrecio);
+            string queryInsertarTramo = "INSERT INTO LOS_BARONES_DE_LA_CERVEZA.Tramo (tramo_puerto_inicio, tramo_puerto_destino, tramo_precio) "
+                                      + "VALUES"
+                                      + "( "
+                                            + "(SELECT id_puerto FROM LOS_BARONES_DE_LA_CERVEZA.Puerto WHERE puerto_nombre = @puerto_inicio), "
+                                            + "(SELECT id_puerto FROM LOS_BARONES_DE_LA_CERVEZA.Puerto WHERE puerto_nombre = @puerto_fin), "
+                                            + "@precio "
+                                      + ")";
+            Query miConsulta = new Query(queryInsertarTramo, parametros);
+            miConsulta.ejecutarNonQuery();
         }
     }
 }

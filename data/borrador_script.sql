@@ -580,12 +580,36 @@ SELECT id_puerto
 FROM LOS_BARONES_DE_LA_CERVEZA.Puerto
 WHERE puerto_nombre = 'LUANDA'
 
+-- Query para el segundo combobox de Alta Tramo
+SELECT puerto_nombre
+FROM LOS_BARONES_DE_LA_CERVEZA.Puerto puerto
+EXCEPT
 SELECT DISTINCT puerto_fin.puerto_nombre
 FROM LOS_BARONES_DE_LA_CERVEZA.Tramo t
 	JOIN LOS_BARONES_DE_LA_CERVEZA.Puerto puerto_inicio
 		ON t.tramo_puerto_inicio = puerto_inicio.id_puerto
 	JOIN LOS_BARONES_DE_LA_CERVEZA.Puerto puerto_fin
 		ON t.tramo_puerto_destino = puerto_fin.id_puerto
-WHERE puerto_inicio.puerto_nombre != 'ABUYA'
-	AND puerto_fin.puerto_nombre != 'ABUYA'
-ORDER BY puerto_fin.puerto_nombre
+WHERE puerto_inicio.puerto_nombre = 'SANTO TOMÉ'
+ORDER BY puerto.puerto_nombre
+
+-- Query para insertar nuevos tramos
+INSERT INTO LOS_BARONES_DE_LA_CERVEZA.Tramo (tramo_puerto_inicio, tramo_puerto_destino, tramo_precio)
+VALUES 
+(
+	(SELECT id_puerto FROM LOS_BARONES_DE_LA_CERVEZA.Puerto WHERE puerto_nombre = 'SANTO TOMÉ'), 
+	(SELECT id_puerto FROM LOS_BARONES_DE_LA_CERVEZA.Puerto WHERE puerto_nombre = 'VICTORIA'), 
+	700.0
+)
+
+SELECT puerto_inicio.puerto_nombre, puerto_fin.puerto_nombre, t.tramo_precio
+FROM LOS_BARONES_DE_LA_CERVEZA.Tramo t
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Puerto puerto_inicio
+		ON t.tramo_puerto_inicio = puerto_inicio.id_puerto
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Puerto puerto_fin
+		ON t.tramo_puerto_destino = puerto_fin.id_puerto
+WHERE t.tramo_precio = 1400.25
+
+SELECT * 
+FROM LOS_BARONES_DE_LA_CERVEZA.Tramo
+WHERE tramo_precio = 700.0
