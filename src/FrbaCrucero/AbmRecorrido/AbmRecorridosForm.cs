@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using FrbaCrucero.AbmRecorrido.EditarRecorrido;
 using FrbaCrucero.AbmRecorrido.HabilitacionDeshabilitacionRecorrido;
+using FrbaCrucero.AbmRecorrido.AbmTramos.AltaTramo;
+using FrbaCrucero.AbmRecorrido.AbmTramos.ModificarPrecioTramo;
 
 namespace FrbaCrucero.AbmRecorrido
 {
@@ -41,6 +43,18 @@ namespace FrbaCrucero.AbmRecorrido
         {
             SeleccionRecorridoHabilitarForm formSeleccionRecorridoHabilitar = new SeleccionRecorridoHabilitarForm();
             formSeleccionRecorridoHabilitar.ShowDialog();
+        }
+
+        private void btnNuevoTramo_Click(object sender, EventArgs e)
+        {
+            AltaTramoForm formAltaTramo = new AltaTramoForm();
+            formAltaTramo.ShowDialog();
+        }
+
+        private void btnEditarPrecioTramo_Click(object sender, EventArgs e)
+        {
+            ModificarPrecioTramoForm formModificarPrecioTramo = new ModificarPrecioTramoForm();
+            formModificarPrecioTramo.ShowDialog();
         }
     }
 }

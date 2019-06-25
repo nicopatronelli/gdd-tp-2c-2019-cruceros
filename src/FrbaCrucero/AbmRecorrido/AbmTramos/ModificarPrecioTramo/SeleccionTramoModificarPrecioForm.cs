@@ -9,8 +9,9 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using FrbaCrucero.AbmRecorrido.AltaRecorrido;
 using FrbaCrucero.AbmRecorrido.Dominio;
+using FrbaCrucero.AbmRecorrido.AbmTramos.ModificarPrecioTramo;
 
-namespace FrbaCrucero.AbmRecorrido.AbmTramos
+namespace FrbaCrucero.AbmRecorrido.AbmTramos.ModificarPrecioTramo
 {
     public partial class SeleccionTramoModificarPrecioForm : Form
     {
@@ -36,7 +37,7 @@ namespace FrbaCrucero.AbmRecorrido.AbmTramos
                     Tramo tramoSeleccionado = this.tramosDisponibles.getTramoSeleccionado(e.RowIndex);
                     ModificarPrecioTramoForm formModificarPrecio = new ModificarPrecioTramoForm(tramoSeleccionado);
                     formModificarPrecio.ShowDialog();
-                    this.tramosDisponibles.popularTramosConBusqueda("", "");
+                    this.tramosDisponibles.recargarTramosConBusqueda(); // Recargamos el dgv de tramos
                 }
                 catch
                 {

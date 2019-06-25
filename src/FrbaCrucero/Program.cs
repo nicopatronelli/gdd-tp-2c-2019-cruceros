@@ -7,9 +7,10 @@ using FrbaCrucero.AbmRol;
 using FrbaCrucero.Login;
 using FrbaCrucero.AbmCrucero;
 using FrbaCrucero.CompraReservaPasaje;
-using FrbaCrucero.GeneracionViaje;
+using FrbaCrucero.GenerarViaje;
 using FrbaCrucero.AbmRecorrido;
-using FrbaCrucero.AbmRecorrido.AbmTramos;
+using FrbaCrucero.AbmRecorrido.AbmTramos.AltaTramo;
+using FrbaCrucero.AbmRecorrido.AbmTramos.ModificarPrecioTramo;
 using FrbaCrucero.ListadoEstadistico;
 
 namespace FrbaCrucero

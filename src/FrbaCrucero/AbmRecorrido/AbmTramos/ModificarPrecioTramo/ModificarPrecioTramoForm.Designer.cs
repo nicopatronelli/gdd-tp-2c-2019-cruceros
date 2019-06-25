@@ -1,4 +1,4 @@
-﻿namespace FrbaCrucero.AbmRecorrido.AbmTramos
+﻿namespace FrbaCrucero.AbmRecorrido.AbmTramos.ModificarPrecioTramo
 {
     partial class ModificarPrecioTramoForm
     {

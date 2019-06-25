@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace FrbaCrucero.AbmRecorrido.AbmTramos.FixCmbxPuertosInicio
+namespace FrbaCrucero.AbmRecorrido.AbmTramos.AltaTramo.FixCmbxPuertosInicio
 {
     class OrdenPreInsert : OrdenCmbxPuertosInicio
     {

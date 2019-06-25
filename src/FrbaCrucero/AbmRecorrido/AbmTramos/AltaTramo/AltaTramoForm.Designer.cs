@@ -1,4 +1,4 @@
-﻿namespace FrbaCrucero.AbmRecorrido.AbmTramos
+﻿namespace FrbaCrucero.AbmRecorrido.AbmTramos.AltaTramo
 {
     partial class AltaTramoForm
     {

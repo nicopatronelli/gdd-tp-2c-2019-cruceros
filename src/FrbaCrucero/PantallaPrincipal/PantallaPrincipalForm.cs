@@ -10,6 +10,11 @@ using System.Windows.Forms;
 using FrbaCrucero.AbmRol;
 using FrbaCrucero.AbmCrucero;
 using FrbaCrucero.Utils;
+using FrbaCrucero.AbmRecorrido;
+using FrbaCrucero.GenerarViaje;
+using FrbaCrucero.CompraReservaPasaje;
+using FrbaCrucero.PagoReserva;
+using FrbaCrucero.ListadoEstadistico;
 
 namespace FrbaCrucero.PantallaPrincipal
 {   
@@ -74,8 +79,43 @@ namespace FrbaCrucero.PantallaPrincipal
 
         private void btnAbmCruceros_Click(object sender, EventArgs e)
         {
-            AbmCruceros formAbmCrucero = new AbmCruceros();
-            formAbmCrucero.ShowDialog();
+            AbmCrucerosForm formAbmCruceros = new AbmCrucerosForm();
+            formAbmCruceros.ShowDialog();
+        }
+
+        private void btnAbmPuertos_Click(object sender, EventArgs e)
+        {
+            MensajeBox.info("Esta funcionalidad no ha sido implementada todavía.");
+        }
+
+        private void btnAbmRecorrido_Click(object sender, EventArgs e)
+        {
+            AbmRecorridosForm formAbmRecorridos = new AbmRecorridosForm();
+            formAbmRecorridos.ShowDialog();
+        }
+
+        private void btnGenerarViaje_Click(object sender, EventArgs e)
+        {
+            GenerarViajeForm formGenerarViaje = new GenerarViajeForm();
+            formGenerarViaje.ShowDialog();
+        }
+
+        private void btnComprarReservar_Click(object sender, EventArgs e)
+        {
+            CompraReservaForm formCompraReserva = new CompraReservaForm();
+            formCompraReserva.ShowDialog();
+        }
+
+        private void btnPagarReserva_Click(object sender, EventArgs e)
+        {
+            PagoReservaForm formPagoReserva = new PagoReservaForm();
+            formPagoReserva.ShowDialog();
+        }
+
+        private void btnListado_Click(object sender, EventArgs e)
+        {
+            SeleccionListadoEstadisticoForm formSeleccionListadoEstadistico = new SeleccionListadoEstadisticoForm();
+            formSeleccionListadoEstadistico.ShowDialog();
         }
 
     }

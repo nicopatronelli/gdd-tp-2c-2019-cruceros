@@ -11,10 +11,10 @@ using System.Windows.Forms;
 using FrbaCrucero.Utils;
 using FrbaCrucero.Utils.Excepciones;
 using FrbaCrucero.AbmRecorrido.Dominio;
-using FrbaCrucero.AbmRecorrido.AbmTramos.FixCmbxPuertosInicio;
+using FrbaCrucero.AbmRecorrido.AbmTramos.AltaTramo.FixCmbxPuertosInicio;
 using System.Globalization;
 
-namespace FrbaCrucero.AbmRecorrido.AbmTramos
+namespace FrbaCrucero.AbmRecorrido.AbmTramos.AltaTramo
 {
     public partial class AltaTramoForm : Form
     {   

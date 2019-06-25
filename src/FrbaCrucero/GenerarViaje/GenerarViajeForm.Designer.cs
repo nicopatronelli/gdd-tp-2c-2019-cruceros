@@ -1,4 +1,4 @@
-﻿namespace FrbaCrucero.GeneracionViaje
+﻿namespace FrbaCrucero.GenerarViaje
 {
     partial class GenerarViajeForm
     {

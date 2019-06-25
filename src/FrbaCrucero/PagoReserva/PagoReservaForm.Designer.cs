@@ -1,6 +1,6 @@
 ﻿namespace FrbaCrucero.PagoReserva
 {
-    partial class Form1
+    partial class PagoReservaForm
     {
         /// <summary>
         /// Required designer variable.

@@ -115,5 +115,10 @@ namespace FrbaCrucero.AbmRecorrido.AltaRecorrido
             conexion.cerrar();
         }
 
+        public void recargarTramosConBusqueda()
+        {
+            this.popularTramosConBusqueda("", "");
+        }
+
     }
 }

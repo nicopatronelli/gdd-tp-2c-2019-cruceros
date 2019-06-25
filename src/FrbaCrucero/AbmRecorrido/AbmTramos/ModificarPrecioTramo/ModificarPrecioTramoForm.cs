@@ -10,7 +10,7 @@ using System.Windows.Forms;
 using FrbaCrucero.AbmRecorrido.Dominio;
 using FrbaCrucero.Utils;
 
-namespace FrbaCrucero.AbmRecorrido.AbmTramos
+namespace FrbaCrucero.AbmRecorrido.AbmTramos.ModificarPrecioTramo
 {
     public partial class ModificarPrecioTramoForm : Form
     {

@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace FrbaCrucero.PagoReserva
 {
-    public partial class Form1 : Form
+    public partial class PagoReservaForm : Form
     {
-        public Form1()
+        public PagoReservaForm()
         {
             InitializeComponent();
         }

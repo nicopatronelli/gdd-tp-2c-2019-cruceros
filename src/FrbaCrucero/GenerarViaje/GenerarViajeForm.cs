@@ -13,7 +13,7 @@ using FrbaCrucero.GenerarViaje.Dominio;
 using FrbaCrucero.GenerarViaje.Dominio.Excepciones;
 using FrbaCrucero.GenerarViaje;
 
-namespace FrbaCrucero.GeneracionViaje
+namespace FrbaCrucero.GenerarViaje
 {
     public partial class GenerarViajeForm : Form
     {

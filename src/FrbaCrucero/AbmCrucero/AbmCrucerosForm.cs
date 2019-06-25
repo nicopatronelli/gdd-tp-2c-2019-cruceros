@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace FrbaCrucero.AbmCrucero
 {
-    public partial class AbmCruceros : Form
+    public partial class AbmCrucerosForm : Form
     {
-        public AbmCruceros()
+        public AbmCrucerosForm()
         {
             InitializeComponent();
         }

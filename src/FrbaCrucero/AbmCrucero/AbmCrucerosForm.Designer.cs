@@ -1,6 +1,6 @@
 ﻿namespace FrbaCrucero.AbmCrucero
 {
-    partial class AbmCruceros
+    partial class AbmCrucerosForm
     {
         /// <summary>
         /// Required designer variable.

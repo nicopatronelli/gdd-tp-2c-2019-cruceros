@@ -84,11 +84,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AbmCrucero\AbmCruceros.cs">
+    <Compile Include="AbmCrucero\AbmCrucerosForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AbmCrucero\AbmCruceros.Designer.cs">
-      <DependentUpon>AbmCruceros.cs</DependentUpon>
+    <Compile Include="AbmCrucero\AbmCrucerosForm.Designer.cs">
+      <DependentUpon>AbmCrucerosForm.cs</DependentUpon>
     </Compile>
     <Compile Include="AbmCrucero\BajaDefintiva\AvisoBajaDefinitivaForm.cs">
       <SubType>Form</SubType>
@@ -250,22 +250,22 @@
       <DependentUpon>GenerarViajeForm.cs</DependentUpon>
     </Compile>
     <Compile Include="ListadoEstadistico\Consultas.cs" />
-    <Compile Include="ListadoEstadistico\ListadoCabinasLibresForm.cs">
+    <Compile Include="ListadoEstadistico\Listados\ListadoCabinasLibresForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ListadoEstadistico\ListadoCabinasLibresForm.Designer.cs">
+    <Compile Include="ListadoEstadistico\Listados\ListadoCabinasLibresForm.Designer.cs">
       <DependentUpon>ListadoCabinasLibresForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="ListadoEstadistico\ListadoCrucerosFueraServicioForm.cs">
+    <Compile Include="ListadoEstadistico\Listados\ListadoCrucerosFueraServicioForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ListadoEstadistico\ListadoCrucerosFueraServicioForm.Designer.cs">
+    <Compile Include="ListadoEstadistico\Listados\ListadoCrucerosFueraServicioForm.Designer.cs">
       <DependentUpon>ListadoCrucerosFueraServicioForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="ListadoEstadistico\ListadoRecorridosPasajesForm.cs">
+    <Compile Include="ListadoEstadistico\Listados\ListadoRecorridosPasajesForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ListadoEstadistico\ListadoRecorridosPasajesForm.Designer.cs">
+    <Compile Include="ListadoEstadistico\Listados\ListadoRecorridosPasajesForm.Designer.cs">
       <DependentUpon>ListadoRecorridosPasajesForm.cs</DependentUpon>
     </Compile>
     <Compile Include="ListadoEstadistico\ListadoUtil.cs" />
@@ -289,11 +289,11 @@
     <Compile Include="Login\ResultadoLogin\ResultadoLogin.cs" />
     <Compile Include="Login\ResultadoLogin\UsuarioInexistente.cs" />
     <Compile Include="Login\ResultadoLogin\UsuarioInhabilitado.cs" />
-    <Compile Include="PagoReserva\Form1.cs">
+    <Compile Include="PagoReserva\PagoReservaForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PagoReserva\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="PagoReserva\PagoReservaForm.Designer.cs">
+      <DependentUpon>PagoReservaForm.cs</DependentUpon>
     </Compile>
     <Compile Include="PantallaPrincipal\PantallaPrincipalForm.cs">
       <SubType>Form</SubType>
@@ -318,8 +318,8 @@
     <Compile Include="Utils\Query.cs" />
     <Compile Include="Utils\StoreProcedures.cs" />
     <Compile Include="Utils\Validaciones.cs" />
-    <EmbeddedResource Include="AbmCrucero\AbmCruceros.resx">
-      <DependentUpon>AbmCruceros.cs</DependentUpon>
+    <EmbeddedResource Include="AbmCrucero\AbmCrucerosForm.resx">
+      <DependentUpon>AbmCrucerosForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AbmCrucero\BajaDefintiva\AvisoBajaDefinitivaForm.resx">
       <DependentUpon>AvisoBajaDefinitivaForm.cs</DependentUpon>
@@ -384,13 +384,13 @@
     <EmbeddedResource Include="GenerarViaje\GenerarViajeForm.resx">
       <DependentUpon>GenerarViajeForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ListadoEstadistico\ListadoCabinasLibresForm.resx">
+    <EmbeddedResource Include="ListadoEstadistico\Listados\ListadoCabinasLibresForm.resx">
       <DependentUpon>ListadoCabinasLibresForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ListadoEstadistico\ListadoCrucerosFueraServicioForm.resx">
+    <EmbeddedResource Include="ListadoEstadistico\Listados\ListadoCrucerosFueraServicioForm.resx">
       <DependentUpon>ListadoCrucerosFueraServicioForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ListadoEstadistico\ListadoRecorridosPasajesForm.resx">
+    <EmbeddedResource Include="ListadoEstadistico\Listados\ListadoRecorridosPasajesForm.resx">
       <DependentUpon>ListadoRecorridosPasajesForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ListadoEstadistico\SeleccionListadoEstadisticoForm.resx">
