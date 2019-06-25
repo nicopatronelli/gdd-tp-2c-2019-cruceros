@@ -34,8 +34,9 @@ namespace FrbaCrucero.AbmRecorrido.AbmTramos
                 try
                 {
                     Tramo tramoSeleccionado = this.tramosDisponibles.getTramoSeleccionado(e.RowIndex);
-                    ModificarPrecioTramoForm formModificarPrecio = new ModificarPrecioTramoForm(tramoSeleccionado.getId());
+                    ModificarPrecioTramoForm formModificarPrecio = new ModificarPrecioTramoForm(tramoSeleccionado);
                     formModificarPrecio.ShowDialog();
+                    this.tramosDisponibles.popularTramosConBusqueda("", "");
                 }
                 catch
                 {

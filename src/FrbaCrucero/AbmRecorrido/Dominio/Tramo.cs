@@ -56,6 +56,11 @@ namespace FrbaCrucero.AbmRecorrido.Dominio
             return this.precio;
         }
 
+        public void setPrecio(double precio)
+        {
+            this.precio = precio;
+        }
+
         // Insertamos en la tabla Tramos_Por_Recorrido
         public void insertarTramoPorRecorrido(int idRecorrido, Recorrido recorrido)
         {   
@@ -97,6 +102,23 @@ namespace FrbaCrucero.AbmRecorrido.Dominio
                                             + "@precio "
                                       + ")";
             Query miConsulta = new Query(queryInsertarTramo, parametros);
+            miConsulta.ejecutarNonQuery();
+        }
+
+        public void actualizarPrecio()
+        {
+            List<Parametro> parametros = new List<Parametro>();
+            Parametro paramIdTramo = new Parametro("@id_tramo", SqlDbType.Int, this.getId());
+            parametros.Add(paramIdTramo);
+            Parametro paramNuevoPrecio = new Parametro("@nuevo_precio", SqlDbType.Decimal, this.getPrecio());
+            paramNuevoPrecio.obtenerSqlParameter().Precision = 18;
+            paramNuevoPrecio.obtenerSqlParameter().Scale = 2;
+            parametros.Add(paramNuevoPrecio);
+
+            string consulta = "UPDATE LOS_BARONES_DE_LA_CERVEZA.Tramo "
+                            + "SET tramo_precio = @nuevo_precio "
+                            + "WHERE id_tramo = @id_tramo";
+            Query miConsulta = new Query(consulta, parametros);
             miConsulta.ejecutarNonQuery();
         }
     }

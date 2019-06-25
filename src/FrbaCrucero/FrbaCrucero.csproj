@@ -129,25 +129,25 @@
     </Compile>
     <Compile Include="AbmCrucero\Dominio\Crucero.cs" />
     <Compile Include="AbmCrucero\Dominio\CruceroBuilder.cs" />
-    <Compile Include="AbmRecorrido\AbmTramos\AltaTramoForm.cs">
+    <Compile Include="AbmRecorrido\AbmTramos\AltaTramo\AltaTramoForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AbmRecorrido\AbmTramos\AltaTramoForm.Designer.cs">
+    <Compile Include="AbmRecorrido\AbmTramos\AltaTramo\AltaTramoForm.Designer.cs">
       <DependentUpon>AltaTramoForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="AbmRecorrido\AbmTramos\FixCmbxPuertosInicio\OrdenCmbxPuertosInicio.cs" />
-    <Compile Include="AbmRecorrido\AbmTramos\FixCmbxPuertosInicio\OrdenPreInsert.cs" />
-    <Compile Include="AbmRecorrido\AbmTramos\FixCmbxPuertosInicio\OrdenPostInsert.cs" />
-    <Compile Include="AbmRecorrido\AbmTramos\ModificarPrecioTramoForm.cs">
+    <Compile Include="AbmRecorrido\AbmTramos\AltaTramo\FixCmbxPuertosInicio\OrdenCmbxPuertosInicio.cs" />
+    <Compile Include="AbmRecorrido\AbmTramos\AltaTramo\FixCmbxPuertosInicio\OrdenPreInsert.cs" />
+    <Compile Include="AbmRecorrido\AbmTramos\AltaTramo\FixCmbxPuertosInicio\OrdenPostInsert.cs" />
+    <Compile Include="AbmRecorrido\AbmTramos\ModificarPrecioTramo\ModificarPrecioTramoForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AbmRecorrido\AbmTramos\ModificarPrecioTramoForm.Designer.cs">
+    <Compile Include="AbmRecorrido\AbmTramos\ModificarPrecioTramo\ModificarPrecioTramoForm.Designer.cs">
       <DependentUpon>ModificarPrecioTramoForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="AbmRecorrido\AbmTramos\SeleccionTramoModificarPrecioForm.cs">
+    <Compile Include="AbmRecorrido\AbmTramos\ModificarPrecioTramo\SeleccionTramoModificarPrecioForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AbmRecorrido\AbmTramos\SeleccionTramoModificarPrecioForm.Designer.cs">
+    <Compile Include="AbmRecorrido\AbmTramos\ModificarPrecioTramo\SeleccionTramoModificarPrecioForm.Designer.cs">
       <DependentUpon>SeleccionTramoModificarPrecioForm.cs</DependentUpon>
     </Compile>
     <Compile Include="AbmRecorrido\AltaRecorrido\TramosDisponibles.cs" />
@@ -342,13 +342,13 @@
     <EmbeddedResource Include="AbmRecorrido\AbmRecorridosForm.resx">
       <DependentUpon>AbmRecorridosForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="AbmRecorrido\AbmTramos\AltaTramoForm.resx">
+    <EmbeddedResource Include="AbmRecorrido\AbmTramos\AltaTramo\AltaTramoForm.resx">
       <DependentUpon>AltaTramoForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="AbmRecorrido\AbmTramos\ModificarPrecioTramoForm.resx">
+    <EmbeddedResource Include="AbmRecorrido\AbmTramos\ModificarPrecioTramo\ModificarPrecioTramoForm.resx">
       <DependentUpon>ModificarPrecioTramoForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="AbmRecorrido\AbmTramos\SeleccionTramoModificarPrecioForm.resx">
+    <EmbeddedResource Include="AbmRecorrido\AbmTramos\ModificarPrecioTramo\SeleccionTramoModificarPrecioForm.resx">
       <DependentUpon>SeleccionTramoModificarPrecioForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AbmRecorrido\AltaRecorrido\AltaRecorridoForm.resx">
