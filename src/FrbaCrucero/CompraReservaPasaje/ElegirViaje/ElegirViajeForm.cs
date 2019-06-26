@@ -18,10 +18,8 @@ namespace FrbaCrucero.CompraReservaPasaje
         string puertoOrigen;
         string puertoDestino;
         DateTime fechaSalida;
-        //List<int> recorridos;
-        public int viajeSeleccionadoId;
-        public List<TipoCabina> tipoCabinas = new List<TipoCabina>();
-        public List<DisplayCabina> diplaysCabinas = new List<DisplayCabina>();
+        public int? viajeSeleccionadoId;
+        public List<DisplayCabina> displaysCabinas = new List<DisplayCabina>();
 
         public ElegirViajeForm(string puertoOrigen, string puertoDestino, DateTime fechaSalida)
         {
@@ -37,8 +35,6 @@ namespace FrbaCrucero.CompraReservaPasaje
         {
             string consulta = "SELECT cast(id_recorrido as nvarchar(255)) as id_recorrido from[GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[UF_recorridos_segun_origen_y_destino]('" + puertoOrigen + "', '" + puertoDestino + "')";
 
-            this.cargarTipoCabinas();
-
             Query miConsulta = new Query(consulta, new List<Parametro>());
             var recorridos =  miConsulta.ejecutarReaderUnicaColumna();
             foreach (var o in recorridos)
@@ -47,11 +43,11 @@ namespace FrbaCrucero.CompraReservaPasaje
             }
 
             //agrupo los controllers (label, numeric UpDown y label) que muestran tipoCabinas
-            this.diplaysCabinas.Add(new DisplayCabina(cabinas1DisponiblesLabel, cabinas1Numeric, cabinas1Label, recargoLabel1));
-            this.diplaysCabinas.Add(new DisplayCabina(cabinas2DisponiblesLabel, cabinas2Numeric, cabinas2Label, recargoLabel2));
-            this.diplaysCabinas.Add(new DisplayCabina(cabinas3DisponiblesLabel, cabinas3Numeric, cabinas3Label, recargoLabel3));
-            this.diplaysCabinas.Add(new DisplayCabina(cabinas4DisponiblesLabel, cabinas4Numeric, cabinas4Label, recargoLabel4));
-            this.diplaysCabinas.Add(new DisplayCabina(cabinas5DisponiblesLabel, cabinas5Numeric, cabinas5Label, recargoLabel5));
+            this.displaysCabinas.Add(new DisplayCabina(cabinas1DisponiblesLabel, cabinas1Numeric, cabinas1Label, recargoLabel1));
+            this.displaysCabinas.Add(new DisplayCabina(cabinas2DisponiblesLabel, cabinas2Numeric, cabinas2Label, recargoLabel2));
+            this.displaysCabinas.Add(new DisplayCabina(cabinas3DisponiblesLabel, cabinas3Numeric, cabinas3Label, recargoLabel3));
+            this.displaysCabinas.Add(new DisplayCabina(cabinas4DisponiblesLabel, cabinas4Numeric, cabinas4Label, recargoLabel4));
+            this.displaysCabinas.Add(new DisplayCabina(cabinas5DisponiblesLabel, cabinas5Numeric, cabinas5Label, recargoLabel5));
 
 
             consulta = "SELECT TOP 1000 [id_tipo_cabina] ,[tipo_cabina] ,[porcentaje_recargo] FROM [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Tipos_Cabinas]";
@@ -61,8 +57,7 @@ namespace FrbaCrucero.CompraReservaPasaje
             for (int count = 0; count < 5; count++)
             {
                 nuevaCabina = new TipoCabina((int)datosCabina["id_tipo_cabina"], datosCabina["tipo_cabina"].ToString(), double.Parse(datosCabina["porcentaje_recargo"].ToString()));
-                this.tipoCabinas.Add(nuevaCabina);
-                this.diplaysCabinas[count].setTipoCabina(nuevaCabina);
+                this.displaysCabinas[count].setTipoCabina(nuevaCabina);
                 datosCabina.Read();
             }
 
@@ -72,17 +67,15 @@ namespace FrbaCrucero.CompraReservaPasaje
         }
 
 
-        private void Button1_Click(object sender, EventArgs e)
-        {
-            //Efectuar pago o reserva
-        }
-
         private void recorridosList_SelectedValueChanged(object sender, EventArgs e)
         {
-            this.crucerosList.Items.Clear();
-            this.puertosList.Items.Clear();
-            this.actualizarPuertos();
-            this.actualizarCruceros();
+            if (recorridosList.SelectedItem != null)
+            {
+                this.crucerosList.Items.Clear();
+                this.puertosList.Items.Clear();
+                this.actualizarPuertos();
+                this.actualizarCruceros();
+            }
         }
 
         private void actualizarPuertos()
@@ -102,7 +95,7 @@ namespace FrbaCrucero.CompraReservaPasaje
         {
 
             string consulta = ""
-                          + "  select cast(id_viaje as nvarchar(255)) as id from GD1C2019.LOS_BARONES_DE_LA_CERVEZA.Viaje v   where v.viaje_id_recorrido = 13 AND CONVERT(VARCHAR(10), v.viaje_fecha_inicio, 103) = '24/05/2018'";
+                          + "  select cast(id_viaje as nvarchar(255)) as id from GD1C2019.LOS_BARONES_DE_LA_CERVEZA.Viaje v   where v.viaje_id_recorrido = "+ recorridosList.SelectedItem.ToString() + "  AND CONVERT(VARCHAR(10), v.viaje_fecha_inicio, 103) = '"+this.fechaSalida.ToShortDateString()+ "'";
 		//el 103 es para pasarlo al format dd/mm/yyyy
 
 
@@ -115,39 +108,38 @@ namespace FrbaCrucero.CompraReservaPasaje
 
         }
 
-        private void cargarTipoCabinas()
-        {
-            //string consulta = "select tipo_cabina from GD1C2019.LOS_BARONES_DE_LA_CERVEZA.Tipos_Cabinas";
-            //Query miConsulta = new Query(consulta, new List<Parametro>());
-            //var destinos = miConsulta.ejecutarReaderUnicaColumna();
-            //foreach (var o in destinos)
-            //{
-            //    this.selectorCabinas.Items.Add(o);
-            //}
 
 
-        }
-
-        private void selectorCabinas_SelectedValueChanged(object sender, EventArgs e)
-        {
-            //TODO calcular cuando este disponible cabinas totales - cabinas vendidas
-        }
-
-        private void buttonComprar_Click(object sender, EventArgs e)
-        {
-            //ComprarTemplateForm comprarForm = new ComprarTemplateForm(selectorCabinas.SelectedItem.ToString(), (int)cabinas1Numeric.Value, int.Parse(crucerosList.SelectedItem.ToString()));
-            //comprarForm.ShowDialog();
-        }
 
         private void crucerosList_SelectedValueChanged(object sender, EventArgs e)
         {
-            this.viajeSeleccionadoId = int.Parse(crucerosList.SelectedItem.ToString());
-            this.mostrarCabinasDisponibles();
+            if (this.crucerosList.SelectedItem != null)
+            {
+                this.viajeSeleccionadoId = int.Parse(crucerosList.SelectedItem.ToString());
+                this.mostrarCabinasDisponibles();
+            }
         }
 
         private void mostrarCabinasDisponibles()
         {
+            this.displaysCabinas.ForEach( x => x.mostrarDisponibles(this.viajeSeleccionadoId.Value));
+        }
 
+        private void ingresar_datos_click(object sender, EventArgs e)
+        {
+            if(!this.viajeSeleccionadoId.HasValue)
+            {
+                MessageBox.Show("Eliga un viaje y cabinas primero");
+                return;
+            }
+            if (displaysCabinas.All(x => x.cantidadSeleccionadaNumeric.Value == 0))
+            {
+                MessageBox.Show("Eliga cabinas a comprar");
+                return;                
+            }
+            
+            ComprarTemplateForm comprarForm = new ComprarTemplateForm(displaysCabinas,viajeSeleccionadoId.Value);
+            comprarForm.ShowDialog();
         }
 
 
@@ -177,19 +169,59 @@ namespace FrbaCrucero.CompraReservaPasaje
             this.recargoLabel.Text = unTipoCabina.precio.ToString();
         }
 
-        public void viajeElegido(int viajeId)
+
+
+        public void mostrarDisponibles(int idViaje)
         {
             this.cantidadSeleccionadaNumeric.Value = 0;
-            string consulta = "count";
+            //CALCULO CABINAS TOTALES DE ESTE TIPO QUE TIENE EL CRUCERO
+            string consulta = ""
+              + " 	SELECT count(cab.id_cabina) as cabinasTotales from [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Viaje] v "
+                    + "   join [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Cabinas] cab "
+                    + "   on cab.crucero = v.viaje_id_crucero "
+                    + "   where v.id_viaje = " + idViaje.ToString() + " and cab.tipo_cabina = " + this.tipoCabina.id.ToString();
+
             Query miConsulta = new Query(consulta, new List<Parametro>());
+            int cabinasTotales = (int)miConsulta.ejecutarEscalar();
 
+            consulta = ""
+              + " 	SELECT COUNT(cxv.id_cabina) as cabinasOcupadas from [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Estado_Cabinas_Por_Viaje] cxv"
+                    + "   join [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Cabinas] c "
+                    + "   on cxv.id_cabina = c.id_cabina "
+                    + "   where (c.tipo_cabina = " + this.tipoCabina.id.ToString() + " and cxv.id_viaje = " + idViaje.ToString() + ") and ( cxv.compra IS NOT null  or  cxv.reserva IS NOT null) ";
+            miConsulta = new Query(consulta, new List<Parametro>());
+            int cabinasOcupadas= (int)miConsulta.ejecutarEscalar();
+            int cabinasDisponibles = cabinasTotales - cabinasOcupadas;
+            
+            this.cantidadDisponibleLabel.Text = cabinasDisponibles.ToString();
+            this.cantidadSeleccionadaNumeric.Maximum = cabinasDisponibles;
         }
-
     }
 
 
 
 }
+
+//CALCULO CABINAS DISPONIBLES
+/*
+ * --CANTIDAD CABINAS DE DETERMINADO TIPO OCUPADAS PARA UN VIAJE
+  select COUNT(cxv.id_cabina) as cabinasOcupadas from [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Estado_Cabinas_Por_Viaje] cxv
+	join [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Cabinas] c
+	on cxv.id_cabina = c.id_cabina
+	where (c.tipo_cabina = 5 and cxv.id_viaje = 389) and ( cxv.compra IS NOT null  or  cxv.reserva IS NOT null)    
+
+--CANTIDAD DE CABINAS DE UN TIPO DE DETERMINADO CRUCERO SEGUN UN VIAJE
+	SELECT count(cab.id_cabina) as cabinasTotales from [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Viaje] v
+		join [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Cabinas] cab
+		on cab.crucero = v.viaje_id_crucero
+		where v.id_viaje = 389 and cab.tipo_cabina = 5
+ * 
+ * */
+
+
+
+
+
 
 
 

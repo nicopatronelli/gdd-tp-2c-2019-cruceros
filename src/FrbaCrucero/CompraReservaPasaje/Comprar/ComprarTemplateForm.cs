@@ -14,20 +14,20 @@ namespace FrbaCrucero.CompraReservaPasaje
 {
     public partial class ComprarTemplateForm : Form
     {
-        public string tipoCabina;
-        public int cantidadCabinas;
         public int viaje_id;
         public Viaje viaje;
         public bool editando = false;
         public Cliente clienteEditandose;
+        public List<DisplayCabina> displayCabinas;
 
-        public ComprarTemplateForm(string tipoCabina,int cantidadCabinas,int viaje_id)
+        public ComprarTemplateForm(List<DisplayCabina> cabinas,int viaje_id)
         {
-            this.tipoCabina = tipoCabina;
-            this.cantidadCabinas = cantidadCabinas;
+            this.displayCabinas = cabinas;
             this.viaje_id = viaje_id;
             InitializeComponent();
-            this.informacionCompraLabel.Text= "Usted va a comprar "+cantidadCabinas.ToString()+" cabinas \nde categoria "+tipoCabina+" del viaje \nque pasará por los puertos:";
+            this.informacionCompraLabel.Text = "Usted va a comprar:\n ";
+            //aviso la cantidad de cabinas de cada tipo a comprar
+            cabinas.ForEach(x => this.informacionCompraLabel.Text += "--" + x.cantidadSeleccionadaNumeric.Value + " cabina/as " + x.tipoCabinaLabel.Text + "\n");
             this.viaje = new Viaje(viaje_id);
             this.cargarDestinos();
         }
@@ -120,6 +120,7 @@ namespace FrbaCrucero.CompraReservaPasaje
 
         private void cargarDestinos()
         {
+            puertosLabel.Text = "que pasara por los puertos:\n";
             string consulta = "SELECT puerto_nombre from[GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[UF_destinos_segun_recorrido](" + this.viaje.id_recorrido +  ")";
 
             Query miConsulta = new Query(consulta, new List<Parametro>());
@@ -276,16 +277,16 @@ namespace FrbaCrucero.CompraReservaPasaje
                 clienteEditandose.direccion = direccionTextBox.Text;
                 clienteEditandose.mail = mailTextBox.Text;
                 clienteEditandose.telefono = telefonoTextBox.Text;
-                clienteEditandose.saveOrUpdate();
+
             }
             else
             {
-                Cliente nuevoCliente = new Cliente(0, Int32.Parse(dniTextBox.Text), nombreTextBox.Text, apellidoTextBox.Text, direccionTextBox.Text, telefonoTextBox.Text, mailTextBox.Text,   DateTime.Parse(string.Concat(dayTextBox.Text,"/",mesTextBox.Text,"/",anioTextBox.Text))  );
-                nuevoCliente.saveOrUpdate();
+                clienteEditandose = new Cliente(0, Int32.Parse(dniTextBox.Text), nombreTextBox.Text, apellidoTextBox.Text, direccionTextBox.Text, telefonoTextBox.Text, mailTextBox.Text,   DateTime.Parse(string.Concat(dayTextBox.Text,"/",mesTextBox.Text,"/",anioTextBox.Text))  );
             }
+            clienteEditandose.saveOrUpdate();
             Form form;
-            if(comprarRadio.Checked) form= new PagoForm();
-            else form = new ReservaForm();
+            if(comprarRadio.Checked) form= new PagoForm(displayCabinas, viaje,clienteEditandose);
+            else form = new ReservaForm(displayCabinas, viaje, clienteEditandose);
 
             form.ShowDialog();
         }

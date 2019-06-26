@@ -36,6 +36,13 @@
             this.crucerosList = new System.Windows.Forms.ListBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.recargoLabel5 = new System.Windows.Forms.Label();
+            this.recargoLabel4 = new System.Windows.Forms.Label();
+            this.recargoLabel2 = new System.Windows.Forms.Label();
+            this.recargoLabel3 = new System.Windows.Forms.Label();
+            this.recargoLabel1 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
             this.cabinas5Numeric = new System.Windows.Forms.NumericUpDown();
             this.cabinas5Label = new System.Windows.Forms.Label();
             this.cabinas5DisponiblesLabel = new System.Windows.Forms.Label();
@@ -54,13 +61,6 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.buttonComprar = new System.Windows.Forms.Button();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.recargoLabel5 = new System.Windows.Forms.Label();
-            this.recargoLabel4 = new System.Windows.Forms.Label();
-            this.recargoLabel2 = new System.Windows.Forms.Label();
-            this.recargoLabel3 = new System.Windows.Forms.Label();
-            this.recargoLabel1 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cabinas5Numeric)).BeginInit();
@@ -173,6 +173,76 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Cabinas Disponibles";
             // 
+            // recargoLabel5
+            // 
+            this.recargoLabel5.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.recargoLabel5.AutoSize = true;
+            this.recargoLabel5.Location = new System.Drawing.Point(362, 295);
+            this.recargoLabel5.Name = "recargoLabel5";
+            this.recargoLabel5.Size = new System.Drawing.Size(13, 13);
+            this.recargoLabel5.TabIndex = 43;
+            this.recargoLabel5.Text = "--";
+            // 
+            // recargoLabel4
+            // 
+            this.recargoLabel4.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.recargoLabel4.AutoSize = true;
+            this.recargoLabel4.Location = new System.Drawing.Point(362, 241);
+            this.recargoLabel4.Name = "recargoLabel4";
+            this.recargoLabel4.Size = new System.Drawing.Size(13, 13);
+            this.recargoLabel4.TabIndex = 42;
+            this.recargoLabel4.Text = "--";
+            // 
+            // recargoLabel2
+            // 
+            this.recargoLabel2.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.recargoLabel2.AutoSize = true;
+            this.recargoLabel2.Location = new System.Drawing.Point(362, 140);
+            this.recargoLabel2.Name = "recargoLabel2";
+            this.recargoLabel2.Size = new System.Drawing.Size(13, 13);
+            this.recargoLabel2.TabIndex = 41;
+            this.recargoLabel2.Text = "--";
+            // 
+            // recargoLabel3
+            // 
+            this.recargoLabel3.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.recargoLabel3.AutoSize = true;
+            this.recargoLabel3.Location = new System.Drawing.Point(362, 189);
+            this.recargoLabel3.Name = "recargoLabel3";
+            this.recargoLabel3.Size = new System.Drawing.Size(13, 13);
+            this.recargoLabel3.TabIndex = 40;
+            this.recargoLabel3.Text = "--";
+            // 
+            // recargoLabel1
+            // 
+            this.recargoLabel1.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.recargoLabel1.AutoSize = true;
+            this.recargoLabel1.Location = new System.Drawing.Point(362, 94);
+            this.recargoLabel1.Name = "recargoLabel1";
+            this.recargoLabel1.Size = new System.Drawing.Size(13, 13);
+            this.recargoLabel1.TabIndex = 39;
+            this.recargoLabel1.Text = "--";
+            // 
+            // label6
+            // 
+            this.label6.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(320, 41);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(96, 13);
+            this.label6.TabIndex = 38;
+            this.label6.Text = "Factor de Recargo";
+            // 
+            // label5
+            // 
+            this.label5.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(221, 41);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(63, 13);
+            this.label5.TabIndex = 37;
+            this.label5.Text = "Tipo cabina";
+            // 
             // cabinas5Numeric
             // 
             this.cabinas5Numeric.Location = new System.Drawing.Point(129, 283);
@@ -190,7 +260,7 @@
             // 
             this.cabinas5Label.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.cabinas5Label.AutoSize = true;
-            this.cabinas5Label.Location = new System.Drawing.Point(230, 290);
+            this.cabinas5Label.Location = new System.Drawing.Point(221, 288);
             this.cabinas5Label.Name = "cabinas5Label";
             this.cabinas5Label.Size = new System.Drawing.Size(13, 13);
             this.cabinas5Label.TabIndex = 35;
@@ -249,7 +319,7 @@
             // 
             this.cabinas4Label.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.cabinas4Label.AutoSize = true;
-            this.cabinas4Label.Location = new System.Drawing.Point(230, 236);
+            this.cabinas4Label.Location = new System.Drawing.Point(221, 234);
             this.cabinas4Label.Name = "cabinas4Label";
             this.cabinas4Label.Size = new System.Drawing.Size(13, 13);
             this.cabinas4Label.TabIndex = 30;
@@ -279,7 +349,7 @@
             // 
             this.cabinas2Label.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.cabinas2Label.AutoSize = true;
-            this.cabinas2Label.Location = new System.Drawing.Point(230, 135);
+            this.cabinas2Label.Location = new System.Drawing.Point(221, 133);
             this.cabinas2Label.Name = "cabinas2Label";
             this.cabinas2Label.Size = new System.Drawing.Size(13, 13);
             this.cabinas2Label.TabIndex = 27;
@@ -289,7 +359,7 @@
             // 
             this.cabinas3Label.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.cabinas3Label.AutoSize = true;
-            this.cabinas3Label.Location = new System.Drawing.Point(230, 184);
+            this.cabinas3Label.Location = new System.Drawing.Point(221, 182);
             this.cabinas3Label.Name = "cabinas3Label";
             this.cabinas3Label.Size = new System.Drawing.Size(13, 13);
             this.cabinas3Label.TabIndex = 26;
@@ -309,7 +379,7 @@
             // 
             this.cabinas1Label.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.cabinas1Label.AutoSize = true;
-            this.cabinas1Label.Location = new System.Drawing.Point(230, 89);
+            this.cabinas1Label.Location = new System.Drawing.Point(221, 87);
             this.cabinas1Label.Name = "cabinas1Label";
             this.cabinas1Label.Size = new System.Drawing.Size(13, 13);
             this.cabinas1Label.TabIndex = 24;
@@ -367,77 +437,7 @@
             this.buttonComprar.TabIndex = 17;
             this.buttonComprar.Text = "Ingresar Datos Personales";
             this.buttonComprar.UseVisualStyleBackColor = true;
-            this.buttonComprar.Click += new System.EventHandler(this.buttonComprar_Click);
-            // 
-            // label5
-            // 
-            this.label5.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(200, 41);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(63, 13);
-            this.label5.TabIndex = 37;
-            this.label5.Text = "Tipo cabina";
-            // 
-            // label6
-            // 
-            this.label6.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(320, 41);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(96, 13);
-            this.label6.TabIndex = 38;
-            this.label6.Text = "Factor de Recargo";
-            // 
-            // recargoLabel5
-            // 
-            this.recargoLabel5.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.recargoLabel5.AutoSize = true;
-            this.recargoLabel5.Location = new System.Drawing.Point(362, 295);
-            this.recargoLabel5.Name = "recargoLabel5";
-            this.recargoLabel5.Size = new System.Drawing.Size(13, 13);
-            this.recargoLabel5.TabIndex = 43;
-            this.recargoLabel5.Text = "--";
-            // 
-            // recargoLabel4
-            // 
-            this.recargoLabel4.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.recargoLabel4.AutoSize = true;
-            this.recargoLabel4.Location = new System.Drawing.Point(362, 241);
-            this.recargoLabel4.Name = "recargoLabel4";
-            this.recargoLabel4.Size = new System.Drawing.Size(13, 13);
-            this.recargoLabel4.TabIndex = 42;
-            this.recargoLabel4.Text = "--";
-            // 
-            // recargoLabel2
-            // 
-            this.recargoLabel2.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.recargoLabel2.AutoSize = true;
-            this.recargoLabel2.Location = new System.Drawing.Point(362, 140);
-            this.recargoLabel2.Name = "recargoLabel2";
-            this.recargoLabel2.Size = new System.Drawing.Size(13, 13);
-            this.recargoLabel2.TabIndex = 41;
-            this.recargoLabel2.Text = "--";
-            // 
-            // recargoLabel3
-            // 
-            this.recargoLabel3.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.recargoLabel3.AutoSize = true;
-            this.recargoLabel3.Location = new System.Drawing.Point(362, 189);
-            this.recargoLabel3.Name = "recargoLabel3";
-            this.recargoLabel3.Size = new System.Drawing.Size(13, 13);
-            this.recargoLabel3.TabIndex = 40;
-            this.recargoLabel3.Text = "--";
-            // 
-            // recargoLabel1
-            // 
-            this.recargoLabel1.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.recargoLabel1.AutoSize = true;
-            this.recargoLabel1.Location = new System.Drawing.Point(362, 94);
-            this.recargoLabel1.Name = "recargoLabel1";
-            this.recargoLabel1.Size = new System.Drawing.Size(13, 13);
-            this.recargoLabel1.TabIndex = 39;
-            this.recargoLabel1.Text = "--";
+            this.buttonComprar.Click += new System.EventHandler(this.ingresar_datos_click);
             // 
             // ElegirViajeForm
             // 

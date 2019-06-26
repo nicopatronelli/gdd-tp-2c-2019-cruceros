@@ -215,10 +215,11 @@
             // 
             this.puertosLabel.AutoSize = true;
             this.puertosLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.puertosLabel.Location = new System.Drawing.Point(564, 109);
+            this.puertosLabel.Location = new System.Drawing.Point(376, 171);
             this.puertosLabel.Name = "puertosLabel";
-            this.puertosLabel.Size = new System.Drawing.Size(0, 17);
+            this.puertosLabel.Size = new System.Drawing.Size(56, 17);
             this.puertosLabel.TabIndex = 17;
+            this.puertosLabel.Text = "puertos";
             // 
             // label9
             // 
@@ -292,9 +293,9 @@
             // 
             this.noEstoyButton.Location = new System.Drawing.Point(269, 202);
             this.noEstoyButton.Name = "noEstoyButton";
-            this.noEstoyButton.Size = new System.Drawing.Size(64, 23);
+            this.noEstoyButton.Size = new System.Drawing.Size(64, 35);
             this.noEstoyButton.TabIndex = 25;
-            this.noEstoyButton.Text = "No estoy";
+            this.noEstoyButton.Text = "No soy este";
             this.noEstoyButton.UseVisualStyleBackColor = true;
             this.noEstoyButton.Visible = false;
             this.noEstoyButton.Click += new System.EventHandler(this.noEstoyButton_Click);

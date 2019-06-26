@@ -61,8 +61,11 @@ namespace FrbaCrucero.CompraReservaPasaje
 
         private void OrigenesList_SelectedValueChanged(object sender, EventArgs e)
         {
-            this.destinosList.Items.Clear();
-            this.buscarDestinos( (string) origenesList.SelectedItem);
+            if (origenesList.SelectedItem != null)
+            {
+                this.destinosList.Items.Clear();
+                this.buscarDestinos((string)origenesList.SelectedItem);
+            }
             
         }
 
