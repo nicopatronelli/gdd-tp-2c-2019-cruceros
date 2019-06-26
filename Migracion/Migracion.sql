@@ -96,6 +96,10 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_D
     DROP TABLE LOS_BARONES_DE_LA_CERVEZA.Marcas_Cruceros
 GO
 
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.Tpr_Auxiliar'))
+    DROP TABLE LOS_BARONES_DE_LA_CERVEZA.Tpr_Auxiliar
+GO
+
 ---------------------------------------------------------------
 -- X. ELIMINAMOS LOS STORED PROCEDURES, FUNCIONES Y TRIGGERS
 ---------------------------------------------------------------
@@ -116,8 +120,20 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_D
 	DROP PROCEDURE LOS_BARONES_DE_LA_CERVEZA.USP_insertar_cabina
 GO
 
-IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.UF_crear_username_Cliente'))
-	DROP FUNCTION LOS_BARONES_DE_LA_CERVEZA.UF_crear_username_Cliente
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.USP_insertar_recorrido'))
+	DROP PROCEDURE LOS_BARONES_DE_LA_CERVEZA.USP_insertar_recorrido
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.USP_insertar_tramo_por_recorrido'))
+	DROP PROCEDURE LOS_BARONES_DE_LA_CERVEZA.USP_insertar_tramo_por_recorrido
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.USP_insertar_viaje'))
+	DROP PROCEDURE LOS_BARONES_DE_LA_CERVEZA.USP_insertar_viaje
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.USP_actualizar_recorrido'))
+	DROP PROCEDURE LOS_BARONES_DE_LA_CERVEZA.USP_actualizar_recorrido
 GO
 
 /****** FUNCIONES ******/
@@ -133,30 +149,9 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_D
 	DROP FUNCTION LOS_BARONES_DE_LA_CERVEZA.UF_cruceros_disponibles
 GO
 
-IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.UF_nombre_puertos'))
-	DROP FUNCTION LOS_BARONES_DE_LA_CERVEZA.UF_nombre_puertos
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.UF_crear_username_Cliente'))
+	DROP FUNCTION LOS_BARONES_DE_LA_CERVEZA.UF_crear_username_Cliente
 GO
-
-IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.UF_id_puerto'))
-	DROP FUNCTION LOS_BARONES_DE_LA_CERVEZA.UF_id_puerto
-GO
-
-IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.UF_recorridos_segun_origen'))
-	DROP FUNCTION LOS_BARONES_DE_LA_CERVEZA.UF_recorridos_segun_origen
-GO
-
-IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.UF_destinos_segun_recorrido'))
-	DROP FUNCTION LOS_BARONES_DE_LA_CERVEZA.UF_destinos_segun_recorrido
-GO
-
-IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.UF_destinos_segun_origen'))
-	DROP FUNCTION LOS_BARONES_DE_LA_CERVEZA.UF_destinos_segun_origen
-GO
-
-IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.UF_recorridos_segun_origen_y_destino'))
-	DROP FUNCTION LOS_BARONES_DE_LA_CERVEZA.UF_recorridos_segun_origen_y_destino
-GO
-
 
 /***** TRIGGERS: Se eliminan automáticamente al eliminar las tablas a las que están asociados *****/
 
@@ -344,8 +339,8 @@ Tabla Recorrido -- OK
 ******************************************************************/
 CREATE TABLE [LOS_BARONES_DE_LA_CERVEZA].Recorrido(	
 	id_recorrido INT IDENTITY PRIMARY KEY NOT NULL,
-	recorrido_codigo decimal(18,0),
-	recorrido_estado BIT
+	recorrido_codigo NVARCHAR(255), -- Validamos que sea UNIQUE desde la app (NO marcar como UNIQUE)
+	recorrido_estado BIT DEFAULT 0
 )
 GO
 
@@ -471,6 +466,22 @@ CREATE TABLE [LOS_BARONES_DE_LA_CERVEZA].Item_factura(
 	CONSTRAINT pk_id_item_factura PRIMARY KEY CLUSTERED (id_item_factura) 
 )
 GO
+
+/******************************************************************
+Tabla Tpr_Auxiliar 
+@Desc: Tabla Auxiliar para insertar Tramos por Recorrido.
+******************************************************************/
+CREATE TABLE [LOS_BARONES_DE_LA_CERVEZA].Tpr_Auxiliar
+(	
+	id INT IDENTITY PRIMARY KEY NOT NULL,
+	id_tpr_anterior INT NULL
+)
+GO
+
+INSERT INTO [LOS_BARONES_DE_LA_CERVEZA].Tpr_Auxiliar
+VALUES (NULL)
+GO
+/**** FIN Tabla Auxiliar ****/
 
 ------------------------------------------------------------------------------------------------------
 						-- 5. CREAMOS LAS FK'S
@@ -933,7 +944,8 @@ no hayan sido dados de baja de forma definitiva.
 ******************************************************************/
 CREATE FUNCTION [LOS_BARONES_DE_LA_CERVEZA].[UF_cruceros_disponibles] 
 (
-	@fecha_inicio_nuevo_viaje_s NVARCHAR(255)
+	@fecha_inicio_nuevo_viaje_s NVARCHAR(255),
+	@fecha_fin_nuevo_viaje_s NVARCHAR(255)
 )
 RETURNS TABLE 
 AS
@@ -959,123 +971,141 @@ RETURN
 GO
 
 /******************************************************************
-[LOS_BARONES_DE_LA_CERVEZA].[UF_id_puerto] 
-@Desc: Retorna el id de un puerto segun su nombre
+[LOS_BARONES_DE_LA_CERVEZA].[USP_insertar_recorrido] 
+@Desc: Inserta un nuevo recorrido en la tabla Recorridos
 ******************************************************************/
-CREATE FUNCTION [LOS_BARONES_DE_LA_CERVEZA].[UF_id_puerto]
+GO
+CREATE PROCEDURE [LOS_BARONES_DE_LA_CERVEZA].[USP_insertar_recorrido]
 (
-	@nombre_puerto  NVARCHAR(255)
+	@identificador NVARCHAR(255),
+	@id_recorrido_asignado INT OUT -- Retornamos el id_recorrido asignado por SQL Server (IDENTITY)
 )
-RETURNS INT 
-AS 
+AS
 BEGIN
-	 DECLARE @id_puerto INT = (
-		 SELECT id_puerto
-		 FROM LOS_BARONES_DE_LA_CERVEZA.Puerto
-		 WHERE puerto_nombre = UPPER(@nombre_puerto)
-	)
-
-	RETURN @id_puerto
-END 
-go
-
-
-/******************************************************************
-[LOS_BARONES_DE_LA_CERVEZA].[UF_destinos_segun_origen] 
-@Desc: Retorna los posibles puerto destino segun un puerto origen
-******************************************************************/
-
-create FUNCTION [LOS_BARONES_DE_LA_CERVEZA].[UF_destinos_segun_origen]
-(
-	@nombre_puerto_origen  NVARCHAR(255)
-)
-RETURNS @destinos_posibles table (unDestino nvarchar(255))
-AS 
-BEGIN
-	--declare table destinos_posibles
-	declare @recorrido int
-	declare destinos cursor for ( select * from LOS_BARONES_DE_LA_CERVEZA.UF_recorridos_segun_origen(@nombre_puerto_origen)   )
-	open destinos
-	fetch next from destinos into @recorrido
-	while @@FETCH_STATUS = 0
-		begin 
-			insert into @destinos_posibles select * from LOS_BARONES_DE_LA_CERVEZA.UF_destinos_segun_recorrido(@recorrido)
-			where puerto_nombre not in (select * from @destinos_posibles)
-			--select * into #destinos_posibles.unDestino from LOS_BARONES_DE_LA_CERVEZA.UF_destinos_segun_recorrido(@recorrido)
-			fetch next from destinos into @recorrido
-		end
-	return
+	BEGIN TRY
+		BEGIN TRANSACTION 
+			-- id_recorrido se autogenera 
+			INSERT INTO LOS_BARONES_DE_LA_CERVEZA.Recorrido
+			(recorrido_codigo)
+			VALUES (@identificador)
+			SET @id_recorrido_asignado = @@IDENTITY;
+		COMMIT TRANSACTION 
+	END TRY
+	BEGIN CATCH
+		ROLLBACK TRANSACTION
+	END CATCH
 END
-go
+GO
 
 /******************************************************************
-[LOS_BARONES_DE_LA_CERVEZA].[UF_recorridos_segun_origen] 
-@Desc: Retorna los recorridos que inician desde un mismo puerto
+[LOS_BARONES_DE_LA_CERVEZA].[USP_insertar_tramo_por_recorrido] 
+@Desc: Inserta un registro en la tabla Tramos_Por_Recorrido
 ******************************************************************/
-
-CREATE FUNCTION [LOS_BARONES_DE_LA_CERVEZA].[UF_recorridos_segun_origen] 
+GO
+CREATE PROCEDURE [LOS_BARONES_DE_LA_CERVEZA].[USP_insertar_tramo_por_recorrido]
 (
-	@puerto_origen NVARCHAR(255)
+	@id_recorrido INT, -- PK de la tabla Recorrido
+	@id_tramo INT -- PK Tramo actual (PK de la tabla Tramo)
 )
-RETURNS TABLE 
 AS
-return
-	SELECT txr.id_recorrido
-	FROM LOS_BARONES_DE_LA_CERVEZA.Tramos_por_Recorrido txr
-		JOIN LOS_BARONES_DE_LA_CERVEZA.Tramo t
-			ON txr.id_tramo = t.id_tramo
-	WHERE txr.tramo_anterior is null AND t.tramo_puerto_inicio = (select id_puerto from LOS_BARONES_DE_LA_CERVEZA.Puerto where puerto_nombre = @puerto_origen)
-
-go
-
---lo que dice el nombre
-
-create FUNCTION [LOS_BARONES_DE_LA_CERVEZA].[UF_recorridos_segun_origen_y_destino] 
-(
-	@puerto_origen NVARCHAR(255),
-	@puerto_destino NVARCHAR(255)
-)
-RETURNS TABLE 
-AS
-return
-	SELECT txr.id_recorrido
-		FROM LOS_BARONES_DE_LA_CERVEZA.Tramos_por_Recorrido txr
-		JOIN LOS_BARONES_DE_LA_CERVEZA.Tramo t
-				ON txr.id_tramo = t.id_tramo
-		JOIN (select deOrigen.id_recorrido from [LOS_BARONES_DE_LA_CERVEZA].[UF_recorridos_segun_origen](@puerto_origen) as deOrigen) as deOrigenn 
-				ON deOrigenn.id_recorrido = txr.id_recorrido
-		JOIN LOS_BARONES_DE_LA_CERVEZA.Recorrido r
-				on r.id_recorrido = txr.id_recorrido
-		WHERE t.tramo_puerto_destino = (select id_puerto from LOS_BARONES_DE_LA_CERVEZA.Puerto where puerto_nombre = @puerto_destino)
-			AND r.recorrido_estado = 0
-go
+BEGIN
+	BEGIN TRY
+		BEGIN TRANSACTION 
+			-- id_tramo_por_recorrido se autogenera 
+			DECLARE @id_tpr_anterior INT = (SELECT id_tpr_anterior FROM [LOS_BARONES_DE_LA_CERVEZA].Tpr_Auxiliar);
+			INSERT INTO LOS_BARONES_DE_LA_CERVEZA.Tramos_por_Recorrido
+			(id_recorrido, id_tramo, tramo_anterior)
+			VALUES (@id_recorrido, @id_tramo, @id_tpr_anterior)
+			-- Actualizo el id_trp_siguiente del tramo anterior (estaba en NULL) al actual
+			UPDATE LOS_BARONES_DE_LA_CERVEZA.Tramos_por_Recorrido
+			SET tramo_siguiente = @@IDENTITY
+			WHERE id_tramo_por_recorrido = @id_tpr_anterior;
+			-- Actualizo el id_tpr_anterior de la tabla Auxiliar (pasa a ser tpr actual)
+			UPDATE LOS_BARONES_DE_LA_CERVEZA.Tpr_Auxiliar
+			SET id_tpr_anterior = @@IDENTITY;
+		COMMIT TRANSACTION 
+	END TRY
+	BEGIN CATCH
+		ROLLBACK TRANSACTION
+	END CATCH
+END
+GO
 
 /******************************************************************
-[LOS_BARONES_DE_LA_CERVEZA].[UF_destinos_segun_recorrido] 
-@Desc: Retorna los posibles destinos de un recorrido
+[LOS_BARONES_DE_LA_CERVEZA].[USP_insertar_viaje] 
+@Desc: Inserta un nuevo viaje en la tabla Viaje y en la tabla 
+Estado_Cabinas_Por_Viaje.
 ******************************************************************/
-
-CREATE FUNCTION [LOS_BARONES_DE_LA_CERVEZA].[UF_destinos_segun_recorrido] 
+GO
+CREATE PROCEDURE [LOS_BARONES_DE_LA_CERVEZA].[USP_insertar_viaje]
 (
-	@recorrido_id INT
+	@fecha_inicio NVARCHAR(255), 
+	@fecha_fin NVARCHAR(255),
+	@identificador_crucero NVARCHAR(50),
+	@identificador_recorrido NVARCHAR(255)
 )
-RETURNS TABLE 
 AS
-return
-	SELECT distinct p.puerto_nombre
-	FROM LOS_BARONES_DE_LA_CERVEZA.Tramos_por_Recorrido txr
-		JOIN LOS_BARONES_DE_LA_CERVEZA.Tramo t
-			ON txr.id_tramo = t.id_tramo
-		JOIN LOS_BARONES_DE_LA_CERVEZA.Puerto p
-			ON p.id_puerto = t.tramo_puerto_destino
-	WHERE txr.id_recorrido = @recorrido_id
+BEGIN
+	BEGIN TRY
+		BEGIN TRANSACTION 
+			-- Insertamos el registro de nuevo viaje
+			INSERT INTO LOS_BARONES_DE_LA_CERVEZA.Viaje
+			(viaje_fecha_inicio, viaje_fecha_fin, viaje_id_crucero, viaje_id_recorrido)
+			VALUES
+			(
+				CONVERT(DATETIME2(3), @fecha_inicio, 121),
+				CONVERT(DATETIME2(3), @fecha_fin, 121),
+				(SELECT id_crucero FROM LOS_BARONES_DE_LA_CERVEZA.Cruceros WHERE identificador = @identificador_crucero),
+				(SELECT id_recorrido FROM LOS_BARONES_DE_LA_CERVEZA.Recorrido WHERE recorrido_codigo = @identificador_recorrido)
+			);
 
-go
+			DECLARE @id_viaje INT = @@IDENTITY -- Me guardo el id_viaje del viaje recién insertado
+			-- Insertamos en la tabla Estado_Cabinas_Por_Viaje
+			INSERT INTO LOS_BARONES_DE_LA_CERVEZA.Estado_Cabinas_Por_Viaje
+			(id_viaje, id_cabina)
+			SELECT @id_viaje, id_cabina
+			FROM LOS_BARONES_DE_LA_CERVEZA.Cabinas cab
+			WHERE cab.crucero = (
+				SELECT id_crucero 
+				FROM LOS_BARONES_DE_LA_CERVEZA.Cruceros 
+				WHERE identificador = @identificador_crucero);
+		COMMIT TRANSACTION 
+	END TRY
+	BEGIN CATCH
+		ROLLBACK TRANSACTION
+	END CATCH
+END
+GO
 
-CREATE TRIGGER
-
-
-
+/******************************************************************
+[LOS_BARONES_DE_LA_CERVEZA].[USP_actualizar_recorrido] 
+@Desc: Actualiza el identificador de un recorrido existente
+******************************************************************/
+GO
+CREATE PROCEDURE [LOS_BARONES_DE_LA_CERVEZA].[USP_actualizar_recorrido]
+(
+	@identificador_recorrido_anterior NVARCHAR(255),
+	@identificador_recorrido_nuevo NVARCHAR(255),
+	@id_recorrido_pk INT OUT -- Retornamos el id_recorrido (PK) del recorrido
+)
+AS
+BEGIN
+	BEGIN TRY
+		BEGIN TRANSACTION 
+			UPDATE LOS_BARONES_DE_LA_CERVEZA.Recorrido
+			SET recorrido_codigo = @identificador_recorrido_nuevo
+			WHERE recorrido_codigo = @identificador_recorrido_anterior;
+			SET @id_recorrido_pk = (
+									SELECT id_recorrido
+									FROM LOS_BARONES_DE_LA_CERVEZA.Recorrido r
+									WHERE r.recorrido_codigo = @identificador_recorrido_nuevo)
+		COMMIT TRANSACTION 
+	END TRY
+	BEGIN CATCH
+		ROLLBACK TRANSACTION
+	END CATCH
+END
+GO
 
 /*******************************************************************************
 							FIN - PROCEDIMIENTOS ALMACENADOS/FUNCIONES
@@ -1231,11 +1261,10 @@ Migramos los clientes de la tabla maestra.
 ******************************************************************/
 
 INSERT INTO [LOS_BARONES_DE_LA_CERVEZA].Clientes(usuario, nombre, apellido, dni, direccion, telefono, mail, fecha_nacimiento, nro_tarjeta)
-SELECT DISTINCT NULL, replace(replace(replace(CLI_NOMBRE,' ','<>'),'><',''),'<>',' '), replace(replace(replace(CLI_APELLIDO,' ','<>'),'><',''),'<>',' '), CLI_DNI, CLI_DIRECCION, CLI_TELEFONO, CLI_MAIL, CLI_FECHA_NAC, NULL
+SELECT DISTINCT NULL, CLI_NOMBRE, CLI_APELLIDO, CLI_DNI, CLI_DIRECCION, CLI_TELEFONO, CLI_MAIL, CLI_FECHA_NAC, NULL
 FROM gd_esquema.Maestra MA WHERE CLI_DNI IS NOT NULL
 GO
---replace(replace(replace(CLI_NOMBRE,' ','<>'),'><',''),'<>',' ')
---replace(replace(replace(CLI_APELLIDO,' ','<>'),'><',''),'<>',' ')
+
 /******************************************************************
 Migramos las marcas de cruceros existentes. 
 @DESC: Estos valores no se pueden modificar ni agregar nuevos marcas.
