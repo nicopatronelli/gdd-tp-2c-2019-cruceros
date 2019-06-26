@@ -285,7 +285,7 @@ namespace FrbaCrucero.CompraReservaPasaje
             }
             Form form;
             if(comprarRadio.Checked) form= new PagoForm();
-            else form = new CompraReservaForm();
+            else form = new ReservaForm();
 
             form.ShowDialog();
         }

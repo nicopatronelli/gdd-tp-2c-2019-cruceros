@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -18,12 +19,18 @@ namespace FrbaCrucero.CompraReservaPasaje
         string puertoDestino;
         DateTime fechaSalida;
         //List<int> recorridos;
+        public int viajeSeleccionadoId;
+        public List<TipoCabina> tipoCabinas = new List<TipoCabina>();
+        public List<DisplayCabina> diplaysCabinas = new List<DisplayCabina>();
+
         public ElegirViajeForm(string puertoOrigen, string puertoDestino, DateTime fechaSalida)
         {
             this.puertoOrigen = puertoOrigen;
             this.puertoDestino = puertoDestino;
             this.fechaSalida = fechaSalida;
             InitializeComponent();
+
+
         }
 
         private void ElegirViajeFormLoad(object sender, EventArgs e)
@@ -38,6 +45,30 @@ namespace FrbaCrucero.CompraReservaPasaje
             {
                 this.recorridosList.Items.Add(o);
             }
+
+            //agrupo los controllers (label, numeric UpDown y label) que muestran tipoCabinas
+            this.diplaysCabinas.Add(new DisplayCabina(cabinas1DisponiblesLabel, cabinas1Numeric, cabinas1Label, recargoLabel1));
+            this.diplaysCabinas.Add(new DisplayCabina(cabinas2DisponiblesLabel, cabinas2Numeric, cabinas2Label, recargoLabel2));
+            this.diplaysCabinas.Add(new DisplayCabina(cabinas3DisponiblesLabel, cabinas3Numeric, cabinas3Label, recargoLabel3));
+            this.diplaysCabinas.Add(new DisplayCabina(cabinas4DisponiblesLabel, cabinas4Numeric, cabinas4Label, recargoLabel4));
+            this.diplaysCabinas.Add(new DisplayCabina(cabinas5DisponiblesLabel, cabinas5Numeric, cabinas5Label, recargoLabel5));
+
+
+            consulta = "SELECT TOP 1000 [id_tipo_cabina] ,[tipo_cabina] ,[porcentaje_recargo] FROM [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Tipos_Cabinas]";
+            miConsulta = new Query(consulta, new List<Parametro>());
+            SqlDataReader datosCabina = miConsulta.ejecutarReaderFila();
+            TipoCabina nuevaCabina;
+            for (int count = 0; count < 5; count++)
+            {
+                nuevaCabina = new TipoCabina((int)datosCabina["id_tipo_cabina"], datosCabina["tipo_cabina"].ToString(), double.Parse(datosCabina["porcentaje_recargo"].ToString()));
+                this.tipoCabinas.Add(nuevaCabina);
+                this.diplaysCabinas[count].setTipoCabina(nuevaCabina);
+                datosCabina.Read();
+            }
+
+
+
+
         }
 
 
@@ -86,13 +117,13 @@ namespace FrbaCrucero.CompraReservaPasaje
 
         private void cargarTipoCabinas()
         {
-            string consulta = "select tipo_cabina from GD1C2019.LOS_BARONES_DE_LA_CERVEZA.Tipos_Cabinas";
-            Query miConsulta = new Query(consulta, new List<Parametro>());
-            var destinos = miConsulta.ejecutarReaderUnicaColumna();
-            foreach (var o in destinos)
-            {
-                this.selectorCabinas.Items.Add(o);
-            }
+            //string consulta = "select tipo_cabina from GD1C2019.LOS_BARONES_DE_LA_CERVEZA.Tipos_Cabinas";
+            //Query miConsulta = new Query(consulta, new List<Parametro>());
+            //var destinos = miConsulta.ejecutarReaderUnicaColumna();
+            //foreach (var o in destinos)
+            //{
+            //    this.selectorCabinas.Items.Add(o);
+            //}
 
 
         }
@@ -104,12 +135,60 @@ namespace FrbaCrucero.CompraReservaPasaje
 
         private void buttonComprar_Click(object sender, EventArgs e)
         {
-            ComprarTemplateForm comprarForm = new ComprarTemplateForm(selectorCabinas.SelectedItem.ToString(), (int)cabinasNumeric.Value, int.Parse(crucerosList.SelectedItem.ToString()));
-            comprarForm.ShowDialog();
+            //ComprarTemplateForm comprarForm = new ComprarTemplateForm(selectorCabinas.SelectedItem.ToString(), (int)cabinas1Numeric.Value, int.Parse(crucerosList.SelectedItem.ToString()));
+            //comprarForm.ShowDialog();
+        }
+
+        private void crucerosList_SelectedValueChanged(object sender, EventArgs e)
+        {
+            this.viajeSeleccionadoId = int.Parse(crucerosList.SelectedItem.ToString());
+            this.mostrarCabinasDisponibles();
+        }
+
+        private void mostrarCabinasDisponibles()
+        {
+
         }
 
 
     }
+
+
+    public class DisplayCabina
+    {
+        public System.Windows.Forms.Label cantidadDisponibleLabel;
+        public System.Windows.Forms.NumericUpDown cantidadSeleccionadaNumeric;
+        public System.Windows.Forms.Label tipoCabinaLabel;
+        public System.Windows.Forms.Label recargoLabel;
+        public TipoCabina tipoCabina;
+
+        public DisplayCabina(Label disponible, NumericUpDown cantidadSeleccionada, Label tipo, Label recargo)
+        {
+            this.cantidadDisponibleLabel = disponible;
+            this.cantidadSeleccionadaNumeric = cantidadSeleccionada;
+            this.tipoCabinaLabel = tipo;
+            this.recargoLabel = recargo;
+        }
+
+        public void setTipoCabina(TipoCabina unTipoCabina)
+        {
+            this.tipoCabina = unTipoCabina;
+            this.tipoCabinaLabel.Text = tipoCabina.ToString();
+            this.recargoLabel.Text = unTipoCabina.precio.ToString();
+        }
+
+        public void viajeElegido(int viajeId)
+        {
+            this.cantidadSeleccionadaNumeric.Value = 0;
+            string consulta = "count";
+            Query miConsulta = new Query(consulta, new List<Parametro>());
+
+        }
+
+    }
+
+
+
 }
 
 
