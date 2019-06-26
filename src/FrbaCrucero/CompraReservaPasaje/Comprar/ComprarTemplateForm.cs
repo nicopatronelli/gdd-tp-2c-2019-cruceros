@@ -234,7 +234,7 @@ namespace FrbaCrucero.CompraReservaPasaje
                 return;
             }
             this.finalizar();
-
+       
         }
 
         public string checkDniRepetido()
@@ -290,8 +290,6 @@ namespace FrbaCrucero.CompraReservaPasaje
 
             form.ShowDialog();
         }
-
-
 
     }
 }

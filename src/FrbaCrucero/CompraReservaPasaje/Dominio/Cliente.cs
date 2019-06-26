@@ -49,6 +49,12 @@ namespace FrbaCrucero.CompraReservaPasaje
                 Query miConsulta = new Query(consulta, new List<Parametro>());
                 filas = miConsulta.ejecutarNonQuery();
                 System.Windows.Forms.MessageBox.Show("cliente agregado, se han alterado " + filas.ToString() + " filas");
+
+                //asigno al cliente el nuevo id, porque actualmente figura 0 aca en el front//
+                consulta = "  select ident_current('LOS_BARONES_DE_LA_CERVEZA.Clientes') ";
+                miConsulta = new Query(consulta, new List<Parametro>());
+                this.id = int.Parse(miConsulta.ejecutarEscalar().ToString());
+                System.Windows.Forms.MessageBox.Show("nuevo id es" + this.id.ToString());
             }
             else
             {

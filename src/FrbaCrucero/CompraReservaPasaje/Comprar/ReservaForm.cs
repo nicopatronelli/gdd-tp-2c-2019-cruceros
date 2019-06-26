@@ -10,10 +10,18 @@ using System.Windows.Forms;
 
 namespace FrbaCrucero.CompraReservaPasaje
 {
+
     public partial class ReservaForm : Form
     {
-        public ReservaForm()
+        public List<DisplayCabina> displayCabinas;
+        public Viaje viaje;
+        public Cliente cliente;
+
+        public ReservaForm(List<DisplayCabina> cabinas, Viaje unViaje, Cliente unCliente)
         {
+            this.displayCabinas = cabinas;
+            this.viaje = unViaje;
+            this.cliente = unCliente;
             InitializeComponent();
         }
     }
