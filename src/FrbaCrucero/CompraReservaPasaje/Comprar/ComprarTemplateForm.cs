@@ -207,6 +207,7 @@ namespace FrbaCrucero.CompraReservaPasaje
             Validaciones.hayCamposObligatoriosNulos();
             string errorMessage = "";
             if (this.dniTextBox.Text.Length < 7) errorMessage += "Longitud minima de DNI es 7 digitos\n";
+            if (this.dniTextBox.Text.Length > 9) errorMessage += "Longitud maxima de DNI es 9 digitos\n";
             if (this.nombreTextBox.Text == "") errorMessage += "Ingrese un nombre\n";
             if (this.apellidoTextBox.Text == "") errorMessage += "Ingrese un apellido\n";
             if (this.direccionTextBox.Text == "") errorMessage += "Ingrese una direccion\n";

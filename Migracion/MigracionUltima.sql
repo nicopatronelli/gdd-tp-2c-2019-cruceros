@@ -150,6 +150,9 @@ GO
 
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.USP_actualizar_recorrido'))
 	DROP PROCEDURE LOS_BARONES_DE_LA_CERVEZA.USP_actualizar_recorrido
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.USP_generar_compra'))
+	DROP PROCEDURE LOS_BARONES_DE_LA_CERVEZA.USP_generar_compra
 /****** FUNCIONES ******/
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.UF_id_marca_crucero'))
 	DROP FUNCTION LOS_BARONES_DE_LA_CERVEZA.UF_id_marca_crucero
@@ -1124,6 +1127,28 @@ return
 	WHERE txr.id_recorrido = @recorrido_id
 
  go
+
+ /***********************************************
+ [LOS_BARONES_DE_LA_CERVEZA].[USPgenerar_compra]
+ @Desc: Toma la cantidad de cabinas vendidas, un viaje y un comprador, y devuelve el id de la compra generada 
+ ************************************************/
+ 	create PROCEDURE [LOS_BARONES_DE_LA_CERVEZA].[USP_generar_compra] 
+(
+	@cantidad_cabinas INT,
+	@id_viaje INT,
+	@id_cliente INT, 
+	@id_compra INT OUTPUT
+)
+
+AS
+BEGIN
+	INSERT into [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Compra] (compra_fecha,compra_cantidad,compra_numero_tarjeta,compra_precio_con_recargo, compra_id_forma_de_pago,compra_id_cliente, compra_id_viaje, compra_tipo_cabina)
+	values (NULL, @cantidad_cabinas,null,400,2,@id_cliente,@id_viaje,1)
+	--SET @id_compra = SCOPE_IDENTITY()
+END
+ go
+
+
 
 /******************************************************************
 [LOS_BARONES_DE_LA_CERVEZA].[[USP_asociar_Clientes_Compra_Reserva]] 

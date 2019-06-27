@@ -146,57 +146,7 @@ namespace FrbaCrucero.CompraReservaPasaje
     }
 
 
-    public class DisplayCabina
-    {
-        public System.Windows.Forms.Label cantidadDisponibleLabel;
-        public System.Windows.Forms.NumericUpDown cantidadSeleccionadaNumeric;
-        public System.Windows.Forms.Label tipoCabinaLabel;
-        public System.Windows.Forms.Label recargoLabel;
-        public TipoCabina tipoCabina;
 
-        public DisplayCabina(Label disponible, NumericUpDown cantidadSeleccionada, Label tipo, Label recargo)
-        {
-            this.cantidadDisponibleLabel = disponible;
-            this.cantidadSeleccionadaNumeric = cantidadSeleccionada;
-            this.tipoCabinaLabel = tipo;
-            this.recargoLabel = recargo;
-        }
-
-        public void setTipoCabina(TipoCabina unTipoCabina)
-        {
-            this.tipoCabina = unTipoCabina;
-            this.tipoCabinaLabel.Text = tipoCabina.ToString();
-            this.recargoLabel.Text = unTipoCabina.precio.ToString();
-        }
-
-
-
-        public void mostrarDisponibles(int idViaje)
-        {
-            this.cantidadSeleccionadaNumeric.Value = 0;
-            //CALCULO CABINAS TOTALES DE ESTE TIPO QUE TIENE EL CRUCERO
-            string consulta = ""
-              + " 	SELECT count(cab.id_cabina) as cabinasTotales from [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Viaje] v "
-                    + "   join [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Cabinas] cab "
-                    + "   on cab.crucero = v.viaje_id_crucero "
-                    + "   where v.id_viaje = " + idViaje.ToString() + " and cab.tipo_cabina = " + this.tipoCabina.id.ToString();
-
-            Query miConsulta = new Query(consulta, new List<Parametro>());
-            int cabinasTotales = (int)miConsulta.ejecutarEscalar();
-
-            consulta = ""
-              + " 	SELECT COUNT(cxv.id_cabina) as cabinasOcupadas from [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Estado_Cabinas_Por_Viaje] cxv"
-                    + "   join [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Cabinas] c "
-                    + "   on cxv.id_cabina = c.id_cabina "
-                    + "   where (c.tipo_cabina = " + this.tipoCabina.id.ToString() + " and cxv.id_viaje = " + idViaje.ToString() + ") and ( cxv.compra IS NOT null  or  cxv.reserva IS NOT null) ";
-            miConsulta = new Query(consulta, new List<Parametro>());
-            int cabinasOcupadas= (int)miConsulta.ejecutarEscalar();
-            int cabinasDisponibles = cabinasTotales - cabinasOcupadas;
-            
-            this.cantidadDisponibleLabel.Text = cabinasDisponibles.ToString();
-            this.cantidadSeleccionadaNumeric.Maximum = cabinasDisponibles;
-        }
-    }
 
 
 

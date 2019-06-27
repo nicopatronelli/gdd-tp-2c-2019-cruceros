@@ -186,6 +186,7 @@
       <DependentUpon>ReservaForm.cs</DependentUpon>
     </Compile>
     <Compile Include="CompraReservaPasaje\Dominio\Cliente.cs" />
+    <Compile Include="CompraReservaPasaje\Dominio\DisplayCabina.cs" />
     <Compile Include="CompraReservaPasaje\Dominio\TipoCabina.cs" />
     <Compile Include="CompraReservaPasaje\Dominio\Viaje.cs" />
     <Compile Include="CompraReservaPasaje\ElegirViaje\ElegirViajeForm.cs">

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -16,6 +17,8 @@ namespace FrbaCrucero.CompraReservaPasaje
         public List<DisplayCabina> displayCabinas;
         public Viaje viaje;
         public Cliente cliente;
+        public double precioBase;
+        public double precioTotal;
 
         public PagoForm(List<DisplayCabina> cabinas, Viaje unViaje,Cliente unCliente )
         {
@@ -23,12 +26,40 @@ namespace FrbaCrucero.CompraReservaPasaje
             this.viaje = unViaje;
             this.cliente = unCliente;
             InitializeComponent();
+
+            //calculo precio base del recorrido
+            string consulta = " select sum(t.tramo_precio) from [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Tramos_por_Recorrido] txr join [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Tramo] t on t.id_tramo = txr.id_tramo "+
+	                " where id_recorrido = "+viaje.id_recorrido.ToString();
+            Query miConsulta = new Query(consulta, new List<Parametro>());
+            precioBase = double.Parse(miConsulta.ejecutarEscalar().ToString());
+            mostrarInfoCompra();
+            conseguirMetodosDePago();
         }
 
+        public void mostrarInfoCompra()
+        {
+            precioTotal=0;
+            infoCompraLabel.Text = "El precio base del recorrido es: " + precioBase.ToString() + ":\n";
+            displayCabinas.ForEach(x =>
+            {
+                infoCompraLabel.Text += x.mostrarDescripcionCosto(precioBase);
+                precioTotal += x.costoFinal(precioBase);
+            }
+            );
+            infoCompraLabel.Text += "\n\n        El Precio Total Final es: "+precioTotal.ToString();
+        }
+        public void conseguirMetodosDePago()
+        {
+            formaPagoUpDown.Items.Clear();
+            string consulta = "  select forma_de_pago_nombre FROM [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Forma_de_pago]";
+            Query miConsulta = new Query(consulta, new List<Parametro>());
+            SqlDataReader nombresFormaPago = miConsulta.ejecutarReaderFila();
+            formaPagoUpDown.Items.Add(nombresFormaPago["forma_de_pago_nombre"]);
+            nombresFormaPago.Read();
+            formaPagoUpDown.Items.Add(nombresFormaPago["forma_de_pago_nombre"]);
+        }
 
-
-
-
+       
 
 
         public void generarCompra()
@@ -70,8 +101,57 @@ namespace FrbaCrucero.CompraReservaPasaje
 
         }
 
+        private void formaPagoUpDown_SelectedItemChanged(object sender, EventArgs e)
+        {
+            button1.Enabled = true;
+            tarjetaTextBox.Visible= false;
+            tarjetaTextBox.Text="";
+            if (formaPagoUpDown.SelectedItem.ToString() == "Tarjeta")
+            {
+                this.mostrarOpcionesTarjeta();
+            }
+            else
+                if (formaPagoUpDown.SelectedItem.ToString() == "Efectivo")
+                {
+                    this.mostrarOpcionesEfectivo();
+                }
+                else
+                {
+                    labelFormaPago.Text = "Procedimiento de pago aun no implementado";
+                }   
+        }
 
+        public void mostrarOpcionesTarjeta()
+        {
+            labelFormaPago.Text = "Tarjeta--Ingrese los 16 digitos de su tarjeta de credito";
+            tarjetaTextBox.Visible= true;
+        }
+        public void mostrarOpcionesEfectivo()
+        {
+            button1.Text = "Aceptar";
+            labelFormaPago.Text = "Efectivo-- Pague el monto correspondiente con efectivo en \nun Rapi-pago o  unPagoFacil en la siguiente cuenta: 155555566903859.\n Seleccione Aceptar cuando el pago esté hecho";
+        }
 
+        private void tarjetaTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar);
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (formaPagoUpDown.SelectedItem.ToString() == "Tarjeta" && tarjetaTextBox.Text.Length < 16)
+            {
+                MessageBox.Show("Ingrese un numero de tarjeta de 16 digitos");
+                return;
+            }
+            MessageBox.Show("Pago recibido");
+            this.efectuarCompra();
+        }
+
+        private void efectuarCompra()
+        {
+
+        }
 
     }
 }

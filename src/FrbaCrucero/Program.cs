@@ -20,9 +20,9 @@ namespace FrbaCrucero
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             //Application.Run(new AbmCruceros());
-            //Application.Run(new CompraReservaForm());    //     Application.Run(new ComprarTemplateForm("unaCabina", 8, 33))     Application.Run(new CompraReservaForm()); CompraReservaForm()); 
+            Application.Run(new CompraReservaForm());    //     Application.Run(new ComprarTemplateForm("unaCabina", 8, 33))     Application.Run(new CompraReservaForm()); CompraReservaForm()); 
             //Application.Run(new ComprarTemplateForm("unaCabina", 8, 33));
-            Application.Run(new ElegirViajeForm("ACCRA", "LUANDA", DateTime.Parse("24/5/2018")));    //ACCRA  CONAKRY
+            //Application.Run(new ElegirViajeForm("ACCRA", "LUANDA", DateTime.Parse("24/5/2018")));    //ACCRA  CONAKRY
         }
     }
 }
