@@ -1978,19 +1978,20 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_D
 GO
 
 
- 	CREATE PROCEDURE [LOS_BARONES_DE_LA_CERVEZA].[USP_generar_compra] 
+ 	create PROCEDURE [LOS_BARONES_DE_LA_CERVEZA].[USP_generar_compra] 
 (
 	@cantidad_cabinas INT,
 	@id_viaje INT,
 	@id_cliente INT,
-	@precio_con_recargo FLOAT, 
+	@precio_con_recargo FLOAT,
+	@fecha_compra nvarchar(255), 
 	@id_compra INT OUTPUT
 )
 
 AS
 BEGIN
 	INSERT into [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Compra] (compra_fecha,compra_cantidad,compra_numero_tarjeta,compra_precio_con_recargo, compra_id_forma_de_pago,compra_id_cliente, compra_id_viaje)
-	values (NULL, @cantidad_cabinas,null,@precio_con_recargo,2,@id_cliente,@id_viaje)
+	values (convert(nvarchar(255),@fecha_compra,103), @cantidad_cabinas,null,@precio_con_recargo,2,@id_cliente,@id_viaje)
 	SET @id_compra = SCOPE_IDENTITY()
 END
 Go
@@ -2009,20 +2010,21 @@ GO
 
 USE [GD1C2019]
 GO
- 	CREATE PROCEDURE [LOS_BARONES_DE_LA_CERVEZA].[USP_generar_reserva] 
+ 	create PROCEDURE [LOS_BARONES_DE_LA_CERVEZA].[USP_generar_reserva] 
 (
 	@cantidad_cabinas INT,
 	@id_viaje INT,
 	@id_cliente INT,
+	@fecha_reserva nvarchar(255),
 	@id_reserva INT OUTPUT
 )
 
 AS
 BEGIN
 	INSERT into [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Reserva] (reserva_fecha,reserva_cantidad_pasajes,reserva_cliente, reserva_viaje)
-	values (NULL, @cantidad_cabinas,@id_cliente,@id_viaje)
+	values (convert(nvarchar(255),@fecha_reserva,103), @cantidad_cabinas,@id_cliente,@id_viaje)
 	SET @id_reserva = SCOPE_IDENTITY()
 END
-IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.USP_generar_reserva'))
-	DROP PROCEDURE LOS_BARONES_DE_LA_CERVEZA.USP_generar_reserva
-GO
+
+
+

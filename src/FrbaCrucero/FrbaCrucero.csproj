@@ -219,6 +219,12 @@
     <Compile Include="ListadoEstadistico\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="PagoReserva\PagoReservaForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PagoReserva\PagoReservaForm.Designer.cs">
+      <DependentUpon>PagoReservaForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Utils\Excepciones\ActualizarCruceroException.cs" />
     <Compile Include="Utils\Excepciones\CamposObligatoriosVaciosException.cs" />
     <Compile Include="Login\ResultadoLogin\ErrorLogin.cs" />
@@ -233,12 +239,6 @@
     <Compile Include="Login\ResultadoLogin\ResultadoLogin.cs" />
     <Compile Include="Login\ResultadoLogin\UsuarioInexistente.cs" />
     <Compile Include="Login\ResultadoLogin\UsuarioInhabilitado.cs" />
-    <Compile Include="PagoReserva\Form1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="PagoReserva\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </Compile>
     <Compile Include="PantallaPrincipal\PantallaPrincipalForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -310,6 +310,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Login\LoginForm.resx">
       <DependentUpon>LoginForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PagoReserva\PagoReservaForm.resx">
+      <DependentUpon>PagoReservaForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PantallaPrincipal\PantallaPrincipalForm.resx">
       <DependentUpon>PantallaPrincipalForm.cs</DependentUpon>

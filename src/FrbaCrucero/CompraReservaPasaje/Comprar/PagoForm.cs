@@ -21,12 +21,14 @@ namespace FrbaCrucero.CompraReservaPasaje
         public double precioBase;
         public double precioTotal;
         public int idCompra;
+        public bool esCompra;
 
-        public PagoForm(List<DisplayCabina> cabinas, Viaje unViaje,Cliente unCliente )
+        public PagoForm(List<DisplayCabina> cabinas, Viaje unViaje,Cliente unCliente,bool esUnaCompra )
         {
             this.displayCabinas = cabinas;
             this.viaje = unViaje;
             this.cliente = unCliente;
+            this.esCompra = esUnaCompra;
             InitializeComponent();
 
             //calculo precio base del recorrido
@@ -78,6 +80,9 @@ namespace FrbaCrucero.CompraReservaPasaje
 
             Parametro paramIdCliente= new Parametro("@id_cliente", SqlDbType.Int, cliente.id);
             parametros.Add(paramIdCliente);
+
+            Parametro paramFechaActual = new Parametro("@fecha_compra", SqlDbType.NVarChar, ArchivoConfig.obtenerFechaConfig().ToShortDateString(), 255);
+            parametros.Add(paramFechaActual);
 
             //agregamos el costo total de la compra
 

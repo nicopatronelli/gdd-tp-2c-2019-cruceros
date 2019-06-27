@@ -291,7 +291,7 @@ namespace FrbaCrucero.CompraReservaPasaje
             }
             clienteEditandose.saveOrUpdate();
             Form form;
-            if(comprarRadio.Checked) form= new PagoForm(displayCabinas, viaje,clienteEditandose);
+            if(comprarRadio.Checked) form= new PagoForm(displayCabinas, viaje,clienteEditandose, true);
             else form = this.hacerReserva();
 
             form.ShowDialog();
@@ -333,7 +333,8 @@ namespace FrbaCrucero.CompraReservaPasaje
             Parametro paramIdCliente = new Parametro("@id_cliente", SqlDbType.Int, clienteEditandose.id);
             parametros.Add(paramIdCliente);
 
-
+            Parametro paramFechaActual = new Parametro("@fecha_reserva", SqlDbType.NVarChar, ArchivoConfig.obtenerFechaConfig().ToShortDateString(), 255);
+            parametros.Add(paramFechaActual);
 
             // Añadimos el parámetro de salida donde obtenemos el id_reserva generado
 

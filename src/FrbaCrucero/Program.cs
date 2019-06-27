@@ -7,6 +7,7 @@ using FrbaCrucero.AbmRol;
 using FrbaCrucero.Login;
 using FrbaCrucero.AbmCrucero;
 using FrbaCrucero.CompraReservaPasaje;
+using FrbaCrucero.PagoReserva;
 namespace FrbaCrucero
 {
     static class Program
@@ -22,7 +23,8 @@ namespace FrbaCrucero
             //Application.Run(new AbmCruceros());
             //Application.Run(new CompraReservaForm());    //     Application.Run(new ComprarTemplateForm("unaCabina", 8, 33))     Application.Run(new CompraReservaForm()); CompraReservaForm()); 
             //Application.Run(new ComprarTemplateForm("unaCabina", 8, 33));
-            Application.Run(new ElegirViajeForm("ACCRA", "LUANDA", DateTime.Parse("24/5/2018")));    //ACCRA  CONAKRY
+            //Application.Run(new ElegirViajeForm("ACCRA", "LUANDA", DateTime.Parse("24/5/2018")));    //ACCRA  CONAKRY
+            Application.Run(new PagoReservaForm());
         }
     }
 }

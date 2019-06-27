@@ -126,7 +126,7 @@ namespace FrbaCrucero.AbmCrucero
 
         public string mostrarse()
         {
-            return "Cabina nro " + this.numero.ToString() + " en el piso " + this.piso.ToString() + " del tipo " + tipo+"\n";
+            return "Cabina nro " + this.numero.ToString() + " en el piso " + this.piso.ToString()+"\n";
         }
 
 

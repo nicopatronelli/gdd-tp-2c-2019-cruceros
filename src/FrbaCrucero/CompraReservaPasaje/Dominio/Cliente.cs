@@ -36,6 +36,11 @@ namespace FrbaCrucero.CompraReservaPasaje
             this.fechaDeNacimiento = nacimiento;
         }
 
+        public Cliente(int unId)
+        {
+            this.cargarPorId(unId);
+        }
+
         public override string ToString()
         {
             return this.nombre.ToLower() + ' ' + this.apellido;
@@ -73,7 +78,18 @@ namespace FrbaCrucero.CompraReservaPasaje
             {
                 return "DNI: "+dni.ToString()+"\nNOMBRE: "+nombre+"\nAPELLIDO: "+apellido+"\nDIRECCION: "+direccion+"\nTELEFONO: "+telefono+"\nMAIL: "+mail+"\nFECHA DE NACIMIENTO: "+fechaDeNacimiento.Date.ToString();
             }
-   
+
+            public void cargarPorId(int unId)
+            {
+                string consulta = " SELECT TOP 1 [id_cliente] ,[usuario] ,[nombre],[apellido],[dni],[direccion],[telefono],[mail],[fecha_nacimiento],[nro_tarjeta]  FROM [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Clientes] "
+                    + "where id_cliente = " + unId.ToString();
+
+
+
+                Query miConsulta = new Query(consulta, new List<Parametro>());
+                datosReserva = miConsulta.ejecutarReaderFila();
+                SqlDataReader datosReserva;
+            }
 
 
     }
