@@ -18,9 +18,11 @@ namespace FrbaCrucero.CompraReservaPasaje
         public string mail;
         public DateTime fechaDeNacimiento;
 
+
+
         public Cliente(int id,int dni, string nombre, string apellido, string direccion, string telefono, string mail, DateTime nacimiento)
         {
-            
+                    
             this.id = id;
             this.dni = dni;
             this.nombre = nombre;
@@ -65,9 +67,13 @@ namespace FrbaCrucero.CompraReservaPasaje
                 filas = miConsulta.ejecutarNonQuery();
                 System.Windows.Forms.MessageBox.Show("cliente Editado, se han alterado " + filas.ToString() + " filas");               
 	
-
             }
         }
+            public string mostrarse()
+            {
+                return "DNI: "+dni.ToString()+"\nNOMBRE: "+nombre+"\nAPELLIDO: "+apellido+"\nDIRECCION: "+direccion+"\nTELEFONO: "+telefono+"\nMAIL: "+mail+"\nFECHA DE NACIMIENTO: "+fechaDeNacimiento.Date.ToString();
+            }
+   
 
 
     }

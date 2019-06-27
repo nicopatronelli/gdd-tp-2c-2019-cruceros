@@ -73,6 +73,27 @@ namespace FrbaCrucero.CompraReservaPasaje
 
         public List<Cabina> cabinasPagadas(int idViaje, int idCompra)//
         {
+            List<Cabina> cabinas = this.ocuparCabinas(idViaje);
+            foreach (var cabina in cabinas)
+            {
+                cabina.comprarse(idViaje, idCompra);
+            }
+            return cabinas;
+        }
+
+        public List<Cabina> cabinasReservadas(int idViaje, int idCompra)//
+        {
+            List<Cabina> cabinas = this.ocuparCabinas(idViaje);
+            foreach (var cabina in cabinas)
+            {
+                cabina.reservarse(idViaje, idCompra);
+            }
+            return cabinas;
+        }
+
+
+        public List<Cabina> ocuparCabinas(int idViaje)
+        {
             List<Cabina> cabinasResult = new List<Cabina>();
             string consulta = "  select top " + this.cantidadSeleccionadaNumeric.Value.ToString() + "  c.id_cabina, c.numero, c.piso  from [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Viaje] v  "
                               + "        join [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Cabinas] c "
@@ -91,11 +112,12 @@ namespace FrbaCrucero.CompraReservaPasaje
                 {
                     cabinaNueva.setId(Int32.Parse(infoCabina["id_cabina"].ToString())).setNumero(Int32.Parse(infoCabina["numero"].ToString())).setPiso(Int32.Parse(infoCabina["piso"].ToString()));
                     cabinasResult.Add(cabinaNueva);
-                    cabinaNueva.comprarse(idViaje, idCompra);
                 }
             }
             while (infoCabina.Read());
             return cabinasResult;
         }
+
+
     }
 }

@@ -111,6 +111,7 @@ namespace FrbaCrucero.CompraReservaPasaje
             resultLabel.Text = "Buena fecha";
             ElegirViajeForm elegirViajeForm = new ElegirViajeForm((string)this.origenesList.SelectedItem, (string)this.destinosList.SelectedItem, calendario.SelectionStart);
             elegirViajeForm.ShowDialog();
+            
         }
 
         //aca esta la consulta de arriba. EN SQL me devuelve 2 valores, pero aca me da null

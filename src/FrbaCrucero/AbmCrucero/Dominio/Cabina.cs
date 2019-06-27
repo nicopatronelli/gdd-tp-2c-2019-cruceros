@@ -115,6 +115,20 @@ namespace FrbaCrucero.AbmCrucero
                 MessageBox.Show("Una cabina se a pagado mal");
         }
 
+        public void reservarse(int id_viaje, int id_reserva)
+        {
+            string consulta = "  insert into [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Estado_Cabinas_Por_Viaje] (id_viaje, id_cabina, reserva) Values(" + id_viaje.ToString() + " , " + this.id + ", " + id_reserva.ToString() + " ) ";
+            Query miConsulta = new Query(consulta, new List<Parametro>());
+            int filasAfectadas = miConsulta.ejecutarNonQuery();
+            if (filasAfectadas != 1)
+                MessageBox.Show("Una cabina se a reservado mal");
+        }
+
+        public string mostrarse()
+        {
+            return "Cabina nro " + this.numero.ToString() + " en el piso " + this.piso.ToString() + " del tipo " + tipo+"\n";
+        }
+
 
     }
 }

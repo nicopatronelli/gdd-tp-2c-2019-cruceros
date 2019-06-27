@@ -19,13 +19,15 @@ namespace FrbaCrucero.CompraReservaPasaje
         public bool editando = false;
         public Cliente clienteEditandose;
         public List<DisplayCabina> displayCabinas;
+        public string puertoOrigen;
 
-        public ComprarTemplateForm(List<DisplayCabina> cabinas,int viaje_id)
+        public ComprarTemplateForm(List<DisplayCabina> cabinas,int viaje_id, string unPuertoOrigen)
         {
             this.displayCabinas = cabinas;
             this.viaje_id = viaje_id;
             InitializeComponent();
             this.informacionCompraLabel.Text = "Usted va a comprar:\n ";
+            this.puertoOrigen = unPuertoOrigen;
             //aviso la cantidad de cabinas de cada tipo a comprar
             cabinas.ForEach(x => this.informacionCompraLabel.Text += "--" + x.cantidadSeleccionadaNumeric.Value + " cabina/as " + x.tipoCabinaLabel.Text + "\n");
             this.viaje = new Viaje(viaje_id);
@@ -129,6 +131,8 @@ namespace FrbaCrucero.CompraReservaPasaje
             {
                 this.puertosLabel.Text += (o+"\n");
             }
+            this.viaje.puertos = this.puertosLabel.Text;
+            this.viaje.origen = this.puertoOrigen;
             miConsulta.cerrarConexionReader();
         }
 
@@ -287,10 +291,60 @@ namespace FrbaCrucero.CompraReservaPasaje
             clienteEditandose.saveOrUpdate();
             Form form;
             if(comprarRadio.Checked) form= new PagoForm(displayCabinas, viaje,clienteEditandose);
-            else form = new ReservaForm(displayCabinas, viaje, clienteEditandose);
+            else form = this.hacerReserva();
 
             form.ShowDialog();
+            this.Close();
         }
-
+        public Form hacerReserva()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
+
+        //private void efectuarReserva()
+        //{
+        //    this.idCompra = this.generarCompra();
+        //    List<Cabina> cabinasPagadas = new List<Cabina>();
+        //    displayCabinas.ForEach( display => cabinasPagadas.AddRange(display.cabinasPagadas(viaje.id_viaje, idCompra)));
+        //    Form form = new VoucherForm(cabinasPagadas, cliente, viaje, idCompra, true, precioTotal);  //el true es para marcar que es una compra y no una reserva
+        //}
+
+        //public int generarCompra()
+        //{
+        //    List<Parametro> parametros = new List<Parametro>();
+
+        //    //agregamos parametro cantidad de cabinas
+        //    Parametro paramCantidadCabinas = new Parametro("@cantidad_cabinas", SqlDbType.Int, 5);
+        //    parametros.Add(paramCantidadCabinas);
+
+        //    // Añadimos el parámetro identificador del viaje asociado a la compra
+        //    Parametro paramIdViaje = new Parametro("@id_viaje", SqlDbType.Int, viaje.id_viaje);
+        //    parametros.Add(paramIdViaje);
+
+        //    Parametro paramIdCliente= new Parametro("@id_cliente", SqlDbType.Int, cliente.id);
+        //    parametros.Add(paramIdCliente);
+
+
+
+        //    // Añadimos el parámetro de salida donde obtenemos el id_reserva generado
+
+        //    Parametro paramIdReserva = new Parametro("@id_reserva", SqlDbType.Int);
+        //    paramIdCompra.esParametroOut();
+        //    parametros.Add(paramIdReserva);
+
+        //    StoreProcedure spGenerarReserva = new StoreProcedure("LOS_BARONES_DE_LA_CERVEZA.USP_generar_reserva", parametros);
+        //    int cantidadFilasActualizadas = spGenerarReserva.ejecutarNonQuery();
+
+        //    // Comprobamos que la compra se inserte correctamente
+        //    if (!cantidadFilasActualizadas.Equals(1))
+        //        MessageBox.Show("No se genero bien la reserva----filas afectadas= "+cantidadFilasActualizadas.ToString());
+        //    else
+        //    {
+        //        // label9.Text = cantidadFilasActualizadas.ToString();
+        //        MessageBox.Show("Reserva generada bien, el id es = " + paramIdReserva.obtenerValor().ToString());
+        //    }
+
+        //    return Int32.Parse(paramIdReserva.obtenerValor().ToString());
+        //}

@@ -79,6 +79,12 @@ namespace FrbaCrucero.CompraReservaPasaje
             Parametro paramIdCliente= new Parametro("@id_cliente", SqlDbType.Int, cliente.id);
             parametros.Add(paramIdCliente);
 
+            //agregamos el costo total de la compra
+
+            Parametro paramPrecioConRecargo = new Parametro("@precio_con_recargo", SqlDbType.Float, (float)this.precioTotal);
+            parametros.Add(paramPrecioConRecargo);
+
+
             // Añadimos el parámetro de salida donde obtenemos el id_compra generado
 
             Parametro paramIdCompra = new Parametro("@id_compra", SqlDbType.Int);
@@ -148,6 +154,7 @@ namespace FrbaCrucero.CompraReservaPasaje
             }
             MessageBox.Show("Pago recibido");
             this.efectuarCompra();
+            this.Close();
         }
 
         private void efectuarCompra()
@@ -155,6 +162,7 @@ namespace FrbaCrucero.CompraReservaPasaje
             this.idCompra = this.generarCompra();
             List<Cabina> cabinasPagadas = new List<Cabina>();
             displayCabinas.ForEach( display => cabinasPagadas.AddRange(display.cabinasPagadas(viaje.id_viaje, idCompra)));
+            Form form = new VoucherForm(cabinasPagadas, cliente, viaje, idCompra, true, precioTotal);  //el true es para marcar que es una compra y no una reserva
         }
 
     }

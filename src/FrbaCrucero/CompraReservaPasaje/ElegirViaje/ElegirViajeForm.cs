@@ -138,8 +138,9 @@ namespace FrbaCrucero.CompraReservaPasaje
                 return;                
             }
             
-            ComprarTemplateForm comprarForm = new ComprarTemplateForm(displaysCabinas,viajeSeleccionadoId.Value);
+            ComprarTemplateForm comprarForm = new ComprarTemplateForm(displaysCabinas,viajeSeleccionadoId.Value, puertoOrigen);
             comprarForm.ShowDialog();
+            this.Close();
         }
 
 

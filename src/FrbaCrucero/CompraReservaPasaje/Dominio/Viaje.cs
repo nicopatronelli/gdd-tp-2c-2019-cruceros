@@ -14,6 +14,8 @@ namespace FrbaCrucero.CompraReservaPasaje
         public string fecha_inicio;
         public int id_crucero;
         public int id_recorrido;
+        public string origen;
+        public string puertos;
 
         public Viaje(int id)
         {
@@ -26,6 +28,23 @@ namespace FrbaCrucero.CompraReservaPasaje
             this.fecha_inicio = Convert.ToString(datosPersonales["fecha_inicio"]);
             this.id_crucero = Convert.ToInt32(datosPersonales["id_crucero"]);
             this.id_recorrido = Convert.ToInt32(datosPersonales["id_recorrido"]);
-            }
+        }
+
+        public string mostrarPuertos()
+        {
+            return origen + "\n" + puertos;
+        }
+
+        public string nombreCrucero()
+        {
+            //devuelve el nombre del crucero del viaje
+            string consulta = " select c.identificador from [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Cruceros] c join [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Viaje] v on c.id_crucero = v.viaje_id_crucero "
+               + " where v.id_viaje = " + this.id_viaje.ToString();
+            Query miConsulta = new Query(consulta, new List<Parametro>());
+            return miConsulta.ejecutarEscalar().ToString();
+
+
+
+        }
     }
 }

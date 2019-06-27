@@ -185,6 +185,12 @@
     <Compile Include="CompraReservaPasaje\Comprar\ReservaForm.Designer.cs">
       <DependentUpon>ReservaForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="CompraReservaPasaje\Comprar\VoucherForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CompraReservaPasaje\Comprar\VoucherForm.Designer.cs">
+      <DependentUpon>VoucherForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="CompraReservaPasaje\Dominio\Cliente.cs" />
     <Compile Include="CompraReservaPasaje\Dominio\DisplayCabina.cs" />
     <Compile Include="CompraReservaPasaje\Dominio\TipoCabina.cs" />
@@ -295,6 +301,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="CompraReservaPasaje\Comprar\ReservaForm.resx">
       <DependentUpon>ReservaForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CompraReservaPasaje\Comprar\VoucherForm.resx">
+      <DependentUpon>VoucherForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="CompraReservaPasaje\ElegirViaje\ElegirViajeForm.resx">
       <DependentUpon>ElegirViajeForm.cs</DependentUpon>
