@@ -104,10 +104,8 @@ namespace FrbaCrucero.CompraReservaPasaje
             }
 
             return Int32.Parse(paramIdCompra.obtenerValor().ToString());
-
-
-
         }
+
 
         private void formaPagoUpDown_SelectedItemChanged(object sender, EventArgs e)
         {
@@ -163,6 +161,7 @@ namespace FrbaCrucero.CompraReservaPasaje
             List<Cabina> cabinasPagadas = new List<Cabina>();
             displayCabinas.ForEach( display => cabinasPagadas.AddRange(display.cabinasPagadas(viaje.id_viaje, idCompra)));
             Form form = new VoucherForm(cabinasPagadas, cliente, viaje, idCompra, true, precioTotal);  //el true es para marcar que es una compra y no una reserva
+            form.ShowDialog();
         }
 
     }

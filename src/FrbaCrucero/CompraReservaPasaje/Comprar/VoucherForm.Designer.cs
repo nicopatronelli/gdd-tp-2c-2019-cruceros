@@ -76,7 +76,7 @@
             // cabinasLabel
             // 
             this.cabinasLabel.AutoSize = true;
-            this.cabinasLabel.Location = new System.Drawing.Point(243, 9);
+            this.cabinasLabel.Location = new System.Drawing.Point(388, 9);
             this.cabinasLabel.Name = "cabinasLabel";
             this.cabinasLabel.Size = new System.Drawing.Size(10, 13);
             this.cabinasLabel.TabIndex = 4;
@@ -85,7 +85,7 @@
             // clienteLabel
             // 
             this.clienteLabel.AutoSize = true;
-            this.clienteLabel.Location = new System.Drawing.Point(556, 9);
+            this.clienteLabel.Location = new System.Drawing.Point(827, 9);
             this.clienteLabel.Name = "clienteLabel";
             this.clienteLabel.Size = new System.Drawing.Size(100, 13);
             this.clienteLabel.TabIndex = 5;
@@ -106,7 +106,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1013, 420);
+            this.ClientSize = new System.Drawing.Size(1307, 420);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.clienteLabel);
             this.Controls.Add(this.cabinasLabel);

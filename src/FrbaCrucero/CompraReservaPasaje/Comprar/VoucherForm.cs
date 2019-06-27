@@ -22,7 +22,7 @@ namespace FrbaCrucero.CompraReservaPasaje
         public string tipo;
 
 
-        public VoucherForm(   List<Cabina> unasCabinas, Cliente unCliente ,Viaje  unViaje, int unId, bool esUnaCompra, double unPrecio )
+        public VoucherForm(List<Cabina> unasCabinas, Cliente unCliente ,Viaje  unViaje, int unId, bool esUnaCompra, double unPrecio )
         {
             this.cabinas = unasCabinas;
             this.cliente = unCliente;
@@ -44,7 +44,7 @@ namespace FrbaCrucero.CompraReservaPasaje
             esCompraOReservaLabel.Text += this.tipo;
             precioTotalLabel.Text += precio.ToString();
             codigoVoucherLabel.Text += idCompraReserva.ToString();
-            viajeLabel.Text ="El Crucero "+viaje.nombreCrucero()+" partira en la fecha "+viaje.fecha_inicio+"/n y pasara por los puertos:/n"+viaje.puertos;
+            viajeLabel.Text ="El Crucero "+viaje.nombreCrucero()+" partira en \nla fecha "+viaje.fecha_inicio+" del puerto "+viaje.origen +"\n"+viaje.puertos;
             cabinasLabel.Text="Usted a comprado la/s cabina/s:\n";
             foreach (var cabina in cabinas)
             {

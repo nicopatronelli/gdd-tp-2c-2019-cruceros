@@ -25,14 +25,14 @@ namespace FrbaCrucero.CompraReservaPasaje
             Query miConsulta = new Query(consulta, new List<Parametro>());
             SqlDataReader datosPersonales = miConsulta.ejecutarReaderFila();
 
-            this.fecha_inicio = Convert.ToString(datosPersonales["fecha_inicio"]);
+            this.fecha_inicio = DateTime.Parse(Convert.ToString(datosPersonales["fecha_inicio"])).ToShortDateString();
             this.id_crucero = Convert.ToInt32(datosPersonales["id_crucero"]);
             this.id_recorrido = Convert.ToInt32(datosPersonales["id_recorrido"]);
         }
 
         public string mostrarPuertos()
         {
-            return origen + "\n" + puertos;
+            return "\n" + puertos;
         }
 
         public string nombreCrucero()

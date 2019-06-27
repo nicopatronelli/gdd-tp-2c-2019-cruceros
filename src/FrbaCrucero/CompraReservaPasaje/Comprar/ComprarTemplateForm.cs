@@ -297,13 +297,9 @@ namespace FrbaCrucero.CompraReservaPasaje
             form.ShowDialog();
             this.Close();
         }
-        public Form hacerReserva()
-        {
 
-            throw new NotImplementedException();
-        }
 
-        private void efectuarReserva()
+        private Form hacerReserva()
         {
             string consulta = " select sum(t.tramo_precio) from [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Tramos_por_Recorrido] txr join [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Tramo] t on t.id_tramo = txr.id_tramo " +
         " where id_recorrido = " + viaje.id_recorrido.ToString();
@@ -312,13 +308,13 @@ namespace FrbaCrucero.CompraReservaPasaje
 
             int idReserva = this.generarReserva();
             List<Cabina> cabinasReservadas = new List<Cabina>();
-            displayCabinas.ForEach(display => cabinasReservadas.AddRange(display.cabinasPagadas(viaje.id_viaje, idReserva)));
+            displayCabinas.ForEach(display => cabinasReservadas.AddRange(display.cabinasReservadas(viaje.id_viaje, idReserva)));
             double precioTotal = 0;
             foreach (var tipoCabina in displayCabinas)
             {
                 precioTotal += tipoCabina.costoFinal(precioBase);
             }
-            Form form = new VoucherForm(cabinasReservadas, clienteEditandose, viaje, idReserva, false, precioTotal);  //el true es para marcar que es una compra y no una reserva
+            return new VoucherForm(cabinasReservadas, clienteEditandose, viaje, idReserva, false, precioTotal);  //el true es para marcar que es una compra y no una reserva
         }
 
 
