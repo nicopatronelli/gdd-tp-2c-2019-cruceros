@@ -6,11 +6,13 @@ using System.Threading.Tasks;
 using System.Data;
 using FrbaCrucero.Utils;
 using FrbaCrucero.Utils.Excepciones;
+using System.Windows.Forms;
 
 namespace FrbaCrucero.AbmCrucero
 {
-    class Cabina
-    {   
+    public class Cabina
+    {
+        private int id;
         private int numero;
         private int piso;
         private string tipo;
@@ -37,6 +39,12 @@ namespace FrbaCrucero.AbmCrucero
             return this;
         }
 
+        public Cabina setId(int id)
+        {
+            this.id = id;
+            return this;
+        }
+
         public int getNumero()
         {
             return this.numero;
@@ -45,6 +53,11 @@ namespace FrbaCrucero.AbmCrucero
         public int getPiso()
         {
             return this.piso;
+        }
+
+        public int getId()
+        {
+            return this.id;
         }
 
         public string getTipo()
@@ -92,5 +105,16 @@ namespace FrbaCrucero.AbmCrucero
             if (!cantidadFilasInsertadas.Equals(DEF.FILAS_INSERT_CABINAS))
                 throw new InsertarCruceroException();
         }
+
+        public void comprarse(int id_viaje, int id_compra)
+        {
+            string consulta = "  insert into [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Estado_Cabinas_Por_Viaje] (id_viaje, id_cabina, compra) Values(" + id_viaje.ToString() +" , "+this.id+", "+id_compra.ToString() +" ) ";
+            Query miConsulta = new Query(consulta, new List<Parametro>());
+            int filasAfectadas = miConsulta.ejecutarNonQuery();
+            if(filasAfectadas != 1)
+                MessageBox.Show("Una cabina se a pagado mal");
+        }
+
+
     }
 }

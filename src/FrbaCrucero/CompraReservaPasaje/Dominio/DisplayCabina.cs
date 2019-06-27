@@ -87,7 +87,12 @@ namespace FrbaCrucero.CompraReservaPasaje
             do
             {
                 cabinaNueva = new Cabina();
-                //cabinaNueva.setId(Int32.Parse(infoCabina["id_cabina"].ToString())).setNumero(Int32.Parse(infoCabina["numero"].ToString());
+                if (infoCabina.HasRows)
+                {
+                    cabinaNueva.setId(Int32.Parse(infoCabina["id_cabina"].ToString())).setNumero(Int32.Parse(infoCabina["numero"].ToString())).setPiso(Int32.Parse(infoCabina["piso"].ToString()));
+                    cabinasResult.Add(cabinaNueva);
+                    cabinaNueva.comprarse(idViaje, idCompra);
+                }
             }
             while (infoCabina.Read());
             return cabinasResult;

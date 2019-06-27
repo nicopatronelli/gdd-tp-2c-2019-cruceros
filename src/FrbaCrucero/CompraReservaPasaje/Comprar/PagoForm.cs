@@ -1,4 +1,5 @@
-﻿using FrbaCrucero.Utils;
+﻿using FrbaCrucero.AbmCrucero;
+using FrbaCrucero.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -19,6 +20,7 @@ namespace FrbaCrucero.CompraReservaPasaje
         public Cliente cliente;
         public double precioBase;
         public double precioTotal;
+        public int idCompra;
 
         public PagoForm(List<DisplayCabina> cabinas, Viaje unViaje,Cliente unCliente )
         {
@@ -62,7 +64,7 @@ namespace FrbaCrucero.CompraReservaPasaje
        
 
 
-        public void generarCompra()
+        public int generarCompra()
         {
             List<Parametro> parametros = new List<Parametro>();
 
@@ -83,19 +85,19 @@ namespace FrbaCrucero.CompraReservaPasaje
             paramIdCompra.esParametroOut();
             parametros.Add(paramIdCompra);
 
-            // Creamos la llamada al SP "USP_actualizar_recorrido" de la BD y lo ejecutamos 
             StoreProcedure spGenerarCompra = new StoreProcedure("LOS_BARONES_DE_LA_CERVEZA.USP_generar_compra", parametros);
             int cantidadFilasActualizadas = spGenerarCompra.ejecutarNonQuery();
 
-            // Comprobamos que el recorrido se inserte correctamente
+            // Comprobamos que la compra se inserte correctamente
             if (!cantidadFilasActualizadas.Equals(1))
-                label1.Text = cantidadFilasActualizadas.ToString();
+                MessageBox.Show("No se genero bien la comnpra----filas afectadas= "+cantidadFilasActualizadas.ToString());
             else
             {
                 // label9.Text = cantidadFilasActualizadas.ToString();
-                label1.Text = Convert.ToInt32(paramIdCompra.obtenerValor()).ToString();
+                MessageBox.Show("Compra generada bien, el id es = " + paramIdCompra.obtenerValor().ToString());
             }
-            // FIN insertarRecorrido()
+
+            return Int32.Parse(paramIdCompra.obtenerValor().ToString());
 
 
 
@@ -150,7 +152,9 @@ namespace FrbaCrucero.CompraReservaPasaje
 
         private void efectuarCompra()
         {
-
+            this.idCompra = this.generarCompra();
+            List<Cabina> cabinasPagadas = new List<Cabina>();
+            displayCabinas.ForEach( display => cabinasPagadas.AddRange(display.cabinasPagadas(viaje.id_viaje, idCompra)));
         }
 
     }
