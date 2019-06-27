@@ -1,4 +1,5 @@
-﻿using FrbaCrucero.Utils;
+﻿using FrbaCrucero.AbmCrucero;
+using FrbaCrucero.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -298,53 +299,70 @@ namespace FrbaCrucero.CompraReservaPasaje
         }
         public Form hacerReserva()
         {
+
             throw new NotImplementedException();
         }
+
+        private void efectuarReserva()
+        {
+            string consulta = " select sum(t.tramo_precio) from [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Tramos_por_Recorrido] txr join [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Tramo] t on t.id_tramo = txr.id_tramo " +
+        " where id_recorrido = " + viaje.id_recorrido.ToString();
+            Query miConsulta = new Query(consulta, new List<Parametro>());
+            double precioBase = double.Parse(miConsulta.ejecutarEscalar().ToString());
+
+            int idReserva = this.generarReserva();
+            List<Cabina> cabinasReservadas = new List<Cabina>();
+            displayCabinas.ForEach(display => cabinasReservadas.AddRange(display.cabinasPagadas(viaje.id_viaje, idReserva)));
+            double precioTotal = 0;
+            foreach (var tipoCabina in displayCabinas)
+            {
+                precioTotal += tipoCabina.costoFinal(precioBase);
+            }
+            Form form = new VoucherForm(cabinasReservadas, clienteEditandose, viaje, idReserva, false, precioTotal);  //el true es para marcar que es una compra y no una reserva
+        }
+
+
+        public int generarReserva()
+        {
+            List<Parametro> parametros = new List<Parametro>();
+
+            //agregamos parametro cantidad de cabinas
+            Parametro paramCantidadCabinas = new Parametro("@cantidad_cabinas", SqlDbType.Int, 5);
+            parametros.Add(paramCantidadCabinas);
+
+            // Añadimos el parámetro identificador del viaje asociado a la compra
+            Parametro paramIdViaje = new Parametro("@id_viaje", SqlDbType.Int, viaje.id_viaje);
+            parametros.Add(paramIdViaje);
+
+            Parametro paramIdCliente = new Parametro("@id_cliente", SqlDbType.Int, clienteEditandose.id);
+            parametros.Add(paramIdCliente);
+
+
+
+            // Añadimos el parámetro de salida donde obtenemos el id_reserva generado
+
+            Parametro paramIdReserva = new Parametro("@id_reserva", SqlDbType.Int);
+            paramIdReserva.esParametroOut();
+            parametros.Add(paramIdReserva);
+
+            StoreProcedure spGenerarReserva = new StoreProcedure("LOS_BARONES_DE_LA_CERVEZA.USP_generar_reserva", parametros);
+            int cantidadFilasActualizadas = spGenerarReserva.ejecutarNonQuery();
+
+            // Comprobamos que la compra se inserte correctamente
+            if (!cantidadFilasActualizadas.Equals(1))
+                MessageBox.Show("No se genero bien la reserva----filas afectadas= " + cantidadFilasActualizadas.ToString());
+            else
+            {
+                // label9.Text = cantidadFilasActualizadas.ToString();
+                MessageBox.Show("Reserva generada bien, el id es = " + paramIdReserva.obtenerValor().ToString());
+            }
+
+            return Int32.Parse(paramIdReserva.obtenerValor().ToString());
+        }
+
+
     }
 }
 
-        //private void efectuarReserva()
-        //{
-        //    this.idCompra = this.generarCompra();
-        //    List<Cabina> cabinasPagadas = new List<Cabina>();
-        //    displayCabinas.ForEach( display => cabinasPagadas.AddRange(display.cabinasPagadas(viaje.id_viaje, idCompra)));
-        //    Form form = new VoucherForm(cabinasPagadas, cliente, viaje, idCompra, true, precioTotal);  //el true es para marcar que es una compra y no una reserva
-        //}
-
-        //public int generarCompra()
-        //{
-        //    List<Parametro> parametros = new List<Parametro>();
-
-        //    //agregamos parametro cantidad de cabinas
-        //    Parametro paramCantidadCabinas = new Parametro("@cantidad_cabinas", SqlDbType.Int, 5);
-        //    parametros.Add(paramCantidadCabinas);
-
-        //    // Añadimos el parámetro identificador del viaje asociado a la compra
-        //    Parametro paramIdViaje = new Parametro("@id_viaje", SqlDbType.Int, viaje.id_viaje);
-        //    parametros.Add(paramIdViaje);
-
-        //    Parametro paramIdCliente= new Parametro("@id_cliente", SqlDbType.Int, cliente.id);
-        //    parametros.Add(paramIdCliente);
 
 
-
-        //    // Añadimos el parámetro de salida donde obtenemos el id_reserva generado
-
-        //    Parametro paramIdReserva = new Parametro("@id_reserva", SqlDbType.Int);
-        //    paramIdCompra.esParametroOut();
-        //    parametros.Add(paramIdReserva);
-
-        //    StoreProcedure spGenerarReserva = new StoreProcedure("LOS_BARONES_DE_LA_CERVEZA.USP_generar_reserva", parametros);
-        //    int cantidadFilasActualizadas = spGenerarReserva.ejecutarNonQuery();
-
-        //    // Comprobamos que la compra se inserte correctamente
-        //    if (!cantidadFilasActualizadas.Equals(1))
-        //        MessageBox.Show("No se genero bien la reserva----filas afectadas= "+cantidadFilasActualizadas.ToString());
-        //    else
-        //    {
-        //        // label9.Text = cantidadFilasActualizadas.ToString();
-        //        MessageBox.Show("Reserva generada bien, el id es = " + paramIdReserva.obtenerValor().ToString());
-        //    }
-
-        //    return Int32.Parse(paramIdReserva.obtenerValor().ToString());
-        //}
