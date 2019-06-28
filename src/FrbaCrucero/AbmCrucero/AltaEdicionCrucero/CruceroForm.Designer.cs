@@ -32,11 +32,21 @@ namespace FrbaCrucero.AbmCrucero
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CruceroForm));
             this.txtbxModelo = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.btnCancelar = new System.Windows.Forms.Button();
+            this.btnGuardar = new System.Windows.Forms.Button();
+            this.btnAlta = new System.Windows.Forms.Button();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.rbtnCincoEstrellas = new System.Windows.Forms.RadioButton();
+            this.rbtnCuatroEstrellas = new System.Windows.Forms.RadioButton();
+            this.rbtnTresEstrellas = new System.Windows.Forms.RadioButton();
+            this.rbtnDosEstrellas = new System.Windows.Forms.RadioButton();
+            this.rbtnUnaEstrella = new System.Windows.Forms.RadioButton();
+            this.lblModelo = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.txtbxIdentificadorB = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.btnGuardar = new System.Windows.Forms.Button();
-            this.btnEnviar = new System.Windows.Forms.Button();
+            this.label4 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.dgvCabinas = new System.Windows.Forms.DataGridView();
             this.Numero = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -46,22 +56,28 @@ namespace FrbaCrucero.AbmCrucero
             this.lblMarca = new System.Windows.Forms.Label();
             this.lblIdentificador = new System.Windows.Forms.Label();
             this.txtbxIdentificadorA = new System.Windows.Forms.TextBox();
-            this.lblModelo = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
+            this.btnEnviar = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCabinas)).BeginInit();
             this.SuspendLayout();
             // 
             // txtbxModelo
             // 
-            this.txtbxModelo.Location = new System.Drawing.Point(75, 26);
+            this.txtbxModelo.Location = new System.Drawing.Point(75, 23);
             this.txtbxModelo.Name = "txtbxModelo";
             this.txtbxModelo.Size = new System.Drawing.Size(100, 20);
             this.txtbxModelo.TabIndex = 0;
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.label2);
+            this.groupBox1.Controls.Add(this.btnCancelar);
+            this.groupBox1.Controls.Add(this.btnGuardar);
+            this.groupBox1.Controls.Add(this.btnAlta);
+            this.groupBox1.Controls.Add(this.groupBox3);
+            this.groupBox1.Controls.Add(this.lblModelo);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.txtbxIdentificadorB);
             this.groupBox1.Controls.Add(this.groupBox2);
@@ -72,16 +88,133 @@ namespace FrbaCrucero.AbmCrucero
             this.groupBox1.Controls.Add(this.txtbxIdentificadorA);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(719, 461);
+            this.groupBox1.Size = new System.Drawing.Size(719, 491);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Detalles del Crucero";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(13, 460);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(201, 13);
+            this.label2.TabIndex = 4;
+            this.label2.Text = "Nota: Todos los campos son obligatorios.";
+            // 
+            // btnCancelar
+            // 
+            this.btnCancelar.Location = new System.Drawing.Point(627, 455);
+            this.btnCancelar.Name = "btnCancelar";
+            this.btnCancelar.Size = new System.Drawing.Size(75, 23);
+            this.btnCancelar.TabIndex = 24;
+            this.btnCancelar.Text = "Cancelar";
+            this.btnCancelar.UseVisualStyleBackColor = true;
+            this.btnCancelar.Click += new System.EventHandler(this.btnCancelar_Click);
+            // 
+            // btnGuardar
+            // 
+            this.btnGuardar.Location = new System.Drawing.Point(529, 455);
+            this.btnGuardar.Name = "btnGuardar";
+            this.btnGuardar.Size = new System.Drawing.Size(75, 23);
+            this.btnGuardar.TabIndex = 22;
+            this.btnGuardar.Text = "Guardar";
+            this.btnGuardar.UseVisualStyleBackColor = true;
+            this.btnGuardar.Click += new System.EventHandler(this.btnGuardar_Click);
+            // 
+            // btnAlta
+            // 
+            this.btnAlta.Location = new System.Drawing.Point(529, 455);
+            this.btnAlta.Name = "btnAlta";
+            this.btnAlta.Size = new System.Drawing.Size(75, 23);
+            this.btnAlta.TabIndex = 23;
+            this.btnAlta.Text = "Enviar";
+            this.btnAlta.UseVisualStyleBackColor = true;
+            this.btnAlta.Click += new System.EventHandler(this.btnAlta_Click);
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.rbtnCincoEstrellas);
+            this.groupBox3.Controls.Add(this.rbtnCuatroEstrellas);
+            this.groupBox3.Controls.Add(this.rbtnTresEstrellas);
+            this.groupBox3.Controls.Add(this.rbtnDosEstrellas);
+            this.groupBox3.Controls.Add(this.rbtnUnaEstrella);
+            this.groupBox3.Location = new System.Drawing.Point(16, 118);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(410, 54);
+            this.groupBox3.TabIndex = 11;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Tipo de servicio:";
+            // 
+            // rbtnCincoEstrellas
+            // 
+            this.rbtnCincoEstrellas.AutoSize = true;
+            this.rbtnCincoEstrellas.Location = new System.Drawing.Point(322, 24);
+            this.rbtnCincoEstrellas.Name = "rbtnCincoEstrellas";
+            this.rbtnCincoEstrellas.Size = new System.Drawing.Size(72, 17);
+            this.rbtnCincoEstrellas.TabIndex = 4;
+            this.rbtnCincoEstrellas.TabStop = true;
+            this.rbtnCincoEstrellas.Text = "5 estrellas";
+            this.rbtnCincoEstrellas.UseVisualStyleBackColor = true;
+            // 
+            // rbtnCuatroEstrellas
+            // 
+            this.rbtnCuatroEstrellas.AutoSize = true;
+            this.rbtnCuatroEstrellas.Location = new System.Drawing.Point(244, 24);
+            this.rbtnCuatroEstrellas.Name = "rbtnCuatroEstrellas";
+            this.rbtnCuatroEstrellas.Size = new System.Drawing.Size(72, 17);
+            this.rbtnCuatroEstrellas.TabIndex = 3;
+            this.rbtnCuatroEstrellas.TabStop = true;
+            this.rbtnCuatroEstrellas.Text = "4 estrellas";
+            this.rbtnCuatroEstrellas.UseVisualStyleBackColor = true;
+            // 
+            // rbtnTresEstrellas
+            // 
+            this.rbtnTresEstrellas.AutoSize = true;
+            this.rbtnTresEstrellas.Location = new System.Drawing.Point(166, 24);
+            this.rbtnTresEstrellas.Name = "rbtnTresEstrellas";
+            this.rbtnTresEstrellas.Size = new System.Drawing.Size(72, 17);
+            this.rbtnTresEstrellas.TabIndex = 2;
+            this.rbtnTresEstrellas.TabStop = true;
+            this.rbtnTresEstrellas.Text = "3 estrellas";
+            this.rbtnTresEstrellas.UseVisualStyleBackColor = true;
+            // 
+            // rbtnDosEstrellas
+            // 
+            this.rbtnDosEstrellas.AutoSize = true;
+            this.rbtnDosEstrellas.Location = new System.Drawing.Point(88, 24);
+            this.rbtnDosEstrellas.Name = "rbtnDosEstrellas";
+            this.rbtnDosEstrellas.Size = new System.Drawing.Size(72, 17);
+            this.rbtnDosEstrellas.TabIndex = 1;
+            this.rbtnDosEstrellas.TabStop = true;
+            this.rbtnDosEstrellas.Text = "2 estrellas";
+            this.rbtnDosEstrellas.UseVisualStyleBackColor = true;
+            // 
+            // rbtnUnaEstrella
+            // 
+            this.rbtnUnaEstrella.AutoSize = true;
+            this.rbtnUnaEstrella.Location = new System.Drawing.Point(15, 24);
+            this.rbtnUnaEstrella.Name = "rbtnUnaEstrella";
+            this.rbtnUnaEstrella.Size = new System.Drawing.Size(67, 17);
+            this.rbtnUnaEstrella.TabIndex = 0;
+            this.rbtnUnaEstrella.TabStop = true;
+            this.rbtnUnaEstrella.Text = "1 estrella";
+            this.rbtnUnaEstrella.UseVisualStyleBackColor = true;
+            // 
+            // lblModelo
+            // 
+            this.lblModelo.AutoSize = true;
+            this.lblModelo.Location = new System.Drawing.Point(24, 26);
+            this.lblModelo.Name = "lblModelo";
+            this.lblModelo.Size = new System.Drawing.Size(45, 13);
+            this.lblModelo.TabIndex = 2;
+            this.lblModelo.Text = "Modelo:";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(153, 64);
+            this.label1.Location = new System.Drawing.Point(157, 53);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(14, 20);
             this.label1.TabIndex = 9;
@@ -89,7 +222,7 @@ namespace FrbaCrucero.AbmCrucero
             // 
             // txtbxIdentificadorB
             // 
-            this.txtbxIdentificadorB.Location = new System.Drawing.Point(170, 66);
+            this.txtbxIdentificadorB.Location = new System.Drawing.Point(174, 55);
             this.txtbxIdentificadorB.MaxLength = 5;
             this.txtbxIdentificadorB.Name = "txtbxIdentificadorB";
             this.txtbxIdentificadorB.Size = new System.Drawing.Size(49, 20);
@@ -98,41 +231,30 @@ namespace FrbaCrucero.AbmCrucero
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.btnGuardar);
-            this.groupBox2.Controls.Add(this.btnEnviar);
+            this.groupBox2.Controls.Add(this.label4);
             this.groupBox2.Controls.Add(this.label7);
             this.groupBox2.Controls.Add(this.dgvCabinas);
-            this.groupBox2.Location = new System.Drawing.Point(13, 141);
+            this.groupBox2.Location = new System.Drawing.Point(16, 180);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(686, 298);
+            this.groupBox2.Size = new System.Drawing.Size(686, 269);
             this.groupBox2.TabIndex = 7;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Cabinas";
             // 
-            // btnGuardar
+            // label4
             // 
-            this.btnGuardar.Location = new System.Drawing.Point(584, 262);
-            this.btnGuardar.Name = "btnGuardar";
-            this.btnGuardar.Size = new System.Drawing.Size(75, 23);
-            this.btnGuardar.TabIndex = 22;
-            this.btnGuardar.Text = "Guardar";
-            this.btnGuardar.UseVisualStyleBackColor = true;
-            this.btnGuardar.Click += new System.EventHandler(this.btnGuardar_Click);
-            // 
-            // btnEnviar
-            // 
-            this.btnEnviar.Location = new System.Drawing.Point(584, 261);
-            this.btnEnviar.Name = "btnEnviar";
-            this.btnEnviar.Size = new System.Drawing.Size(75, 23);
-            this.btnEnviar.TabIndex = 3;
-            this.btnEnviar.Text = "Enviar";
-            this.btnEnviar.UseVisualStyleBackColor = true;
-            this.btnEnviar.Click += new System.EventHandler(this.btnEnviar_Click);
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(23, 243);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(540, 13);
+            this.label4.TabIndex = 12;
+            this.label4.Text = "Tip: Para descartar una cabina ingresada, presione la flecha a la izquierda del r" +
+    "egistre y luego pulse la tecla Supr.";
             // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(26, 19);
+            this.label7.Location = new System.Drawing.Point(23, 22);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(490, 39);
             this.label7.TabIndex = 21;
@@ -145,7 +267,7 @@ namespace FrbaCrucero.AbmCrucero
             this.Numero,
             this.Piso,
             this.dgvcmbxTipo});
-            this.dgvCabinas.Location = new System.Drawing.Point(26, 75);
+            this.dgvCabinas.Location = new System.Drawing.Point(26, 64);
             this.dgvCabinas.Name = "dgvCabinas";
             this.dgvCabinas.Size = new System.Drawing.Size(633, 167);
             this.dgvCabinas.TabIndex = 20;
@@ -191,7 +313,7 @@ namespace FrbaCrucero.AbmCrucero
             "Cunard Line",
             "Carnival Cruise Lines",
             "Otra"});
-            this.cmbxMarca.Location = new System.Drawing.Point(75, 106);
+            this.cmbxMarca.Location = new System.Drawing.Point(75, 88);
             this.cmbxMarca.Name = "cmbxMarca";
             this.cmbxMarca.Size = new System.Drawing.Size(121, 21);
             this.cmbxMarca.TabIndex = 6;
@@ -199,7 +321,7 @@ namespace FrbaCrucero.AbmCrucero
             // lblMarca
             // 
             this.lblMarca.AutoSize = true;
-            this.lblMarca.Location = new System.Drawing.Point(21, 109);
+            this.lblMarca.Location = new System.Drawing.Point(24, 91);
             this.lblMarca.Name = "lblMarca";
             this.lblMarca.Size = new System.Drawing.Size(40, 13);
             this.lblMarca.TabIndex = 5;
@@ -208,7 +330,7 @@ namespace FrbaCrucero.AbmCrucero
             // lblIdentificador
             // 
             this.lblIdentificador.AutoSize = true;
-            this.lblIdentificador.Location = new System.Drawing.Point(21, 69);
+            this.lblIdentificador.Location = new System.Drawing.Point(24, 58);
             this.lblIdentificador.Name = "lblIdentificador";
             this.lblIdentificador.Size = new System.Drawing.Size(68, 13);
             this.lblIdentificador.TabIndex = 4;
@@ -217,7 +339,7 @@ namespace FrbaCrucero.AbmCrucero
             // txtbxIdentificadorA
             // 
             this.txtbxIdentificadorA.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.txtbxIdentificadorA.Location = new System.Drawing.Point(95, 66);
+            this.txtbxIdentificadorA.Location = new System.Drawing.Point(99, 55);
             this.txtbxIdentificadorA.MaxLength = 6;
             this.txtbxIdentificadorA.Name = "txtbxIdentificadorA";
             this.txtbxIdentificadorA.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
@@ -225,42 +347,34 @@ namespace FrbaCrucero.AbmCrucero
             this.txtbxIdentificadorA.TabIndex = 3;
             this.txtbxIdentificadorA.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.IdentificadorA_SoloLetras_KeyPress);
             // 
-            // lblModelo
+            // btnEnviar
             // 
-            this.lblModelo.AutoSize = true;
-            this.lblModelo.Location = new System.Drawing.Point(36, 41);
-            this.lblModelo.Name = "lblModelo";
-            this.lblModelo.Size = new System.Drawing.Size(45, 13);
-            this.lblModelo.TabIndex = 2;
-            this.lblModelo.Text = "Modelo:";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(22, 493);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(201, 13);
-            this.label2.TabIndex = 4;
-            this.label2.Text = "Nota: Todos los campos son obligatorios.";
+            this.btnEnviar.Location = new System.Drawing.Point(524, 480);
+            this.btnEnviar.Name = "btnEnviar";
+            this.btnEnviar.Size = new System.Drawing.Size(75, 23);
+            this.btnEnviar.TabIndex = 3;
+            this.btnEnviar.Text = "Enviar";
+            this.btnEnviar.UseVisualStyleBackColor = true;
             // 
             // CruceroForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(743, 512);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.lblModelo);
+            this.ClientSize = new System.Drawing.Size(743, 514);
             this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.btnEnviar);
+            this.MaximizeBox = false;
             this.Name = "CruceroForm";
-            this.Text = "Form1";
+            this.Text = "Alta de un nuevo crucero";
             this.Load += new System.EventHandler(this.CrucerosForm_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCabinas)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -284,5 +398,14 @@ namespace FrbaCrucero.AbmCrucero
         protected System.Windows.Forms.DataGridViewComboBoxColumn dgvcmbxTipo;
         protected DataGridView dgvCabinas;
         private Button btnGuardar;
+        private GroupBox groupBox3;
+        private RadioButton rbtnCincoEstrellas;
+        private RadioButton rbtnCuatroEstrellas;
+        private RadioButton rbtnTresEstrellas;
+        private RadioButton rbtnDosEstrellas;
+        private RadioButton rbtnUnaEstrella;
+        private Button btnCancelar;
+        private Button btnAlta;
+        private Label label4;
     }
 }

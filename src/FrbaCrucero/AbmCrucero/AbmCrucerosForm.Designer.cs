@@ -36,7 +36,7 @@
             // 
             // btnAltaCrucero
             // 
-            this.btnAltaCrucero.Location = new System.Drawing.Point(30, 37);
+            this.btnAltaCrucero.Location = new System.Drawing.Point(30, 33);
             this.btnAltaCrucero.Name = "btnAltaCrucero";
             this.btnAltaCrucero.Size = new System.Drawing.Size(118, 23);
             this.btnAltaCrucero.TabIndex = 0;
@@ -46,7 +46,7 @@
             // 
             // btnModificacionCrucero
             // 
-            this.btnModificacionCrucero.Location = new System.Drawing.Point(186, 37);
+            this.btnModificacionCrucero.Location = new System.Drawing.Point(182, 33);
             this.btnModificacionCrucero.Name = "btnModificacionCrucero";
             this.btnModificacionCrucero.Size = new System.Drawing.Size(127, 23);
             this.btnModificacionCrucero.TabIndex = 1;
@@ -56,7 +56,7 @@
             // 
             // btnBajaServicioTecnico
             // 
-            this.btnBajaServicioTecnico.Location = new System.Drawing.Point(350, 37);
+            this.btnBajaServicioTecnico.Location = new System.Drawing.Point(343, 33);
             this.btnBajaServicioTecnico.Name = "btnBajaServicioTecnico";
             this.btnBajaServicioTecnico.Size = new System.Drawing.Size(166, 23);
             this.btnBajaServicioTecnico.TabIndex = 2;
@@ -66,7 +66,7 @@
             // 
             // btnBajaDefinitiva
             // 
-            this.btnBajaDefinitiva.Location = new System.Drawing.Point(544, 37);
+            this.btnBajaDefinitiva.Location = new System.Drawing.Point(543, 33);
             this.btnBajaDefinitiva.Name = "btnBajaDefinitiva";
             this.btnBajaDefinitiva.Size = new System.Drawing.Size(166, 23);
             this.btnBajaDefinitiva.TabIndex = 3;
@@ -74,7 +74,7 @@
             this.btnBajaDefinitiva.UseVisualStyleBackColor = true;
             this.btnBajaDefinitiva.Click += new System.EventHandler(this.btnBajaDefinitiva_Click);
             // 
-            // AbmCruceros
+            // AbmCrucerosForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -83,8 +83,9 @@
             this.Controls.Add(this.btnBajaServicioTecnico);
             this.Controls.Add(this.btnModificacionCrucero);
             this.Controls.Add(this.btnAltaCrucero);
-            this.Name = "AbmCruceros";
-            this.Text = "AbmCruceros";
+            this.MaximizeBox = false;
+            this.Name = "AbmCrucerosForm";
+            this.Text = "ABM Cruceros";
             this.ResumeLayout(false);
 
         }

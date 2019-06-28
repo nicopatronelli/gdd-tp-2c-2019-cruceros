@@ -177,7 +177,6 @@ namespace FrbaCrucero.Utils
             }
         } // FIN ejecutarReader()
 
-
         // Retorna la cantidad de filas afectadas (insertadas, actualizadas o eliminadas) por la consulta 
         public int ejecutarNonQuery()
         {

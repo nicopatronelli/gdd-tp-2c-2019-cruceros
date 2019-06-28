@@ -121,6 +121,7 @@
             // chbxAbmRol
             // 
             this.chbxAbmRol.AutoSize = true;
+            this.chbxAbmRol.Enabled = false;
             this.chbxAbmRol.Location = new System.Drawing.Point(191, 38);
             this.chbxAbmRol.Name = "chbxAbmRol";
             this.chbxAbmRol.Size = new System.Drawing.Size(68, 17);

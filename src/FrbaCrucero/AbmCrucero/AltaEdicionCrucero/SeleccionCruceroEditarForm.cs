@@ -36,14 +36,41 @@ namespace FrbaCrucero.AbmCrucero
 
         virtual protected string querySeleccionCruceros()
         {
+            string fechaActual = ArchivoConfig.obtenerFechaConfig().ToString("yyyy-MM-dd h:mm tt");
             return "SELECT cru.identificador 'Identificador', cru.modelo 'Modelo', mar.marca 'Marca', COUNT(cab.crucero) 'Cantidad de cabinas' "
-                                + "FROM LOS_BARONES_DE_LA_CERVEZA.Cruceros cru "
-                                    + "JOIN LOS_BARONES_DE_LA_CERVEZA.Marcas_Cruceros mar "
-                                        + "ON cru.marca = mar.id_marca "
-                                    + "JOIN LOS_BARONES_DE_LA_CERVEZA.Cabinas cab "
-                                        + "ON cru.id_crucero = cab.crucero "
-                                + "WHERE cru.fecha_baja_vida_util IS NULL " // No permitimos editar los cruceros dados de baja en forma definitiva
-                                + "GROUP BY cru.identificador, cru.modelo, mar.marca";
+                 + "FROM LOS_BARONES_DE_LA_CERVEZA.Cruceros cru "
+                     + "JOIN LOS_BARONES_DE_LA_CERVEZA.Marcas_Cruceros mar "
+                           + "ON cru.marca = mar.id_marca "
+                     + "JOIN LOS_BARONES_DE_LA_CERVEZA.Cabinas cab "
+                           + "ON cru.id_crucero = cab.crucero "
+                 + "WHERE cru.baja_vida_util != 1 "
+                    + "AND '" + fechaActual + "' > ( "
+                                + "SELECT TOP 1 v.viaje_fecha_fin "
+                                + "FROM LOS_BARONES_DE_LA_CERVEZA.Viaje v "
+                                    + "JOIN LOS_BARONES_DE_LA_CERVEZA.Cruceros cru2 "
+                                        + "ON v.viaje_id_crucero = cru2.id_crucero "
+                                + "WHERE cru.id_crucero = v.viaje_id_crucero "
+                                + "ORDER BY v.viaje_fecha_fin DESC "
+                        + " ) "
+                        + "OR cru.id_crucero IN "
+                                                + "( "
+                                                        + "SELECT c.id_crucero "
+                                                        + "FROM LOS_BARONES_DE_LA_CERVEZA.Cruceros c "
+                                                        + "EXCEPT "
+                                                        + "SELECT DISTINCT v.viaje_id_crucero "
+                                                        + "FROM LOS_BARONES_DE_LA_CERVEZA.Viaje v "
+                                                + ") "
+                 + "GROUP BY cru.identificador, cru.modelo, mar.marca "
+                 + "ORDER BY cru.identificador DESC";
+
+            //return "SELECT cru.identificador 'Identificador', cru.modelo 'Modelo', mar.marca 'Marca', COUNT(cab.crucero) 'Cantidad de cabinas' "
+            //                    + "FROM LOS_BARONES_DE_LA_CERVEZA.Cruceros cru "
+            //                        + "JOIN LOS_BARONES_DE_LA_CERVEZA.Marcas_Cruceros mar "
+            //                            + "ON cru.marca = mar.id_marca "
+            //                        + "JOIN LOS_BARONES_DE_LA_CERVEZA.Cabinas cab "
+            //                            + "ON cru.id_crucero = cab.crucero "
+            //                    + "WHERE cru.fecha_baja_vida_util IS NULL " // No permitimos editar los cruceros dados de baja en forma definitiva
+            //                    + "GROUP BY cru.identificador, cru.modelo, mar.marca";
         }
 
         protected void cargarDgvCruceros(string miConsulta)

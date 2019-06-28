@@ -38,7 +38,6 @@ namespace FrbaCrucero.AbmRol
         private void btnDeshabilitarRol_Click(object sender, EventArgs e)
         {
             SeleccionRolForm deshabilitarRolForm = new SeleccionRolForm("ELIMINAR");
-            //SeleccionRolForm deshabilitarRolForm = new SeleccionRolForm();
             deshabilitarRolForm.ShowDialog();
         }
 

@@ -44,7 +44,6 @@ namespace FrbaCrucero.AbmRol
             conexion.cerrar();
         }
 
-
         private void btnCerrar_Click(object sender, EventArgs e)
         {
             this.Close();
@@ -59,18 +58,11 @@ namespace FrbaCrucero.AbmRol
         private void dgvEditarRoles_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             var senderGrid = (DataGridView)sender;
-
-            //if (contador == 0)
-            //{
+            rolAEditar = Convert.ToString(dgvRoles.Rows[e.RowIndex].Cells["Nombre rol"].Value);
             // Se presiono el botón Editar 
             if ((senderGrid.Columns[e.ColumnIndex] is DataGridViewButtonColumn &&
             e.RowIndex >= 0))
-            {
-                //string rolAEditar = Convert.ToString(dgvElegirCliente.Rows[e.RowIndex].Cells[0].Value);
-                //rolAEditar = Convert.ToString(dgvRoles.Rows[e.RowIndex].Cells[0].Value);
-                // Obtengo el nombre del rol a editar
-                rolAEditar = Convert.ToString(dgvRoles.Rows[e.RowIndex].Cells["Nombre rol"].Value);
-
+            {   
                 CrearRolForm formEditarRol = new CrearRolForm(rolAEditar);
                 formEditarRol.ShowDialog();
 
@@ -94,8 +86,7 @@ namespace FrbaCrucero.AbmRol
                 {
                     if ((bool)dgvRoles.CurrentCell.Value == false)
                     {
-                        // Habilitar cliente
-                        rolAEditar = Convert.ToString(dgvRoles.Rows[e.RowIndex].Cells["nombre_rol"].Value);
+                        // Habilitar rol
                         bool resultado = Rol.habilitar(rolAEditar);
                         if (resultado.Equals(true))
                             MensajeBox.info("El rol se habilito correctamente.");
@@ -104,14 +95,7 @@ namespace FrbaCrucero.AbmRol
                     }
                     else
                     {
-                        //Deshabilitar Administrador
-                        rolAEditar = Convert.ToString(dgvRoles.Rows[e.RowIndex].Cells["nombre_rol"].Value);
-                        if (rolAEditar.Equals("Rol_Admin"))
-                        {
-                            MensajeBox.info("El Rol Administrador NO puede deshabilitarse.");
-                            return;
-                        }
-
+                        //Deshabilitar rol
                         bool resultado = Rol.deshabilitar(rolAEditar);
                         if (resultado.Equals(true))
                             MensajeBox.info("Rol deshabilitado correctamente.");
@@ -121,12 +105,10 @@ namespace FrbaCrucero.AbmRol
                 } // FIN chequeamos el valor del checkbox
 
                 conexion = new ConexionBD();
-                //AbmClienteUtil.configEliminar(nombreBuscado, apellidoBuscado, dniBuscado, emailBuscado, conexion, dgvElegirCliente);
                 conexion.cerrar();
                 return;
 
             } // FIN se presiono el checkbox Habilitar/Deshabilitar rol
-
 
         } // FIN dgvEditarRoles_CellClick()
 

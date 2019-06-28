@@ -63,7 +63,7 @@
             this.btnDeshabilitarRol.Name = "btnDeshabilitarRol";
             this.btnDeshabilitarRol.Size = new System.Drawing.Size(152, 23);
             this.btnDeshabilitarRol.TabIndex = 2;
-            this.btnDeshabilitarRol.Text = "Deshabilitar Rol";
+            this.btnDeshabilitarRol.Text = "Habilitar/Deshabilitar Rol";
             this.btnDeshabilitarRol.UseVisualStyleBackColor = true;
             this.btnDeshabilitarRol.Click += new System.EventHandler(this.btnDeshabilitarRol_Click);
             // 

@@ -12,6 +12,7 @@ using FrbaCrucero.AbmRecorrido;
 using FrbaCrucero.AbmRecorrido.AbmTramos.AltaTramo;
 using FrbaCrucero.AbmRecorrido.AbmTramos.ModificarPrecioTramo;
 using FrbaCrucero.ListadoEstadistico;
+using FrbaCrucero.PantallaPrincipal;
 
 namespace FrbaCrucero
 {
@@ -25,14 +26,16 @@ namespace FrbaCrucero
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            //Application.Run(new AbmCruceros());
-            //Application.Run(new GenerarViajeForm());
+            Application.Run(new AbmCrucerosForm());
+            Application.Run(new GenerarViajeForm());
             //Application.Run(new AltaRecorridoForm());
             //Application.Run(new CompraReservaForm());
             //Application.Run(new AbmRecorridosForm());
             //Application.Run(new SeleccionListadoEstadisticoForm());
             //Application.Run(new AltaTramoForm());
-            Application.Run(new SeleccionTramoModificarPrecioForm());
+            //Application.Run(new SeleccionTramoModificarPrecioForm());
+            //Application.Run(new PantallaPrincipalForm());
+            //Application.Run(new LoginForm());
         }
     }
 }

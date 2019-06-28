@@ -17,6 +17,7 @@ namespace FrbaCrucero.AbmCrucero
         private string marca;
         private DateTime fechaAlta;
         private List<Cabina> cabinas = new List<Cabina>();
+        private int tipoServicio;
 
         public Crucero(CruceroBuilder cruceroBuilder)
         {
@@ -24,6 +25,7 @@ namespace FrbaCrucero.AbmCrucero
             this.marca = cruceroBuilder.getMarca();
             this.identificador = cruceroBuilder.getIdentificador();
             this.fechaAlta = cruceroBuilder.getFechaAlta();
+            this.tipoServicio = cruceroBuilder.getTipoServicio();
         }
 
         public void agregarCabina(Cabina cabina)
@@ -43,7 +45,8 @@ namespace FrbaCrucero.AbmCrucero
 
         public bool hayCabinasRepetidas()
         {
-            return this.getCabinas().GroupBy(cab => cab.getPiso(), cab => cab.getNumero()).Any(cab => cab.Count() > 1);
+            return this.getCabinas().GroupBy(cab => new {cab.piso, cab.numero}).Any(cab => cab.Count() > 1);
+            //var b = from cab in cabinas group cab by new {cab.getPiso(), cab.getNumero(),} into gcs 
         }
 
         public static bool identificadorDisponible(string identificadorCrucero)
@@ -85,6 +88,8 @@ namespace FrbaCrucero.AbmCrucero
             Parametro paramFechaAlta = new Parametro("@fecha_alta", SqlDbType.NVarChar,
                 this.fechaAlta.ToString("yyyy-MM-dd h:mm tt"), 255);
             parametros.Add(paramFechaAlta);
+            Parametro paramTipoServicio = new Parametro("@tipo_servicio", SqlDbType.Int, this.tipoServicio);
+            parametros.Add(paramTipoServicio);
 
             // Añadimos el parámetro de salida donde obtenemos el id_publicación que SQL Server le asigno al crucero
             Parametro paramIdCruceroAsignado = new Parametro("@id_crucero_asignada", SqlDbType.Int);
@@ -119,6 +124,8 @@ namespace FrbaCrucero.AbmCrucero
             parametros.Add(paramIdentificador);
             Parametro paramMarca = new Parametro("@marca", SqlDbType.NVarChar, this.marca, 255);
             parametros.Add(paramMarca);
+            Parametro paramTipoServicio = new Parametro("@tipo_servicio", SqlDbType.Int, this.tipoServicio);
+            parametros.Add(paramTipoServicio);
 
             // Añadimos el parámetro de salida donde obtenemos el id_publicación que SQL Server le asigno al crucero
             Parametro paramIdCrucero = new Parametro("@id_crucero", SqlDbType.Int);

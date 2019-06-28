@@ -2,7 +2,7 @@
 USE GD1C2019
 
 -- Listado de cabinas con info de su crucero
-SELECT cru.identificador, cab.id_cabina, cab.tipo_cabina, tc.tipo_cabina, cru.modelo, mar.marca, cab.numero, cab.piso, cab.estado
+SELECT cru.identificador, cab.id_cabina, cab.tipo_cabina, tc.tipo_cabina, cru.modelo, mar.marca, cab.numero, cab.piso
 FROM LOS_BARONES_DE_LA_CERVEZA.Cabinas cab
 	JOIN LOS_BARONES_DE_LA_CERVEZA.Tipos_Cabinas tc
 		ON cab.tipo_cabina = tc.id_tipo_cabina
@@ -10,6 +10,7 @@ FROM LOS_BARONES_DE_LA_CERVEZA.Cabinas cab
 		ON cab.crucero = cru.id_crucero
 	JOIN LOS_BARONES_DE_LA_CERVEZA.Marcas_Cruceros mar
 		ON cru.marca = mar.id_marca
+
 
 -- Detalle Cruceros (sin cabinas)
 SELECT cru.identificador, cru.modelo, mar.marca, COUNT(cab.crucero) 'Cantidad cabinas'
@@ -148,83 +149,6 @@ EXEC [LOS_BARONES_DE_LA_CERVEZA].[USP_insertar_tramo_por_recorrido] 53, 1
 INSERT INTO LOS_BARONES_DE_LA_CERVEZA.Tramos_por_Recorrido
 (id_recorrido, id_tramo, tramo_siguiente, tramo_anterior)
 VALUES (49, 2, 1, NULL)
-
-/******************************************************************
-[LOS_BARONES_DE_LA_CERVEZA].[USP_insertar_recorrido] 
-@Desc: Inserta un nuevo recorrido en la tabla Recorridos
-******************************************************************/
-GO
-CREATE PROCEDURE [LOS_BARONES_DE_LA_CERVEZA].[USP_insertar_recorrido]
-(
-	@identificador NVARCHAR(255),
-	@id_recorrido_asignado INT OUT -- Retornamos el id_crucero asignado por SQL Server (IDENTITY)
-)
-AS
-BEGIN
-	BEGIN TRY
-		BEGIN TRANSACTION 
-			-- id_recorrido se autogenera 
-			INSERT INTO LOS_BARONES_DE_LA_CERVEZA.Recorrido
-			(recorrido_codigo)
-			VALUES (@identificador)
-			SET @id_recorrido_asignado = @@IDENTITY;
-		COMMIT TRANSACTION 
-	END TRY
-	BEGIN CATCH
-		ROLLBACK TRANSACTION
-	END CATCH
-END
-GO
-
-/******************************************************************
-[LOS_BARONES_DE_LA_CERVEZA].[USP_insertar_tramo_por_recorrido] 
-@Desc: Inserta un registro en la tabla Tramos_Por_Recorrido
-******************************************************************/
-GO
-CREATE PROCEDURE [LOS_BARONES_DE_LA_CERVEZA].[USP_insertar_tramo_por_recorrido]
-(
-	@id_recorrido INT, -- PK de la tabla Recorrido
-	@id_tramo INT -- PK Tramo actual (PK de la tabla Tramo)
-)
-AS
-BEGIN
-	BEGIN TRY
-		BEGIN TRANSACTION 
-			-- id_tramo_por_recorrido se autogenera 
-			DECLARE @id_tpr_anterior INT = (SELECT id_tpr_anterior FROM [LOS_BARONES_DE_LA_CERVEZA].Tpr_Auxiliar);
-			INSERT INTO LOS_BARONES_DE_LA_CERVEZA.Tramos_por_Recorrido
-			(id_recorrido, id_tramo, tramo_anterior)
-			VALUES (@id_recorrido, @id_tramo, @id_tpr_anterior)
-			-- Actualizo el id_trp_siguiente del tramo anterior (estaba en NULL) al actual
-			UPDATE LOS_BARONES_DE_LA_CERVEZA.Tramos_por_Recorrido
-			SET tramo_siguiente = @@IDENTITY
-			WHERE id_tramo_por_recorrido = @id_tpr_anterior;
-			-- Actualizo el id_tpr_anterior de la tabla Auxiliar (pasa a ser tpr actual)
-			UPDATE LOS_BARONES_DE_LA_CERVEZA.Tpr_Auxiliar
-			SET id_tpr_anterior = @@IDENTITY;
-		COMMIT TRANSACTION 
-	END TRY
-	BEGIN CATCH
-		ROLLBACK TRANSACTION
-	END CATCH
-END
-GO
-
-/******************************************************************
-Tabla Tpr_Auxiliar
-@Desc: Tabla Auxiliar para insertar Tramos por Recorrido.
-******************************************************************/
-CREATE TABLE [LOS_BARONES_DE_LA_CERVEZA].Tpr_Auxiliar
-(	
-	id INT IDENTITY PRIMARY KEY NOT NULL,
-	id_tpr_anterior INT NULL
-)
-GO
-
-INSERT INTO [LOS_BARONES_DE_LA_CERVEZA].Tpr_Auxiliar
-VALUES (NULL)
-GO
-/******* FIN Tabla Auxiliar ********/
 
 
 UPDATE [LOS_BARONES_DE_LA_CERVEZA].Tpr_Auxiliar
@@ -514,11 +438,11 @@ WHERE c.compra_fecha BETWEEN '2018-01-01' AND '2018-06-30'
 GROUP BY r.recorrido_codigo
 ORDER BY 2 DESC
 
-/* TOP 5 recorridos con más pasajes comprados (versión completa, pero no hay que solucionar el problema de codigos recorridos repetidos) */
-SELECT TOP 5 r.recorrido_codigo 'Identificador Recorrido', 
-	SUM(c.compra_cantidad) 'Cantidad pasajes(cabinas) comprados',
-	pto_inicio.puerto_nombre 'Puerto Inicial',
-	pto_fin.puerto_nombre 'Puerto Final'
+/* TOP 5 recorridos con más pasajes comprados (versión completa) */
+SELECT TOP 5 r.recorrido_codigo identificador_recorrido, 
+	SUM(c.compra_cantidad) cantidad_pasajes_comprados,
+	pto_inicio.puerto_nombre puerto_inicial,
+	pto_fin.puerto_nombre puerto_final
 FROM LOS_BARONES_DE_LA_CERVEZA.Recorrido r
 	JOIN LOS_BARONES_DE_LA_CERVEZA.Viaje v
 		ON r.id_recorrido = v.viaje_id_recorrido
@@ -633,3 +557,129 @@ FROM LOS_BARONES_DE_LA_CERVEZA.Tramo t
 		ON t.tramo_puerto_destino = puerto_fin.id_puerto 
 WHERE puerto_inicio.puerto_nombre LIKE '%'+''+'%' 
 	AND puerto_fin.puerto_nombre LIKE '%'+''+'%'
+
+--si todavia sigue fuera de servicio en esta query le pongo diferencia cero
+SELECT TOP 5 
+	FS.id_crucero,CRU.identificador, 
+	CRU.modelo,SUM(datediff(DAY, FS.fecha_inicio_fuera_servicio, 
+	ISNULL(FS.fecha_fin_fuera_servicio, FS.fecha_inicio_fuera_servicio))) as diferencia
+FROM LOS_BARONES_DE_LA_CERVEZA.Cruceros_Fuera_Servicio FS 
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Cruceros CRU 
+		ON (CRU.id_crucero = FS.id_crucero)
+WHERE @ano = year(FS.fecha_fin_fuera_servicio) 
+	AND month(FS.fecha_fin_fuera_servicio) > (@semestre - 1) * 6 
+	AND month(FS.fecha_fin_fuera_servicio) <= @semestre * 6
+GROUP BY FS.id_crucero,CRU.identificador,CRU.modelo 
+ORDER BY diferencia DESC
+
+SELECT * 
+FROM LOS_BARONES_DE_LA_CERVEZA.Cruceros_Fuera_Servicio
+
+SELECT TOP 5 
+	FS.id_crucero,CRU.identificador, 
+	CRU.modelo,SUM(datediff(DAY, FS.fecha_inicio_fuera_servicio, 
+	ISNULL(FS.fecha_fin_fuera_servicio, FS.fecha_inicio_fuera_servicio))) as diferencia
+FROM LOS_BARONES_DE_LA_CERVEZA.Cruceros_Fuera_Servicio FS 
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Cruceros CRU 
+		ON (CRU.id_crucero = FS.id_crucero)
+WHERE YEAR(FS.fecha_fin_fuera_servicio) = 2018
+	AND month(FS.fecha_fin_fuera_servicio) >= 1
+	AND month(FS.fecha_fin_fuera_servicio) <= 6
+GROUP BY FS.id_crucero,CRU.identificador,CRU.modelo 
+ORDER BY diferencia DESC
+
+
+/******************************************************************
+---------------------TESTS de la app--------------------- 
+******************************************************************/
+
+-- ABM Roles 
+SELECT r.nombre_rol, f.nombre_funcionalidad, f.descripcion
+FROM LOS_BARONES_DE_LA_CERVEZA.Roles r
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Funcionalidades_Por_Roles fpr
+		ON r.nombre_rol = fpr.rol
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Funcionalidades f
+		ON fpr.funcionalidad = f.nombre_funcionalidad
+
+SELECT *
+FROM LOS_BARONES_DE_LA_CERVEZA.Roles
+
+SELECT * 
+FROM LOS_BARONES_DE_LA_CERVEZA.Funcionalidades
+
+UPDATE LOS_BARONES_DE_LA_CERVEZA.Roles 
+SET nombre_rol = 'Rol_Pepito2'
+WHERE nombre_rol ='Rol_Pepito';
+
+SELECT * 
+FROM LOS_BARONES_DE_LA_CERVEZA.Usuarios
+WHERE usuario = 'nico'
+
+UPDATE LOS_BARONES_DE_LA_CERVEZA.Usuarios
+SET cantidad_intentos_fallidos = 0
+WHERE usuario = 'nico'
+
+UPDATE LOS_BARONES_DE_LA_CERVEZA.Usuarios
+SET habilitado = 1
+WHERE usuario = 'nico'
+
+SELECT * 
+FROM LOS_BARONES_DE_LA_CERVEZA.Tipos_Cabinas
+
+INSERT INTO LOS_BARONES_DE_LA_CERVEZA.Cruceros
+(fecha_alta, modelo, identificador, marca, tipo_servicio)
+VALUES (GETDATE(), 'ModeloLoco', 'CruceroVeloz', 1, 4)
+
+
+DECLARE @pk INT
+EXEC [LOS_BARONES_DE_LA_CERVEZA].[USP_insertar_crucero] 'ModeloLoco', 'CruceroReLosdsdco', 'P&O Cruises', '2018-12-05', 5, @pk OUT
+
+INSERT INTO LOS_BARONES_DE_LA_CERVEZA.Cruceros 
+(fecha_alta, modelo, identificador, marca, tipo_servicio)
+VALUES ('2018-05-02', @fecha_alta, 121), 'ModeloLoco', 'SuperCrucero', 
+[LOS_BARONES_DE_LA_CERVEZA].[UF_id_marca_crucero](''), @tipo_servicio) 
+
+SELECT * 
+FROM LOS_BARONES_DE_LA_CERVEZA.Cruceros
+
+SELECT cru.identificador 'Identificador', cru.modelo 'Modelo', mar.marca 'Marca', COUNT(cab.crucero) 'Cantidad de cabinas'
+FROM LOS_BARONES_DE_LA_CERVEZA.Cruceros cru 
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Marcas_Cruceros mar 
+         ON cru.marca = mar.id_marca 
+    JOIN LOS_BARONES_DE_LA_CERVEZA.Cabinas cab 
+         ON cru.id_crucero = cab.crucero 
+WHERE cru.baja_vida_util != 1 
+	AND GETDATE() >  
+		(
+			SELECT TOP 1 v.viaje_fecha_fin
+			FROM LOS_BARONES_DE_LA_CERVEZA.Viaje v
+				JOIN LOS_BARONES_DE_LA_CERVEZA.Cruceros cru2
+					ON v.viaje_id_crucero = cru2.id_crucero
+			WHERE cru.id_crucero = v.viaje_id_crucero
+			ORDER BY v.viaje_fecha_fin DESC
+		)
+	OR cru.id_crucero IN 
+						(
+							SELECT c.id_crucero
+							FROM LOS_BARONES_DE_LA_CERVEZA.Cruceros c
+							EXCEPT
+							SELECT DISTINCT v.viaje_id_crucero 
+							FROM LOS_BARONES_DE_LA_CERVEZA.Viaje v
+						)
+
+GROUP BY cru.identificador, cru.modelo, mar.marca
+
+SELECT * 
+FROM LOS_BARONES_DE_LA_CERVEZA.Viaje
+WHERE YEAR(viaje_fecha_fin) = '2019'
+
+DECLARE @var NVARCHAR(4) = CAST(2018 AS nvarchar(4));
+
+select convert
+(
+	datetime2(3),
+	(select CONCAT(@var,'-', 'x',' 00:00:00.000')),
+	121
+)
+
+'x' = (case when 1 = 1 then '07-00' else '12-31' end)

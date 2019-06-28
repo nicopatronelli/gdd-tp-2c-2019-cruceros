@@ -113,7 +113,8 @@ namespace FrbaCrucero.AbmRol
         public static void cargarRolesEdicion(ConexionBD conexion, DataGridView dgvRoles)
         {
             // Armamos la query para traernos todos los roles de la BD
-            string consultaRoles = "SELECT nombre_rol 'Nombre Rol' FROM LOS_BARONES_DE_LA_CERVEZA.Roles";
+            // @NOTA: Para no permitir la edición del Rol_Admin directamente no lo mostramos
+            string consultaRoles = "SELECT nombre_rol 'Nombre Rol' FROM LOS_BARONES_DE_LA_CERVEZA.Roles WHERE nombre_rol != 'Rol_Admin'";
 
             // Cargamos los roles al dgv
             SqlDataAdapter dataAdapter = new SqlDataAdapter(consultaRoles, conexion.obtenerConexion());
@@ -135,7 +136,8 @@ namespace FrbaCrucero.AbmRol
         public static void cargarRolesEliminacion(ConexionBD conexion, DataGridView dgvRoles)
         {
             // Armamos la query para traernos los campos nombre_rol y habilitado de todos los roles
-            string consultaRoles = "SELECT nombre_rol, habilitado FROM LOS_BARONES_DE_LA_CERVEZA.Roles";
+            // @NOTA: Para no permitir la deshabilitación del Rol_Admin directamente no lo mostramos
+            string consultaRoles = "SELECT nombre_rol 'Nombre Rol', habilitado FROM LOS_BARONES_DE_LA_CERVEZA.Roles WHERE nombre_rol != 'Rol_Admin'";
 
             // Cargamos los roles al dgv
             SqlDataAdapter dataAdapter = new SqlDataAdapter(consultaRoles, conexion.obtenerConexion());
@@ -144,7 +146,7 @@ namespace FrbaCrucero.AbmRol
             dataAdapter.Fill(dataSet);
             dgvRoles.DataSource = dataSet.Tables[0];
             dgvRoles.ReadOnly = false;
-            dgvRoles.Columns["nombre_rol"].ReadOnly = true;
+            dgvRoles.Columns["Nombre Rol"].ReadOnly = true;
             DGVUtils.autoAjustarColumnas(dgvRoles); // Para autoajustar el tamaño del dgv
 
             conexion.cerrar();

@@ -14,7 +14,7 @@ namespace FrbaCrucero.AbmCrucero.Dominio
         private string identificador;
         private string marca;
         private DateTime fechaAlta;
-        //private List<Cabina> cabinas = new List<Cabina>();
+        private int tipoServicio;
 
         public CruceroBuilder(){}
 
@@ -45,6 +45,12 @@ namespace FrbaCrucero.AbmCrucero.Dominio
             return this;
         }
 
+        public CruceroBuilder setTipoServicio(int tipoServicio)
+        {
+            this.tipoServicio = tipoServicio;
+            return this;
+        }
+
         public Crucero buildCrucero()
         {
             Validaciones.hayCamposObligatoriosNulos(this.modelo, this.identificador, this.marca);
@@ -71,6 +77,11 @@ namespace FrbaCrucero.AbmCrucero.Dominio
         public DateTime getFechaAlta()
         {
             return this.fechaAlta;
+        }
+
+        public int getTipoServicio()
+        {
+            return this.tipoServicio;
         }
     }
 }

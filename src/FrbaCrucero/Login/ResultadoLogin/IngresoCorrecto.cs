@@ -31,7 +31,7 @@ namespace FrbaCrucero.Login
                 else
                 {
                     // El rol NO está habilitado 
-                    MensajeBox.error("El rol asociado a su usuario se encuentra deshabilitado. No es posible ingresar en estos momentos.");
+                    MensajeBox.info("El acceso de clientes está temporalmente suspendido. Disculpe las molestias.");
                 }
             }
             // Si el usuario tiene más de un rol, desplegamos un menú para elija el rol (Funcionalidad a implementar en un futuro)

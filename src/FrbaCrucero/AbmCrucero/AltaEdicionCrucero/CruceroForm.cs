@@ -21,6 +21,7 @@ namespace FrbaCrucero.AbmCrucero
         private string identificadorB;
         private string marca;
         private string identificadorCrucero;
+        private int tipoServicio;
 
         // Constructor para ALTA
         public CruceroForm()
@@ -34,6 +35,10 @@ namespace FrbaCrucero.AbmCrucero
             
             // Establecemos como valor por defecto "Cabina estandar" para los tipos de Cabina
             dgvcmbxTipo.DefaultCellStyle.NullValue = DEF.CABINA_ESTANDAR;
+
+            // Establecemos por defecto el tipo de servicio de 3 estrellas
+            rbtnTresEstrellas.Checked = true;
+
         } // FIN Constructor para ALTA
 
         // Constructor para MODIFICACION
@@ -56,10 +61,11 @@ namespace FrbaCrucero.AbmCrucero
         }
 
         /*** ALTA DE NUEVO CRUCERO ***/
-        private void btnEnviar_Click(object sender, EventArgs e)
+
+        private void btnAlta_Click(object sender, EventArgs e)
         {
             // 1. Obtenemos los atributos del crucero 
-            cargarCampos();
+            this.cargarCampos();
             DateTime fechaAlta = ArchivoConfig.obtenerFechaConfig();
 
             // 2. Construimos el objeto crucero 
@@ -71,6 +77,7 @@ namespace FrbaCrucero.AbmCrucero
                     .setMarca(marca)
                     .setIdentificador(identificadorA, identificadorB)
                     .setFechaAlta(fechaAlta)
+                    .setTipoServicio(this.obtenerTipoServicio())
                     .buildCrucero();
             }
             catch (CamposObligatoriosVaciosException ex)
@@ -83,7 +90,7 @@ namespace FrbaCrucero.AbmCrucero
             if (Crucero.identificadorDisponible(crucero.getIdentificador()).Equals(false))
             {
                 MensajeBox.error("El identificador ingresado para el crucero ya se encuentra registrado.");
-                return; 
+                return;
             }
 
             // 4. Validamos que se haya ingresado al menos una cabina 
@@ -119,15 +126,15 @@ namespace FrbaCrucero.AbmCrucero
                 ex.mensajeError();
                 return;
             }
-        } // FIN btnEnviar_Click()
+        }// FIN btnEnviar_Click()
 
         /*** MODIFICACIÓN DE CRUCERO EXISTENTE ***/
         private void btnGuardar_Click(object sender, EventArgs e)
         {
             string identificadorCruceroAnterior = identificadorCrucero;
-            
-            // 1. Obtenemos los atributos del crucero (ingresados por el usuario) 
-            cargarCampos();
+
+            // 1. Obtenemos los atributos del crucero 
+            this.cargarCampos();
 
             // 2. Construimos el objeto crucero 
             Crucero crucero;
@@ -137,6 +144,7 @@ namespace FrbaCrucero.AbmCrucero
                     .setModelo(modelo)
                     .setMarca(marca)
                     .setIdentificador(identificadorA, identificadorB)
+                    .setTipoServicio(this.obtenerTipoServicio())
                     .buildCrucero();
             }
             catch (CamposObligatoriosVaciosException ex)
@@ -187,6 +195,21 @@ namespace FrbaCrucero.AbmCrucero
             this.identificadorB = txtbxIdentificadorB.Text;
             this.marca = cmbxMarca.SelectedItem.ToString();
             this.identificadorCrucero = txtbxIdentificadorA.Text + '-' + txtbxIdentificadorB.Text;
+            this.tipoServicio = obtenerTipoServicio();
+        }
+
+        private int obtenerTipoServicio()
+        {
+            if (rbtnUnaEstrella.Checked)
+                return 1;
+            else if (rbtnDosEstrellas.Checked)
+                return 2;
+            else if (rbtnTresEstrellas.Checked)
+                return 3;
+            else if (rbtnCuatroEstrellas.Checked)
+                return 4;
+            else
+                return 5;
         }
 
         private int calcularCantidadCabinas()
@@ -279,22 +302,30 @@ namespace FrbaCrucero.AbmCrucero
 
         private void popularCampos()
         {
-            string consulta = "SELECT cru.modelo modelo, cru.identificador identificador, mar.marca marca "
+            string consulta = "SELECT cru.modelo modelo, mar.marca marca "
                             + "FROM LOS_BARONES_DE_LA_CERVEZA.Cruceros cru "
                                 + "JOIN LOS_BARONES_DE_LA_CERVEZA.Marcas_Cruceros mar "
                                     + "ON cru.marca = mar.id_marca "
                             + "WHERE cru.identificador = @identificador_crucero";
             List<Parametro> parametros = new List<Parametro>();
-            Parametro paramIdentificadorCrucero = new Parametro("@identificador_crucero", SqlDbType.NChar, identificadorCrucero, 50);
+            Parametro paramIdentificadorCrucero = new Parametro("@identificador_crucero", SqlDbType.NVarChar, identificadorCrucero, 50);
             parametros.Add(paramIdentificadorCrucero);
             Query miConsulta = new Query(consulta, parametros);
             SqlDataReader camposCrucero = miConsulta.ejecutarReaderFila();
-            string[] identificadorPartes = identificadorCrucero.Split('-');
-            txtbxIdentificadorA.Text = identificadorPartes[0];
-            txtbxIdentificadorB.Text = identificadorPartes[1];
+            camposCrucero.Read();
             txtbxModelo.Text = Convert.ToString(camposCrucero["modelo"]);
             cmbxMarca.SelectedItem = Convert.ToString(camposCrucero["marca"]);
             miConsulta.cerrarConexionReader();
+
+            string[] identificadorPartes = identificadorCrucero.Split('-');
+            txtbxIdentificadorA.Text = identificadorPartes[0];
+            txtbxIdentificadorB.Text = identificadorPartes[1];
+
+        }
+
+        private void btnCancelar_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
 
     }

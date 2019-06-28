@@ -565,6 +565,7 @@ ALTER TABLE LOS_BARONES_DE_LA_CERVEZA.Roles_Por_Usuario
 ADD CONSTRAINT FK_usuario -- Nombre de la FK
 FOREIGN KEY (usuario)
 REFERENCES LOS_BARONES_DE_LA_CERVEZA.Usuarios(usuario)
+ON UPDATE CASCADE
 GO
 
 -- rol de Roles_Por_Usuario lo vinculo con nombre_rol de Roles
@@ -573,6 +574,7 @@ ALTER TABLE LOS_BARONES_DE_LA_CERVEZA.Roles_Por_Usuario
 ADD CONSTRAINT FK_rol -- Nombre de la FK
 FOREIGN KEY (rol)
 REFERENCES LOS_BARONES_DE_LA_CERVEZA.Roles(nombre_rol)
+ON UPDATE CASCADE
 GO
 /* FIN - FK's Tabla intermedia Roles_Por_Usuario */
 
@@ -583,6 +585,7 @@ ALTER TABLE LOS_BARONES_DE_LA_CERVEZA.Funcionalidades_Por_Roles
 ADD CONSTRAINT FK_rol_funcionalidades -- Nombre de la FK
 FOREIGN KEY (rol)
 REFERENCES LOS_BARONES_DE_LA_CERVEZA.Roles(nombre_rol)
+ON UPDATE CASCADE
 GO
 
 -- funcionalidad de Funcionalidades_Por_Roles lo vinculo con nombre_funcionalidad de Funcionalidades
@@ -591,6 +594,7 @@ ALTER TABLE LOS_BARONES_DE_LA_CERVEZA.Funcionalidades_Por_Roles
 ADD CONSTRAINT FK_funcionalidad -- Nombre de la FK
 FOREIGN KEY (funcionalidad)
 REFERENCES LOS_BARONES_DE_LA_CERVEZA.Funcionalidades(nombre_funcionalidad)
+ON UPDATE CASCADE
 GO
 /* FIN - FK's Tabla intermedia Funcionalidades_Por_Roles */
 
@@ -882,6 +886,7 @@ CREATE PROCEDURE [LOS_BARONES_DE_LA_CERVEZA].[USP_insertar_crucero]
 	@identificador NVARCHAR(50),
 	@marca NVARCHAR(255),
 	@fecha_alta NVARCHAR(255),
+	@tipo_servicio INT,
 	@id_crucero_asignada INT OUT -- Retornamos el id_crucero asignado por SQL Server (IDENTITY)
 )
 AS
@@ -890,9 +895,9 @@ BEGIN
 		BEGIN TRANSACTION 
 			-- id_crucero se autogenera 
 			INSERT INTO LOS_BARONES_DE_LA_CERVEZA.Cruceros 
-			(fecha_alta, modelo, identificador, marca)
+			(fecha_alta, modelo, identificador, marca, tipo_servicio)
 			VALUES (CONVERT(DATETIME2(3), @fecha_alta, 121), @modelo, @identificador, 
-				[LOS_BARONES_DE_LA_CERVEZA].[UF_id_marca_crucero](@marca))
+				[LOS_BARONES_DE_LA_CERVEZA].[UF_id_marca_crucero](@marca), @tipo_servicio) 
 
 			SET @id_crucero_asignada = @@IDENTITY;
 		COMMIT TRANSACTION 
@@ -914,6 +919,7 @@ CREATE PROCEDURE [LOS_BARONES_DE_LA_CERVEZA].[USP_actualizar_crucero]
 	@modelo NVARCHAR(50),
 	@identificador NVARCHAR(50),
 	@marca NVARCHAR(255),
+	@tipo_servicio INT,
 	@id_crucero INT OUT -- Retornamos el id_crucero asignado por SQL Server (IDENTITY)
 )
 AS
@@ -924,7 +930,8 @@ BEGIN
 			IF @identificador = @identificador_anterior 
 				BEGIN
 					UPDATE LOS_BARONES_DE_LA_CERVEZA.Cruceros
-					SET modelo = @modelo, marca = [LOS_BARONES_DE_LA_CERVEZA].[UF_id_marca_crucero](@marca)
+					SET modelo = @modelo, marca = [LOS_BARONES_DE_LA_CERVEZA].[UF_id_marca_crucero](@marca), 
+						tipo_servicio = @tipo_servicio
 					WHERE identificador = @identificador_anterior;
 					SET @id_crucero = (
 						SELECT id_crucero
@@ -940,7 +947,8 @@ BEGIN
 							-- Si el identificador está disponible, insertamos 
 							BEGIN
 								UPDATE LOS_BARONES_DE_LA_CERVEZA.Cruceros
-								SET modelo = @modelo, identificador = @identificador, marca = [LOS_BARONES_DE_LA_CERVEZA].[UF_id_marca_crucero](@marca)
+								SET modelo = @modelo, identificador = @identificador, 
+									marca = [LOS_BARONES_DE_LA_CERVEZA].[UF_id_marca_crucero](@marca), tipo_servicio = @tipo_servicio
 								WHERE identificador = @identificador_anterior;
 								SET @id_crucero = (
 									SELECT id_crucero
@@ -1835,23 +1843,23 @@ GO
 /*******************************************************************************
 							FIN - TRIGGERS
 ********************************************************************************/
-/*
-INSERT INTO [LOS_BARONES_DE_LA_CERVEZA].Cruceros_Fuera_Servicio (id_crucero,fecha_inicio_fuera_servicio, fecha_fin_fuera_servicio) 
-VALUES(1, (select convert(datetime2(3),'2016-05-10 07:00:00.000',121)), (select convert(datetime2(3),'2016-05-14 19:00:00.000',121)) )
-GO
-INSERT INTO [LOS_BARONES_DE_LA_CERVEZA].Cruceros_Fuera_Servicio (id_crucero,fecha_inicio_fuera_servicio, fecha_fin_fuera_servicio) 
-VALUES(1, (select convert(datetime2(3),'2018-05-10 07:00:00.000',121)), (select convert(datetime2(3),'2018-05-12 19:00:00.000',121)) )
-GO
-INSERT INTO [LOS_BARONES_DE_LA_CERVEZA].Cruceros_Fuera_Servicio (id_crucero,fecha_inicio_fuera_servicio, fecha_fin_fuera_servicio) 
-VALUES(2, (select convert(datetime2(3),'2018-05-10 07:00:00.000',121)), (select convert(datetime2(3),'2018-07-10 19:00:00.000',121)) )
-GO
-INSERT INTO [LOS_BARONES_DE_LA_CERVEZA].Cruceros_Fuera_Servicio (id_crucero,fecha_inicio_fuera_servicio, fecha_fin_fuera_servicio) 
-VALUES(2, (select convert(datetime2(3),'2017-05-10 07:00:00.000',121)), NULL)
-GO
-INSERT INTO [LOS_BARONES_DE_LA_CERVEZA].Cruceros_Fuera_Servicio (id_crucero,fecha_inicio_fuera_servicio, fecha_fin_fuera_servicio) 
-VALUES(3, (select convert(datetime2(3),'2017-05-10 07:00:00.000',121)), NULL)
-GO
 
-select * from LOS_BARONES_DE_LA_CERVEZA.Cruceros_Fuera_Servicio
+--INSERT INTO [LOS_BARONES_DE_LA_CERVEZA].Cruceros_Fuera_Servicio (id_crucero,fecha_inicio_fuera_servicio, fecha_fin_fuera_servicio) 
+--VALUES(1, (select convert(datetime2(3),'2016-05-10 07:00:00.000',121)), (select convert(datetime2(3),'2016-05-14 19:00:00.000',121)) )
+--GO
+--INSERT INTO [LOS_BARONES_DE_LA_CERVEZA].Cruceros_Fuera_Servicio (id_crucero,fecha_inicio_fuera_servicio, fecha_fin_fuera_servicio) 
+--VALUES(1, (select convert(datetime2(3),'2018-05-10 07:00:00.000',121)), (select convert(datetime2(3),'2018-05-12 19:00:00.000',121)) )
+--GO
+--INSERT INTO [LOS_BARONES_DE_LA_CERVEZA].Cruceros_Fuera_Servicio (id_crucero,fecha_inicio_fuera_servicio, fecha_fin_fuera_servicio) 
+--VALUES(2, (select convert(datetime2(3),'2018-05-10 07:00:00.000',121)), (select convert(datetime2(3),'2018-07-10 19:00:00.000',121)) )
+--GO
+--INSERT INTO [LOS_BARONES_DE_LA_CERVEZA].Cruceros_Fuera_Servicio (id_crucero,fecha_inicio_fuera_servicio, fecha_fin_fuera_servicio) 
+--VALUES(2, (select convert(datetime2(3),'2017-05-10 07:00:00.000',121)), NULL)
+--GO
+--INSERT INTO [LOS_BARONES_DE_LA_CERVEZA].Cruceros_Fuera_Servicio (id_crucero,fecha_inicio_fuera_servicio, fecha_fin_fuera_servicio) 
+--VALUES(3, (select convert(datetime2(3),'2017-05-10 07:00:00.000',121)), NULL)
+--GO
 
-select * from LOS_BARONES_DE_LA_CERVEZA.UF_listado_fuera_de_servicio(2018, 1) */
+--select * from LOS_BARONES_DE_LA_CERVEZA.Cruceros_Fuera_Servicio
+
+--select * from LOS_BARONES_DE_LA_CERVEZA.UF_listado_fuera_de_servicio(2018, 1) 

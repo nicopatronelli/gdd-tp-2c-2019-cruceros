@@ -102,23 +102,14 @@ namespace FrbaCrucero.AbmRol
                 return;
             }
 
-            // 3. Bloqueamos la modificación del Rol_Cliente y el Rol_Empresa
-            if (modo.Equals("EDICION"))
+            // 3. Si se está modificando el Rol_Cliente, validamos que NO se esté modificando el nombre del rol
+            if (rolAEditar.Equals(DEF.ROL_CLIENTE) && !nombreRol.Equals(DEF.ROL_CLIENTE))
             {
-                if (rolAEditar.Equals(DEF.ROL_CLIENTE))
-                {
-                    MensajeBox.error("No está permitido modificar el Rol_Cliente.");
-                    return; // Abortamos
-                }
-                if (rolAEditar.Equals(DEF.ROL_ADMIN))
-                {
-                    MensajeBox.error("No está permitido modificar el Rol_Admin");
-                    return; // Abortamos
-                }
-            } // Fin bloqueo modificación Rol_Cliente y y Rol_Empresa
+                MensajeBox.info("No se puede cambiar el nombre del rol Cliente");
+                return;
+            }
 
-
-            // 4. Validamos que el nombre del rol esté disponible 
+            // 3. Validamos que el nombre del rol esté disponible 
             if (nombreRol != rolAEditar)
             {
                 if (NombreRol.estaDisponible(nombreRol).Equals(false))
@@ -130,11 +121,11 @@ namespace FrbaCrucero.AbmRol
             // Si nombreRol != rolAEditar significa que estamos en modo edición y el usuario 
             // cambió el nombre del rol. 
 
-            // 5. Capturamos los checkbox de funcionalidades seleccionados
+            // 4. Capturamos los checkbox de funcionalidades seleccionados
             Dictionary<string, bool> funcionalidades = Funcionalidades.seleccionadas(chbxAbmCruceros.Checked, chbxAbmPuertos.Checked, chbxAbmRecorridos.Checked,
                 chbxAbmRol.Checked, chbxComprarReservarViaje.Checked, chbxGenerarViaje.Checked, chbxListadosEstadisticos.Checked, chbxPagoReserva.Checked);
   
-            // 6. Validamos que el usuario haya seleccionado al menos una funcionalidad
+            // 5. Validamos que el usuario haya seleccionado al menos una funcionalidad
             if (Funcionalidades.alMenosUna(funcionalidades).Equals(false))
             {
                 // El usuario NO selecciono ninguna funcionalidad
@@ -142,7 +133,7 @@ namespace FrbaCrucero.AbmRol
                 return;
             }
 
-            // 7. En este punto ya podemos insertar o actualizar el nuevo rol en la BD
+            // 6. En este punto ya podemos insertar o actualizar el nuevo rol en la BD
             if (modo.Equals("EDICION"))
             { /*** INICIO MODO EDICIÓN ***/
 

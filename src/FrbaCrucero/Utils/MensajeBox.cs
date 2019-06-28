@@ -18,7 +18,7 @@ namespace FrbaCrucero.Utils
             MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
-        public static void aviso(string mensaje)
+        public static void warnning(string mensaje)
         {
             msgbox = MessageBox.Show(mensaje, empresa,
             MessageBoxButtons.OK, MessageBoxIcon.Exclamation);

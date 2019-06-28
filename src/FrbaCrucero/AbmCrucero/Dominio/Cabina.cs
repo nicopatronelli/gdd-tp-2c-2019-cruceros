@@ -11,8 +11,8 @@ namespace FrbaCrucero.AbmCrucero
 {
     public class Cabina
     {   
-        private int numero;
-        private int piso;
+        public int numero;
+        public int piso;
         private string tipo;
 
         public Cabina()
