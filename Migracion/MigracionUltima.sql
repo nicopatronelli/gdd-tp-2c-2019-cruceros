@@ -24,8 +24,16 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_D
     DROP TABLE LOS_BARONES_DE_LA_CERVEZA.Reserva
 GO
 
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.ReservaAux'))
+    DROP TABLE LOS_BARONES_DE_LA_CERVEZA.ReservaAux
+GO
+
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.Compra'))
     DROP TABLE LOS_BARONES_DE_LA_CERVEZA.Compra
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.CompraAux'))
+    DROP TABLE LOS_BARONES_DE_LA_CERVEZA.CompraAux
 GO
 
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.Forma_de_pago'))
@@ -482,6 +490,18 @@ Tabla Compras
 y clientes.
 ******************************************************************/
 CREATE TABLE [LOS_BARONES_DE_LA_CERVEZA].Compra(	
+	id_compra INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+	compra_fecha datetime2(3),
+	compra_cantidad int,
+	compra_numero_tarjeta nvarchar(50),
+	compra_precio_con_recargo decimal(18,2),
+	compra_id_forma_de_pago int,
+	compra_id_cliente int,
+	compra_id_viaje int
+)
+GO
+
+CREATE TABLE [LOS_BARONES_DE_LA_CERVEZA].CompraAux(	
 	id_compra INT PRIMARY KEY NOT NULL,
 	compra_fecha datetime2(3),
 	compra_cantidad int,
@@ -489,25 +509,31 @@ CREATE TABLE [LOS_BARONES_DE_LA_CERVEZA].Compra(
 	compra_precio_con_recargo decimal(18,2),
 	compra_id_forma_de_pago int,
 	compra_id_cliente int IDENTITY(1,1),
-	compra_id_viaje int,
-	compra_tipo_cabina INT
+	compra_id_viaje int
 )
 GO
-
 /******************************************************************
 Tabla Reserva
 @Desc: Tablas con las reservas de viajes realizadas por los 
 administradores y clientes. 
 ******************************************************************/
 CREATE TABLE [LOS_BARONES_DE_LA_CERVEZA].Reserva(	
-	id_reserva INT PRIMARY KEY NOT NULL,
+	id_reserva INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
 	reserva_fecha datetime2(3),
 	reserva_cantidad_pasajes int,
-	reserva_cliente int  IDENTITY(1,1),
+	reserva_cliente int,
 	reserva_viaje int
 )
 GO
 
+CREATE TABLE [LOS_BARONES_DE_LA_CERVEZA].ReservaAux(	
+	id_reserva INT PRIMARY KEY NOT NULL,
+	reserva_fecha datetime2(3),
+	reserva_cantidad_pasajes int,
+	reserva_cliente int IDENTITY(1,1),
+	reserva_viaje int
+)
+GO
 /******************************************************************
 Tabla Factura
 @Desc: 
@@ -1377,13 +1403,13 @@ GO
 
 /******************************************************************
 [LOS_BARONES_DE_LA_CERVEZA].[UF_listado_cabinas_libres_por_viajes] 
-@Desc: 
+@Desc: Elegimos por promedio y lo ponemos en la estrategia
 ******************************************************************/
 
 --Top 5 de los recorridos con más cabinas libres en cada uno de los viajes realizados.
-/*
+
 create function LOS_BARONES_DE_LA_CERVEZA.UF_listado_cabinas_libres_por_viajes (@ano int, @semestre int)
-RETURNS @Tabla_Resultado table (nada int)
+RETURNS @Tabla_Resultado table (recorridosFinales int, promedio int)
 AS begin
 
 	declare @inicioSemestre datetime2(3), @finSemestre datetime2(3)
@@ -1391,19 +1417,25 @@ AS begin
 	set @finSemestre =    convert(datetime2(3),(select CONCAT((select CAST(@ano AS varchar)),'-' , (case when @semestre = 1 then '07-01' else '12-31' end),' 00:00:00.000')),121)
 
 	INSERT INTO @Tabla_Resultado
-	--si todavia sigue fuera de servicio en esta query le pongo diferencia cero
-	select top 5 FS.id_crucero,CRU.identificador, CRU.modelo,
-	(SUM(datediff(DAY, case when FS.fecha_inicio_fuera_servicio < @inicioSemestre then @inicioSemestre else FS.fecha_inicio_fuera_servicio end, case when FS.fecha_fin_fuera_servicio > @finSemestre then FS.fecha_fin_fuera_servicio end ))) as diferencia
-	from LOS_BARONES_DE_LA_CERVEZA.Cruceros_Fuera_Servicio FS join LOS_BARONES_DE_LA_CERVEZA.Cruceros CRU on (CRU.id_crucero = FS.id_crucero)
-	--con que una de las fechas este dentro del semestre ya tengo dias para contar
-	where (@ano = year(FS.fecha_fin_fuera_servicio) and month(FS.fecha_fin_fuera_servicio) > (@semestre - 1) * 6 and month(FS.fecha_fin_fuera_servicio) <= @semestre * 6)				--caso 1 fecha fin adentro
-		OR(@ano = year(FS.fecha_inicio_fuera_servicio) and month(FS.fecha_inicio_fuera_servicio) > (@semestre - 1) * 6 and month(FS.fecha_inicio_fuera_servicio) <= @semestre * 6)	--caso 2 fecha inicio adentro
-	group by FS.id_crucero,CRU.identificador,CRU.modelo order by diferencia desc
-	
+
+	 select TOP 5 Sumas.recorri, AVG(Sumas.cabinas) as promedios from
+	 --select recorri, viaj, cabinas from 
+	 (select VI.viaje_id_recorrido as recorri , VI.id_viaje as viaj, COUNT(CAB.id_cabina) cabinas
+	  from LOS_BARONES_DE_LA_CERVEZA.Recorrido REC join LOS_BARONES_DE_LA_CERVEZA.Viaje VI on REC.id_recorrido = VI.viaje_id_recorrido
+	  join LOS_BARONES_DE_LA_CERVEZA.Cabinas CAB on CAB.crucero = VI.viaje_id_crucero
+	  where CAB.id_cabina NOT IN (select ECV.id_cabina from LOS_BARONES_DE_LA_CERVEZA.Estado_Cabinas_Por_Viaje ECV where ECV.id_viaje = VI.id_viaje and ECV.compra IS NOT NULL)
+		and (@ano = year(VI.viaje_fecha_fin_estimada) and month(VI.viaje_fecha_fin_estimada) > (@semestre - 1) * 6 and month(VI.viaje_fecha_fin_estimada) < @semestre * (case when @semestre = 1 then 7 else 12 end))	--caso 1 fecha fin adentro
+		OR(@ano = year(VI.viaje_fecha_inicio) and month(VI.viaje_fecha_inicio) > (@semestre - 1) * 6 and month(VI.viaje_fecha_inicio) < @semestre * (case when @semestre = 1 then 7 else 12 end))						--caso 2 fecha inicio adentro
+		OR(VI.viaje_fecha_inicio < @inicioSemestre and VI.viaje_fecha_fin_estimada > @finSemestre)																														--caso 3 ambas fechas afuera pero engloban el intervalo
+	  group by VI.viaje_id_recorrido, VI.id_viaje) as Sumas
+
+	  group by Sumas.recorri order by promedios desc
 	return
 end
 GO
-*/
+
+--select * from LOS_BARONES_DE_LA_CERVEZA.UF_listado_cabinas_libres_por_viajes(2018, 1)
+
 /******************************************************************
 [LOS_BARONES_DE_LA_CERVEZA].[UF_crear_username_Cliente] 
 @Desc: 
@@ -1604,8 +1636,13 @@ Migramos los clientes y les asociamos un username de la tabla maestra.
 @DESC: Les generamos un username unico.
 ******************************************************************/
 
-EXEC LOS_BARONES_DE_LA_CERVEZA.[USP_migrar_usuarios_clientes]		--tarda mas de 3 mins en hacer este SP
+--EXEC LOS_BARONES_DE_LA_CERVEZA.[USP_migrar_usuarios_clientes]		--tarda mas de 3 mins en hacer este SP      SI NO LOS VOY A MIGRAR PUEDO USAR EL INSERT PARA CLIENTES EN VEZ DEL CURSOR
 
+INSERT INTO [LOS_BARONES_DE_LA_CERVEZA].Clientes(usuario, nombre, apellido, dni, direccion, telefono, mail, fecha_nacimiento, nro_tarjeta)
+select distinct NULL,replace(replace(replace(MR.CLI_NOMBRE,' ','<>'),'><',''),'<>',' '), replace(replace(replace(MR.CLI_APELLIDO,' ','<>'),'><',''),'<>',' '), CLI_DNI, CLI_DIRECCION, CLI_TELEFONO, CLI_MAIL, CLI_FECHA_NAC, NULL
+from gd_esquema.Maestra MR
+
+-- TARDA 5 segundos
 /******************************************************************
 Migramos las marcas de cruceros existentes. 
 @DESC: Estos valores no se pueden modificar ni agregar nuevos marcas.
@@ -1696,43 +1733,48 @@ Migramos las compras de la tabla maestra.
 de nuestra tabla
 ******************************************************************/
 
-INSERT INTO [LOS_BARONES_DE_LA_CERVEZA].Compra
+INSERT INTO [LOS_BARONES_DE_LA_CERVEZA].CompraAux
 (	id_compra,
 	compra_fecha,
-	compra_cantidad,
-	compra_numero_tarjeta,		--Es NULL porque son todas compras en efectivo y el dato no esta en la maestra
 	compra_precio_con_recargo,
-	compra_id_forma_de_pago,
-	compra_id_viaje,
-	compra_tipo_cabina )
+	compra_id_viaje )
 SELECT DISTINCT
 	MR.PASAJE_CODIGO,
 	MR.PASAJE_FECHA_COMPRA,
-	1,									--En la maestra todos compran de a una sola cabina
-	NULL,								--No hay nro tarjeta en la maestra
 	MR.PASAJE_PRECIO,
-	2,									--Como no hay numeros de tarjeta en la maestra asumo que todas las formas de pago fueron efectivo
 	(SELECT id_viaje FROM [LOS_BARONES_DE_LA_CERVEZA].Viaje VI where 
 			VI.viaje_id_crucero = (select id_crucero from LOS_BARONES_DE_LA_CERVEZA.Cruceros where MR.CRUCERO_IDENTIFICADOR = identificador and MR.CRUCERO_MODELO = modelo)
 			and VI.viaje_id_recorrido = (select REC.id_recorrido from LOS_BARONES_DE_LA_CERVEZA.Recorrido REC join LOS_BARONES_DE_LA_CERVEZA.Tramos_por_Recorrido TRE on REC.id_recorrido = TRE.id_recorrido 
 										  join LOS_BARONES_DE_LA_CERVEZA.Tramo TA on TRE.id_tramo = TA.id_tramo
 										  where MR.PUERTO_DESDE = (select P1.puerto_nombre from LOS_BARONES_DE_LA_CERVEZA.Puerto P1 where P1.id_puerto = TA.tramo_puerto_inicio) 
 										    and MR.PUERTO_HASTA = (select P2.puerto_nombre from LOS_BARONES_DE_LA_CERVEZA.Puerto P2 where P2.id_puerto = TA.tramo_puerto_destino))
-		    and VI.viaje_fecha_inicio = MR.FECHA_SALIDA and MR.FECHA_LLEGADA_ESTIMADA = viaje_fecha_fin_estimada and MR.FECHA_LLEGADA = viaje_fecha_fin),
-	(select id_tipo_cabina from LOS_BARONES_DE_LA_CERVEZA.Tipos_Cabinas TI where TI.tipo_cabina = MR.CABINA_TIPO)
-FROM (select CRUCERO_IDENTIFICADOR, CRUCERO_MODELO, PUERTO_DESDE,PUERTO_HASTA, FECHA_LLEGADA, FECHA_SALIDA, FECHA_LLEGADA_ESTIMADA, CABINA_TIPO, PASAJE_CODIGO, PASAJE_FECHA_COMPRA, PASAJE_PRECIO 
+		    and VI.viaje_fecha_inicio = MR.FECHA_SALIDA and MR.FECHA_LLEGADA_ESTIMADA = viaje_fecha_fin_estimada and MR.FECHA_LLEGADA = viaje_fecha_fin)
+FROM (select PASAJE_CODIGO,PASAJE_FECHA_COMPRA,PASAJE_PRECIO,CRUCERO_IDENTIFICADOR,CRUCERO_MODELO,PUERTO_DESDE,PUERTO_HASTA,FECHA_SALIDA,FECHA_LLEGADA_ESTIMADA,FECHA_LLEGADA
 	  from gd_esquema.Maestra where PASAJE_CODIGO IS NOT NULL) MR
 GO
 
-/*con esto veo que el combo (dni,telefono) es unico, le agrego o le saco el distinct y queda la misma cantidad e filas
-select dniRepetidos.dni, filtrada.telefono from (select top 311 count(cli.dni) as vecesRepetida, cli.dni 
-												 from LOS_BARONES_DE_LA_CERVEZA.Clientes cli
-												 group by cli.dni 
-												 order by 1 desc) as dniRepetidos 
-												 inner join LOS_BARONES_DE_LA_CERVEZA.Clientes filtrada on filtrada.dni = dniRepetidos.dni
-*/
+Set Identity_Insert [LOS_BARONES_DE_LA_CERVEZA].Compra ON  
 
---select * from LOS_BARONES_DE_LA_CERVEZA.Compra where compra_id_cliente IS NOT NULL
+insert into LOS_BARONES_DE_LA_CERVEZA.Compra 
+(id_compra,
+ compra_fecha,
+ compra_cantidad,
+ compra_numero_tarjeta,			--Es NULL porque son todas compras en efectivo y el dato no esta en la maestra
+ compra_precio_con_recargo,
+ compra_id_forma_de_pago,
+ compra_id_viaje
+ )
+select
+ id_compra,
+ compra_fecha,
+ 1,								--En la maestra todos compran de a una sola cabina
+ NULL,							--No hay nro tarjeta en la maestra
+ compra_precio_con_recargo,
+ 2,								--Como no hay numeros de tarjeta en la maestra asumo que todas las formas de pago fueron efectivo
+ compra_id_viaje
+ from LOS_BARONES_DE_LA_CERVEZA.CompraAux
+
+Set Identity_Insert [LOS_BARONES_DE_LA_CERVEZA].Compra OFF
 
 ---------------------------------------------HASTA ACA DE 1min 12 segundos (solo compras tarda 50seg sin migrar clientes)
 /******************************************************************
@@ -1741,7 +1783,7 @@ Migramos las reservas de la tabla maestra.
 de nuestra tabla
 ******************************************************************/
 
-INSERT INTO [LOS_BARONES_DE_LA_CERVEZA].Reserva
+INSERT INTO [LOS_BARONES_DE_LA_CERVEZA].ReservaAux
 (	id_reserva,
 	reserva_fecha,
 	reserva_cantidad_pasajes,
@@ -1756,17 +1798,29 @@ SELECT DISTINCT
 								  where MR.PUERTO_DESDE = (select P1.puerto_nombre from LOS_BARONES_DE_LA_CERVEZA.Puerto P1 where P1.id_puerto = TA.tramo_puerto_inicio) 
 								  and MR.PUERTO_HASTA = (select P2.puerto_nombre from LOS_BARONES_DE_LA_CERVEZA.Puerto P2 where P2.id_puerto = TA.tramo_puerto_destino))
 	 and VI.viaje_fecha_inicio = MR.FECHA_SALIDA and MR.FECHA_LLEGADA_ESTIMADA = viaje_fecha_fin_estimada and MR.FECHA_LLEGADA = viaje_fecha_fin)
-FROM (select CLI_DNI, CLI_NOMBRE, CLI_APELLIDO, CRUCERO_IDENTIFICADOR, CRUCERO_MODELO, PUERTO_DESDE,PUERTO_HASTA, FECHA_SALIDA,FECHA_LLEGADA, FECHA_LLEGADA_ESTIMADA, RESERVA_CODIGO, RESERVA_FECHA
+FROM (select CRUCERO_IDENTIFICADOR, CRUCERO_MODELO, PUERTO_DESDE,PUERTO_HASTA, FECHA_SALIDA,FECHA_LLEGADA, FECHA_LLEGADA_ESTIMADA, RESERVA_CODIGO, RESERVA_FECHA
 	  from gd_esquema.Maestra where PASAJE_CODIGO IS NULL) MR
 GO
 
+Set Identity_Insert [LOS_BARONES_DE_LA_CERVEZA].Reserva ON  
+
+insert into LOS_BARONES_DE_LA_CERVEZA.Reserva 
+(id_reserva,
+ reserva_cantidad_pasajes,
+ reserva_cliente,
+ reserva_fecha,
+ reserva_viaje
+ )
+select
+ id_reserva,
+ reserva_cantidad_pasajes,
+ reserva_cliente,
+ reserva_fecha,
+ reserva_viaje
+ from LOS_BARONES_DE_LA_CERVEZA.ReservaAux
+
+Set Identity_Insert [LOS_BARONES_DE_LA_CERVEZA].Reserva OFF
 ---------------------------------------------HASTA ACA DE 1m 47s segundos (solo reservas tarda como 30 segs sin migrar clientes)
-/******************************************************************
-Asociamos los id_Cliente a las compras y reservas usando un SP
-******************************************************************/
-
---EXEC LOS_BARONES_DE_LA_CERVEZA.USP_asociar_Clientes_Compra_Reserva
-
 /******************************************************************
 Migramos las cabinas de todos los cruceros.
 @DESC: En la maestra vemos que solo figuran las compradas.
@@ -1783,7 +1837,7 @@ SELECT DISTINCT
 	  and MR.CRU_FABRICANTE = ( select distinct MAR.marca from LOS_BARONES_DE_LA_CERVEZA.Marcas_Cruceros MAR where MAR.id_marca = CR.marca)),
 	 MR.CABINA_NRO,
 	 MR.CABINA_PISO
-FROM gd_esquema.Maestra MR WHERE CRUCERO_MODELO IS NOT NULL
+FROM gd_esquema.Maestra MR
 GO
 
 ---------------------------------------------HASTA ACA DE 1m 48s (tarda 1 segundo) 1m 32s tambien
@@ -1861,9 +1915,11 @@ GO
 
 select * from LOS_BARONES_DE_LA_CERVEZA.Cruceros_Fuera_Servicio
 
-select * from LOS_BARONES_DE_LA_CERVEZA.UF_listado_fuera_de_servicio(2018, 1)*/
+select * from LOS_BARONES_DE_LA_CERVEZA.UF_listado_fuera_de_servicio(2018, 1)
 
-ALTER TABLE LOS_BARONES_DE_LA_CERVEZA.Compra ALTER COLUMN compra_id_cliente int;
+select * from LOS_BARONES_DE_LA_CERVEZA.UF_listado_cabinas_libres_por_viajes(2018, 1)
+*/
+
 ALTER TABLE LOS_BARONES_DE_LA_CERVEZA.Reserva ALTER COLUMN reserva_cliente int;
 
 -- usuario de Clientes lo vinculo con usuario de Usuarios 
