@@ -42,7 +42,8 @@ namespace FrbaCrucero.PagoReserva
             Query miConsulta;
             try
             {
-             consulta = "   select top 1  [id_reserva] ,[reserva_fecha] ,[reserva_cantidad_pasajes] ,[reserva_cliente] ,[reserva_viaje] FROM [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Reserva] "
+             consulta = "   select top 1  r.id_reserva ,r.reserva_fecha ,r.reserva_cantidad_pasajes ,r.reserva_cliente ,r.reserva_viaje FROM [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Reserva] r "
+                        + " join [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Estado_Cabinas_Por_Viaje] cxv   ON r.id_reserva = cxv.reserva "
                                 + " WHERE id_reserva = " + idReservaText.Text;
              miConsulta = new Query(consulta, new List<Parametro>());
             datosReserva = miConsulta.ejecutarReaderFila();

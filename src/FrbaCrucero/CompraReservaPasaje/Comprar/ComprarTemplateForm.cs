@@ -321,9 +321,10 @@ namespace FrbaCrucero.CompraReservaPasaje
         public int generarReserva()
         {
             List<Parametro> parametros = new List<Parametro>();
-
+            int cantidadCabinas = 0;
+            displayCabinas.ForEach(x => cantidadCabinas += (int)x.cantidadSeleccionadaNumeric.Value);
             //agregamos parametro cantidad de cabinas
-            Parametro paramCantidadCabinas = new Parametro("@cantidad_cabinas", SqlDbType.Int, 5);
+            Parametro paramCantidadCabinas = new Parametro("@cantidad_cabinas", SqlDbType.Int, cantidadCabinas);
             parametros.Add(paramCantidadCabinas);
 
             // Añadimos el parámetro identificador del viaje asociado a la compra
