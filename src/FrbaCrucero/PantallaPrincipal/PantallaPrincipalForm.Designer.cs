@@ -132,6 +132,7 @@
             this.btnPagarReserva.TabIndex = 18;
             this.btnPagarReserva.Text = "Pagar Reserva";
             this.btnPagarReserva.UseVisualStyleBackColor = true;
+            this.btnPagarReserva.Click += new System.EventHandler(this.btnPagarReserva_Click);
             // 
             // btnComprarReservar
             // 

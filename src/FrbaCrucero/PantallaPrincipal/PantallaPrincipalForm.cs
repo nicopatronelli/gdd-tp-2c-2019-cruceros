@@ -11,6 +11,7 @@ using FrbaCrucero.AbmRol;
 using FrbaCrucero.AbmCrucero;
 using FrbaCrucero.Utils;
 using FrbaCrucero.CompraReservaPasaje;
+using FrbaCrucero.PagoReserva;
 
 namespace FrbaCrucero.PantallaPrincipal
 {   
@@ -83,6 +84,13 @@ namespace FrbaCrucero.PantallaPrincipal
         {
             CompraReservaForm formCompraReservaPasaje = new CompraReservaForm();
             formCompraReservaPasaje.ShowDialog();
+
+        }
+
+        private void btnPagarReserva_Click(object sender, EventArgs e)
+        {
+            PagoReservaForm pagoReservaForm = new PagoReservaForm();
+            pagoReservaForm.ShowDialog();
 
         }
     }
