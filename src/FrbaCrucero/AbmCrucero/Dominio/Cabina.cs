@@ -7,6 +7,7 @@ using System.Data;
 using FrbaCrucero.Utils;
 using FrbaCrucero.Utils.Excepciones;
 using System.Windows.Forms;
+using System.Data.SqlClient;
 
 namespace FrbaCrucero.AbmCrucero
 {
@@ -19,6 +20,18 @@ namespace FrbaCrucero.AbmCrucero
 
         public Cabina()
         {
+        }
+
+        public Cabina(int unId)
+        {
+            this.id = unId;
+            string consulta = "SELECT [id_cabina],[tipo_cabina],[crucero],[numero],[piso] FROM [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Cabinas] "
+                    + " where id_cabina = " + unId.ToString();
+            Query miConsulta = new Query(consulta, new List<Parametro>());
+            SqlDataReader filaCabina = miConsulta.ejecutarReaderFila();
+            this.numero = int.Parse(filaCabina["numero"].ToString());
+            this.piso = int.Parse(filaCabina["piso"].ToString());
+            this.tipo = filaCabina["tipo_cabina"].ToString();
         }
 
         public Cabina setNumero(int numero)
@@ -121,8 +134,9 @@ namespace FrbaCrucero.AbmCrucero
             Query miConsulta = new Query(consulta, new List<Parametro>());
             int filasAfectadas = miConsulta.ejecutarNonQuery();
             if (filasAfectadas != 1)
-                MessageBox.Show("Una cabina se a reservado mal");
+                MensajeBox.info("Una cabina se a reservado mal");
         }
+
 
         public string mostrarse()
         {

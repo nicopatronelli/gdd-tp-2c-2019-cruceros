@@ -22,13 +22,15 @@ namespace FrbaCrucero.CompraReservaPasaje
         public double precioTotal;
         public int idCompra;
         public bool esCompra;
+        public int? codigoReserva;
 
-        public PagoForm(List<DisplayCabina> cabinas, Viaje unViaje,Cliente unCliente,bool esUnaCompra )
+        public PagoForm(List<DisplayCabina> cabinas, Viaje unViaje,Cliente unCliente,bool esUnaCompra, int? unCodigoReserva )
         {
             this.displayCabinas = cabinas;
             this.viaje = unViaje;
             this.cliente = unCliente;
             this.esCompra = esUnaCompra;
+            this.codigoReserva = unCodigoReserva;
             InitializeComponent();
 
             //calculo precio base del recorrido
@@ -68,10 +70,13 @@ namespace FrbaCrucero.CompraReservaPasaje
 
         public int generarCompra()
         {
+            int cantidadCabinas =0;
+            displayCabinas.ForEach(x => cantidadCabinas += (int)x.cantidadSeleccionadaNumeric.Value);
+
             List<Parametro> parametros = new List<Parametro>();
 
             //agregamos parametro cantidad de cabinas
-            Parametro paramCantidadCabinas = new Parametro("@cantidad_cabinas", SqlDbType.Int, 5);
+            Parametro paramCantidadCabinas = new Parametro("@cantidad_cabinas", SqlDbType.Int, cantidadCabinas);
             parametros.Add(paramCantidadCabinas);
 
             // Añadimos el parámetro identificador del viaje asociado a la compra
@@ -101,7 +106,7 @@ namespace FrbaCrucero.CompraReservaPasaje
 
             // Comprobamos que la compra se inserte correctamente
             if (!cantidadFilasActualizadas.Equals(1))
-                MessageBox.Show("No se genero bien la comnpra----filas afectadas= "+cantidadFilasActualizadas.ToString());
+                MessageBox.Show("No se genero bien la compra----filas afectadas= "+cantidadFilasActualizadas.ToString());
             else
             {
                 // label9.Text = cantidadFilasActualizadas.ToString();
@@ -137,6 +142,7 @@ namespace FrbaCrucero.CompraReservaPasaje
             labelFormaPago.Text = "Tarjeta--Ingrese los 16 digitos de su tarjeta de credito";
             tarjetaTextBox.Visible= true;
         }
+
         public void mostrarOpcionesEfectivo()
         {
             button1.Text = "Aceptar";
@@ -164,9 +170,42 @@ namespace FrbaCrucero.CompraReservaPasaje
         {
             this.idCompra = this.generarCompra();
             List<Cabina> cabinasPagadas = new List<Cabina>();
-            displayCabinas.ForEach( display => cabinasPagadas.AddRange(display.cabinasPagadas(viaje.id_viaje, idCompra)));
+            if (esCompra)
+            {
+                displayCabinas.ForEach(display => cabinasPagadas.AddRange(display.cabinasPagadas(viaje.id_viaje, idCompra)));
+            }
+            else
+            {
+
+                cabinasPagadas.AddRange(this.cabinasReservadasPagadas());
+            }
             Form form = new VoucherForm(cabinasPagadas, cliente, viaje, idCompra, true, precioTotal);  //el true es para marcar que es una compra y no una reserva
             form.ShowDialog();
+        }
+
+        private List<Cabina> cabinasReservadasPagadas()
+        {
+            List<Cabina> result = new List<Cabina>();
+            string consulta = "SELECT TOP 1000 [id_cabina]  FROM [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Estado_Cabinas_Por_Viaje] "
+                            + " where reserva= " + codigoReserva.Value.ToString();
+            Query miConsulta = new Query(consulta, new List<Parametro>());
+            SqlDataReader dataCabinas = miConsulta.ejecutarReaderFila();
+            Cabina nuevaCabina;
+            do
+            {
+                nuevaCabina = new Cabina(int.Parse(dataCabinas["id_cabina"].ToString()));
+                result.Add(nuevaCabina);
+            }
+            while (dataCabinas.Read());
+
+            //aca marco en la lista estado_cabinas_por_viaje   que dejan de estar reservadas y pasan a estar compradas
+            consulta ="   update [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Estado_Cabinas_Por_Viaje] SET reserva=NULL, compra= " + this.idCompra.ToString() 
+                    +" where reserva = "+this.codigoReserva.Value.ToString();
+            miConsulta = new Query(consulta, new List<Parametro>());
+            int filasAfectadas= miConsulta.ejecutarNonQuery();
+
+            return result;
+
         }
 
     }

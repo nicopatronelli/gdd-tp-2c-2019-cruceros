@@ -291,7 +291,7 @@ namespace FrbaCrucero.CompraReservaPasaje
             }
             clienteEditandose.saveOrUpdate();
             Form form;
-            if(comprarRadio.Checked) form= new PagoForm(displayCabinas, viaje,clienteEditandose, true);
+            if(comprarRadio.Checked) form= new PagoForm(displayCabinas, viaje,clienteEditandose, true, null);
             else form = this.hacerReserva();
 
             form.ShowDialog();

@@ -118,6 +118,18 @@ namespace FrbaCrucero.CompraReservaPasaje
             return cabinasResult;
         }
 
+        public void cargarCabinasReservadas(int id_reserva)
+        {
+            string consulta = "  select count(cxv.id_cabina) from [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Estado_Cabinas_Por_Viaje] cxv "
+                      +"  join [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Cabinas] c "
+                      +"  on cxv.id_cabina = c.id_cabina "
+                      +"  where c.tipo_cabina = "+ this.tipoCabina.id.ToString() +"   and cxv.reserva = "+ id_reserva.ToString();
+            Query miConsulta = new Query(consulta, new List<Parametro>());
+            this.cantidadSeleccionadaNumeric.Value = int.Parse(miConsulta.ejecutarEscalar().ToString());
+              
+                        
+        }
+
 
     }
 }

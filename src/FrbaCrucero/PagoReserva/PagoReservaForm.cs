@@ -38,11 +38,13 @@ namespace FrbaCrucero.PagoReserva
                 return;
             }
             SqlDataReader datosReserva;
+            string consulta;
+            Query miConsulta;
             try
             {
-            string consulta = "   select top 1  [id_reserva] ,[reserva_fecha] ,[reserva_cantidad_pasajes] ,[reserva_cliente] ,[reserva_viaje] FROM [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Reserva] "
+             consulta = "   select top 1  [id_reserva] ,[reserva_fecha] ,[reserva_cantidad_pasajes] ,[reserva_cliente] ,[reserva_viaje] FROM [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Reserva] "
                                 + " WHERE id_reserva = " + idReservaText.Text;
-            Query miConsulta = new Query(consulta, new List<Parametro>());
+             miConsulta = new Query(consulta, new List<Parametro>());
             datosReserva = miConsulta.ejecutarReaderFila();
 
                 MessageBox.Show(datosReserva["reserva_viaje"].ToString());
@@ -58,6 +60,33 @@ namespace FrbaCrucero.PagoReserva
             int viaje_id = int.Parse(datosReserva["reserva_viaje"].ToString());
 
             this.viaje = new Viaje(viaje_id);
+            Cliente cliente = new Cliente(reserva_cliente_id);
+
+            //hago un display cabina porque asi lo toma el pago form
+            List<DisplayCabina> displaysCabinas = new List<DisplayCabina>();
+            displaysCabinas.Add(new DisplayCabina(new Label(), new NumericUpDown() ,new Label(), new Label()));
+            displaysCabinas.Add(new DisplayCabina(new Label(), new NumericUpDown(), new Label(), new Label()));
+            displaysCabinas.Add(new DisplayCabina(new Label(), new NumericUpDown(), new Label(), new Label()));
+            displaysCabinas.Add(new DisplayCabina(new Label(), new NumericUpDown(), new Label(), new Label()));
+            displaysCabinas.Add(new DisplayCabina(new Label(), new NumericUpDown(), new Label(), new Label()));
+
+
+            consulta = "SELECT TOP 1000 [id_tipo_cabina] ,[tipo_cabina] ,[porcentaje_recargo] FROM [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Tipos_Cabinas]";
+            miConsulta = new Query(consulta, new List<Parametro>());
+            SqlDataReader datosCabina = miConsulta.ejecutarReaderFila();
+            TipoCabina nuevaCabina;
+            for (int count = 0; count < 5; count++)
+            {
+                nuevaCabina = new TipoCabina((int)datosCabina["id_tipo_cabina"], datosCabina["tipo_cabina"].ToString(), double.Parse(datosCabina["porcentaje_recargo"].ToString()));
+                displaysCabinas[count].setTipoCabina(nuevaCabina);
+                displaysCabinas[count].cargarCabinasReservadas(id_reserva);
+                datosCabina.Read();
+            }
+
+
+            PagoForm pagoForm = new PagoForm(displaysCabinas, viaje, cliente, false, id_reserva);
+            pagoForm.ShowDialog();
+            pagoForm.Close();
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using FrbaCrucero.Utils;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -87,8 +88,15 @@ namespace FrbaCrucero.CompraReservaPasaje
 
 
                 Query miConsulta = new Query(consulta, new List<Parametro>());
-                datosReserva = miConsulta.ejecutarReaderFila();
-                SqlDataReader datosReserva;
+                SqlDataReader datosCliente = miConsulta.ejecutarReaderFila();
+                this.id = unId;
+                this.nombre = datosCliente["nombre"].ToString();
+                this.apellido = datosCliente["apellido"].ToString();
+                this.dni = int.Parse(datosCliente["dni"].ToString());
+                this.direccion = datosCliente["direccion"].ToString();
+                this.telefono = datosCliente["telefono"].ToString();
+                this.mail = datosCliente["mail"].ToString();
+                this.fechaDeNacimiento = DateTime.Parse(datosCliente["fecha_nacimiento"].ToString());
             }
 
 
