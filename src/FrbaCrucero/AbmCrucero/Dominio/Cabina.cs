@@ -6,17 +6,33 @@ using System.Threading.Tasks;
 using System.Data;
 using FrbaCrucero.Utils;
 using FrbaCrucero.Utils.Excepciones;
+using System.Data.SqlClient;
+using System.Windows.Forms;
 
 namespace FrbaCrucero.AbmCrucero
 {
     public class Cabina
-    {   
+    {
+        private int id;
         public int numero;
         public int piso;
         private string tipo;
 
         public Cabina()
         {
+        }
+
+        public Cabina(int unId)
+        {
+            this.id = unId;
+            string consulta = "SELECT [id_cabina],[tipo_cabina],[crucero],[numero],[piso] FROM [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Cabinas] "
+                    + " where id_cabina = " + unId.ToString();
+            Query miConsulta = new Query(consulta, new List<Parametro>());
+            SqlDataReader filaCabina = miConsulta.ejecutarReaderFila();
+            filaCabina.Read();
+            this.numero = int.Parse(filaCabina["numero"].ToString());
+            this.piso = int.Parse(filaCabina["piso"].ToString());
+            this.tipo = filaCabina["tipo_cabina"].ToString();
         }
 
         public Cabina setNumero(int numero)
@@ -37,6 +53,12 @@ namespace FrbaCrucero.AbmCrucero
             return this;
         }
 
+        public Cabina setId(int id)
+        {
+            this.id = id;
+            return this;
+        }
+
         public int getNumero()
         {
             return this.numero;
@@ -51,6 +73,13 @@ namespace FrbaCrucero.AbmCrucero
         {
             return this.tipo;
         }
+
+        public int getId()
+        {
+            return this.id;
+        }
+
+
 
         public static string tipoCabinaPorDefecto(string tipoCabinaIngresado){
             if (tipoCabinaIngresado.Equals(DEF.CABINA_NULA))
@@ -91,6 +120,30 @@ namespace FrbaCrucero.AbmCrucero
             // Comprobamos que la cabina se haya insertado correctamente
             if (!cantidadFilasInsertadas.Equals(DEF.FILAS_INSERT_CABINAS))
                 throw new InsertarCruceroException();
+        }
+
+        public void comprarse(int id_viaje, int id_compra)
+        {
+            string consulta = "  insert into [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Estado_Cabinas_Por_Viaje] (id_viaje, id_cabina, compra) Values(" + id_viaje.ToString() + " , " + this.id + ", " + id_compra.ToString() + " ) ";
+            Query miConsulta = new Query(consulta, new List<Parametro>());
+            int filasAfectadas = miConsulta.ejecutarNonQuery();
+            if (filasAfectadas != 1)
+                MessageBox.Show("Una cabina se a pagado mal");
+        }
+
+        public void reservarse(int id_viaje, int id_reserva)
+        {
+            string consulta = "  insert into [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Estado_Cabinas_Por_Viaje] (id_viaje, id_cabina, reserva) Values(" + id_viaje.ToString() + " , " + this.id + ", " + id_reserva.ToString() + " ) ";
+            Query miConsulta = new Query(consulta, new List<Parametro>());
+            int filasAfectadas = miConsulta.ejecutarNonQuery();
+            if (filasAfectadas != 1)
+                MensajeBox.info("Una cabina se a reservado mal");
+        }
+
+
+        public string mostrarse()
+        {
+            return "Cabina nro " + this.numero.ToString() + " en el piso " + this.piso.ToString() + "\n";
         }
     }
 }
