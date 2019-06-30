@@ -74,7 +74,7 @@
             this.Controls.Add(this.btnCerrar);
             this.Controls.Add(this.groupBox1);
             this.Name = "SeleccionRolForm";
-            this.Text = "SeleccionRolForm";
+            this.Text = "Selección de rol";
             this.Load += new System.EventHandler(this.SeleccionRolForm_Load);
             this.groupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvRoles)).EndInit();

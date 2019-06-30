@@ -251,7 +251,7 @@ namespace FrbaCrucero.AbmCrucero
             this.lblTipEliminarCabinas.Size = new System.Drawing.Size(540, 13);
             this.lblTipEliminarCabinas.TabIndex = 12;
             this.lblTipEliminarCabinas.Text = "Tip: Para descartar una cabina ingresada, presione la flecha a la izquierda del r" +
-    "egistre y luego pulse la tecla Supr.";
+    "egistro y luego pulse la tecla Supr.";
             // 
             // lblInfoCabinas
             // 

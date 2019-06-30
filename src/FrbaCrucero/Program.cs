@@ -32,12 +32,12 @@ namespace FrbaCrucero
             //Application.Run(new AltaRecorridoForm());
             //Application.Run(new CompraReservaForm());
             //Application.Run(new AbmRecorridosForm());
-            Application.Run(new SeleccionListadoEstadisticoForm());
+            //Application.Run(new SeleccionListadoEstadisticoForm());
             //Application.Run(new AltaTramoForm());
             //Application.Run(new SeleccionTramoModificarPrecioForm());
             //Application.Run(new PantallaPrincipalForm());
-            //Application.Run(new LoginForm());
-            Application.Run(new CompraReservaForm());
+            Application.Run(new LoginForm());
+            //Application.Run(new CompraReservaForm());
         }
     }
 }
