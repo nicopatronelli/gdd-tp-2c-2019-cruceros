@@ -26,11 +26,10 @@ namespace FrbaCrucero.CompraReservaPasaje
         private void CompraReservaForm_Load(object sender, EventArgs e)
         {
 
-            string consulta = "SELECT[puerto_nombre] from[GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Puerto]"
-                                + "WHERE[id_puerto] in (SELECT[recorrido_puerto_inicio] FROM[GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Recorrido]"
-                                +  "WHERE recorrido_anterior is NULL)";
+            string consulta = "SELECT[puerto_nombre] from[GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Puerto]";
 
-            Query miConsulta = new Query(consulta,new List<Parametro>());
+
+            Query miConsulta = new Query(consulta);
             this.origenes = miConsulta.ejecutarReaderUnicaColumna();
             foreach(var o in origenes)
             {
@@ -40,14 +39,9 @@ namespace FrbaCrucero.CompraReservaPasaje
         }
 
         /*
-          SELECT  [puerto_nombre] FROM [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Puerto]
-inner join (
-select [recorrido_puerto_destino] from [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Recorrido]
-where recorrido_codigo in(
-		SELECT [recorrido_codigo]from [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Recorrido]
-		WHERE recorrido_puerto_inicio = 27 and recorrido_anterior is null)
-		) as hola
-on id_puerto = hola.recorrido_puerto_destino
+"SELECT[puerto_nombre] from[GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Puerto]"
+                                + "WHERE[id_puerto] in (SELECT[recorrido_puerto_inicio] FROM[GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Recorrido]"
+                                +  "WHERE recorrido_anterior is NULL)"
 */
 
         private void FiltroOrigen_TextChanged(object sender, EventArgs e)
@@ -67,22 +61,20 @@ on id_puerto = hola.recorrido_puerto_destino
 
         private void OrigenesList_SelectedValueChanged(object sender, EventArgs e)
         {
-            this.buscarDestinos( (string) origenesList.SelectedItem);
+            if (origenesList.SelectedItem != null)
+            {
+                this.destinosList.Items.Clear();
+                this.buscarDestinos((string)origenesList.SelectedItem);
+            }
+            
         }
 
         private void buscarDestinos(string origen)
         {
-            string consulta = "SELECT[puerto_nombre] FROM[GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Puerto]"
-                + "inner join("
-                + "select[recorrido_puerto_destino] from[GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Recorrido]"
-                + "where [recorrido_codigo] in ("
-                + "       SELECT[recorrido_codigo] from [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Recorrido]"
-                + "        WHERE [recorrido_puerto_inicio] = 27 and [recorrido_anterior] is null)" //esew 27 hardcodeado se reemplaza por el ID del puerto con nombre {origen}
-                + "		) as hola"
-                + "on id_puerto = hola.recorrido_puerto_destino";
+
+            string consulta = "select * from [LOS_BARONES_DE_LA_CERVEZA].[UF_destinos_segun_origen]('" + origen.ToUpper() + "')";
 
             Query miConsulta = new Query(consulta, new List<Parametro>());
-            this.destinos = new List<string>();
             this.destinos = miConsulta.ejecutarReaderUnicaColumna();
             
             foreach (var o in destinos)
@@ -92,12 +84,111 @@ on id_puerto = hola.recorrido_puerto_destino
 
         }
 
+        private void Button1_Click(object sender, EventArgs e)
+        {
+            string errorMsg = "";
+            if(calendario.SelectionStart == calendario.SelectionEnd)
+            {
+                errorMsg += "Selecciona una fecha\n";
+            }
+            if(calendario.SelectionStart <= ArchivoConfig.obtenerFechaConfig())
+            {
+                errorMsg += "Seleccione una fecha posterior a la actual\n";
+            }
+            if (this.origenesList.SelectedItem == null)
+            {
+                errorMsg += "Seleccione un puerto de origen\n";
+            }
+            if (this.destinosList.SelectedItem == null)
+            {
+                errorMsg += "Seleccione un puerto de destino\n";
+            }
+            if (errorMsg != "")
+            {
+                resultLabel.Text = errorMsg;
+                return;
+            }
+            resultLabel.Text = "Buena fecha";
+            ElegirViajeForm elegirViajeForm = new ElegirViajeForm((string)this.origenesList.SelectedItem, (string)this.destinosList.SelectedItem, calendario.SelectionStart);
+            elegirViajeForm.ShowDialog();
+            
+        }
+
         //aca esta la consulta de arriba. EN SQL me devuelve 2 valores, pero aca me da null
         /*
-SELECT[puerto_nombre] from[GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Puerto]
-WHERE[id_puerto] in (SELECT[recorrido_puerto_inicio] FROM [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Recorrido]
-WHERE recorrido_anterior is NULL)
+SELECT  [puerto_nombre] FROM [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Puerto]
+inner join (
+select [recorrido_puerto_destino] from [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Recorrido]
+where recorrido_codigo in(
+		SELECT [recorrido_codigo]from [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Recorrido]
+		WHERE recorrido_puerto_inicio = 27 and recorrido_anterior is null)
+		) as hola
+on id_puerto = hola.recorrido_puerto_destino
 */
 
     }
 }
+
+
+
+
+/*
+--recorridos en los que el puerto inicial es de id 10
+select r.[id_recorrido] from  [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Recorrido] r, [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Tramos_por_Recorrido] txr, [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Tramo] t
+where txr.tramo_anterior is NULL and  txr.id_tramo = t.id_tramo AND txr.id_recorrido = r.id_recorrido AND t.tramo_puerto_inicio = 10
+--devuelve id 19
+
+
+--dado un recorrido, buscar los posibles destinos. ej Recorrido 19
+select t.tramo_puerto_destino from [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Tramo] t, [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Tramos_por_Recorrido] txr
+where txr.id_recorrido in (19) AND txr.id_tramo = t.id_tramo
+--devuelve puertos 6 y 44
+
+
+---union de las 2 anteriores
+select t.tramo_puerto_destino from [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Tramo] t, [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Tramos_por_Recorrido] txr
+where txr.id_recorrido in (
+	select r.[id_recorrido] from  [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Recorrido] r, [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Tramos_por_Recorrido] txr, [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Tramo] t
+	where txr.tramo_anterior is NULL and  txr.id_tramo = t.id_tramo AND txr.id_recorrido = r.id_recorrido AND t.tramo_puerto_inicio = 10
+	)
+AND txr.id_tramo = t.id_tramo
+
+--agrego que me devuelva el nombre de los puertos
+select puerto_nombre from [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Puerto]
+where id_puerto in(
+		select t.tramo_puerto_destino from [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Tramo] t, [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Tramos_por_Recorrido] txr
+		where txr.id_recorrido = (
+			select r.[id_recorrido] from  [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Recorrido] r, [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Tramos_por_Recorrido] txr, [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Tramo] t
+			where txr.tramo_anterior is NULL and  txr.id_tramo = t.id_tramo AND txr.id_recorrido = r.id_recorrido AND t.tramo_puerto_inicio = 10
+			)
+		AND txr.id_tramo = t.id_tramo
+		)
+
+*/
+
+
+
+/*
+saco codigo delegate nico
+
+        private void popularCampos()
+        {
+            string consulta = "SELECT cru.modelo modelo, cru.identificador identificador, mar.marca marca "
+                            + "FROM LOS_BARONES_DE_LA_CERVEZA.Cruceros cru "
+                                + "JOIN LOS_BARONES_DE_LA_CERVEZA.Marcas_Cruceros mar "
+                                    + "ON cru.marca = mar.id_marca "
+                            + "WHERE cru.identificador = @identificador_crucero";
+            List<Parametro> parametros = new List<Parametro>();
+            Parametro paramIdentificadorCrucero = new Parametro("@identificador_crucero", SqlDbType.NChar, identificadorCrucero, 50);
+            parametros.Add(paramIdentificadorCrucero);
+            Query miConsulta = new Query(consulta, parametros);
+            SqlDataReader camposCrucero = miConsulta.ejecutarReaderFila();
+            string[] identificadorPartes = identificadorCrucero.Split('-');
+            txtbxIdentificadorA.Text = identificadorPartes[0];
+            txtbxIdentificadorB.Text = identificadorPartes[1];
+            txtbxModelo.Text = Convert.ToString(camposCrucero["modelo"]);
+            cmbxMarca.SelectedItem = Convert.ToString(camposCrucero["marca"]);
+            miConsulta.cerrarConexionReader();
+        }
+
+*/
