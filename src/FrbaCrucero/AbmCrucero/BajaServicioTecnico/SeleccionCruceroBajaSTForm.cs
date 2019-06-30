@@ -26,6 +26,8 @@ namespace FrbaCrucero.AbmCrucero
             base.agregarBotonEditar("Acción", "Baja Servicio Técnico");
             dgvEditarCrucero.CellClick += base.dgvSeleccionarCrucero_CellContentClick; ;
             base.autoajustarDgv();
+            this.Text = "Selección de crucero";
+            base.lblSeleccionCrucero.Text = "Presione el botón al final del crucero elegido para proceder a su baja por servicio técnico.";
         }
 
         override protected string querySeleccionCruceros()

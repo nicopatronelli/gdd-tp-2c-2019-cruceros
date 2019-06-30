@@ -108,7 +108,7 @@
             this.Controls.Add(this.btnDeshabilitarRecorrido);
             this.Controls.Add(this.btnNuevoRecorrido);
             this.Name = "AbmRecorridosForm";
-            this.Text = "AbmRecorrido";
+            this.Text = "ABM de Recorridos";
             this.ResumeLayout(false);
 
         }

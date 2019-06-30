@@ -53,7 +53,7 @@ namespace FrbaCrucero.AbmRecorrido
 
         private void btnEditarPrecioTramo_Click(object sender, EventArgs e)
         {
-            ModificarPrecioTramoForm formModificarPrecioTramo = new ModificarPrecioTramoForm();
+            SeleccionTramoModificarPrecioForm formModificarPrecioTramo = new SeleccionTramoModificarPrecioForm();
             formModificarPrecioTramo.ShowDialog();
         }
     }

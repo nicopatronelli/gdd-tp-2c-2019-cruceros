@@ -38,7 +38,7 @@
             // 
             // btnAceptar
             // 
-            this.btnAceptar.Location = new System.Drawing.Point(124, 92);
+            this.btnAceptar.Location = new System.Drawing.Point(240, 91);
             this.btnAceptar.Name = "btnAceptar";
             this.btnAceptar.Size = new System.Drawing.Size(75, 23);
             this.btnAceptar.TabIndex = 0;
@@ -55,7 +55,7 @@
             // 
             // btnCancelar
             // 
-            this.btnCancelar.Location = new System.Drawing.Point(225, 92);
+            this.btnCancelar.Location = new System.Drawing.Point(321, 91);
             this.btnCancelar.Name = "btnCancelar";
             this.btnCancelar.Size = new System.Drawing.Size(75, 23);
             this.btnCancelar.TabIndex = 6;
@@ -92,7 +92,7 @@
             this.ClientSize = new System.Drawing.Size(493, 155);
             this.Controls.Add(this.groupBox1);
             this.Name = "BajaServicioTecnicoCruceroForm";
-            this.Text = "BajaCruceroForm";
+            this.Text = "Baja Crucero por Servicio Técnico";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);

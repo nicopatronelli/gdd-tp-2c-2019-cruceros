@@ -290,7 +290,7 @@
             this.Controls.Add(this.btnCerrar);
             this.Controls.Add(this.btnEnviar);
             this.Name = "AltaRecorridoForm";
-            this.Text = "Abm Recorrido";
+            this.Text = "Alta de nuevo recorrido";
             this.gpbxAltaNuevoRecorrido.ResumeLayout(false);
             this.gpbxAltaNuevoRecorrido.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTramosSeleccionados)).EndInit();

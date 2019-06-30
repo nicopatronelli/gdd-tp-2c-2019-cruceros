@@ -26,6 +26,7 @@ namespace FrbaCrucero.AbmCrucero
             base.agregarBotonEditar("Acción", "Baja definitiva");
             dgvEditarCrucero.CellClick += base.dgvSeleccionarCrucero_CellContentClick;
             base.autoajustarDgv();
+            base.lblSeleccionCrucero.Text = "Presione el botón al final del crucero elegido para proceder a su baja definitiva.";
         }
 
         override protected string querySeleccionCruceros()

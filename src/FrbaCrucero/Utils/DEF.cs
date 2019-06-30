@@ -62,6 +62,11 @@ namespace FrbaCrucero.Utils
         public const int FILAS_INSERT_CRUCERO = 1;
         public const int FILAS_ACTUALIZAR_CRUCERO = 1;
         public const int FILAS_INSERT_CABINAS = 1;
+        public const int TIPO_SERVICIO_UNA_ESTRELLA = 1;
+        public const int TIPO_SERVICIO_DOS_ESTRELLAS = 2;
+        public const int TIPO_SERVICIO_TRES_ESTRELLAS = 3;
+        public const int TIPO_SERVICIO_CUATRO_ESTRELLAS = 4;
+        public const int TIPO_SERVICIO_CINCO_ESTRELLAS = 5;
 
         // ABM Recorridos
         public const int FILAS_INSERT_RECORRIDO = 1;
@@ -74,6 +79,7 @@ namespace FrbaCrucero.Utils
         // Generar Viaje
         public const int TRAMO_PUERTO_INICIO = 0;
         public const int TRAMO_PUERTO_FIN = 1;
+
 
         //public const int FILAS_INSERT_CLIENTE = 3;
         //public const int FILAS_INSERT_EMPRESA = 3;

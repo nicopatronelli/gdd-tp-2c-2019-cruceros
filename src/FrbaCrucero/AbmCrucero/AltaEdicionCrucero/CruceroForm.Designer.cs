@@ -46,8 +46,8 @@ namespace FrbaCrucero.AbmCrucero
             this.label1 = new System.Windows.Forms.Label();
             this.txtbxIdentificadorB = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
+            this.lblTipEliminarCabinas = new System.Windows.Forms.Label();
+            this.lblInfoCabinas = new System.Windows.Forms.Label();
             this.dgvCabinas = new System.Windows.Forms.DataGridView();
             this.Numero = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Piso = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -57,6 +57,7 @@ namespace FrbaCrucero.AbmCrucero
             this.lblIdentificador = new System.Windows.Forms.Label();
             this.txtbxIdentificadorA = new System.Windows.Forms.TextBox();
             this.btnEnviar = new System.Windows.Forms.Button();
+            this.btnGuardarSinCabinas = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -72,6 +73,7 @@ namespace FrbaCrucero.AbmCrucero
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.btnGuardarSinCabinas);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.btnCancelar);
             this.groupBox1.Controls.Add(this.btnGuardar);
@@ -108,7 +110,7 @@ namespace FrbaCrucero.AbmCrucero
             this.btnCancelar.Name = "btnCancelar";
             this.btnCancelar.Size = new System.Drawing.Size(75, 23);
             this.btnCancelar.TabIndex = 24;
-            this.btnCancelar.Text = "Cancelar";
+            this.btnCancelar.Text = "Cerrar";
             this.btnCancelar.UseVisualStyleBackColor = true;
             this.btnCancelar.Click += new System.EventHandler(this.btnCancelar_Click);
             // 
@@ -231,8 +233,8 @@ namespace FrbaCrucero.AbmCrucero
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.label4);
-            this.groupBox2.Controls.Add(this.label7);
+            this.groupBox2.Controls.Add(this.lblTipEliminarCabinas);
+            this.groupBox2.Controls.Add(this.lblInfoCabinas);
             this.groupBox2.Controls.Add(this.dgvCabinas);
             this.groupBox2.Location = new System.Drawing.Point(16, 180);
             this.groupBox2.Name = "groupBox2";
@@ -241,24 +243,24 @@ namespace FrbaCrucero.AbmCrucero
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Cabinas";
             // 
-            // label4
+            // lblTipEliminarCabinas
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(23, 243);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(540, 13);
-            this.label4.TabIndex = 12;
-            this.label4.Text = "Tip: Para descartar una cabina ingresada, presione la flecha a la izquierda del r" +
+            this.lblTipEliminarCabinas.AutoSize = true;
+            this.lblTipEliminarCabinas.Location = new System.Drawing.Point(23, 243);
+            this.lblTipEliminarCabinas.Name = "lblTipEliminarCabinas";
+            this.lblTipEliminarCabinas.Size = new System.Drawing.Size(540, 13);
+            this.lblTipEliminarCabinas.TabIndex = 12;
+            this.lblTipEliminarCabinas.Text = "Tip: Para descartar una cabina ingresada, presione la flecha a la izquierda del r" +
     "egistre y luego pulse la tecla Supr.";
             // 
-            // label7
+            // lblInfoCabinas
             // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(23, 22);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(490, 39);
-            this.label7.TabIndex = 21;
-            this.label7.Text = resources.GetString("label7.Text");
+            this.lblInfoCabinas.AutoSize = true;
+            this.lblInfoCabinas.Location = new System.Drawing.Point(23, 22);
+            this.lblInfoCabinas.Name = "lblInfoCabinas";
+            this.lblInfoCabinas.Size = new System.Drawing.Size(490, 39);
+            this.lblInfoCabinas.TabIndex = 21;
+            this.lblInfoCabinas.Text = resources.GetString("lblInfoCabinas.Text");
             // 
             // dgvCabinas
             // 
@@ -356,6 +358,16 @@ namespace FrbaCrucero.AbmCrucero
             this.btnEnviar.Text = "Enviar";
             this.btnEnviar.UseVisualStyleBackColor = true;
             // 
+            // btnGuardarSinCabinas
+            // 
+            this.btnGuardarSinCabinas.Location = new System.Drawing.Point(529, 455);
+            this.btnGuardarSinCabinas.Name = "btnGuardarSinCabinas";
+            this.btnGuardarSinCabinas.Size = new System.Drawing.Size(75, 23);
+            this.btnGuardarSinCabinas.TabIndex = 25;
+            this.btnGuardarSinCabinas.Text = "Guardar";
+            this.btnGuardarSinCabinas.UseVisualStyleBackColor = true;
+            this.btnGuardarSinCabinas.Click += new System.EventHandler(this.btnGuardarSinCabinas_Click);
+            // 
             // CruceroForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -386,7 +398,7 @@ namespace FrbaCrucero.AbmCrucero
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtbxIdentificadorB;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label lblInfoCabinas;
         private System.Windows.Forms.ComboBox cmbxMarca;
         private System.Windows.Forms.Label lblMarca;
         private System.Windows.Forms.Label lblIdentificador;
@@ -406,6 +418,7 @@ namespace FrbaCrucero.AbmCrucero
         private RadioButton rbtnUnaEstrella;
         private Button btnCancelar;
         private Button btnAlta;
-        private Label label4;
+        private Label lblTipEliminarCabinas;
+        private Button btnGuardarSinCabinas;
     }
 }

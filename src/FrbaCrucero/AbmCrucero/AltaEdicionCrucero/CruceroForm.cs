@@ -22,12 +22,14 @@ namespace FrbaCrucero.AbmCrucero
         private string marca;
         private string identificadorCrucero;
         private int tipoServicio;
+        private bool flagCruceroConViaje; 
 
         // Constructor para ALTA
         public CruceroForm()
         {
             InitializeComponent();
             btnGuardar.Visible = false;
+            btnGuardarSinCabinas.Visible = false;
             popularTipoCabinaCmbx();
             
             // Establecemos un valor por defecto para el comboBox de Marca (para evitar nulls)
@@ -46,11 +48,32 @@ namespace FrbaCrucero.AbmCrucero
         {
             InitializeComponent();
             identificadorCrucero = identificadorCruceroAEditar;
+            this.Text = "Modificar crucero";
             btnEnviar.Visible = false;
-            popularTipoCabinaCmbx();
+            btnGuardarSinCabinas.Visible = false;
+            this.popularTipoCabinaCmbx();
             dgvcmbxTipo.DefaultCellStyle.NullValue = DEF.CABINA_ESTANDAR;
-            popularCampos(); // Cargamos los campos del crucero a editar
-            popularCabinas();  // Cargamos las cabinas del crucero a editar en el dgvCabinas
+            this.popularCampos(); // Cargamos los campos del crucero a editar
+            this.popularCabinas();  // Cargamos las cabinas del crucero a editar en el dgvCabinas  
+
+            // Por esta iteración, para evitar problemas, si el crucero tuvo algún viaje alguna vez (se creo un viaje con este crucero)
+            // no permitimos la edición de sus cabinas (ni modificar, agregar o eliminar), así que el datagridview lo establecemos
+            // como de solo lectura
+            this.flagCruceroConViaje = false; // Por default, asumimos que el crucero a editar no se asigno a ningún viaje
+            if (this.cruceroAEditarTuvoAlgunViaje(identificadorCrucero).Equals(true))
+            {
+                this.dgvCabinas.ReadOnly = true;
+                this.flagCruceroConViaje = true;
+                dgvCabinas.ForeColor = Color.Gray;
+                dgvCabinas.ColumnHeadersDefaultCellStyle.ForeColor = Color.Gray;
+                dgvCabinas.EnableHeadersVisualStyles = false;
+                this.lblInfoCabinas.Text = 
+                    "AVISO: El crucero posee viajes asignados o se encuentra en viaje. Se listan sus cabinas pero no se permite su edición.";
+                lblTipEliminarCabinas.Visible = false;
+                btnGuardar.Visible = false;
+                btnGuardarSinCabinas.Visible = true;
+            }
+
         } // FIN Constructor para MODIFICACIÓN
 
         // Comportamiento común a ambos constructores (sin importar el orden)
@@ -283,13 +306,16 @@ namespace FrbaCrucero.AbmCrucero
              * es decir, pertenezcan a pasajes comprados o reservados. 
             **/
             string miConsulta = "SELECT cab.numero numero, cab.piso piso, tc.tipo_cabina tipo_cabina "
-                         + "FROM LOS_BARONES_DE_LA_CERVEZA.Cabinas cab "
-                             + "JOIN LOS_BARONES_DE_LA_CERVEZA.Tipos_Cabinas tc "
-                                + "ON cab.tipo_cabina = tc.id_tipo_cabina "
-                             + "JOIN LOS_BARONES_DE_LA_CERVEZA.Cruceros cru "
-                                + "ON cab.crucero = cru.id_crucero "
-                             + "WHERE cru.identificador = @identificador_crucero "
-                                + "AND cab.estado = 0"; // Solo traemos las cabinas disponibles
+                              + "FROM LOS_BARONES_DE_LA_CERVEZA.Cabinas cab "
+                                 + "JOIN LOS_BARONES_DE_LA_CERVEZA.Tipos_Cabinas tc "
+                                    + "ON cab.tipo_cabina = tc.id_tipo_cabina "
+                                + "JOIN LOS_BARONES_DE_LA_CERVEZA.Cruceros cru "
+                                    + "ON cab.crucero = cru.id_crucero "
+                                + "	JOIN LOS_BARONES_DE_LA_CERVEZA.Estado_Cabinas_Por_Viaje e "
+                                    + "ON cab.id_cabina = e.id_cabina "
+                              + "WHERE cru.identificador = @identificador_crucero ";
+                                // + "AND e.compra IS NULL "
+                                // + "AND e.reserva IS NULL";
             SqlDataAdapter dataAdapter = new SqlDataAdapter(miConsulta, conexion.obtenerConexion());
             Parametro paramIdentificadorCrucero = new Parametro("@identificador_crucero", SqlDbType.NVarChar, identificadorCrucero, 50);
             dataAdapter.SelectCommand.Parameters.Add(paramIdentificadorCrucero.obtenerSqlParameter());
@@ -302,7 +328,7 @@ namespace FrbaCrucero.AbmCrucero
 
         private void popularCampos()
         {
-            string consulta = "SELECT cru.modelo modelo, mar.marca marca "
+            string consulta = "SELECT cru.modelo modelo, mar.marca marca, cru.tipo_servicio tipo_servicio "
                             + "FROM LOS_BARONES_DE_LA_CERVEZA.Cruceros cru "
                                 + "JOIN LOS_BARONES_DE_LA_CERVEZA.Marcas_Cruceros mar "
                                     + "ON cru.marca = mar.id_marca "
@@ -315,6 +341,7 @@ namespace FrbaCrucero.AbmCrucero
             camposCrucero.Read();
             txtbxModelo.Text = Convert.ToString(camposCrucero["modelo"]);
             cmbxMarca.SelectedItem = Convert.ToString(camposCrucero["marca"]);
+            this.cargarTipoServicio(Convert.ToInt32(camposCrucero["tipo_servicio"]));
             miConsulta.cerrarConexionReader();
 
             string[] identificadorPartes = identificadorCrucero.Split('-');
@@ -323,9 +350,80 @@ namespace FrbaCrucero.AbmCrucero
 
         }
 
+        private void cargarTipoServicio(int tipoServicio)
+        {
+            if (tipoServicio.Equals(DEF.TIPO_SERVICIO_UNA_ESTRELLA))
+                rbtnUnaEstrella.Checked = true;
+            else if (tipoServicio.Equals(DEF.TIPO_SERVICIO_DOS_ESTRELLAS))
+                rbtnDosEstrellas.Checked = true;
+            else if (tipoServicio.Equals(DEF.TIPO_SERVICIO_TRES_ESTRELLAS))
+                rbtnTresEstrellas.Checked = true;
+            else if (tipoServicio.Equals(DEF.TIPO_SERVICIO_CUATRO_ESTRELLAS))
+                rbtnCuatroEstrellas.Checked = true;
+            else
+                rbtnCincoEstrellas.Checked = true;
+        }
+
+        private bool cruceroAEditarTuvoAlgunViaje(string identificadorCrucero)
+        {
+            string consulta = "SELECT COUNT(*) "
+                            + "FROM LOS_BARONES_DE_LA_CERVEZA.Viaje v "
+                                + "JOIN LOS_BARONES_DE_LA_CERVEZA.Cruceros cru "
+                                    + "ON v.viaje_id_crucero = cru.id_crucero "
+                            + "WHERE cru.identificador = @identificador_crucero";
+            List<Parametro> parametros = new List<Parametro>();
+            Parametro paramIdentificadorCrucero = new Parametro("@identificador_crucero", SqlDbType.NVarChar, identificadorCrucero, 50);
+            parametros.Add(paramIdentificadorCrucero);
+            Query miConsulta = new Query(consulta, parametros);
+            int resultado = Convert.ToInt32(miConsulta.ejecutarEscalar());
+            if (resultado > 0)
+                return true;
+            else
+                return false;
+        }
+
         private void btnCancelar_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        // Botón para guardar los cambios en los campos de un crucero con viajes asignados, es decir, solo 
+        // se guardan sus atributos principales, no sus cabinas
+        private void btnGuardarSinCabinas_Click(object sender, EventArgs e)
+        {
+            string identificadorCruceroAnterior = identificadorCrucero;
+
+            // 1. Obtenemos los atributos del crucero 
+            this.cargarCampos();
+
+            // 2. Construimos el objeto crucero 
+            Crucero crucero;
+            try
+            {
+                crucero = new CruceroBuilder()
+                    .setModelo(modelo)
+                    .setMarca(marca)
+                    .setIdentificador(identificadorA, identificadorB)
+                    .setTipoServicio(this.obtenerTipoServicio())
+                    .buildCrucero();
+            }
+            catch (CamposObligatoriosVaciosException ex)
+            {
+                ex.mensajeError();
+                return;
+            }
+
+            // 6. En este punto ya tenemos un crucero correctamente construido y listo para ser ACTUALIZADO (incluyendo sus cabinas)
+            try
+            {
+                crucero.actualizarCrucero(identificadorCruceroAnterior);
+                MensajeBox.info("El crucero se actualizo correctamente.");
+            }
+            catch (ActualizarCruceroException ex)
+            {
+                ex.mensajeError();
+                return;
+            }
         }
 
     }

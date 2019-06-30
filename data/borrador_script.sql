@@ -13,13 +13,15 @@ FROM LOS_BARONES_DE_LA_CERVEZA.Cabinas cab
 
 
 -- Detalle Cruceros (sin cabinas)
-SELECT cru.identificador, cru.modelo, mar.marca, COUNT(cab.crucero) 'Cantidad cabinas'
+SELECT cru.identificador, cru.modelo, mar.marca, cru.tipo_servicio,
+	COUNT(cab.crucero) 'Cantidad cabinas'
 FROM LOS_BARONES_DE_LA_CERVEZA.Cruceros cru
 	JOIN LOS_BARONES_DE_LA_CERVEZA.Marcas_Cruceros mar
 		ON cru.marca = mar.id_marca
 	JOIN LOS_BARONES_DE_LA_CERVEZA.Cabinas cab
 		ON cru.id_crucero = cab.crucero
-GROUP BY cru.identificador, cru.modelo, mar.marca
+GROUP BY cru.identificador, cru.modelo, mar.marca, cru.tipo_servicio
+
 
 -- Baja definitiva 
 UPDATE LOS_BARONES_DE_LA_CERVEZA.Cruceros 
@@ -201,7 +203,7 @@ FROM LOS_BARONES_DE_LA_CERVEZA.Recorrido r
 		ON t1.tramo_puerto_inicio = pto_inicio.id_puerto
 	JOIN LOS_BARONES_DE_LA_CERVEZA.Puerto pto_fin
 		ON t2.tramo_puerto_destino = pto_fin.id_puerto
-WHERE r.recorrido_codigo = 'RecorridoLoco'
+WHERE r.recorrido_codigo = 'Recorrido123456'
 
 -- Query tramos por Recorrido
 SELECT 	
@@ -233,7 +235,8 @@ SELECT
 	tpr.tramo_anterior 'Tpr anterior',
 	tpr.tramo_siguiente 'Tpr siguiente',
 	p1.puerto_nombre 'Puerto Inicio', 
-	p2.puerto_nombre 'Puerto Fin'
+	p2.puerto_nombre 'Puerto Fin', 
+	t.tramo_precio 'Precio tramo'
 FROM LOS_BARONES_DE_LA_CERVEZA.Recorrido r
 	JOIN LOS_BARONES_DE_LA_CERVEZA.Tramos_por_Recorrido tpr
 		ON r.id_recorrido = tpr.id_recorrido
@@ -243,7 +246,13 @@ FROM LOS_BARONES_DE_LA_CERVEZA.Recorrido r
 		ON t.tramo_puerto_inicio = p1.id_puerto
 	JOIN LOS_BARONES_DE_LA_CERVEZA.Puerto p2
 		ON t.tramo_puerto_destino = p2.id_puerto
-ORDER BY 1
+WHERE r.recorrido_codigo = 'Recorrido123456'
+
+SELECT * 
+FROM LOS_BARONES_DE_LA_CERVEZA.Puerto
+
+SELECT * 
+FROM LOS_BARONES_DE_LA_CERVEZA.Tramos_por_Recorrido
 
 /******************************************************************
 [LOS_BARONES_DE_LA_CERVEZA].[USP_insertar_viaje] 
@@ -683,3 +692,119 @@ select convert
 )
 
 'x' = (case when 1 = 1 then '07-00' else '12-31' end)
+
+SELECT cru.identificador 'Identificador', cru.modelo 'Modelo', mar.marca 'Marca', COUNT(cab.crucero) 'Cantidad de cabinas' 
+FROM LOS_BARONES_DE_LA_CERVEZA.Cruceros cru 
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Marcas_Cruceros mar 
+		ON cru.marca = mar.id_marca 
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Cabinas cab 
+		ON cru.id_crucero = cab.crucero 
+GROUP BY cru.identificador, cru.modelo, mar.marca;
+
+SELECT cab.numero numero, cab.piso piso, tc.tipo_cabina tipo_cabina 
+FROM LOS_BARONES_DE_LA_CERVEZA.Cabinas cab 
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Tipos_Cabinas tc 
+		ON cab.tipo_cabina = tc.id_tipo_cabina 
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Cruceros cru 
+		ON cab.crucero = cru.id_crucero 
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Estado_Cabinas_Por_Viaje e
+		ON cab.id_cabina = e.id_cabina
+WHERE cru.identificador = 'ASHFLJ-66175' 
+	AND e.compra IS NULL
+	AND e.reserva IS NULL
+
+SELECT * 
+FROM LOS_BARONES_DE_LA_CERVEZA.Cabinas
+
+SELECT *
+FROM LOS_BARONES_DE_LA_CERVEZA.Cruceros
+ORDER BY identificador
+WHERE identificador = 'ILELMR-72879' 
+
+DELETE FROM LOS_BARONES_DE_LA_CERVEZA.Cabinas WHERE crucero = 1
+
+-- disable all constraints
+EXEC sp_MSForEachTable "ALTER TABLE LOS_BARONES_DE_LA_CERVEZA.Estado_Cabinas_Por_Viaje NOCHECK CONSTRAINT all"
+
+-- delete data in all tables
+EXEC sp_MSForEachTable "DELETE FROM LOS_BARONES_DE_LA_CERVEZA.Cabinas WHERE crucero = 15"
+
+-- enable all constraints
+exec sp_MSForEachTable "ALTER TABLE LOS_BARONES_DE_LA_CERVEZA.Estado_Cabinas_Por_Viaje WITH CHECK CHECK CONSTRAINT all"
+
+SELECT * 
+FROM LOS_BARONES_DE_LA_CERVEZA.Estado_Cabinas_Por_Viaje e
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Cabinas cab 
+		ON e.id_cabina = cab.id_cabina
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Cruceros cru
+		ON cab.crucero = cru.id_crucero
+WHERE cru.identificador = 'ASHFLJ-66175' -- id_crucero = 15  
+
+SELECT COUNT(*)
+FROM LOS_BARONES_DE_LA_CERVEZA.Viaje v
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Cruceros cru
+		ON v.viaje_id_crucero = cru.id_crucero
+WHERE cru.id_crucero = 38
+
+SELECT cru.identificador, cru.modelo, mar.marca, cru.tipo_servicio,
+	COUNT(cab.crucero) 'Cantidad cabinas'
+FROM LOS_BARONES_DE_LA_CERVEZA.Cruceros cru
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Marcas_Cruceros mar
+		ON cru.marca = mar.id_marca
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Cabinas cab
+		ON cru.id_crucero = cab.crucero
+WHERE cru.identificador = 'CVDUGH-82620'
+GROUP BY cru.identificador, cru.modelo, mar.marca, cru.tipo_servicio
+
+SELECT cru.id_crucero, cru.identificador, cru.baja_vida_util, cru.fecha_baja_vida_util
+FROM LOS_BARONES_DE_LA_CERVEZA.Cruceros cru
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Cruceros_Fuera_Servicio fs
+		ON cru.id_crucero = fs.id_crucero
+WHERE cru.identificador = 'HZKRZI-38301'
+
+SELECT * 
+FROM LOS_BARONES_DE_LA_CERVEZA.Recorrido
+
+SELECT * 
+FROM LOS_BARONES_DE_LA_CERVEZA.Viaje
+ORDER BY viaje_id_recorrido
+
+------------------------------------------------------------------------------------------------------------
+
+create function LOS_BARONES_DE_LA_CERVEZA.UF_listado_fuera_de_servicio (@ano int, @semestre int)
+RETURNS @Tabla_Resultado table (cruID int, cruIdentificador nvarchar(255), cruModelo nvarchar(50), cantidadDias int) 
+AS begin
+
+	declare @inicioSemestre datetime2(3), @finSemestre datetime2(3)
+	set @inicioSemestre = convert(datetime2(3),(select CONCAT((select CAST(@ano AS varchar)),'-0', (case when @semestre = 1 then '1-01' else '7-00' end),' 00:00:00.000'  )),121)
+	set @finSemestre =    convert(datetime2(3),(select CONCAT((select CAST(@ano AS varchar)),'-' , (case when @semestre = 1 then '07-01' else '12-31' end),' 00:00:00.000')),121)
+
+	INSERT INTO @Tabla_Resultado
+	--si todavia sigue fuera de servicio en esta query le pongo diferencia cero
+	select top 5 FS.id_crucero,CRU.identificador, CRU.modelo,
+	(SUM(datediff(DAY, case when FS.fecha_inicio_fuera_servicio < @inicioSemestre then @inicioSemestre else FS.fecha_inicio_fuera_servicio end, case when FS.fecha_fin_fuera_servicio > @finSemestre then @finSemestre else FS.fecha_fin_fuera_servicio end ))) as diferencia
+	from LOS_BARONES_DE_LA_CERVEZA.Cruceros_Fuera_Servicio FS join LOS_BARONES_DE_LA_CERVEZA.Cruceros CRU on (CRU.id_crucero = FS.id_crucero)
+	--con que una de las fechas este dentro del semestre ya tengo dias para contar
+	where (@ano = year(FS.fecha_fin_fuera_servicio) and month(FS.fecha_fin_fuera_servicio) > (@semestre - 1) * 6 and month(FS.fecha_fin_fuera_servicio) < @semestre * (case when @semestre = 1 then 7 else 12 end))				--caso 1 fecha fin adentro
+		OR(@ano = year(FS.fecha_inicio_fuera_servicio) and month(FS.fecha_inicio_fuera_servicio) > (@semestre - 1) * 6 and month(FS.fecha_inicio_fuera_servicio) < @semestre * (case when @semestre = 1 then 7 else 12 end))	--caso 2 fecha inicio adentro
+		OR(FS.fecha_inicio_fuera_servicio < @inicioSemestre and FS.fecha_fin_fuera_servicio > @finSemestre)					--caso 3 ambas fechas afuera pero engloban el intervalo
+	group by FS.id_crucero,CRU.identificador,CRU.modelo order by diferencia desc
+	
+	return
+end
+GO
+
+SELECT TOP 5 fs.id_crucero, cru.identificador, cru.modelo,
+	(SUM(datediff(DAY, case when fs.fecha_inicio_fuera_servicio < @inicioSemestre then @inicioSemestre else FS.fecha_inicio_fuera_servicio end, case when FS.fecha_fin_fuera_servicio > @finSemestre then @finSemestre else FS.fecha_fin_fuera_servicio end ))) as diferencia
+FROM LOS_BARONES_DE_LA_CERVEZA.Cruceros_Fuera_Servicio FS 
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Cruceros cru
+		ON cru.id_crucero = fs.id_crucero
+--con que una de las fechas este dentro del semestre ya tengo dias para contar
+WHERE (@ano = year(fs.fecha_fin_fuera_servicio) and month(fs.fecha_fin_fuera_servicio) > (@semestre - 1) * 6 and month(FS.fecha_fin_fuera_servicio) < @semestre * (case when @semestre = 1 then 7 else 12 end))				--caso 1 fecha fin adentro
+		OR(@ano = year(FS.fecha_inicio_fuera_servicio) and month(FS.fecha_inicio_fuera_servicio) > (@semestre - 1) * 6 and month(FS.fecha_inicio_fuera_servicio) < @semestre * (case when @semestre = 1 then 7 else 12 end))	--caso 2 fecha inicio adentro
+		OR(FS.fecha_inicio_fuera_servicio < @inicioSemestre and FS.fecha_fin_fuera_servicio > @finSemestre)					--caso 3 ambas fechas afuera pero engloban el intervalo
+GROUP BY FS.id_crucero,CRU.identificador,CRU.modelo order by diferencia desc
+
+SELECT * FROM LOS_BARONES_DE_LA_CERVEZA.UF_listado_cabinas_libres_por_viajes(2018, 2)
+SELECT * FROM [LOS_BARONES_DE_LA_CERVEZA].[UF_listado_fuera_de_servicio](2018, 2)
+SELECT * FROM LOS_BARONES_DE_LA_CERVEZA.UF_destinos_segun_recorrido(1) 

@@ -72,7 +72,7 @@
             this.Controls.Add(this.btnCancelar);
             this.Controls.Add(this.btnConfirmarBaja);
             this.Name = "AvisoBajaDefinitivaForm";
-            this.Text = "AvisoBajaDefinitivaForm";
+            this.Text = "Confirmación baja definitiva";
             this.ResumeLayout(false);
             this.PerformLayout();
 

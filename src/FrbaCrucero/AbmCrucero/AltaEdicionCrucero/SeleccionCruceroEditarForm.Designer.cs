@@ -30,7 +30,7 @@
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.btnCerrar = new System.Windows.Forms.Button();
-            this.label2 = new System.Windows.Forms.Label();
+            this.lblSeleccionCrucero = new System.Windows.Forms.Label();
             this.dgvEditarCrucero = new System.Windows.Forms.DataGridView();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvEditarCrucero)).BeginInit();
@@ -39,7 +39,7 @@
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.btnCerrar);
-            this.groupBox1.Controls.Add(this.label2);
+            this.groupBox1.Controls.Add(this.lblSeleccionCrucero);
             this.groupBox1.Controls.Add(this.dgvEditarCrucero);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
@@ -58,14 +58,14 @@
             this.btnCerrar.UseVisualStyleBackColor = true;
             this.btnCerrar.Click += new System.EventHandler(this.btnCerrar_Click);
             // 
-            // label2
+            // lblSeleccionCrucero
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(9, 27);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(440, 13);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "Seleccione el crucero a editar presionando el botón Editar al final de su fila co" +
+            this.lblSeleccionCrucero.AutoSize = true;
+            this.lblSeleccionCrucero.Location = new System.Drawing.Point(9, 27);
+            this.lblSeleccionCrucero.Name = "lblSeleccionCrucero";
+            this.lblSeleccionCrucero.Size = new System.Drawing.Size(440, 13);
+            this.lblSeleccionCrucero.TabIndex = 3;
+            this.lblSeleccionCrucero.Text = "Seleccione el crucero a editar presionando el botón Editar al final de su fila co" +
     "rrespondiente.";
             // 
             // dgvEditarCrucero
@@ -86,7 +86,7 @@
             this.ClientSize = new System.Drawing.Size(803, 385);
             this.Controls.Add(this.groupBox1);
             this.Name = "SeleccionCruceroEditarForm";
-            this.Text = "CruceroModificacionFormcs";
+            this.Text = "Selección de crucero";
             this.Load += new System.EventHandler(this.SeleccionCruceroEditarForm_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -99,7 +99,7 @@
 
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button btnCerrar;
-        private System.Windows.Forms.Label label2;
         protected System.Windows.Forms.DataGridView dgvEditarCrucero;
+        protected System.Windows.Forms.Label lblSeleccionCrucero;
     }
 }

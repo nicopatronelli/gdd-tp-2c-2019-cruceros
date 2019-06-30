@@ -112,7 +112,7 @@ namespace FrbaCrucero.AbmCrucero
             cabinas.ForEach(cabina => cabina.insertar(idCrucero));
         }
 
-        private int actualizarCrucero(string identificadorCruceroAnterior)
+        public int actualizarCrucero(string identificadorCruceroAnterior)
         {
             // Creamos los parámetros del procedimiento almacenado USP_actualizar_crucero
             List<Parametro> parametros = new List<Parametro>();
