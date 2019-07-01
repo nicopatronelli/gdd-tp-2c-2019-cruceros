@@ -39,7 +39,7 @@
             this.btnConfirmarBaja.Location = new System.Drawing.Point(48, 81);
             this.btnConfirmarBaja.Name = "btnConfirmarBaja";
             this.btnConfirmarBaja.Size = new System.Drawing.Size(171, 23);
-            this.btnConfirmarBaja.TabIndex = 0;
+            this.btnConfirmarBaja.TabIndex = 1;
             this.btnConfirmarBaja.Text = "Confirmar Baja Definitiva";
             this.btnConfirmarBaja.UseVisualStyleBackColor = true;
             this.btnConfirmarBaja.Click += new System.EventHandler(this.btnConfirmarBaja_Click);
@@ -49,7 +49,7 @@
             this.btnCancelar.Location = new System.Drawing.Point(240, 81);
             this.btnCancelar.Name = "btnCancelar";
             this.btnCancelar.Size = new System.Drawing.Size(171, 23);
-            this.btnCancelar.TabIndex = 1;
+            this.btnCancelar.TabIndex = 2;
             this.btnCancelar.Text = "Cancelar";
             this.btnCancelar.UseVisualStyleBackColor = true;
             this.btnCancelar.Click += new System.EventHandler(this.btnCancelar_Click);
@@ -60,7 +60,7 @@
             this.label1.Location = new System.Drawing.Point(45, 19);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(366, 39);
-            this.label1.TabIndex = 2;
+            this.label1.TabIndex = 0;
             this.label1.Text = resources.GetString("label1.Text");
             // 
             // AvisoBajaDefinitivaForm
@@ -71,6 +71,8 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnCancelar);
             this.Controls.Add(this.btnConfirmarBaja);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.Name = "AvisoBajaDefinitivaForm";
             this.Text = "Confirmación baja definitiva";
             this.ResumeLayout(false);

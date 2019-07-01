@@ -155,7 +155,7 @@ namespace FrbaCrucero.AbmCrucero
             List<Parametro> parametros = new List<Parametro>();
             Parametro paramIdCrucero = new Parametro("@id_crucero", SqlDbType.Int, idCrucero);
             parametros.Add(paramIdCrucero);
-            string consulta = "DELETE FROM LOS_BARONES_DE_LA_CERVEZA.Cabinas WHERE crucero = @id_crucero AND estado = 0";
+            string consulta = "DELETE FROM LOS_BARONES_DE_LA_CERVEZA.Cabinas WHERE crucero = @id_crucero";
             Query miConsulta = new Query(consulta, parametros);
             miConsulta.ejecutarNonQuery();
         }

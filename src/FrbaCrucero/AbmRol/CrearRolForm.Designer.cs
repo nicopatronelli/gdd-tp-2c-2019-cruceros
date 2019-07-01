@@ -66,7 +66,7 @@
             this.btnCrearRol.Location = new System.Drawing.Point(325, 287);
             this.btnCrearRol.Name = "btnCrearRol";
             this.btnCrearRol.Size = new System.Drawing.Size(75, 23);
-            this.btnCrearRol.TabIndex = 5;
+            this.btnCrearRol.TabIndex = 2;
             this.btnCrearRol.Text = "Crear";
             this.btnCrearRol.UseVisualStyleBackColor = true;
             this.btnCrearRol.Click += new System.EventHandler(this.btnCrearRol_Click);
@@ -76,7 +76,7 @@
             this.button1.Location = new System.Drawing.Point(415, 287);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 4;
+            this.button1.TabIndex = 3;
             this.button1.Text = "Cerrar";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
@@ -94,7 +94,7 @@
             this.groupBox3.Location = new System.Drawing.Point(10, 95);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(480, 186);
-            this.groupBox3.TabIndex = 3;
+            this.groupBox3.TabIndex = 1;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Marque las funcionalidades deseadas (debe marcar al menos una):";
             // 
@@ -104,7 +104,7 @@
             this.chbxAbmCruceros.Location = new System.Drawing.Point(315, 113);
             this.chbxAbmCruceros.Name = "chbxAbmCruceros";
             this.chbxAbmCruceros.Size = new System.Drawing.Size(94, 17);
-            this.chbxAbmCruceros.TabIndex = 11;
+            this.chbxAbmCruceros.TabIndex = 7;
             this.chbxAbmCruceros.Text = "ABM Cruceros";
             this.chbxAbmCruceros.UseVisualStyleBackColor = true;
             // 
@@ -114,7 +114,7 @@
             this.chbxGenerarViaje.Location = new System.Drawing.Point(18, 113);
             this.chbxGenerarViaje.Name = "chbxGenerarViaje";
             this.chbxGenerarViaje.Size = new System.Drawing.Size(90, 17);
-            this.chbxGenerarViaje.TabIndex = 8;
+            this.chbxGenerarViaje.TabIndex = 5;
             this.chbxGenerarViaje.Text = "Generar Viaje";
             this.chbxGenerarViaje.UseVisualStyleBackColor = true;
             // 
@@ -125,7 +125,7 @@
             this.chbxAbmRol.Location = new System.Drawing.Point(191, 38);
             this.chbxAbmRol.Name = "chbxAbmRol";
             this.chbxAbmRol.Size = new System.Drawing.Size(68, 17);
-            this.chbxAbmRol.TabIndex = 7;
+            this.chbxAbmRol.TabIndex = 1;
             this.chbxAbmRol.Text = "ABM Rol";
             this.chbxAbmRol.UseVisualStyleBackColor = true;
             // 
@@ -145,7 +145,7 @@
             this.chbxAbmRecorridos.Location = new System.Drawing.Point(152, 74);
             this.chbxAbmRecorridos.Name = "chbxAbmRecorridos";
             this.chbxAbmRecorridos.Size = new System.Drawing.Size(103, 17);
-            this.chbxAbmRecorridos.TabIndex = 4;
+            this.chbxAbmRecorridos.TabIndex = 3;
             this.chbxAbmRecorridos.Text = "ABM Recorridos";
             this.chbxAbmRecorridos.UseVisualStyleBackColor = true;
             // 
@@ -155,7 +155,7 @@
             this.chbxAbmPuertos.Location = new System.Drawing.Point(20, 74);
             this.chbxAbmPuertos.Name = "chbxAbmPuertos";
             this.chbxAbmPuertos.Size = new System.Drawing.Size(88, 17);
-            this.chbxAbmPuertos.TabIndex = 3;
+            this.chbxAbmPuertos.TabIndex = 2;
             this.chbxAbmPuertos.Text = "ABM Puertos";
             this.chbxAbmPuertos.UseVisualStyleBackColor = true;
             // 
@@ -165,7 +165,7 @@
             this.chbxPagoReserva.Location = new System.Drawing.Point(315, 74);
             this.chbxPagoReserva.Name = "chbxPagoReserva";
             this.chbxPagoReserva.Size = new System.Drawing.Size(109, 17);
-            this.chbxPagoReserva.TabIndex = 1;
+            this.chbxPagoReserva.TabIndex = 4;
             this.chbxPagoReserva.Text = "Pago de Reserva";
             this.chbxPagoReserva.UseVisualStyleBackColor = true;
             // 
@@ -186,7 +186,7 @@
             this.gpbxNombreRol.Location = new System.Drawing.Point(10, 28);
             this.gpbxNombreRol.Name = "gpbxNombreRol";
             this.gpbxNombreRol.Size = new System.Drawing.Size(480, 51);
-            this.gpbxNombreRol.TabIndex = 2;
+            this.gpbxNombreRol.TabIndex = 0;
             this.gpbxNombreRol.TabStop = false;
             this.gpbxNombreRol.Text = "Ingrese un nombre para el nuevo rol (Campo obligatorio):";
             // 
@@ -195,7 +195,7 @@
             this.txtbxNombreRol.Location = new System.Drawing.Point(70, 20);
             this.txtbxNombreRol.Name = "txtbxNombreRol";
             this.txtbxNombreRol.Size = new System.Drawing.Size(189, 20);
-            this.txtbxNombreRol.TabIndex = 0;
+            this.txtbxNombreRol.TabIndex = 1;
             // 
             // label1
             // 
@@ -203,7 +203,7 @@
             this.label1.Location = new System.Drawing.Point(17, 23);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(47, 13);
-            this.label1.TabIndex = 1;
+            this.label1.TabIndex = 0;
             this.label1.Text = "Nombre:";
             // 
             // CrearRolForm
@@ -212,6 +212,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(552, 342);
             this.Controls.Add(this.gpbxCrearNuevoRol);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.Name = "CrearRolForm";
             this.Text = "Crear nuevo Rol";
             this.Load += new System.EventHandler(this.CrearRolForm_Load);

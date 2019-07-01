@@ -85,7 +85,7 @@ namespace FrbaCrucero.PantallaPrincipal
 
         private void btnAbmPuertos_Click(object sender, EventArgs e)
         {
-            MensajeBox.info("Esta funcionalidad está disponible aún.");
+            MensajeBox.info("Esta funcionalidad no está disponible aún. Disculpe las molestias ocasionadas.");
         }
 
         private void btnAbmRecorrido_Click(object sender, EventArgs e)

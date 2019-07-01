@@ -33,7 +33,7 @@ namespace FrbaCrucero.Utils
         public const string FUNC_ABM_ROLES = "ABM Roles";
         public const string FUNC_COMPRAR_RESERVAR_VIAJE = "Comprar/Reservar Viaje";
         public const string FUNC_GENERAR_VIAJE = "Generar Viaje";
-        public const string FUNC_LISTADOS = "Listados Estadisticos";
+        public const string FUNC_LISTADOS = "Listados estadisticos";
         public const string FUNC_PAGAR_RESERVA = "Pagar Reserva";
 
         // Abm Rol

@@ -73,6 +73,8 @@
             this.ClientSize = new System.Drawing.Size(539, 284);
             this.Controls.Add(this.btnCerrar);
             this.Controls.Add(this.groupBox1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.Name = "SeleccionRolForm";
             this.Text = "Selección de rol";
             this.Load += new System.EventHandler(this.SeleccionRolForm_Load);

@@ -30,11 +30,11 @@ namespace FrbaCrucero.Utils
             try
             {
                 conexion.Open();
-                Console.WriteLine("Conexion establecida con base de datos");
+                //Console.WriteLine("Conexion establecida con base de datos");
             }
             catch (Exception ex)
             {
-                Console.WriteLine("No se pudo conectar a la BD: " + ex.ToString());
+                //Console.WriteLine("No se pudo conectar a la BD: " + ex.ToString());
             }
         }
 

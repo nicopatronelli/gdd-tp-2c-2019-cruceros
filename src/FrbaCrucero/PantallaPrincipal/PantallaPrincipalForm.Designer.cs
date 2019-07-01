@@ -73,7 +73,7 @@
             this.btnAbmRol.Location = new System.Drawing.Point(15, 28);
             this.btnAbmRol.Name = "btnAbmRol";
             this.btnAbmRol.Size = new System.Drawing.Size(129, 23);
-            this.btnAbmRol.TabIndex = 25;
+            this.btnAbmRol.TabIndex = 0;
             this.btnAbmRol.Text = "ABM Rol";
             this.btnAbmRol.UseVisualStyleBackColor = true;
             this.btnAbmRol.Click += new System.EventHandler(this.btnAbmRol_Click);
@@ -83,7 +83,7 @@
             this.btnListado.Location = new System.Drawing.Point(150, 104);
             this.btnListado.Name = "btnListado";
             this.btnListado.Size = new System.Drawing.Size(129, 23);
-            this.btnListado.TabIndex = 24;
+            this.btnListado.TabIndex = 7;
             this.btnListado.Text = "Listados Estadísticos";
             this.btnListado.UseVisualStyleBackColor = true;
             this.btnListado.Click += new System.EventHandler(this.btnListado_Click);
@@ -93,7 +93,7 @@
             this.btnAbmCruceros.Location = new System.Drawing.Point(285, 28);
             this.btnAbmCruceros.Name = "btnAbmCruceros";
             this.btnAbmCruceros.Size = new System.Drawing.Size(129, 23);
-            this.btnAbmCruceros.TabIndex = 22;
+            this.btnAbmCruceros.TabIndex = 2;
             this.btnAbmCruceros.Text = "ABM Cruceros";
             this.btnAbmCruceros.UseVisualStyleBackColor = true;
             this.btnAbmCruceros.Click += new System.EventHandler(this.btnAbmCruceros_Click);
@@ -103,7 +103,7 @@
             this.btnGenerarViaje.Location = new System.Drawing.Point(150, 66);
             this.btnGenerarViaje.Name = "btnGenerarViaje";
             this.btnGenerarViaje.Size = new System.Drawing.Size(129, 23);
-            this.btnGenerarViaje.TabIndex = 23;
+            this.btnGenerarViaje.TabIndex = 4;
             this.btnGenerarViaje.Text = "Generar Viaje";
             this.btnGenerarViaje.UseVisualStyleBackColor = true;
             this.btnGenerarViaje.Click += new System.EventHandler(this.btnGenerarViaje_Click);
@@ -113,7 +113,7 @@
             this.btnAbmRecorrido.Location = new System.Drawing.Point(15, 66);
             this.btnAbmRecorrido.Name = "btnAbmRecorrido";
             this.btnAbmRecorrido.Size = new System.Drawing.Size(129, 23);
-            this.btnAbmRecorrido.TabIndex = 21;
+            this.btnAbmRecorrido.TabIndex = 3;
             this.btnAbmRecorrido.Text = "ABM Recorrido";
             this.btnAbmRecorrido.UseVisualStyleBackColor = true;
             this.btnAbmRecorrido.Click += new System.EventHandler(this.btnAbmRecorrido_Click);
@@ -123,7 +123,7 @@
             this.btnAbmPuertos.Location = new System.Drawing.Point(150, 28);
             this.btnAbmPuertos.Name = "btnAbmPuertos";
             this.btnAbmPuertos.Size = new System.Drawing.Size(129, 23);
-            this.btnAbmPuertos.TabIndex = 20;
+            this.btnAbmPuertos.TabIndex = 1;
             this.btnAbmPuertos.Text = "ABM Puertos";
             this.btnAbmPuertos.UseVisualStyleBackColor = true;
             this.btnAbmPuertos.Click += new System.EventHandler(this.btnAbmPuertos_Click);
@@ -133,7 +133,7 @@
             this.btnPagarReserva.Location = new System.Drawing.Point(15, 104);
             this.btnPagarReserva.Name = "btnPagarReserva";
             this.btnPagarReserva.Size = new System.Drawing.Size(129, 23);
-            this.btnPagarReserva.TabIndex = 18;
+            this.btnPagarReserva.TabIndex = 6;
             this.btnPagarReserva.Text = "Pagar Reserva";
             this.btnPagarReserva.UseVisualStyleBackColor = true;
             this.btnPagarReserva.Click += new System.EventHandler(this.btnPagarReserva_Click);
@@ -143,7 +143,7 @@
             this.btnComprarReservar.Location = new System.Drawing.Point(285, 66);
             this.btnComprarReservar.Name = "btnComprarReservar";
             this.btnComprarReservar.Size = new System.Drawing.Size(129, 23);
-            this.btnComprarReservar.TabIndex = 16;
+            this.btnComprarReservar.TabIndex = 5;
             this.btnComprarReservar.Text = "Comprar/Reservar Viaje";
             this.btnComprarReservar.UseVisualStyleBackColor = true;
             this.btnComprarReservar.Click += new System.EventHandler(this.btnComprarReservar_Click);
@@ -155,6 +155,8 @@
             this.ClientSize = new System.Drawing.Size(481, 198);
             this.Controls.Add(this.btnCerrar);
             this.Controls.Add(this.groupBox1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.Name = "PantallaPrincipalForm";
             this.Text = "Pantalla Principal";
             this.Load += new System.EventHandler(this.PantallaPrincipalForm_Load);

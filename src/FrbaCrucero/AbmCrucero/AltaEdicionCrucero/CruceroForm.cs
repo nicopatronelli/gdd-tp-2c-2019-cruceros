@@ -311,8 +311,6 @@ namespace FrbaCrucero.AbmCrucero
                                     + "ON cab.tipo_cabina = tc.id_tipo_cabina "
                                 + "JOIN LOS_BARONES_DE_LA_CERVEZA.Cruceros cru "
                                     + "ON cab.crucero = cru.id_crucero "
-                                + "	JOIN LOS_BARONES_DE_LA_CERVEZA.Estado_Cabinas_Por_Viaje e "
-                                    + "ON cab.id_cabina = e.id_cabina "
                               + "WHERE cru.identificador = @identificador_crucero ";
                                 // + "AND e.compra IS NULL "
                                 // + "AND e.reserva IS NULL";

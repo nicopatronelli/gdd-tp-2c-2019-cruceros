@@ -32,6 +32,7 @@ namespace FrbaCrucero.AbmCrucero
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CruceroForm));
             this.txtbxModelo = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnGuardarSinCabinas = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.btnCancelar = new System.Windows.Forms.Button();
             this.btnGuardar = new System.Windows.Forms.Button();
@@ -57,7 +58,6 @@ namespace FrbaCrucero.AbmCrucero
             this.lblIdentificador = new System.Windows.Forms.Label();
             this.txtbxIdentificadorA = new System.Windows.Forms.TextBox();
             this.btnEnviar = new System.Windows.Forms.Button();
-            this.btnGuardarSinCabinas = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -69,7 +69,7 @@ namespace FrbaCrucero.AbmCrucero
             this.txtbxModelo.Location = new System.Drawing.Point(75, 23);
             this.txtbxModelo.Name = "txtbxModelo";
             this.txtbxModelo.Size = new System.Drawing.Size(100, 20);
-            this.txtbxModelo.TabIndex = 0;
+            this.txtbxModelo.TabIndex = 1;
             // 
             // groupBox1
             // 
@@ -95,13 +95,23 @@ namespace FrbaCrucero.AbmCrucero
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Detalles del Crucero";
             // 
+            // btnGuardarSinCabinas
+            // 
+            this.btnGuardarSinCabinas.Location = new System.Drawing.Point(529, 455);
+            this.btnGuardarSinCabinas.Name = "btnGuardarSinCabinas";
+            this.btnGuardarSinCabinas.Size = new System.Drawing.Size(75, 23);
+            this.btnGuardarSinCabinas.TabIndex = 11;
+            this.btnGuardarSinCabinas.Text = "Guardar";
+            this.btnGuardarSinCabinas.UseVisualStyleBackColor = true;
+            this.btnGuardarSinCabinas.Click += new System.EventHandler(this.btnGuardarSinCabinas_Click);
+            // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(13, 460);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(201, 13);
-            this.label2.TabIndex = 4;
+            this.label2.TabIndex = 10;
             this.label2.Text = "Nota: Todos los campos son obligatorios.";
             // 
             // btnCancelar
@@ -109,7 +119,7 @@ namespace FrbaCrucero.AbmCrucero
             this.btnCancelar.Location = new System.Drawing.Point(627, 455);
             this.btnCancelar.Name = "btnCancelar";
             this.btnCancelar.Size = new System.Drawing.Size(75, 23);
-            this.btnCancelar.TabIndex = 24;
+            this.btnCancelar.TabIndex = 12;
             this.btnCancelar.Text = "Cerrar";
             this.btnCancelar.UseVisualStyleBackColor = true;
             this.btnCancelar.Click += new System.EventHandler(this.btnCancelar_Click);
@@ -144,7 +154,7 @@ namespace FrbaCrucero.AbmCrucero
             this.groupBox3.Location = new System.Drawing.Point(16, 118);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(410, 54);
-            this.groupBox3.TabIndex = 11;
+            this.groupBox3.TabIndex = 8;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Tipo de servicio:";
             // 
@@ -209,7 +219,7 @@ namespace FrbaCrucero.AbmCrucero
             this.lblModelo.Location = new System.Drawing.Point(24, 26);
             this.lblModelo.Name = "lblModelo";
             this.lblModelo.Size = new System.Drawing.Size(45, 13);
-            this.lblModelo.TabIndex = 2;
+            this.lblModelo.TabIndex = 0;
             this.lblModelo.Text = "Modelo:";
             // 
             // label1
@@ -219,7 +229,7 @@ namespace FrbaCrucero.AbmCrucero
             this.label1.Location = new System.Drawing.Point(157, 53);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(14, 20);
-            this.label1.TabIndex = 9;
+            this.label1.TabIndex = 4;
             this.label1.Text = "-";
             // 
             // txtbxIdentificadorB
@@ -228,7 +238,7 @@ namespace FrbaCrucero.AbmCrucero
             this.txtbxIdentificadorB.MaxLength = 5;
             this.txtbxIdentificadorB.Name = "txtbxIdentificadorB";
             this.txtbxIdentificadorB.Size = new System.Drawing.Size(49, 20);
-            this.txtbxIdentificadorB.TabIndex = 8;
+            this.txtbxIdentificadorB.TabIndex = 5;
             this.txtbxIdentificadorB.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.IdentificadorB_SoloNumeros_KeyPress);
             // 
             // groupBox2
@@ -239,7 +249,7 @@ namespace FrbaCrucero.AbmCrucero
             this.groupBox2.Location = new System.Drawing.Point(16, 180);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(686, 269);
-            this.groupBox2.TabIndex = 7;
+            this.groupBox2.TabIndex = 9;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Cabinas";
             // 
@@ -249,7 +259,7 @@ namespace FrbaCrucero.AbmCrucero
             this.lblTipEliminarCabinas.Location = new System.Drawing.Point(23, 243);
             this.lblTipEliminarCabinas.Name = "lblTipEliminarCabinas";
             this.lblTipEliminarCabinas.Size = new System.Drawing.Size(540, 13);
-            this.lblTipEliminarCabinas.TabIndex = 12;
+            this.lblTipEliminarCabinas.TabIndex = 2;
             this.lblTipEliminarCabinas.Text = "Tip: Para descartar una cabina ingresada, presione la flecha a la izquierda del r" +
     "egistro y luego pulse la tecla Supr.";
             // 
@@ -259,7 +269,7 @@ namespace FrbaCrucero.AbmCrucero
             this.lblInfoCabinas.Location = new System.Drawing.Point(23, 22);
             this.lblInfoCabinas.Name = "lblInfoCabinas";
             this.lblInfoCabinas.Size = new System.Drawing.Size(490, 39);
-            this.lblInfoCabinas.TabIndex = 21;
+            this.lblInfoCabinas.TabIndex = 0;
             this.lblInfoCabinas.Text = resources.GetString("lblInfoCabinas.Text");
             // 
             // dgvCabinas
@@ -272,7 +282,7 @@ namespace FrbaCrucero.AbmCrucero
             this.dgvCabinas.Location = new System.Drawing.Point(26, 64);
             this.dgvCabinas.Name = "dgvCabinas";
             this.dgvCabinas.Size = new System.Drawing.Size(633, 167);
-            this.dgvCabinas.TabIndex = 20;
+            this.dgvCabinas.TabIndex = 1;
             this.dgvCabinas.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.dgvCabinas_EditingControlShowing);
             // 
             // Numero
@@ -318,7 +328,7 @@ namespace FrbaCrucero.AbmCrucero
             this.cmbxMarca.Location = new System.Drawing.Point(75, 88);
             this.cmbxMarca.Name = "cmbxMarca";
             this.cmbxMarca.Size = new System.Drawing.Size(121, 21);
-            this.cmbxMarca.TabIndex = 6;
+            this.cmbxMarca.TabIndex = 7;
             // 
             // lblMarca
             // 
@@ -326,7 +336,7 @@ namespace FrbaCrucero.AbmCrucero
             this.lblMarca.Location = new System.Drawing.Point(24, 91);
             this.lblMarca.Name = "lblMarca";
             this.lblMarca.Size = new System.Drawing.Size(40, 13);
-            this.lblMarca.TabIndex = 5;
+            this.lblMarca.TabIndex = 6;
             this.lblMarca.Text = "Marca:";
             // 
             // lblIdentificador
@@ -335,7 +345,7 @@ namespace FrbaCrucero.AbmCrucero
             this.lblIdentificador.Location = new System.Drawing.Point(24, 58);
             this.lblIdentificador.Name = "lblIdentificador";
             this.lblIdentificador.Size = new System.Drawing.Size(68, 13);
-            this.lblIdentificador.TabIndex = 4;
+            this.lblIdentificador.TabIndex = 2;
             this.lblIdentificador.Text = "Identificador:";
             // 
             // txtbxIdentificadorA
@@ -358,16 +368,6 @@ namespace FrbaCrucero.AbmCrucero
             this.btnEnviar.Text = "Enviar";
             this.btnEnviar.UseVisualStyleBackColor = true;
             // 
-            // btnGuardarSinCabinas
-            // 
-            this.btnGuardarSinCabinas.Location = new System.Drawing.Point(529, 455);
-            this.btnGuardarSinCabinas.Name = "btnGuardarSinCabinas";
-            this.btnGuardarSinCabinas.Size = new System.Drawing.Size(75, 23);
-            this.btnGuardarSinCabinas.TabIndex = 25;
-            this.btnGuardarSinCabinas.Text = "Guardar";
-            this.btnGuardarSinCabinas.UseVisualStyleBackColor = true;
-            this.btnGuardarSinCabinas.Click += new System.EventHandler(this.btnGuardarSinCabinas_Click);
-            // 
             // CruceroForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -375,6 +375,7 @@ namespace FrbaCrucero.AbmCrucero
             this.ClientSize = new System.Drawing.Size(743, 514);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btnEnviar);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.Name = "CruceroForm";
             this.Text = "Alta de un nuevo crucero";

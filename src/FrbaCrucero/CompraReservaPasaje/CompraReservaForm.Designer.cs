@@ -175,7 +175,7 @@
             this.ClientSize = new System.Drawing.Size(859, 546);
             this.Controls.Add(this.groupBox1);
             this.Name = "CompraReservaForm";
-            this.Text = "CompraReservaForm";
+            this.Text = "Compra o reserva de pasajes";
             this.Load += new System.EventHandler(this.CompraReservaForm_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

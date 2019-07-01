@@ -52,7 +52,7 @@
             this.btnCrearRol.Location = new System.Drawing.Point(13, 23);
             this.btnCrearRol.Name = "btnCrearRol";
             this.btnCrearRol.Size = new System.Drawing.Size(152, 23);
-            this.btnCrearRol.TabIndex = 5;
+            this.btnCrearRol.TabIndex = 0;
             this.btnCrearRol.Text = "Crear Rol";
             this.btnCrearRol.UseVisualStyleBackColor = true;
             this.btnCrearRol.Click += new System.EventHandler(this.btnCrearRol_Click);
@@ -83,6 +83,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(566, 96);
             this.Controls.Add(this.groupBox1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MinimizeBox = false;
             this.Name = "AbmRolForm";
             this.Text = "ABM Rol";
             this.Load += new System.EventHandler(this.AbmRolForm_Load);

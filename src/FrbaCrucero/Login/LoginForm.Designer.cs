@@ -158,6 +158,7 @@
             this.Controls.Add(this.label5);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
+            this.MaximizeBox = false;
             this.Name = "LoginForm";
             this.Text = "Bienvenido a FRBA-Cruceros ";
             this.groupBox2.ResumeLayout(false);
