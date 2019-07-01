@@ -100,7 +100,7 @@ namespace FrbaCrucero.CompraReservaPasaje
                               + "        on c.crucero = v.viaje_id_crucero "
                               + "        where v.id_viaje = " + idViaje.ToString() + " and c.id_cabina not in (   "
                               + "              select cxv.id_cabina FROM [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Estado_Cabinas_Por_Viaje] cxv  "
-                              + "              where cxv.id_viaje = " + idViaje.ToString()
+                              + "              where cxv.id_viaje = " + idViaje.ToString() +"  and (reserva is not null or compra is not null) "
                               + "                      ) and c.tipo_cabina = " + this.tipoCabina.id.ToString();
             Query miConsulta = new Query(consulta, new List<Parametro>());
             SqlDataReader infoCabina = miConsulta.ejecutarReaderFila();

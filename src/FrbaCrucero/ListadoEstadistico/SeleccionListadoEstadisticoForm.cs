@@ -64,8 +64,24 @@ namespace FrbaCrucero.ListadoEstadistico
             // 2. Armamos la parte de fechas de la consulta a partir del año y el semestre ingresados
             string rangoFechasQuery = ListadoUtil.getRangoFechas(rbtnPrimerSemestre, rbtnSegundoSemestre, anio);
 
-            // 3. Hacemos la consulta y cargamos el dgv con los resultados
-            ListadoCrucerosFueraServicioForm formListadoCrucerosFueraServicio = new ListadoCrucerosFueraServicioForm(rangoFechasQuery);
+            // 3. Armamos la fecha de inicio de semestre necesaria para la query
+            //string inicioSem = ListadoUtil.getInicioSemestre(rbtnPrimerSemestre, rbtnSegundoSemestre, anio);
+
+            // 4. Armamos la fecha de fin de semestre necesaria para la query
+            //string finSem = ListadoUtil.getFinSemestre(rbtnPrimerSemestre, rbtnSegundoSemestre, anio);
+            string semestre;
+
+            if (rbtnPrimerSemestre.Checked)
+            {
+               semestre = "1" ;
+            }
+            else
+            {
+               semestre = "2";
+            }
+
+            // 5. Hacemos la consulta y cargamos el dgv con los resultados
+            ListadoCrucerosFueraServicioForm formListadoCrucerosFueraServicio = new ListadoCrucerosFueraServicioForm(anio, semestre);
             formListadoCrucerosFueraServicio.ShowDialog();
         }
 

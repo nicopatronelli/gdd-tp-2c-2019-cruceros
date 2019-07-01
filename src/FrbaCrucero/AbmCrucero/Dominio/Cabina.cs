@@ -128,7 +128,15 @@ namespace FrbaCrucero.AbmCrucero
             Query miConsulta = new Query(consulta, new List<Parametro>());
             int filasAfectadas = miConsulta.ejecutarNonQuery();
             if (filasAfectadas != 1)
-                MessageBox.Show("Una cabina se a pagado mal");
+            {
+                consulta = "  update [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Estado_Cabinas_Por_Viaje] set compra = " + id_compra.ToString() + " where id_viaje = " + id_viaje.ToString() + " and id_cabina = " + this.id.ToString();
+                miConsulta = new Query(consulta, new List<Parametro>());
+                filasAfectadas = miConsulta.ejecutarNonQuery();
+                if (filasAfectadas != 1)
+                {
+                    MensajeBox.info("cabina no comprada");
+                }
+            }
         }
 
         public void reservarse(int id_viaje, int id_reserva)
@@ -137,7 +145,15 @@ namespace FrbaCrucero.AbmCrucero
             Query miConsulta = new Query(consulta, new List<Parametro>());
             int filasAfectadas = miConsulta.ejecutarNonQuery();
             if (filasAfectadas != 1)
-                MensajeBox.info("Una cabina se a reservado mal");
+            {
+                consulta = "  update [GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Estado_Cabinas_Por_Viaje] set reserva = " + id_reserva.ToString() + " where id_viaje = " + id_viaje.ToString() + " and id_cabina = " + this.id.ToString();
+                miConsulta = new Query(consulta, new List<Parametro>());
+                filasAfectadas = miConsulta.ejecutarNonQuery();
+                if (filasAfectadas != 1)
+                {
+                    MensajeBox.info("cabina reservada");
+                }
+            }
         }
 
 
