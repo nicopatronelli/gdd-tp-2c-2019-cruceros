@@ -43,6 +43,7 @@
             this.btnCerrar.TabIndex = 7;
             this.btnCerrar.Text = "Cerrar";
             this.btnCerrar.UseVisualStyleBackColor = true;
+            this.btnCerrar.Click += new System.EventHandler(this.btnCerrar_Click_1);
             // 
             // gpbxListadoRecPasajeros
             // 
@@ -77,7 +78,7 @@
             this.Controls.Add(this.btnCerrar);
             this.Controls.Add(this.gpbxListadoRecPasajeros);
             this.Name = "ListadoCabinasLibresForm";
-            this.Text = "ListadoCabinasLibresForm";
+            this.Text = "Listado de los primeros 5 recorridos con más cabinas libres";
             this.Load += new System.EventHandler(this.ListadoCabinasLibresForm_Load);
             this.gpbxListadoRecPasajeros.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvListadoEstadistico)).EndInit();

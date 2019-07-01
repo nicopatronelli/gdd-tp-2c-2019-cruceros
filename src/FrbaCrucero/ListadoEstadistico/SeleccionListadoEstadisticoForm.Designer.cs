@@ -39,6 +39,7 @@
             this.gpbxSemestre = new System.Windows.Forms.GroupBox();
             this.rbtnSegundoSemestre = new System.Windows.Forms.RadioButton();
             this.rbtnPrimerSemestre = new System.Windows.Forms.RadioButton();
+            this.label2 = new System.Windows.Forms.Label();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.gpbxSemestre.SuspendLayout();
@@ -105,7 +106,7 @@
             // 
             // btnCerrar
             // 
-            this.btnCerrar.Location = new System.Drawing.Point(414, 280);
+            this.btnCerrar.Location = new System.Drawing.Point(414, 270);
             this.btnCerrar.Name = "btnCerrar";
             this.btnCerrar.Size = new System.Drawing.Size(75, 23);
             this.btnCerrar.TabIndex = 6;
@@ -122,7 +123,7 @@
             this.groupBox1.Controls.Add(this.gpbxSemestre);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(504, 318);
+            this.groupBox1.Size = new System.Drawing.Size(504, 300);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Listados Estadísticos";
@@ -160,11 +161,22 @@
             this.rbtnPrimerSemestre.Text = "Primer Semestre";
             this.rbtnPrimerSemestre.UseVisualStyleBackColor = true;
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(9, 322);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(384, 26);
+            this.label2.TabIndex = 10;
+            this.label2.Text = "Nota: Para ver resultados provenientes de la migración, seleccione el año 2018 \r\n" +
+    "y el primer semestre.";
+            // 
             // SeleccionListadoEstadisticoForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(532, 342);
+            this.ClientSize = new System.Drawing.Size(532, 363);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.groupBox1);
             this.Name = "SeleccionListadoEstadisticoForm";
             this.Text = "Listados Estadisticos";
@@ -174,6 +186,7 @@
             this.gpbxSemestre.ResumeLayout(false);
             this.gpbxSemestre.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -190,5 +203,6 @@
         private System.Windows.Forms.GroupBox gpbxSemestre;
         private System.Windows.Forms.RadioButton rbtnSegundoSemestre;
         private System.Windows.Forms.RadioButton rbtnPrimerSemestre;
+        private System.Windows.Forms.Label label2;
     }
 }

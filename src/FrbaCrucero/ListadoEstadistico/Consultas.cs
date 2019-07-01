@@ -55,7 +55,8 @@ namespace FrbaCrucero.ListadoEstadistico
 
         public static string crucerosConMasDiasFueraServicio(string anio, string semestre)
         {
-            return "select * from LOS_BARONES_DE_LA_CERVEZA.UF_listado_fuera_de_servicio("+ anio + "," + semestre + ")";
+            string s = "select * from LOS_BARONES_DE_LA_CERVEZA.UF_listado_fuera_de_servicio("+ anio + "," + semestre + ")";
+            return s;
             /*
             return "select top 5 FS.id_crucero,CRU.identificador, CRU.modelo, "
                     + "(SUM(datediff(DAY, case when FS.fecha_inicio_fuera_servicio < " + inicioSem + " then " + inicioSem + " else FS.fecha_inicio_fuera_servicio end, case when FS.fecha_fin_fuera_servicio > " + finSem + " then " + finSem + " else FS.fecha_fin_fuera_servicio end ))) as diferencia "

@@ -42,5 +42,10 @@ namespace FrbaCrucero.ListadoEstadistico
             ListadoUtil.cargar(Consultas.crucerosConMasDiasFueraServicio(anio, semestre), dgvListadoEstadistico);
         }
 
+        private void btnCerrar_Click_1(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
     }
 }
