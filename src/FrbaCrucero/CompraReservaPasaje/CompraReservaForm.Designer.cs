@@ -41,6 +41,7 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.filtroOrigen = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -169,11 +170,21 @@
             this.filtroOrigen.TabIndex = 8;
             this.filtroOrigen.TextChanged += new System.EventHandler(this.FiltroOrigen_TextChanged);
             // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(29, 491);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(386, 13);
+            this.label7.TabIndex = 19;
+            this.label7.Text = "ejemplo de viaje: origen = ACCRA, destino LUANDA, fecha 24 de mayo de 2018";
+            // 
             // CompraReservaForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(859, 546);
+            this.Controls.Add(this.label7);
             this.Controls.Add(this.groupBox1);
             this.Name = "CompraReservaForm";
             this.Text = "CompraReservaForm";
@@ -181,6 +192,7 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -199,5 +211,6 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox filtroOrigen;
+        private System.Windows.Forms.Label label7;
     }
 }
