@@ -1270,7 +1270,7 @@ inicio dado, es decir, no están ocupados haciendo otro viaje. Además,
 sólo nos quedamos con los cruceros que no estén fuera de servicio y 
 no hayan sido dados de baja de forma definitiva. 
 ******************************************************************/
-CREATE FUNCTION [LOS_BARONES_DE_LA_CERVEZA].[UF_cruceros_disponibles] 
+ALTER FUNCTION [LOS_BARONES_DE_LA_CERVEZA].[UF_cruceros_disponibles] 
 (
 	@fecha_inicio_nuevo_viaje_s NVARCHAR(255),
 	@fecha_fin_nuevo_viaje_s NVARCHAR(255)
@@ -1295,6 +1295,15 @@ RETURN
 			)
 		AND cru.baja_fuera_servicio = 0
 		AND cru.baja_vida_util = 0
+	UNION
+	SELECT cruceros_sin_viajes.identificador
+	FROM LOS_BARONES_DE_LA_CERVEZA.Cruceros cruceros_sin_viajes
+	WHERE cruceros_sin_viajes.id_crucero NOT IN 
+		(
+			SELECT cruceros_con_viajes.viaje_id_crucero
+			FROM LOS_BARONES_DE_LA_CERVEZA.Viaje cruceros_con_viajes
+		)
+
 -- FIN [LOS_BARONES_DE_LA_CERVEZA].[UF_cruceros_disponibles] 
 GO
 
