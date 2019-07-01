@@ -1,4 +1,4 @@
-fecha config=2016/11/01
+fecha config=2018/06/01
 Data Source=localhost\SQLSERVER2012
 Initial Catalog=GD1C2019
 User Id=gdCruceros2019
