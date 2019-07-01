@@ -85,6 +85,7 @@
             this.calendario.MaxSelectionCount = 1;
             this.calendario.Name = "calendario";
             this.calendario.TabIndex = 4;
+            this.calendario.TodayDate = new System.DateTime(((long)(0)));
             // 
             // label3
             // 

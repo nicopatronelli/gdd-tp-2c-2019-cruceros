@@ -25,6 +25,7 @@ namespace FrbaCrucero.CompraReservaPasaje
 
         private void CompraReservaForm_Load(object sender, EventArgs e)
         {
+            calendario.TodayDate = ArchivoConfig.obtenerFechaConfig();
 
             string consulta = "SELECT[puerto_nombre] from[GD1C2019].[LOS_BARONES_DE_LA_CERVEZA].[Puerto]";
 

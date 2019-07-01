@@ -61,6 +61,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.buttonComprar = new System.Windows.Forms.Button();
+            this.label7 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cabinas5Numeric)).BeginInit();
@@ -439,11 +440,21 @@
             this.buttonComprar.UseVisualStyleBackColor = true;
             this.buttonComprar.Click += new System.EventHandler(this.ingresar_datos_click);
             // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(-3, 412);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(386, 13);
+            this.label7.TabIndex = 18;
+            this.label7.Text = "ejemplo de viaje: origen = ACCRA, destino LUANDA, fecha 24 de mayo de 2018";
+            // 
             // ElegirViajeForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.label7);
             this.Controls.Add(this.buttonComprar);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
@@ -460,6 +471,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.cabinas2Numeric)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cabinas1Numeric)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -498,5 +510,6 @@
         private System.Windows.Forms.Label recargoLabel1;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label7;
     }
 }

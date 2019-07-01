@@ -39,7 +39,8 @@ namespace FrbaCrucero.CompraReservaPasaje
             var recorridos =  miConsulta.ejecutarReaderUnicaColumna();
             foreach (var o in recorridos)
             {
-                this.recorridosList.Items.Add(o);
+                if(!recorridosList.Items.Contains(o))
+                    this.recorridosList.Items.Add(o);
             }
 
             //agrupo los controllers (label, numeric UpDown y label) que muestran tipoCabinas
