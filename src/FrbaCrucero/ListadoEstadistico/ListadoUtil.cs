@@ -31,6 +31,18 @@ namespace FrbaCrucero.ListadoEstadistico
             }
         }
 
+        public static string getInicioSemestre(RadioButton rbPrimerSemestre, RadioButton rbSegundoSemestre, string anio)
+        {
+                // Primer semestre: Anio-01-01 al Anio -06-30 (1 de enero al 30 de junio)
+                return "convert(datetime2(3), (select CONCAT((select CAST( " + anio + " AS varchar)), '-0', (case when 1 = 1 then '1-01' else '7-00' end),' 00:00:00.000'  )),121)";
+        }
+
+        public static string getFinSemestre(RadioButton rbPrimerSemestre, RadioButton rbSegundoSemestre, string anio)
+        {
+                // Segundo semestre: Anio-07-01 al Anio -12-31 (1 de julio al 31 de diciembre)
+                return "convert(datetime2(3), (select CONCAT((select CAST( " + anio + " AS varchar)), '-', (case when 2 = 1 then '07-01' else '12-31' end),' 00:00:00.000')),121)";
+        }
+
         public static void cargar(string consulta, DataGridView dgv)
         {
             ConexionBD conexion = new ConexionBD();

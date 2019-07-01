@@ -37,16 +37,34 @@ namespace FrbaCrucero.ListadoEstadistico
                 + "GROUP BY r.recorrido_codigo, pto_inicio.puerto_nombre, pto_fin.puerto_nombre "
                 + "ORDER BY 2 DESC";
         }
-
+ 
         public static string recorridosConMasCabinasLibres(string rangoFechas)
         {
-            return "";
+            string consulta = "select TOP 5 Sumas.recorri as Recorrido, "
+                        + " AVG(Sumas.cabinas) as Promedios_cabinas_libres "
+                    + "from (select REC.recorrido_codigo as recorri, VI.id_viaje as viaj, COUNT(CAB.id_cabina) cabinas "
+                          + "from LOS_BARONES_DE_LA_CERVEZA.Recorrido REC join LOS_BARONES_DE_LA_CERVEZA.Viaje VI on REC.id_recorrido = VI.viaje_id_recorrido "
+                        + "join LOS_BARONES_DE_LA_CERVEZA.Cabinas CAB on CAB.crucero = VI.viaje_id_crucero "
+                    + " where CAB.id_cabina NOT IN (select ECV.id_cabina from LOS_BARONES_DE_LA_CERVEZA.Estado_Cabinas_Por_Viaje ECV where ECV.id_viaje = VI.id_viaje and ECV.compra IS NOT NULL) "
+                        + "AND (VI.viaje_fecha_fin_estimada BETWEEN " + rangoFechas + " "
+                        + "OR viaje_fecha_inicio BETWEEN " + rangoFechas + " ) "
+                    + "group by REC.recorrido_codigo, VI.id_viaje) as Sumas "
+                    + "group by Sumas.recorri order by Promedios_cabinas_libres desc";
+            return consulta;
         }
 
-        public static string crucerosConMasDiasFueraServicio(string rangoFechas)
+        public static string crucerosConMasDiasFueraServicio(string anio, string semestre)
         {
-            return "";
+            return "select * from LOS_BARONES_DE_LA_CERVEZA.UF_listado_fuera_de_servicio("+ anio + "," + semestre + ")";
+            /*
+            return "select top 5 FS.id_crucero,CRU.identificador, CRU.modelo, "
+                    + "(SUM(datediff(DAY, case when FS.fecha_inicio_fuera_servicio < " + inicioSem + " then " + inicioSem + " else FS.fecha_inicio_fuera_servicio end, case when FS.fecha_fin_fuera_servicio > " + finSem + " then " + finSem + " else FS.fecha_fin_fuera_servicio end ))) as diferencia "
+                    + "from LOS_BARONES_DE_LA_CERVEZA.Cruceros_Fuera_Servicio FS join LOS_BARONES_DE_LA_CERVEZA.Cruceros CRU on (CRU.id_crucero = FS.id_crucero) "
+                    + "where (FS.fecha_fin_fuera_servicio BETWEEN " + rangoFechas + " "
+                            + "OR FS.fecha_inicio_fuera_servicio BETWEEN " + rangoFechas + " ) "
+                    + "group by FS.id_crucero,CRU.identificador,CRU.modelo order by diferencia desc "; */
         }
 
     }
 }
+
