@@ -12,6 +12,7 @@ using System.IO;
 using FrbaCrucero.Utils;
 using FrbaCrucero.PantallaPrincipal;
 using FrbaCrucero.Rol;
+using FrbaCrucero.Utils.Excepciones;
 
 namespace FrbaCrucero.Login
 {
@@ -23,14 +24,21 @@ namespace FrbaCrucero.Login
         }
 
         private void btnIngresarAdmins_Click(object sender, EventArgs e)
-        {   
-            if (this.hayCamposNulos())
-                MensajeBox.error("Hay campos obligatorios sin completar.");
-            else
-                this.verificarUsuario();
+        {
+            // 1. Validamos que haya ingresado un usuario y contraseña
+            try
+            {
+                Validaciones.hayCamposObligatoriosNulos(txtbxUsuario.Text, txtbxPass.Text);
+            }
+            catch(CamposObligatoriosVaciosException ex)
+            {
+                ex.mensajeError();
+                return;
+            }
+            
+            // 2. Verificamos el usuario 
+            this.verificarUsuario();
         }
-
-        private bool hayCamposNulos() { return (txtbxUsuario.Text.Equals("") || txtbxPass.Text.Equals("")); }
 
         private void verificarUsuario()
         {

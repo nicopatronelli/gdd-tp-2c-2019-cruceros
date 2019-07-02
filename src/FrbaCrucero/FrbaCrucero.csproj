@@ -303,6 +303,8 @@
     <Compile Include="ListadoEstadistico\SeleccionListadoEstadisticoForm.Designer.cs">
       <DependentUpon>SeleccionListadoEstadisticoForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Login\ChequeosPostLoginExitoso\ChequeoAltaCrucerosServicioTecnico.cs" />
+    <Compile Include="Login\ChequeosPostLoginExitoso\ChequeoPostLoginExitoso.cs" />
     <Compile Include="Utils\Excepciones\ActualizarCruceroException.cs" />
     <Compile Include="Utils\Excepciones\CamposObligatoriosVaciosException.cs" />
     <Compile Include="Login\ResultadoLogin\ErrorLogin.cs" />

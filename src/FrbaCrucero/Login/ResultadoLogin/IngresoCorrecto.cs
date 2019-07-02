@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using FrbaCrucero.Rol;
 using FrbaCrucero.Utils;
 using FrbaCrucero.PantallaPrincipal;
+using FrbaCrucero.Login.ChequeosPostLoginExitoso;
 
 namespace FrbaCrucero.Login
 {
@@ -19,12 +20,16 @@ namespace FrbaCrucero.Login
                 // 1. Verificamos que el rol esté habilitado
                 if (Roles.rolHabilitado(nombreUsuario))
                 {
-                    // El rol está habilitado 
+                    // El rol está habilitado (INGRESO EXITOSO)
+                    
+                    // 2. Hacemos chequeos de negocio cuando se efectua un login exitoso
+                    ChequeoPostLoginExitoso chequeoAltaCruceroST = new ChequeoAltaCrucerosServicioTecnico();
+                    chequeoAltaCruceroST.chequear();
 
-                    // 2. Me traigo las funcionalidades de ese rol
+                    // 3. Me traigo las funcionalidades de ese rol
                     List<string> funcionalidades = Roles.funcionalidadesUnicoRol(nombreUsuario);
 
-                    // 3. Llamo al método generarPantallaPrincipal con las funcionalidades como parámetros y el nombre de usuario
+                    // 4. Llamo al método generarPantallaPrincipal con las funcionalidades como parámetros y el nombre de usuario
                     PantallaPrincipalForm formPantallaPrincipal = new PantallaPrincipalForm(funcionalidades, nombreUsuario);
                     formPantallaPrincipal.ShowDialog();
                 }

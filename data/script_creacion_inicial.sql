@@ -874,6 +874,35 @@ END; -- FIN USP_Login
 GO
 
 /******************************************************************
+[LOS_BARONES_DE_LA_CERVEZA].[USP_chequear_cruceros_servicio_tecnico] 
+@Desc: Chequeamos que si hay cruceros para dar de alta por fin
+de sus reparaciones (alta luego de una baja por servicio técnico)
+******************************************************************/
+GO
+CREATE PROCEDURE [LOS_BARONES_DE_LA_CERVEZA].[USP_chequear_cruceros_servicio_tecnico]
+(
+	@fecha_actual NVARCHAR(255) -- Es la fecha del archivo de configuración
+)
+AS
+BEGIN 
+	UPDATE LOS_BARONES_DE_LA_CERVEZA.Cruceros 
+	SET baja_fuera_servicio = 0 -- Activo = 0 - Inactivo = 1
+	WHERE id_crucero IN 
+	-- La fecha de fin de fuera de servicio sea menor a la actual (config), es decir, ya la 
+	-- superamos...
+	(
+		SELECT cru.id_crucero
+		FROM LOS_BARONES_DE_LA_CERVEZA.Cruceros cru
+			JOIN LOS_BARONES_DE_LA_CERVEZA.Cruceros_Fuera_Servicio fs
+				ON cru.id_crucero = fs.id_crucero
+		WHERE fs.fecha_fin_fuera_servicio < CONVERT(DATETIME2(3), @fecha_actual, 121)
+	)
+		AND baja_fuera_servicio = 1; -- ... y el crucero esté dado de baja por fuera de servicio
+
+END; -- FIN USP_chequear_cruceros_servicio_tecnico
+GO
+
+/******************************************************************
 [LOS_BARONES_DE_LA_CERVEZA].[UF_id_marca_crucero]
 @Desc: Función auxiliar que retorna el id_crucero (PK) asignado a 
 un crucero según el nombre de la marca que le pasemos por parámetro 
