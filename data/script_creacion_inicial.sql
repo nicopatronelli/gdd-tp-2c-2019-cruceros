@@ -1270,7 +1270,7 @@ inicio dado, es decir, no están ocupados haciendo otro viaje. Además,
 sólo nos quedamos con los cruceros que no estén fuera de servicio y 
 no hayan sido dados de baja de forma definitiva. 
 ******************************************************************/
-ALTER FUNCTION [LOS_BARONES_DE_LA_CERVEZA].[UF_cruceros_disponibles] 
+CREATE FUNCTION [LOS_BARONES_DE_LA_CERVEZA].[UF_cruceros_disponibles] 
 (
 	@fecha_inicio_nuevo_viaje_s NVARCHAR(255),
 	@fecha_fin_nuevo_viaje_s NVARCHAR(255)

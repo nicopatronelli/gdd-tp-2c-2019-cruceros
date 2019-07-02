@@ -267,12 +267,6 @@
     <Compile Include="CompraReservaPasaje\CompraReservaForm.Designer.cs">
       <DependentUpon>CompraReservaForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Form1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </Compile>
     <Compile Include="GenerarViaje\Dominio\Excepciones\IdentificadorCruceroEnViajeEsNuloOVacioException.cs" />
     <Compile Include="GenerarViaje\Dominio\Excepciones\InsertarNuevoViajeException.cs" />
     <Compile Include="GenerarViaje\Dominio\Excepciones\NingunRecorridoSeleccionadoEnNuevoViajeException.cs" />
