@@ -77,6 +77,8 @@
             this.ClientSize = new System.Drawing.Size(577, 247);
             this.Controls.Add(this.btnCerrar);
             this.Controls.Add(this.gpbxListadoRecPasajeros);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.Name = "ListadoCabinasLibresForm";
             this.Text = "Listado de los primeros 5 recorridos con más cabinas libres";
             this.Load += new System.EventHandler(this.ListadoCabinasLibresForm_Load);

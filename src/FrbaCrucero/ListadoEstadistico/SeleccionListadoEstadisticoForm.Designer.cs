@@ -109,7 +109,7 @@
             this.btnCerrar.Location = new System.Drawing.Point(414, 270);
             this.btnCerrar.Name = "btnCerrar";
             this.btnCerrar.Size = new System.Drawing.Size(75, 23);
-            this.btnCerrar.TabIndex = 6;
+            this.btnCerrar.TabIndex = 1;
             this.btnCerrar.Text = "Cerrar";
             this.btnCerrar.UseVisualStyleBackColor = true;
             this.btnCerrar.Click += new System.EventHandler(this.btnCerrar_Click);
@@ -145,7 +145,7 @@
             this.rbtnSegundoSemestre.Location = new System.Drawing.Point(157, 22);
             this.rbtnSegundoSemestre.Name = "rbtnSegundoSemestre";
             this.rbtnSegundoSemestre.Size = new System.Drawing.Size(115, 17);
-            this.rbtnSegundoSemestre.TabIndex = 8;
+            this.rbtnSegundoSemestre.TabIndex = 1;
             this.rbtnSegundoSemestre.TabStop = true;
             this.rbtnSegundoSemestre.Text = "Segundo Semestre";
             this.rbtnSegundoSemestre.UseVisualStyleBackColor = true;
@@ -156,7 +156,7 @@
             this.rbtnPrimerSemestre.Location = new System.Drawing.Point(30, 22);
             this.rbtnPrimerSemestre.Name = "rbtnPrimerSemestre";
             this.rbtnPrimerSemestre.Size = new System.Drawing.Size(101, 17);
-            this.rbtnPrimerSemestre.TabIndex = 7;
+            this.rbtnPrimerSemestre.TabIndex = 0;
             this.rbtnPrimerSemestre.TabStop = true;
             this.rbtnPrimerSemestre.Text = "Primer Semestre";
             this.rbtnPrimerSemestre.UseVisualStyleBackColor = true;
@@ -178,6 +178,8 @@
             this.ClientSize = new System.Drawing.Size(532, 363);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.groupBox1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.Name = "SeleccionListadoEstadisticoForm";
             this.Text = "Listados Estadisticos";
             this.groupBox2.ResumeLayout(false);

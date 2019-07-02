@@ -60,6 +60,11 @@ namespace FrbaCrucero.CompraReservaPasaje
             this.Close();
         }
 
+        private void VoucherForm_Load(object sender, EventArgs e)
+        {
+
+        }
+
 
 
 

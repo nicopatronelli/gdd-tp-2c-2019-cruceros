@@ -69,7 +69,7 @@
             this.destinosList.Location = new System.Drawing.Point(372, 32);
             this.destinosList.Name = "destinosList";
             this.destinosList.Size = new System.Drawing.Size(222, 108);
-            this.destinosList.TabIndex = 2;
+            this.destinosList.TabIndex = 1;
             // 
             // label2
             // 
@@ -102,7 +102,7 @@
             this.button1.Location = new System.Drawing.Point(120, 408);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 6;
+            this.button1.TabIndex = 5;
             this.button1.Text = "Buscar";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.Button1_Click);
@@ -142,7 +142,7 @@
             this.filtroDestino.Location = new System.Drawing.Point(414, 153);
             this.filtroDestino.Name = "filtroDestino";
             this.filtroDestino.Size = new System.Drawing.Size(100, 20);
-            this.filtroDestino.TabIndex = 9;
+            this.filtroDestino.TabIndex = 3;
             // 
             // label5
             // 
@@ -167,7 +167,7 @@
             this.filtroOrigen.Location = new System.Drawing.Point(65, 153);
             this.filtroOrigen.Name = "filtroOrigen";
             this.filtroOrigen.Size = new System.Drawing.Size(100, 20);
-            this.filtroOrigen.TabIndex = 8;
+            this.filtroOrigen.TabIndex = 2;
             this.filtroOrigen.TextChanged += new System.EventHandler(this.FiltroOrigen_TextChanged);
             // 
             // label7
@@ -186,6 +186,8 @@
             this.ClientSize = new System.Drawing.Size(859, 546);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.groupBox1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.Name = "CompraReservaForm";
             this.Text = "Compra o reserva de pasajes";
             this.Load += new System.EventHandler(this.CompraReservaForm_Load);

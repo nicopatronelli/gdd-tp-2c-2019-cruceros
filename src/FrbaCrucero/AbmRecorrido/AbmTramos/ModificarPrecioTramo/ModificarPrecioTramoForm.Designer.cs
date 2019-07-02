@@ -30,20 +30,20 @@
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.lblPrecioActual = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.txtbxNuevoPrecioB = new System.Windows.Forms.TextBox();
             this.txtbxNuevoPrecioA = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.btnEnviar = new System.Windows.Forms.Button();
             this.btnCancelar = new System.Windows.Forms.Button();
-            this.lblPrecioActual = new System.Windows.Forms.Label();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.lblId = new System.Windows.Forms.Label();
-            this.lblPuertoOrigen = new System.Windows.Forms.Label();
             this.lblPuertoDestino = new System.Windows.Forms.Label();
+            this.lblPuertoOrigen = new System.Windows.Forms.Label();
+            this.lblId = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -57,7 +57,7 @@
             this.groupBox1.Location = new System.Drawing.Point(6, 55);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(435, 80);
-            this.groupBox1.TabIndex = 0;
+            this.groupBox1.TabIndex = 6;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Ingrese el nuevo precio:";
             // 
@@ -67,9 +67,18 @@
             this.groupBox3.Location = new System.Drawing.Point(22, 19);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(121, 49);
-            this.groupBox3.TabIndex = 13;
+            this.groupBox3.TabIndex = 0;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Precio actual:";
+            // 
+            // lblPrecioActual
+            // 
+            this.lblPrecioActual.AutoSize = true;
+            this.lblPrecioActual.Location = new System.Drawing.Point(21, 23);
+            this.lblPrecioActual.Name = "lblPrecioActual";
+            this.lblPrecioActual.Size = new System.Drawing.Size(13, 13);
+            this.lblPrecioActual.TabIndex = 0;
+            this.lblPrecioActual.Text = "0";
             // 
             // groupBox2
             // 
@@ -79,7 +88,7 @@
             this.groupBox2.Location = new System.Drawing.Point(163, 19);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(248, 49);
-            this.groupBox2.TabIndex = 11;
+            this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Nuevo precio:";
             // 
@@ -90,7 +99,7 @@
             this.txtbxNuevoPrecioB.Name = "txtbxNuevoPrecioB";
             this.txtbxNuevoPrecioB.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.txtbxNuevoPrecioB.Size = new System.Drawing.Size(30, 20);
-            this.txtbxNuevoPrecioB.TabIndex = 12;
+            this.txtbxNuevoPrecioB.TabIndex = 2;
             // 
             // txtbxNuevoPrecioA
             // 
@@ -99,7 +108,7 @@
             this.txtbxNuevoPrecioA.Name = "txtbxNuevoPrecioA";
             this.txtbxNuevoPrecioA.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.txtbxNuevoPrecioA.Size = new System.Drawing.Size(61, 20);
-            this.txtbxNuevoPrecioA.TabIndex = 11;
+            this.txtbxNuevoPrecioA.TabIndex = 0;
             // 
             // label4
             // 
@@ -108,7 +117,7 @@
             this.label4.Location = new System.Drawing.Point(74, 21);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(18, 25);
-            this.label4.TabIndex = 13;
+            this.label4.TabIndex = 1;
             this.label4.Text = ".";
             // 
             // btnEnviar
@@ -116,7 +125,7 @@
             this.btnEnviar.Location = new System.Drawing.Point(297, 164);
             this.btnEnviar.Name = "btnEnviar";
             this.btnEnviar.Size = new System.Drawing.Size(75, 23);
-            this.btnEnviar.TabIndex = 7;
+            this.btnEnviar.TabIndex = 0;
             this.btnEnviar.Text = "Enviar";
             this.btnEnviar.UseVisualStyleBackColor = true;
             this.btnEnviar.Click += new System.EventHandler(this.btnEnviar_Click);
@@ -126,19 +135,10 @@
             this.btnCancelar.Location = new System.Drawing.Point(378, 164);
             this.btnCancelar.Name = "btnCancelar";
             this.btnCancelar.Size = new System.Drawing.Size(75, 23);
-            this.btnCancelar.TabIndex = 6;
+            this.btnCancelar.TabIndex = 1;
             this.btnCancelar.Text = "Cancelar";
             this.btnCancelar.UseVisualStyleBackColor = true;
             this.btnCancelar.Click += new System.EventHandler(this.btnCancelar_Click);
-            // 
-            // lblPrecioActual
-            // 
-            this.lblPrecioActual.AutoSize = true;
-            this.lblPrecioActual.Location = new System.Drawing.Point(21, 23);
-            this.lblPrecioActual.Name = "lblPrecioActual";
-            this.lblPrecioActual.Size = new System.Drawing.Size(13, 13);
-            this.lblPrecioActual.TabIndex = 0;
-            this.lblPrecioActual.Text = "0";
             // 
             // groupBox4
             // 
@@ -156,32 +156,23 @@
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Tramo seleccionado:";
             // 
-            // label2
+            // lblPuertoDestino
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(14, 26);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(18, 13);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "id:";
+            this.lblPuertoDestino.AutoSize = true;
+            this.lblPuertoDestino.Location = new System.Drawing.Point(328, 26);
+            this.lblPuertoDestino.Name = "lblPuertoDestino";
+            this.lblPuertoDestino.Size = new System.Drawing.Size(77, 13);
+            this.lblPuertoDestino.TabIndex = 5;
+            this.lblPuertoDestino.Text = "puerto_destino";
             // 
-            // label3
+            // lblPuertoOrigen
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(76, 26);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(73, 13);
-            this.label3.TabIndex = 2;
-            this.label3.Text = "Puerto origen:";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(273, 26);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(55, 13);
-            this.label5.TabIndex = 3;
-            this.label5.Text = "Puerto fin:";
+            this.lblPuertoOrigen.AutoSize = true;
+            this.lblPuertoOrigen.Location = new System.Drawing.Point(149, 26);
+            this.lblPuertoOrigen.Name = "lblPuertoOrigen";
+            this.lblPuertoOrigen.Size = new System.Drawing.Size(72, 13);
+            this.lblPuertoOrigen.TabIndex = 3;
+            this.lblPuertoOrigen.Text = "puerto_origen";
             // 
             // lblId
             // 
@@ -192,23 +183,32 @@
             this.lblId.TabIndex = 1;
             this.lblId.Text = "id";
             // 
-            // lblPuertoOrigen
+            // label5
             // 
-            this.lblPuertoOrigen.AutoSize = true;
-            this.lblPuertoOrigen.Location = new System.Drawing.Point(149, 26);
-            this.lblPuertoOrigen.Name = "lblPuertoOrigen";
-            this.lblPuertoOrigen.Size = new System.Drawing.Size(72, 13);
-            this.lblPuertoOrigen.TabIndex = 4;
-            this.lblPuertoOrigen.Text = "puerto_origen";
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(273, 26);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(55, 13);
+            this.label5.TabIndex = 4;
+            this.label5.Text = "Puerto fin:";
             // 
-            // lblPuertoDestino
+            // label3
             // 
-            this.lblPuertoDestino.AutoSize = true;
-            this.lblPuertoDestino.Location = new System.Drawing.Point(328, 26);
-            this.lblPuertoDestino.Name = "lblPuertoDestino";
-            this.lblPuertoDestino.Size = new System.Drawing.Size(77, 13);
-            this.lblPuertoDestino.TabIndex = 5;
-            this.lblPuertoDestino.Text = "puerto_destino";
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(76, 26);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(73, 13);
+            this.label3.TabIndex = 2;
+            this.label3.Text = "Puerto origen:";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(14, 26);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(18, 13);
+            this.label2.TabIndex = 0;
+            this.label2.Text = "id:";
             // 
             // ModificarPrecioTramoForm
             // 
@@ -218,6 +218,8 @@
             this.Controls.Add(this.btnEnviar);
             this.Controls.Add(this.btnCancelar);
             this.Controls.Add(this.groupBox4);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.Name = "ModificarPrecioTramoForm";
             this.Text = "Actualizar precio de tramo";
             this.Load += new System.EventHandler(this.ModificarPrecioTramoForm_Load);

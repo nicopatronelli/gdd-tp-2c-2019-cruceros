@@ -51,7 +51,7 @@
             this.btnDeshabilitarRecorrido.Location = new System.Drawing.Point(25, 96);
             this.btnDeshabilitarRecorrido.Name = "btnDeshabilitarRecorrido";
             this.btnDeshabilitarRecorrido.Size = new System.Drawing.Size(181, 23);
-            this.btnDeshabilitarRecorrido.TabIndex = 1;
+            this.btnDeshabilitarRecorrido.TabIndex = 4;
             this.btnDeshabilitarRecorrido.Text = "Deshabilitar Recorrido";
             this.btnDeshabilitarRecorrido.UseVisualStyleBackColor = true;
             this.btnDeshabilitarRecorrido.Click += new System.EventHandler(this.btnDeshabilitarRecorrido_Click);
@@ -61,7 +61,7 @@
             this.btnEditarRecorrido.Location = new System.Drawing.Point(226, 22);
             this.btnEditarRecorrido.Name = "btnEditarRecorrido";
             this.btnEditarRecorrido.Size = new System.Drawing.Size(181, 23);
-            this.btnEditarRecorrido.TabIndex = 2;
+            this.btnEditarRecorrido.TabIndex = 1;
             this.btnEditarRecorrido.Text = "Editar Recorrido";
             this.btnEditarRecorrido.UseVisualStyleBackColor = true;
             this.btnEditarRecorrido.Click += new System.EventHandler(this.btnEditarRecorrido_Click);
@@ -71,7 +71,7 @@
             this.btnHabilitarRecorrido.Location = new System.Drawing.Point(226, 96);
             this.btnHabilitarRecorrido.Name = "btnHabilitarRecorrido";
             this.btnHabilitarRecorrido.Size = new System.Drawing.Size(181, 23);
-            this.btnHabilitarRecorrido.TabIndex = 3;
+            this.btnHabilitarRecorrido.TabIndex = 5;
             this.btnHabilitarRecorrido.Text = "Habilitar Recorrido";
             this.btnHabilitarRecorrido.UseVisualStyleBackColor = true;
             this.btnHabilitarRecorrido.Click += new System.EventHandler(this.btnHabilitarRecorrido_Click);
@@ -81,7 +81,7 @@
             this.btnNuevoTramo.Location = new System.Drawing.Point(25, 59);
             this.btnNuevoTramo.Name = "btnNuevoTramo";
             this.btnNuevoTramo.Size = new System.Drawing.Size(181, 23);
-            this.btnNuevoTramo.TabIndex = 4;
+            this.btnNuevoTramo.TabIndex = 2;
             this.btnNuevoTramo.Text = "Alta Nuevo Tramo";
             this.btnNuevoTramo.UseVisualStyleBackColor = true;
             this.btnNuevoTramo.Click += new System.EventHandler(this.btnNuevoTramo_Click);
@@ -91,7 +91,7 @@
             this.btnEditarPrecioTramo.Location = new System.Drawing.Point(226, 59);
             this.btnEditarPrecioTramo.Name = "btnEditarPrecioTramo";
             this.btnEditarPrecioTramo.Size = new System.Drawing.Size(181, 23);
-            this.btnEditarPrecioTramo.TabIndex = 5;
+            this.btnEditarPrecioTramo.TabIndex = 3;
             this.btnEditarPrecioTramo.Text = "Actualizar Precio Tramo";
             this.btnEditarPrecioTramo.UseVisualStyleBackColor = true;
             this.btnEditarPrecioTramo.Click += new System.EventHandler(this.btnEditarPrecioTramo_Click);
@@ -107,6 +107,8 @@
             this.Controls.Add(this.btnEditarRecorrido);
             this.Controls.Add(this.btnDeshabilitarRecorrido);
             this.Controls.Add(this.btnNuevoRecorrido);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.Name = "AbmRecorridosForm";
             this.Text = "ABM de Recorridos";
             this.ResumeLayout(false);

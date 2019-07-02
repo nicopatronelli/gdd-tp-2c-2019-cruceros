@@ -84,7 +84,7 @@
             this.ClientSize = new System.Drawing.Size(566, 96);
             this.Controls.Add(this.groupBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.MinimizeBox = false;
+            this.MaximizeBox = false;
             this.Name = "AbmRolForm";
             this.Text = "ABM Rol";
             this.Load += new System.EventHandler(this.AbmRolForm_Load);

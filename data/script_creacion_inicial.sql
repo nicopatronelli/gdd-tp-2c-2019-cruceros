@@ -1295,7 +1295,7 @@ GO
 [LOS_BARONES_DE_LA_CERVEZA].[UF_cruceros_disponibles] 
 @Desc: Retorna el listado de identificadores de los cruceros que 
 se encuentran disponibles para realizar un viaje en la fecha de
-inicio dado, es decir, no están ocupados haciendo otro viaje. Además,
+inicio dada, es decir, no están ocupados haciendo otro viaje. Además,
 sólo nos quedamos con los cruceros que no estén fuera de servicio y 
 no hayan sido dados de baja de forma definitiva. 
 ******************************************************************/

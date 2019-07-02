@@ -77,7 +77,7 @@
             this.btnCancelar.Location = new System.Drawing.Point(715, 414);
             this.btnCancelar.Name = "btnCancelar";
             this.btnCancelar.Size = new System.Drawing.Size(75, 23);
-            this.btnCancelar.TabIndex = 11;
+            this.btnCancelar.TabIndex = 4;
             this.btnCancelar.Text = "Cancelar";
             this.btnCancelar.UseVisualStyleBackColor = true;
             this.btnCancelar.Click += new System.EventHandler(this.btnCancelar_Click);
@@ -87,7 +87,7 @@
             this.btnEnviar.Location = new System.Drawing.Point(619, 414);
             this.btnEnviar.Name = "btnEnviar";
             this.btnEnviar.Size = new System.Drawing.Size(75, 23);
-            this.btnEnviar.TabIndex = 8;
+            this.btnEnviar.TabIndex = 3;
             this.btnEnviar.Text = "Enviar";
             this.btnEnviar.UseVisualStyleBackColor = true;
             this.btnEnviar.Click += new System.EventHandler(this.btnEnviar_Click);
@@ -97,14 +97,14 @@
             this.dtpFechaFin.Location = new System.Drawing.Point(105, 66);
             this.dtpFechaFin.Name = "dtpFechaFin";
             this.dtpFechaFin.Size = new System.Drawing.Size(200, 20);
-            this.dtpFechaFin.TabIndex = 7;
+            this.dtpFechaFin.TabIndex = 1;
             // 
             // dtpFechaInicio
             // 
             this.dtpFechaInicio.Location = new System.Drawing.Point(105, 32);
             this.dtpFechaInicio.Name = "dtpFechaInicio";
             this.dtpFechaInicio.Size = new System.Drawing.Size(200, 20);
-            this.dtpFechaInicio.TabIndex = 6;
+            this.dtpFechaInicio.TabIndex = 0;
             this.dtpFechaInicio.ValueChanged += new System.EventHandler(this.dtpFechaInicio_ValueChanged);
             // 
             // cmbxCrucero
@@ -115,7 +115,7 @@
             this.cmbxCrucero.Location = new System.Drawing.Point(105, 102);
             this.cmbxCrucero.Name = "cmbxCrucero";
             this.cmbxCrucero.Size = new System.Drawing.Size(121, 21);
-            this.cmbxCrucero.TabIndex = 4;
+            this.cmbxCrucero.TabIndex = 2;
             // 
             // Puerto
             // 
@@ -202,14 +202,14 @@
             this.txtbxPuertoFin.Location = new System.Drawing.Point(300, 24);
             this.txtbxPuertoFin.Name = "txtbxPuertoFin";
             this.txtbxPuertoFin.Size = new System.Drawing.Size(100, 20);
-            this.txtbxPuertoFin.TabIndex = 12;
+            this.txtbxPuertoFin.TabIndex = 1;
             // 
             // btnBuscarRecorridos
             // 
             this.btnBuscarRecorridos.Location = new System.Drawing.Point(433, 22);
             this.btnBuscarRecorridos.Name = "btnBuscarRecorridos";
             this.btnBuscarRecorridos.Size = new System.Drawing.Size(75, 23);
-            this.btnBuscarRecorridos.TabIndex = 11;
+            this.btnBuscarRecorridos.TabIndex = 2;
             this.btnBuscarRecorridos.Text = "Buscar";
             this.btnBuscarRecorridos.UseVisualStyleBackColor = true;
             this.btnBuscarRecorridos.Click += new System.EventHandler(this.btnBuscarRecorridos_Click);
@@ -228,7 +228,7 @@
             this.txtbxPuertoInicio.Location = new System.Drawing.Point(100, 24);
             this.txtbxPuertoInicio.Name = "txtbxPuertoInicio";
             this.txtbxPuertoInicio.Size = new System.Drawing.Size(100, 20);
-            this.txtbxPuertoInicio.TabIndex = 10;
+            this.txtbxPuertoInicio.TabIndex = 0;
             // 
             // dgvRecorridos
             // 
@@ -245,6 +245,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(820, 467);
             this.Controls.Add(this.groupBox1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.Name = "GenerarViajeForm";
             this.Text = "Generar Viaje";
             this.Load += new System.EventHandler(this.GenerarViajeForm_Load);

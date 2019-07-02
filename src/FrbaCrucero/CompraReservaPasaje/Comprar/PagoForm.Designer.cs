@@ -51,7 +51,7 @@
             this.formaPagoUpDown.Name = "formaPagoUpDown";
             this.formaPagoUpDown.ReadOnly = true;
             this.formaPagoUpDown.Size = new System.Drawing.Size(120, 20);
-            this.formaPagoUpDown.TabIndex = 1;
+            this.formaPagoUpDown.TabIndex = 0;
             this.formaPagoUpDown.SelectedItemChanged += new System.EventHandler(this.formaPagoUpDown_SelectedItemChanged);
             // 
             // button1
@@ -90,7 +90,7 @@
             this.tarjetaTextBox.Name = "tarjetaTextBox";
             this.tarjetaTextBox.PasswordChar = '*';
             this.tarjetaTextBox.Size = new System.Drawing.Size(110, 20);
-            this.tarjetaTextBox.TabIndex = 5;
+            this.tarjetaTextBox.TabIndex = 1;
             this.tarjetaTextBox.Visible = false;
             this.tarjetaTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tarjetaTextBox_KeyPress);
             // 
@@ -105,6 +105,8 @@
             this.Controls.Add(this.button1);
             this.Controls.Add(this.formaPagoUpDown);
             this.Controls.Add(this.label1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
             this.Name = "PagoForm";
             this.Text = "PagoForm";
             this.ResumeLayout(false);

@@ -289,6 +289,8 @@
             this.Controls.Add(this.gpbxAltaNuevoRecorrido);
             this.Controls.Add(this.btnCerrar);
             this.Controls.Add(this.btnEnviar);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
             this.Name = "AltaRecorridoForm";
             this.Text = "Alta de nuevo recorrido";
             this.gpbxAltaNuevoRecorrido.ResumeLayout(false);

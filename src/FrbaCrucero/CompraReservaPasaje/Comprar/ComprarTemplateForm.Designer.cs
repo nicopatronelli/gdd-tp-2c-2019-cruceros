@@ -64,7 +64,7 @@
             this.mailTextBox.Location = new System.Drawing.Point(47, 279);
             this.mailTextBox.Name = "mailTextBox";
             this.mailTextBox.Size = new System.Drawing.Size(163, 20);
-            this.mailTextBox.TabIndex = 0;
+            this.mailTextBox.TabIndex = 6;
             // 
             // label1
             // 
@@ -81,7 +81,7 @@
             this.dniTextBox.MaxLength = 10;
             this.dniTextBox.Name = "dniTextBox";
             this.dniTextBox.Size = new System.Drawing.Size(100, 20);
-            this.dniTextBox.TabIndex = 2;
+            this.dniTextBox.TabIndex = 1;
             this.dniTextBox.TextChanged += new System.EventHandler(this.dniTextBox_TextChanged);
             this.dniTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.dayTextBox_KeyPress_1);
             // 
@@ -91,7 +91,7 @@
             this.dayTextBox.MaxLength = 2;
             this.dayTextBox.Name = "dayTextBox";
             this.dayTextBox.Size = new System.Drawing.Size(22, 20);
-            this.dayTextBox.TabIndex = 3;
+            this.dayTextBox.TabIndex = 7;
             this.dayTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.dayTextBox_KeyPress_1);
             // 
             // telefonoTextBox
@@ -99,7 +99,7 @@
             this.telefonoTextBox.Location = new System.Drawing.Point(47, 244);
             this.telefonoTextBox.Name = "telefonoTextBox";
             this.telefonoTextBox.Size = new System.Drawing.Size(100, 20);
-            this.telefonoTextBox.TabIndex = 4;
+            this.telefonoTextBox.TabIndex = 5;
             this.telefonoTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.dayTextBox_KeyPress_1);
             // 
             // direccionTextBox
@@ -107,7 +107,7 @@
             this.direccionTextBox.Location = new System.Drawing.Point(47, 204);
             this.direccionTextBox.Name = "direccionTextBox";
             this.direccionTextBox.Size = new System.Drawing.Size(167, 20);
-            this.direccionTextBox.TabIndex = 5;
+            this.direccionTextBox.TabIndex = 4;
             // 
             // nombreTextBox
             // 
@@ -115,7 +115,7 @@
             this.nombreTextBox.Location = new System.Drawing.Point(47, 136);
             this.nombreTextBox.Name = "nombreTextBox";
             this.nombreTextBox.Size = new System.Drawing.Size(100, 20);
-            this.nombreTextBox.TabIndex = 6;
+            this.nombreTextBox.TabIndex = 2;
             this.nombreTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.nombreTextBox_KeyPress);
             // 
             // label2
@@ -189,7 +189,7 @@
             this.mesTextBox.MaxLength = 2;
             this.mesTextBox.Name = "mesTextBox";
             this.mesTextBox.Size = new System.Drawing.Size(22, 20);
-            this.mesTextBox.TabIndex = 14;
+            this.mesTextBox.TabIndex = 8;
             this.mesTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.dayTextBox_KeyPress_1);
             // 
             // anioTextBox
@@ -198,7 +198,7 @@
             this.anioTextBox.MaxLength = 4;
             this.anioTextBox.Name = "anioTextBox";
             this.anioTextBox.Size = new System.Drawing.Size(39, 20);
-            this.anioTextBox.TabIndex = 15;
+            this.anioTextBox.TabIndex = 9;
             this.anioTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.dayTextBox_KeyPress_1);
             // 
             // informacionCompraLabel
@@ -228,7 +228,7 @@
             this.label9.Location = new System.Drawing.Point(53, 58);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(136, 20);
-            this.label9.TabIndex = 18;
+            this.label9.TabIndex = 0;
             this.label9.Text = "Ingrese sus datos";
             // 
             // apellidoTextBox
@@ -236,7 +236,7 @@
             this.apellidoTextBox.Location = new System.Drawing.Point(47, 170);
             this.apellidoTextBox.Name = "apellidoTextBox";
             this.apellidoTextBox.Size = new System.Drawing.Size(100, 20);
-            this.apellidoTextBox.TabIndex = 19;
+            this.apellidoTextBox.TabIndex = 3;
             this.apellidoTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.nombreTextBox_KeyPress);
             // 
             // label10
@@ -306,7 +306,7 @@
             this.listoButton.Location = new System.Drawing.Point(47, 351);
             this.listoButton.Name = "listoButton";
             this.listoButton.Size = new System.Drawing.Size(218, 87);
-            this.listoButton.TabIndex = 26;
+            this.listoButton.TabIndex = 12;
             this.listoButton.Text = "Registrarme y Aceptar";
             this.listoButton.UseVisualStyleBackColor = true;
             this.listoButton.Click += new System.EventHandler(this.listoButton_Click);
@@ -318,7 +318,7 @@
             this.comprarRadio.Location = new System.Drawing.Point(292, 351);
             this.comprarRadio.Name = "comprarRadio";
             this.comprarRadio.Size = new System.Drawing.Size(64, 17);
-            this.comprarRadio.TabIndex = 27;
+            this.comprarRadio.TabIndex = 10;
             this.comprarRadio.TabStop = true;
             this.comprarRadio.Text = "Comprar";
             this.comprarRadio.UseVisualStyleBackColor = true;
@@ -329,7 +329,7 @@
             this.reservarRadio.Location = new System.Drawing.Point(292, 373);
             this.reservarRadio.Name = "reservarRadio";
             this.reservarRadio.Size = new System.Drawing.Size(68, 17);
-            this.reservarRadio.TabIndex = 28;
+            this.reservarRadio.TabIndex = 11;
             this.reservarRadio.Text = "Reservar";
             this.reservarRadio.UseVisualStyleBackColor = true;
             // 
@@ -367,6 +367,8 @@
             this.Controls.Add(this.dniTextBox);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.mailTextBox);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.Name = "ComprarTemplateForm";
             this.Text = "ComprarForm";
             this.ResumeLayout(false);

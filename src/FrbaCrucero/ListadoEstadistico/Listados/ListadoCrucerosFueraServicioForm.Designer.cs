@@ -77,6 +77,8 @@
             this.ClientSize = new System.Drawing.Size(577, 247);
             this.Controls.Add(this.btnCerrar);
             this.Controls.Add(this.gpbxListadoRecPasajeros);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.Name = "ListadoCrucerosFueraServicioForm";
             this.Text = "Listado de los primeros 5 cruceros con mayor cantidad de días fuera de servicio";
             this.Load += new System.EventHandler(this.ListadoCrucerosFueraServicioForm_Load);

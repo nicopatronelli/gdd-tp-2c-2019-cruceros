@@ -35,12 +35,12 @@
             this.precio = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.elegir_tramo = new System.Windows.Forms.DataGridViewButtonColumn();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.btnCerrar = new System.Windows.Forms.Button();
             this.Puerto = new System.Windows.Forms.Label();
             this.txtbxPuertoFin = new System.Windows.Forms.TextBox();
             this.btnBuscarTramos = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.txtbxPuertoInicio = new System.Windows.Forms.TextBox();
+            this.btnCerrar = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTramosDisponibles)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -118,16 +118,6 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Seleccione el tramo para el cual desea actualizar su precio";
             // 
-            // btnCerrar
-            // 
-            this.btnCerrar.Location = new System.Drawing.Point(487, 325);
-            this.btnCerrar.Name = "btnCerrar";
-            this.btnCerrar.Size = new System.Drawing.Size(75, 23);
-            this.btnCerrar.TabIndex = 8;
-            this.btnCerrar.Text = "Cerrar";
-            this.btnCerrar.UseVisualStyleBackColor = true;
-            this.btnCerrar.Click += new System.EventHandler(this.btnCerrar_Click);
-            // 
             // Puerto
             // 
             this.Puerto.AutoSize = true;
@@ -170,6 +160,16 @@
             this.txtbxPuertoInicio.Size = new System.Drawing.Size(100, 20);
             this.txtbxPuertoInicio.TabIndex = 14;
             // 
+            // btnCerrar
+            // 
+            this.btnCerrar.Location = new System.Drawing.Point(487, 325);
+            this.btnCerrar.Name = "btnCerrar";
+            this.btnCerrar.Size = new System.Drawing.Size(75, 23);
+            this.btnCerrar.TabIndex = 8;
+            this.btnCerrar.Text = "Cerrar";
+            this.btnCerrar.UseVisualStyleBackColor = true;
+            this.btnCerrar.Click += new System.EventHandler(this.btnCerrar_Click);
+            // 
             // SeleccionTramoModificarPrecioForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -177,6 +177,8 @@
             this.ClientSize = new System.Drawing.Size(575, 357);
             this.Controls.Add(this.btnCerrar);
             this.Controls.Add(this.groupBox1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.Name = "SeleccionTramoModificarPrecioForm";
             this.Text = "Selección de tramo a editar precio";
             ((System.ComponentModel.ISupportInitialize)(this.dgvTramosDisponibles)).EndInit();

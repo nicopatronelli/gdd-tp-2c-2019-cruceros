@@ -33,15 +33,15 @@
             this.cmbxPuertoFin = new System.Windows.Forms.ComboBox();
             this.txtbxPrecioA = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label5 = new System.Windows.Forms.Label();
             this.txtbxPrecioB = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.btnCancelar = new System.Windows.Forms.Button();
             this.btnEnviar = new System.Windows.Forms.Button();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -93,6 +93,15 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Complete los datos del nuevo tramo:";
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(10, 26);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(433, 52);
+            this.label5.TabIndex = 7;
+            this.label5.Text = resources.GetString("label5.Text");
+            // 
             // txtbxPrecioB
             // 
             this.txtbxPrecioB.Location = new System.Drawing.Point(395, 120);
@@ -131,6 +140,15 @@
             this.label4.TabIndex = 7;
             this.label4.Text = ".";
             // 
+            // groupBox2
+            // 
+            this.groupBox2.Location = new System.Drawing.Point(306, 100);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(137, 49);
+            this.groupBox2.TabIndex = 8;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Precio Tramo:";
+            // 
             // btnCancelar
             // 
             this.btnCancelar.Location = new System.Drawing.Point(393, 180);
@@ -151,15 +169,6 @@
             this.btnEnviar.UseVisualStyleBackColor = true;
             this.btnEnviar.Click += new System.EventHandler(this.btnEnviar_Click);
             // 
-            // groupBox2
-            // 
-            this.groupBox2.Location = new System.Drawing.Point(306, 100);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(137, 49);
-            this.groupBox2.TabIndex = 8;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Precio Tramo:";
-            // 
             // label3
             // 
             this.label3.AutoSize = true;
@@ -168,15 +177,6 @@
             this.label3.Size = new System.Drawing.Size(176, 13);
             this.label3.TabIndex = 6;
             this.label3.Text = "* Todos los campos son obligatorios";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(10, 26);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(433, 52);
-            this.label5.TabIndex = 7;
-            this.label5.Text = resources.GetString("label5.Text");
             // 
             // AltaTramoForm
             // 
@@ -187,6 +187,8 @@
             this.Controls.Add(this.btnEnviar);
             this.Controls.Add(this.btnCancelar);
             this.Controls.Add(this.groupBox1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.Name = "AltaTramoForm";
             this.Text = "Alta Nuevo Tramo";
             this.groupBox1.ResumeLayout(false);

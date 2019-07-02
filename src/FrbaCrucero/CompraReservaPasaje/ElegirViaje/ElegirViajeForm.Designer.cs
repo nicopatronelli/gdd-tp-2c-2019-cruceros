@@ -106,7 +106,7 @@
             this.recorridosList.Location = new System.Drawing.Point(21, 58);
             this.recorridosList.Name = "recorridosList";
             this.recorridosList.Size = new System.Drawing.Size(77, 108);
-            this.recorridosList.TabIndex = 12;
+            this.recorridosList.TabIndex = 0;
             this.recorridosList.SelectedValueChanged += new System.EventHandler(this.recorridosList_SelectedValueChanged);
             // 
             // puertosList
@@ -115,7 +115,7 @@
             this.puertosList.Location = new System.Drawing.Point(21, 218);
             this.puertosList.Name = "puertosList";
             this.puertosList.Size = new System.Drawing.Size(186, 108);
-            this.puertosList.TabIndex = 13;
+            this.puertosList.TabIndex = 2;
             // 
             // crucerosList
             // 
@@ -123,7 +123,7 @@
             this.crucerosList.Location = new System.Drawing.Point(130, 58);
             this.crucerosList.Name = "crucerosList";
             this.crucerosList.Size = new System.Drawing.Size(77, 108);
-            this.crucerosList.TabIndex = 14;
+            this.crucerosList.TabIndex = 1;
             this.crucerosList.SelectedValueChanged += new System.EventHandler(this.crucerosList_SelectedValueChanged);
             // 
             // groupBox1
@@ -254,7 +254,7 @@
             this.cabinas5Numeric.Name = "cabinas5Numeric";
             this.cabinas5Numeric.ReadOnly = true;
             this.cabinas5Numeric.Size = new System.Drawing.Size(37, 20);
-            this.cabinas5Numeric.TabIndex = 36;
+            this.cabinas5Numeric.TabIndex = 4;
             // 
             // cabinas5Label
             // 
@@ -287,7 +287,7 @@
             this.cabinas4Numeric.Name = "cabinas4Numeric";
             this.cabinas4Numeric.ReadOnly = true;
             this.cabinas4Numeric.Size = new System.Drawing.Size(37, 20);
-            this.cabinas4Numeric.TabIndex = 33;
+            this.cabinas4Numeric.TabIndex = 3;
             // 
             // cabinas3Numeric
             // 
@@ -300,7 +300,7 @@
             this.cabinas3Numeric.Name = "cabinas3Numeric";
             this.cabinas3Numeric.ReadOnly = true;
             this.cabinas3Numeric.Size = new System.Drawing.Size(37, 20);
-            this.cabinas3Numeric.TabIndex = 32;
+            this.cabinas3Numeric.TabIndex = 2;
             // 
             // cabinas2Numeric
             // 
@@ -313,7 +313,7 @@
             this.cabinas2Numeric.Name = "cabinas2Numeric";
             this.cabinas2Numeric.ReadOnly = true;
             this.cabinas2Numeric.Size = new System.Drawing.Size(37, 20);
-            this.cabinas2Numeric.TabIndex = 31;
+            this.cabinas2Numeric.TabIndex = 1;
             // 
             // cabinas4Label
             // 
@@ -406,7 +406,7 @@
             this.cabinas1Numeric.Name = "cabinas1Numeric";
             this.cabinas1Numeric.ReadOnly = true;
             this.cabinas1Numeric.Size = new System.Drawing.Size(37, 20);
-            this.cabinas1Numeric.TabIndex = 23;
+            this.cabinas1Numeric.TabIndex = 0;
             // 
             // label4
             // 
@@ -434,7 +434,7 @@
             this.buttonComprar.Location = new System.Drawing.Point(414, 361);
             this.buttonComprar.Name = "buttonComprar";
             this.buttonComprar.Size = new System.Drawing.Size(140, 77);
-            this.buttonComprar.TabIndex = 17;
+            this.buttonComprar.TabIndex = 0;
             this.buttonComprar.Text = "Ingresar Datos Personales";
             this.buttonComprar.UseVisualStyleBackColor = true;
             this.buttonComprar.Click += new System.EventHandler(this.ingresar_datos_click);
@@ -447,6 +447,8 @@
             this.Controls.Add(this.buttonComprar);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.Name = "ElegirViajeForm";
             this.Text = "ElegirViajeForm";
             this.Load += new System.EventHandler(this.ElegirViajeFormLoad);

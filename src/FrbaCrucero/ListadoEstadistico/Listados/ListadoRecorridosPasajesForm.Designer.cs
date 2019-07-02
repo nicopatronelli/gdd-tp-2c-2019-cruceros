@@ -77,6 +77,8 @@
             this.ClientSize = new System.Drawing.Size(577, 247);
             this.Controls.Add(this.btnCerrar);
             this.Controls.Add(this.gpbxListadoRecPasajeros);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.Name = "ListadoRecorridosPasajesForm";
             this.Text = "Listado de los 5 recorridos con más pasajes comprados";
             this.Load += new System.EventHandler(this.ListadoRecorridosPasajesForm_Load);

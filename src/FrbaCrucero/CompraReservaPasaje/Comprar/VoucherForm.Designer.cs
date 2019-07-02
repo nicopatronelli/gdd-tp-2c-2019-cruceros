@@ -114,8 +114,11 @@
             this.Controls.Add(this.codigoVoucherLabel);
             this.Controls.Add(this.precioTotalLabel);
             this.Controls.Add(this.esCompraOReservaLabel);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
             this.Name = "VoucherForm";
             this.Text = "VoucherForm";
+            this.Load += new System.EventHandler(this.VoucherForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
