@@ -105,7 +105,7 @@ namespace FrbaCrucero.AbmRol
             // 3. Si se está modificando el Rol_Cliente, validamos que NO se esté modificando el nombre del rol
             if (rolAEditar.Equals(DEF.ROL_CLIENTE) && !nombreRol.Equals(DEF.ROL_CLIENTE))
             {
-                MensajeBox.info("No se puede cambiar el nombre del rol Cliente");
+                MensajeBox.error("No se puede cambiar el nombre del rol Cliente");
                 return;
             }
 

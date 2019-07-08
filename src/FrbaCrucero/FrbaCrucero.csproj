@@ -369,6 +369,9 @@
     <EmbeddedResource Include="AbmCrucero\AltaEdicionCrucero\CruceroForm.resx">
       <DependentUpon>CruceroForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="AbmPuerto\Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="AbmRecorrido\AbmRecorridosForm.resx">
       <DependentUpon>AbmRecorridosForm.cs</DependentUpon>
     </EmbeddedResource>

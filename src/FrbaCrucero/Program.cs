@@ -35,10 +35,9 @@ namespace FrbaCrucero
             //Application.Run(new AltaTramoForm());
             //Application.Run(new SeleccionTramoModificarPrecioForm());
             //Application.Run(new PantallaPrincipalForm());
-            Application.Run(new LoginForm());
             //Application.Run(new CompraReservaForm());
             //Application.Run(new ElegirViajeForm("ACCRA", "LUANDA", DateTime.Parse("24/5/2018")));    //ACCRA  CONAKRY
-
+            Application.Run(new LoginForm());
         }
     }
 }

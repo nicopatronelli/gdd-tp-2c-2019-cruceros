@@ -80,12 +80,14 @@ namespace FrbaCrucero.GenerarViaje
 
             // Llegamos acá, el viaje se inserto correctamente
             MensajeBox.info("El nuevo viaje se ha creado correctamente.");
+            this.Close();
 
         } // FIN btnEnviar_Click()
 
         private void dtpFechaInicio_ValueChanged(object sender, EventArgs e)
         {
             cargarCbmxCruceroDisponibles();
+            this.dtpFechaFin.Enabled = true;
         }
 
         private void cargarCbmxCruceroDisponibles()
@@ -201,6 +203,16 @@ namespace FrbaCrucero.GenerarViaje
         private void btnCancelar_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void groupBox1_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void tipCruceros_Popup(object sender, PopupEventArgs e)
+        {
+            this.Text = "dasdsads";
         }
     }
 }

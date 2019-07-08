@@ -69,6 +69,8 @@
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.idReservaText);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.Name = "PagoReservaForm";
             this.Text = "PagoReservaForm";
             this.ResumeLayout(false);

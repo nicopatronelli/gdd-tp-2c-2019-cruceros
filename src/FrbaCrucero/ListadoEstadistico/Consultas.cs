@@ -10,7 +10,7 @@ namespace FrbaCrucero.ListadoEstadistico
     {
         public static string recorridosConMasPasajesComprados(string rangoFechas)
         {
-            return "SELECT TOP 5 r.recorrido_codigo identificador_recorrido, "
+            string s = "SELECT TOP 5 r.recorrido_codigo identificador_recorrido, "
                      + "SUM(c.compra_cantidad) cantidad_pasajes_comprados, "
                      + "pto_inicio.puerto_nombre puerto_inicial, "
                      + "pto_fin.puerto_nombre puerto_final "
@@ -36,6 +36,7 @@ namespace FrbaCrucero.ListadoEstadistico
                     + "AND c.compra_fecha BETWEEN " + rangoFechas + " "
                 + "GROUP BY r.recorrido_codigo, pto_inicio.puerto_nombre, pto_fin.puerto_nombre "
                 + "ORDER BY 2 DESC";
+            return s;
         }
  
         public static string recorridosConMasCabinasLibres(string rangoFechas)
@@ -55,15 +56,7 @@ namespace FrbaCrucero.ListadoEstadistico
 
         public static string crucerosConMasDiasFueraServicio(string anio, string semestre)
         {
-            string s = "select * from LOS_BARONES_DE_LA_CERVEZA.UF_listado_fuera_de_servicio("+ anio + "," + semestre + ")";
-            return s;
-            /*
-            return "select top 5 FS.id_crucero,CRU.identificador, CRU.modelo, "
-                    + "(SUM(datediff(DAY, case when FS.fecha_inicio_fuera_servicio < " + inicioSem + " then " + inicioSem + " else FS.fecha_inicio_fuera_servicio end, case when FS.fecha_fin_fuera_servicio > " + finSem + " then " + finSem + " else FS.fecha_fin_fuera_servicio end ))) as diferencia "
-                    + "from LOS_BARONES_DE_LA_CERVEZA.Cruceros_Fuera_Servicio FS join LOS_BARONES_DE_LA_CERVEZA.Cruceros CRU on (CRU.id_crucero = FS.id_crucero) "
-                    + "where (FS.fecha_fin_fuera_servicio BETWEEN " + rangoFechas + " "
-                            + "OR FS.fecha_inicio_fuera_servicio BETWEEN " + rangoFechas + " ) "
-                    + "group by FS.id_crucero,CRU.identificador,CRU.modelo order by diferencia desc "; */
+            return "select * from LOS_BARONES_DE_LA_CERVEZA.UF_listado_fuera_de_servicio("+ anio + "," + semestre + ")";
         }
 
     }

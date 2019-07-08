@@ -158,7 +158,12 @@ GO
 
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.USP_actualizar_recorrido'))
 	DROP PROCEDURE LOS_BARONES_DE_LA_CERVEZA.USP_actualizar_recorrido
+GO
 
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.USP_chequear_cruceros_servicio_tecnico'))
+	DROP PROCEDURE LOS_BARONES_DE_LA_CERVEZA.USP_chequear_cruceros_servicio_tecnico
+GO
+	
 /****** FUNCIONES ******/
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.UF_id_marca_crucero'))
 	DROP FUNCTION LOS_BARONES_DE_LA_CERVEZA.UF_id_marca_crucero
@@ -212,17 +217,13 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_D
 	DROP FUNCTION LOS_BARONES_DE_LA_CERVEZA.UF_listado_cabinas_libres_por_viajes
 GO
 
-
-
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.USP_generar_compra'))
 	DROP PROCEDURE LOS_BARONES_DE_LA_CERVEZA.USP_generar_compra
 GO
 
-
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.USP_generar_reserva'))
 	DROP PROCEDURE LOS_BARONES_DE_LA_CERVEZA.USP_generar_reserva
 GO
-
 
 /***** TRIGGERS: Se eliminan automáticamente al eliminar las tablas a las que están asociados *****/
 
@@ -877,6 +878,7 @@ GO
 [LOS_BARONES_DE_LA_CERVEZA].[USP_chequear_cruceros_servicio_tecnico] 
 @Desc: Chequeamos que si hay cruceros para dar de alta por fin
 de sus reparaciones (alta luego de una baja por servicio técnico)
+y los volvemos a poner como activos.
 ******************************************************************/
 GO
 CREATE PROCEDURE [LOS_BARONES_DE_LA_CERVEZA].[USP_chequear_cruceros_servicio_tecnico]
@@ -1299,7 +1301,7 @@ inicio dada, es decir, no están ocupados haciendo otro viaje. Además,
 sólo nos quedamos con los cruceros que no estén fuera de servicio y 
 no hayan sido dados de baja de forma definitiva. 
 ******************************************************************/
-CREATE FUNCTION [LOS_BARONES_DE_LA_CERVEZA].[UF_cruceros_disponibles] 
+CREATE FUNCTION [LOS_BARONES_DE_LA_CERVEZA].[UF_cruceros_disponibles]  
 (
 	@fecha_inicio_nuevo_viaje_s NVARCHAR(255),
 	@fecha_fin_nuevo_viaje_s NVARCHAR(255)
@@ -1968,7 +1970,7 @@ login incorrectos.
 GO
 CREATE TRIGGER [LOS_BARONES_DE_LA_CERVEZA].[UTR_inhabilitar_intentos_fallidos]
 ON LOS_BARONES_DE_LA_CERVEZA.Usuarios
-FOR UPDATE
+FOR UPDATE 
 AS
 BEGIN
 	-- Cuando la cantidad de intentos de login incorrectos es 3, inhabilitamos 
