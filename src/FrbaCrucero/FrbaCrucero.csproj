@@ -102,6 +102,12 @@
     <Compile Include="AbmCrucero\BajaServicioTecnico\BajaServicioTecnicoCruceroForm.Designer.cs">
       <DependentUpon>BajaServicioTecnicoCruceroForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="AbmCrucero\CancelarViajes\CancelarViajesForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmCrucero\CancelarViajes\CancelarViajesForm.Designer.cs">
+      <DependentUpon>CancelarViajesForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="AbmCrucero\Dominio\Cabina.cs" />
     <Compile Include="AbmCrucero\BajaDefintiva\SeleccionCruceroBajaDefinitivaForm.cs">
       <SubType>Form</SubType>
@@ -368,6 +374,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AbmCrucero\AltaEdicionCrucero\CruceroForm.resx">
       <DependentUpon>CruceroForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmCrucero\CancelarViajes\CancelarViajesForm.resx">
+      <DependentUpon>CancelarViajesForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AbmPuerto\Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>

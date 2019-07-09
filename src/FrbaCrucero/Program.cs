@@ -26,7 +26,7 @@ namespace FrbaCrucero
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            //Application.Run(new AbmCrucerosForm());
+            Application.Run(new AbmCrucerosForm());
             //Application.Run(new GenerarViajeForm());
             //Application.Run(new AltaRecorridoForm());
             //Application.Run(new CompraReservaForm());
@@ -37,7 +37,7 @@ namespace FrbaCrucero
             //Application.Run(new PantallaPrincipalForm());
             //Application.Run(new CompraReservaForm());
             //Application.Run(new ElegirViajeForm("ACCRA", "LUANDA", DateTime.Parse("24/5/2018")));    //ACCRA  CONAKRY
-            Application.Run(new LoginForm());
+            //Application.Run(new LoginForm());
         }
     }
 }

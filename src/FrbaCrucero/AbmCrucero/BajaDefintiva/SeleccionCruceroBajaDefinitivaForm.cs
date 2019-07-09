@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using FrbaCrucero.Utils;
+using FrbaCrucero.AbmCrucero.CancelarViajes;
 
 namespace FrbaCrucero.AbmCrucero
 {
@@ -31,43 +32,34 @@ namespace FrbaCrucero.AbmCrucero
 
         override protected string querySeleccionCruceros()
         {
-            string miConsulta = "SELECT cru.identificador 'Identificador', cru.modelo 'Modelo', mar.marca 'Marca', cru.fecha_alta 'Fecha alta', COUNT(cab.crucero) 'Cantidad de cabinas' "
-                                 + "FROM LOS_BARONES_DE_LA_CERVEZA.Cruceros cru "
-                                     + "JOIN LOS_BARONES_DE_LA_CERVEZA.Marcas_Cruceros mar "
-                                         + "ON cru.marca = mar.id_marca "
-                                     + "JOIN LOS_BARONES_DE_LA_CERVEZA.Cabinas cab "
-                                         + "ON cru.id_crucero = cab.crucero "
-                                 + "WHERE cru.fecha_baja_vida_util IS NULL " // No tiene sentido mostrar los cruceros que ya fueron dados de baja en forma definitiva
-                                 + "GROUP BY cru.identificador, cru.modelo, mar.marca, cru.fecha_alta";
-            return miConsulta;
+            return "SELECT identificador 'Identificador', modelo 'Modelo', marca 'Marca', fecha_alta 'Fecha de alta', cantidad_cabinas 'Cantidad de cabinas' " 
+                + "FROM LOS_BARONES_DE_LA_CERVEZA.Cruceros_Activos_Vida_Util";
         }
 
         override protected void cargarFormulario(string identificadorCrucero)
         {
+            // 1. Chequeamos que el crucero no esté en viaje o no tenga viajes pendientes 
+            if (this.tieneViajesPendientes(identificadorCrucero))
+            {
+                CancelarViajesForm formCancelarViajes = new CancelarViajesForm(identificadorCrucero);
+                formCancelarViajes.ShowDialog();
+            }
+
             // Abrimos el cuadro de advertencia para obtener confirmación o no
             AvisoBajaDefinitivaForm formAvisoBajaDefintiva = new AvisoBajaDefinitivaForm(identificadorCrucero);
             formAvisoBajaDefintiva.ShowDialog();
         }
 
-        // Abrimos la pantalla de edición de la publicación seleccionada con los datos que ya tenga cargados
-        //private void dgvBajaDefinitivaCrucero_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        //{
-        //    var senderGrid = (DataGridView)sender;
-
-        //    if (senderGrid.Columns[e.ColumnIndex] is DataGridViewButtonColumn &&
-        //        e.RowIndex >= 0)
-        //    {
-        //        // Obtenemos el identificador del crucero a dar de baja 
-        //        string identificadorCrucero = Convert.ToString(dgvEditarCrucero.Rows[e.RowIndex].Cells["identificador"].Value);
-
-        //        // Abrimos el cuadro de advertencia para obtener confirmación o no
-        //        AvisoBajaDefinitivaForm formAvisoBajaDefintiva = new AvisoBajaDefinitivaForm(identificadorCrucero);
-        //        formAvisoBajaDefintiva.ShowDialog();
-
-        //        // Recargamos el dgv de cruceros para no mostrar el dado de baja definitiva 
-        //        this.recargarDgvCruceros();
-        //    }
-        //}
+        private bool tieneViajesPendientes(string identificadorCrucero)
+        {
+            List<Parametro> parametros = new List<Parametro>();
+            Parametro paramIdentificadorCrucero = new Parametro("@identificador_crucero", SqlDbType.NVarChar, identificadorCrucero, 50);
+            parametros.Add(paramIdentificadorCrucero);
+            Parametro paramFechaActual = new Parametro("@fecha_actual", SqlDbType.NVarChar, ArchivoConfig.obtenerFechaConfig().ToString("yyyy-MM-dd h:mm tt"), 255);
+            parametros.Add(paramFechaActual);
+            FuncionSQL funcViajesPendientesCrucero = new FuncionSQL("LOS_BARONES_DE_LA_CERVEZA.UF_viajes_pendientes_crucero", parametros, SqlDbType.Int);
+            return Convert.ToInt32(funcViajesPendientesCrucero.ejecutar()) > 0;
+        }
 
     }
 }

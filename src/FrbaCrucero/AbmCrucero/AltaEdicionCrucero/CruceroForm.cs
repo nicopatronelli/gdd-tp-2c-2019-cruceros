@@ -301,10 +301,7 @@ namespace FrbaCrucero.AbmCrucero
         {
             ConexionBD conexion = new ConexionBD();
             conexion.abrir();
-            /**
-             * @IMPORTANTE: No permitimos la modificación ni la eliminación de cabinas cuyo estado sea 1, 
-             * es decir, pertenezcan a pasajes comprados o reservados. 
-            **/
+
             string miConsulta = "SELECT cab.numero numero, cab.piso piso, tc.tipo_cabina tipo_cabina "
                               + "FROM LOS_BARONES_DE_LA_CERVEZA.Cabinas cab "
                                  + "JOIN LOS_BARONES_DE_LA_CERVEZA.Tipos_Cabinas tc "
@@ -312,8 +309,6 @@ namespace FrbaCrucero.AbmCrucero
                                 + "JOIN LOS_BARONES_DE_LA_CERVEZA.Cruceros cru "
                                     + "ON cab.crucero = cru.id_crucero "
                               + "WHERE cru.identificador = @identificador_crucero ";
-                                // + "AND e.compra IS NULL "
-                                // + "AND e.reserva IS NULL";
             SqlDataAdapter dataAdapter = new SqlDataAdapter(miConsulta, conexion.obtenerConexion());
             Parametro paramIdentificadorCrucero = new Parametro("@identificador_crucero", SqlDbType.NVarChar, identificadorCrucero, 50);
             dataAdapter.SelectCommand.Parameters.Add(paramIdentificadorCrucero.obtenerSqlParameter());

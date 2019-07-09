@@ -63,14 +63,8 @@ namespace FrbaCrucero.AbmCrucero
             //     + "GROUP BY cru.identificador, cru.modelo, mar.marca "
             //     + "ORDER BY cru.identificador DESC";
 
-            return "SELECT cru.identificador 'Identificador', cru.modelo 'Modelo', mar.marca 'Marca', COUNT(cab.crucero) 'Cantidad de cabinas' "
-                                + "FROM LOS_BARONES_DE_LA_CERVEZA.Cruceros cru "
-                                    + "JOIN LOS_BARONES_DE_LA_CERVEZA.Marcas_Cruceros mar "
-                                        + "ON cru.marca = mar.id_marca "
-                                    + "JOIN LOS_BARONES_DE_LA_CERVEZA.Cabinas cab "
-                                        + "ON cru.id_crucero = cab.crucero "
-                                + "WHERE cru.fecha_baja_vida_util IS NULL " // No permitimos editar los cruceros dados de baja en forma definitiva
-                                + "GROUP BY cru.identificador, cru.modelo, mar.marca";
+            return "SELECT identificador 'Identificador', modelo 'Modelo', marca 'Marca', cantidad_cabinas 'Cantidad de cabinas' "
+                 + "FROM LOS_BARONES_DE_LA_CERVEZA.Cruceros_Activos_Vida_Util";
         }
 
         protected void cargarDgvCruceros(string miConsulta)

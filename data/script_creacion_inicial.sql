@@ -112,9 +112,9 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_D
     DROP TABLE LOS_BARONES_DE_LA_CERVEZA.Tpr_Auxiliar
 GO
 
----------------------------------------------------------------
--- X. ELIMINAMOS LOS STORED PROCEDURES, FUNCIONES Y TRIGGERS
----------------------------------------------------------------
+-----------------------------------------------------------------------
+-- X. ELIMINAMOS LOS STORED PROCEDURES, FUNCIONES, TRIGGERS Y VISTAS
+-----------------------------------------------------------------------
 /****** STORED PROCEDURES ******/
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.USP_Login'))
 	DROP PROCEDURE LOS_BARONES_DE_LA_CERVEZA.USP_Login
@@ -162,6 +162,14 @@ GO
 
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.USP_chequear_cruceros_servicio_tecnico'))
 	DROP PROCEDURE LOS_BARONES_DE_LA_CERVEZA.USP_chequear_cruceros_servicio_tecnico
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.USP_generar_compra'))
+	DROP PROCEDURE LOS_BARONES_DE_LA_CERVEZA.USP_generar_compra
+GO
+
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.USP_generar_reserva'))
+	DROP PROCEDURE LOS_BARONES_DE_LA_CERVEZA.USP_generar_reserva
 GO
 	
 /****** FUNCIONES ******/
@@ -217,15 +225,20 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_D
 	DROP FUNCTION LOS_BARONES_DE_LA_CERVEZA.UF_listado_cabinas_libres_por_viajes
 GO
 
-IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.USP_generar_compra'))
-	DROP PROCEDURE LOS_BARONES_DE_LA_CERVEZA.USP_generar_compra
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.UF_id_crucero'))
+	DROP FUNCTION LOS_BARONES_DE_LA_CERVEZA.UF_id_crucero
 GO
 
-IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.USP_generar_reserva'))
-	DROP PROCEDURE LOS_BARONES_DE_LA_CERVEZA.USP_generar_reserva
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.UF_viajes_pendientes_crucero'))
+	DROP FUNCTION LOS_BARONES_DE_LA_CERVEZA.UF_viajes_pendientes_crucero
 GO
 
 /***** TRIGGERS: Se eliminan automáticamente al eliminar las tablas a las que están asociados *****/
+
+/****** VISTAS ******/
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'LOS_BARONES_DE_LA_CERVEZA.Cruceros_Activos_Vida_Util'))
+	DROP VIEW LOS_BARONES_DE_LA_CERVEZA.Cruceros_Activos_Vida_Util
+GO
 
 ------------------------------------------------------------------------------------------------------
 						-- 3. ELIMINAMOS EL ESQUEMA Y VOLVEMOS A CREARLO
@@ -468,7 +481,9 @@ CREATE TABLE [LOS_BARONES_DE_LA_CERVEZA].Viaje(
 	viaje_fecha_fin DATETIME2(3),
 	viaje_fecha_fin_estimada DATETIME2(3),
 	viaje_id_crucero INT,
-	viaje_id_recorrido INT
+	viaje_id_recorrido INT,
+	viaje_cancelado BIT DEFAULT 0, -- Campo para cancelar viajes por baja de cruceros
+	viaje_cancelacion_motivo NVARCHAR(255) -- Campo para guardar el motivo (texto libre) de la cancelación del viaje
 )
 GO
 
@@ -1039,11 +1054,58 @@ END
 GO
 
 /******************************************************************
+[LOS_BARONES_DE_LA_CERVEZA].[UF_id_crucero]
+@Desc: Función auxiliar que retorna el id_crucero (PK) asignado a 
+un crucero según su identificador (de negocio).
+******************************************************************/
+CREATE FUNCTION [LOS_BARONES_DE_LA_CERVEZA].[UF_id_crucero]
+(
+	@identificador_crucero NVARCHAR(50)
+)
+RETURNS INT 
+AS 
+BEGIN
+	 DECLARE @id_crucero INT = (
+		 SELECT id_crucero
+		 FROM LOS_BARONES_DE_LA_CERVEZA.Cruceros
+		 WHERE identificador = @identificador_crucero
+	)
+	RETURN @id_crucero
+END 
+GO
+
+/******************************************************************
+[LOS_BARONES_DE_LA_CERVEZA].[UF_id_crucero]
+@Desc: Función ara saber si un crucero a dar de baja en forma definitiva 
+tiene viajes asignados (está en viaje o tiene viajes pendientes)
+******************************************************************/
+CREATE FUNCTION [LOS_BARONES_DE_LA_CERVEZA].[UF_viajes_pendientes_crucero]
+(
+	@identificador_crucero NVARCHAR(50),
+	@fecha_actual NVARCHAR(255)
+)
+RETURNS INT
+AS
+BEGIN
+	DECLARE @resultado INT = (
+		SELECT COUNT(*)
+		FROM LOS_BARONES_DE_LA_CERVEZA.Viaje v1
+		WHERE v1.viaje_id_crucero = LOS_BARONES_DE_LA_CERVEZA.UF_id_crucero(@identificador_crucero)
+			AND @fecha_actual < (
+				-- Obtenemos la fecha de fin del último viaje asignado al crucero
+				SELECT TOP 1 v.viaje_fecha_fin
+				FROM LOS_BARONES_DE_LA_CERVEZA.Viaje v
+				WHERE v.viaje_id_crucero = LOS_BARONES_DE_LA_CERVEZA.UF_id_crucero(@identificador_crucero)
+				ORDER BY 1 DESC)
+	)
+	RETURN @resultado
+END
+GO
+
+/******************************************************************
 [LOS_BARONES_DE_LA_CERVEZA].[USP_insertar_cabina] 
 @Desc: Inserta una cabina asociada a un crucero en la tabla Cabinas
 ******************************************************************/
-
-GO
 CREATE PROCEDURE [LOS_BARONES_DE_LA_CERVEZA].[USP_insertar_cabina]
 (	
 	@numero INT,
@@ -1089,7 +1151,6 @@ BEGIN
 	RETURN @id_puerto
 END 
 go
-
 
 /******************************************************************
 [LOS_BARONES_DE_LA_CERVEZA].[UF_destinos_segun_origen] 
@@ -2019,3 +2080,30 @@ ADD CONSTRAINT FK_cliente_reserva
 FOREIGN KEY (reserva_cliente)
 REFERENCES LOS_BARONES_DE_LA_CERVEZA.Clientes(id_cliente)
 GO
+
+----------------------------------------------------------------------------------------------------------------------
+								-- 10. VISTAS
+----------------------------------------------------------------------------------------------------------------------
+
+/******************************************************************************************
+Cruceros_Activos_Vida_Util
+@Desc: Vista con la flota de cruceros activos de la empresa: 
+Incluye todos los cruceros activos y los cruceros dados de baja en forma temporal por 
+servicio técnico, es decir, sólo no incluye aquellos cruceros dados de baja en forma
+definitiva.
+******************************************************************************************/
+CREATE VIEW LOS_BARONES_DE_LA_CERVEZA.Cruceros_Activos_Vida_Util
+(identificador, modelo, marca, fecha_alta, cantidad_cabinas)
+AS
+SELECT cru.identificador, cru.modelo, mar.marca, cru.fecha_alta, COUNT(cab.crucero) cantidad_cabinas 
+FROM LOS_BARONES_DE_LA_CERVEZA.Cruceros cru 
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Marcas_Cruceros mar 
+		ON cru.marca = mar.id_marca 
+	JOIN LOS_BARONES_DE_LA_CERVEZA.Cabinas cab 
+		ON cru.id_crucero = cab.crucero 
+WHERE cru.fecha_baja_vida_util IS NULL -- // No tiene sentido mostrar los cruceros que ya fueron dados de baja en forma definitiva
+GROUP BY cru.identificador, cru.modelo, mar.marca, cru.fecha_alta
+GO
+/*********************************************************************************************************************
+									FIN - VISTAS
+*********************************************************************************************************************/
